@@ -150,7 +150,7 @@ test('rejects invalid season ranges before downloading or writing', async () => 
   assert.equal(existsSync(path.join(outputRoot, 'data')), false);
 });
 
-test('validate checks exactly the five sample seasons, logs counts, and never emits game records', async () => {
+test('validate downloads once and writes one raw capture with outputs for exactly the five sample seasons', async () => {
   const outputRoot = await tempRoot();
   const calls = [];
   const logs = [];
@@ -161,14 +161,19 @@ test('validate checks exactly the five sample seasons, logs counts, and never em
 
   const summaries = await runCli(['validate', '--output-root', outputRoot], { log: (line) => logs.push(line) }, client);
 
-  assert.equal(calls.length, 5);
+  assert.equal(calls.length, 1);
   assert.deepEqual(summaries.map((summary) => summary.inRangeRows), [1, 1, 1, 1, 1]);
+  assert.deepEqual(summaries.map((summary) => summary.fetchedRows), [6, 6, 6, 6, 6]);
+  assert.equal(new Set(summaries.map((summary) => summary.rawPath)).size, 1);
+  assert.deepEqual(await readdir(path.join(outputRoot, 'data', 'raw', 'nflverse')), [path.basename(summaries[0].rawPath)]);
   assert.equal(logs.length, 5);
+  assert.deepEqual(logs.map((line) => Number(line.match(/^season=(\d+)/)[1])), [2005, 2010, 2015, 2020, 2025]);
   for (const [index, season] of [2005, 2010, 2015, 2020, 2025].entries()) {
     assert.match(logs[index], new RegExp(`^season=${season} .*accepted=1 rejected=0$`));
     assert.equal(existsSync(path.join(outputRoot, 'data', 'normalized', 'nfl', `nflverse-lines-${season}-${season}.accepted.jsonl`)), true);
   }
   assert.equal(existsSync(path.join(outputRoot, 'data', 'normalized', 'nfl', 'nflverse-lines-2012-2012.accepted.jsonl')), false);
+  assert.equal((await readdir(path.join(outputRoot, 'data', 'normalized', 'nfl'))).length, 10);
 });
 
 test('ingest CLI requires and applies an inclusive start/end season', async () => {

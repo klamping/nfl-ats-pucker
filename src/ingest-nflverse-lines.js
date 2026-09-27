@@ -17,8 +17,12 @@ async function runNflverseIngestion({ startSeason, endSeason, outputRoot = proce
     throw new Error('An nflverse download client is required');
   }
 
-  // Fetch and validate the entire source before touching any existing output.
   const download = await client.downloadNflverseGames();
+  return ingestDownloadedRange({ start, end, outputRoot, download });
+}
+
+async function ingestDownloadedRange({ start, end, outputRoot = process.cwd(), download, rawPath }) {
+  // Validate the entire source before touching any existing output.
   if (!download || typeof download.csv !== 'string' || !download.csv.trim() ||
       !Array.isArray(download.rows) || download.rows.length === 0 ||
       !download.rows.every((row) => row && typeof row === 'object' && !Array.isArray(row)) ||
@@ -44,17 +48,18 @@ async function runNflverseIngestion({ startSeason, endSeason, outputRoot = proce
 
   const rawDirectory = path.join(outputRoot, 'data', 'raw', 'nflverse');
   const normalizedDirectory = path.join(outputRoot, 'data', 'normalized', 'nfl');
-  await mkdir(rawDirectory, { recursive: true });
-  const timestamp = download.retrievedAt.replace(/:/g, '-');
-  let rawPath;
-  for (let capture = 1; ; capture += 1) {
-    const candidate = path.join(rawDirectory, `games-${timestamp}-capture-${String(capture).padStart(3, '0')}.csv`);
-    try {
-      await writeFile(candidate, download.csv, { flag: 'wx' });
-      rawPath = candidate;
-      break;
-    } catch (error) {
-      if (error.code !== 'EEXIST') throw error;
+  if (!rawPath) {
+    await mkdir(rawDirectory, { recursive: true });
+    const timestamp = download.retrievedAt.replace(/:/g, '-');
+    for (let capture = 1; ; capture += 1) {
+      const candidate = path.join(rawDirectory, `games-${timestamp}-capture-${String(capture).padStart(3, '0')}.csv`);
+      try {
+        await writeFile(candidate, download.csv, { flag: 'wx' });
+        rawPath = candidate;
+        break;
+      } catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+      }
     }
   }
 
@@ -87,9 +92,15 @@ async function runCli(argv = process.argv.slice(2), output = console, client = {
     if (options.startSeason !== undefined || options.endSeason !== undefined) {
       throw new Error('Validation uses exactly the five sample seasons');
     }
+    if (typeof client?.downloadNflverseGames !== 'function') {
+      throw new Error('An nflverse download client is required');
+    }
+    const download = await client.downloadNflverseGames();
     const summaries = [];
+    let rawPath;
     for (const season of SAMPLE_SEASONS) {
-      const summary = await runNflverseIngestion({ startSeason: season, endSeason: season, outputRoot: options.outputRoot, client });
+      const summary = await ingestDownloadedRange({ start: season, end: season, outputRoot: options.outputRoot, download, rawPath });
+      rawPath = summary.rawPath;
       summaries.push(summary);
       output.log(`season=${season} ${formatCounts(summary)}`);
     }
