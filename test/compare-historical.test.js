@@ -39,6 +39,21 @@ test('validates the gathered snapshot and selected finite features', () => {
   assert.throws(() => compareHistorical({ input: invalid, historicalMatchups: [] }), /finite|valid/i);
 });
 
+test('rejects a snapshot without gameId before comparing historical matchups', () => {
+  const input = snapshot();
+  delete input.gameId;
+  let comparisonStarted = false;
+  class HistoricalMatchups extends Array {
+    filter(...args) {
+      comparisonStarted = true;
+      return super.filter(...args);
+    }
+  }
+
+  assert.throws(() => compareHistorical({ input, historicalMatchups: new HistoricalMatchups() }), /valid/i);
+  assert.equal(comparisonStarted, false);
+});
+
 test('defaults Week 3 to historical Weeks 2 through 5', () => {
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [
     historical({ week: 1 }), historical({ week: 2 }), historical({ week: 5 }), historical({ week: 6 }),

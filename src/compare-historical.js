@@ -96,7 +96,7 @@ async function runComparisonCli({ inputPath, output = console, fileSystem = defa
 
 function validateInput(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input) ||
-      !Number.isInteger(input.season) || !Number.isInteger(input.week) || input.week < 1 ||
+      !nonEmpty(input.gameId) || !Number.isInteger(input.season) || !Number.isInteger(input.week) || input.week < 1 ||
       !['REG', 'POST'].includes(input.gameType) || !nonEmpty(input.homeTeam) || !nonEmpty(input.awayTeam) ||
       input.homeTeam === input.awayTeam || !Number.isFinite(input.closingSpreadHome) ||
       !validKickoff(input.kickoff) || !input.currentOdds || input.currentOdds.provider !== 'the-odds-api' ||
