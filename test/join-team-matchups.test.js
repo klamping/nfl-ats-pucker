@@ -141,3 +141,35 @@ test('does not require weekday to identify the same kickoff', () => {
   assert.deepEqual(rejected, []);
   assert.deepEqual(accepted[0].kickoff, { date: '2025-09-14', time: '13:00' });
 });
+
+test('omits an object-valued stadium rather than copying its postgame fields', () => {
+  const { accepted, rejected } = joinTeamPregameToMarkets({
+    marketGames: [{ ...market, stadium: { homeScore: 28 }, roof: 'outdoors' }],
+    pregameRecords: [away, home],
+  });
+  assert.deepEqual(rejected, []);
+  assert.equal(accepted.length, 1);
+  assert.equal(Object.hasOwn(accepted[0], 'stadium'), false);
+  assert.equal(accepted[0].roof, 'outdoors');
+});
+
+test('omits an object-valued source and preserves only correctly typed scalar market metadata', () => {
+  const { accepted, rejected } = joinTeamPregameToMarkets({
+    marketGames: [{
+      ...market, source: { finalScore: '28-17' }, stadium: 'MetLife Stadium',
+      sourceUrl: 'https://example.com/games.csv', divisionGame: false,
+      closingTotal: 44.5, awayRest: { finalScore: '28-17' },
+      homeRest: 7, roof: null, surface: ['grass', { homeScore: 28 }],
+    }],
+    pregameRecords: [away, home],
+  });
+  assert.deepEqual(rejected, []);
+  assert.equal(accepted.length, 1);
+  assert.deepEqual(Object.fromEntries(['source', 'stadium', 'sourceUrl', 'divisionGame',
+    'closingTotal', 'awayRest', 'homeRest', 'roof', 'surface']
+    .filter((field) => Object.hasOwn(accepted[0], field))
+    .map((field) => [field, accepted[0][field]])), {
+    stadium: 'MetLife Stadium', sourceUrl: 'https://example.com/games.csv',
+    divisionGame: false, closingTotal: 44.5, homeRest: 7, roof: null,
+  });
+});

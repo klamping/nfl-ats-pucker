@@ -1,10 +1,15 @@
-const MARKET_FIELDS = [
-  'gameId', 'season', 'week', 'gameType', 'sourceGameType',
-  'awayTeam', 'homeTeam', 'closingSpreadHome', 'spreadOrientation',
-  'source', 'sourceUrl', 'retrievedAt', 'closingTotal', 'awaySpreadOdds',
-  'homeSpreadOdds', 'awayRest', 'homeRest', 'stadium', 'roof', 'surface',
-  'divisionGame',
-];
+const MARKET_SCALAR_FIELDS = {
+  string: [
+    'gameId', 'gameType', 'sourceGameType', 'awayTeam', 'homeTeam',
+    'spreadOrientation', 'source', 'sourceUrl', 'retrievedAt',
+    'stadium', 'roof', 'surface',
+  ],
+  number: [
+    'season', 'week', 'closingSpreadHome', 'closingTotal',
+    'awaySpreadOdds', 'homeSpreadOdds', 'awayRest', 'homeRest',
+  ],
+  boolean: ['divisionGame'],
+};
 const FEATURE_FIELDS = [
   'gamesPlayed', 'wins', 'losses', 'winPercentage', 'pointsScoredPerGame',
   'pointsAllowedPerGame', 'netYardsPerPlay', 'netEpaPerPlay',
@@ -14,6 +19,19 @@ const FEATURE_FIELDS = [
 function pick(source, fields) {
   return Object.fromEntries(fields.filter((field) => Object.hasOwn(source, field))
     .map((field) => [field, source[field]]));
+}
+
+function pickMarketScalars(game) {
+  const scalars = {};
+  for (const [type, fields] of Object.entries(MARKET_SCALAR_FIELDS)) {
+    for (const field of fields) {
+      if (!Object.hasOwn(game, field)) continue;
+      const value = game[field];
+      if (value === null || (typeof value === type &&
+          (type !== 'number' || Number.isFinite(value)))) scalars[field] = value;
+    }
+  }
+  return scalars;
 }
 
 function validKickoff(kickoff) {
@@ -67,7 +85,7 @@ function joinTeamPregameToMarkets({ marketGames, pregameRecords }) {
       continue;
     }
     const matchup = {
-      ...pick(game, MARKET_FIELDS),
+      ...pickMarketScalars(game),
       homePregame: pick(rows.find((row) => row.team === game.homeTeam).features, FEATURE_FIELDS),
       awayPregame: pick(rows.find((row) => row.team === game.awayTeam).features, FEATURE_FIELDS),
     };
