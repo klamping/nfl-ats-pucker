@@ -3,7 +3,7 @@ const path = require('node:path');
 
 const { downloadNflverseGames } = require('./nflverse-client');
 const { downloadNflverseTeams, downloadNflverseWeeklyTeamStats } = require('./nflverse-team-client');
-const { findConsensusHomeSpread } = require('./odds-api-client');
+const { loadTheOddsApiKey, createOddsApiClient, findConsensusHomeSpread } = require('./odds-api-client');
 const { normalizeNflverseGame } = require('./normalize-nflverse-game');
 const { buildTeamIdentity } = require('./normalize-team-identity');
 const { normalizeTeamPostgame } = require('./normalize-team-postgame');
@@ -121,6 +121,42 @@ function defaultNflverseClient() {
   return { downloadNflverseGames, downloadNflverseTeams, downloadNflverseWeeklyTeamStats };
 }
 
+async function runCli(argv = process.argv.slice(2), output = console, dependencies = {}) {
+  const options = parseCliOptions(argv);
+  if (options.season === undefined || options.gameId === undefined) {
+    throw new Error('A valid season and game ID are required');
+  }
+  const nflverseClient = dependencies.nflverseClient || defaultNflverseClient();
+  const oddsClient = dependencies.oddsClient || createOddsApiClient({
+    apiKey: dependencies.apiKey || loadTheOddsApiKey({ envPath: dependencies.envPath }),
+    fetchImpl: dependencies.fetchImpl,
+  });
+  const result = await gatherPregame({
+    season: options.season,
+    gameId: options.gameId,
+    outputRoot: options.outputRoot,
+    nflverseClient,
+    oddsClient,
+    fileSystem: dependencies.fileSystem,
+    now: dependencies.now,
+  });
+  output.log(`season=${Number(options.season)} gameId=${options.gameId} snapshotPath=${result.snapshotPath} rawCaptures=${result.rawPaths.length} contributingBooks=${result.snapshot.currentOdds.contributingBooks}`);
+  return result;
+}
+
+function parseCliOptions(argv) {
+  const args = [...argv];
+  const options = {};
+  while (args.length) {
+    const argument = args.shift();
+    if (!['--season', '--game-id', '--output-root'].includes(argument)) throw new Error(`Unknown option: ${argument}`);
+    const value = args.shift();
+    if (value === undefined || value.startsWith('--')) throw new Error(`Missing value for ${argument}`);
+    options[argument.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+  }
+  return options;
+}
+
 function validateClients(nflverseClient, oddsClient) {
   if (typeof nflverseClient?.downloadNflverseGames !== 'function' ||
       typeof nflverseClient?.downloadNflverseTeams !== 'function' ||
@@ -213,4 +249,11 @@ async function writeUniqueJson(fileSystem, directory, stem, value) {
   }
 }
 
-module.exports = { gatherPregame };
+if (require.main === module) {
+  runCli().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { gatherPregame, runCli };

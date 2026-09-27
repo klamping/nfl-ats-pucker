@@ -5,7 +5,8 @@ const { tmpdir } = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 
-const { gatherPregame } = require('../src/gather-pregame');
+const packageJson = require('../package.json');
+const { gatherPregame, runCli } = require('../src/gather-pregame');
 
 const season = 2026;
 const sourceUrl = 'https://example.test/games.csv';
@@ -47,7 +48,7 @@ async function fixture(overrides = {}) {
   const inProgress = game('in-progress', targetDate, '15:00', '10', '14');
   inProgress.result = '';
   inProgress.overtime = '';
-  const target = game('target-id', targetDate, targetTime, '', '');
+  const target = game(overrides.gameId || 'target-id', targetDate, targetTime, '', '');
   const schedule = [prior, simultaneous, later, inProgress, target];
   const stats = [...statsFor('prior', '2'), ...statsFor('simultaneous', '3'), ...statsFor('later', '3'), ...statsFor('in-progress', '3')];
   const calls = { seasons: [], odds: 0 };
@@ -163,4 +164,49 @@ test('snapshot write failure removes the already staged odds provider capture', 
   await assert.rejects(gatherPregame({ season, gameId: 'target-id', ...context, fileSystem }), /injected snapshot write failure/);
   assert.deepEqual(await readdir(path.join(context.outputRoot, 'data', 'raw', 'odds-api')), []);
   assert.deepEqual(await readdir(path.join(context.outputRoot, 'data', 'current')), []);
+});
+
+test('package exposes the pregame gather script', () => {
+  assert.equal(packageJson.scripts['gather:pregame'], 'node src/gather-pregame.js');
+});
+
+test('pregame gather CLI requires season and game ID before downloading data', async () => {
+  const calls = { nflverse: 0, odds: 0 };
+  const nflverseClient = {
+    async downloadNflverseGames() { calls.nflverse++; throw new Error('should not download without required options'); },
+    async downloadNflverseTeams() { calls.nflverse++; throw new Error('should not download without required options'); },
+    async downloadNflverseWeeklyTeamStats() { calls.nflverse++; throw new Error('should not download without required options'); },
+  };
+  const oddsClient = {
+    async fetchNflSpreads() { calls.odds++; throw new Error('should not fetch odds without required options'); },
+  };
+
+  await assert.rejects(runCli(['--season', String(season)], { log() {} }, { nflverseClient, oddsClient }), /season.*game id/i);
+  await assert.rejects(runCli(['--game-id', '2026_03_DAL_PHI'], { log() {} }, { nflverseClient, oddsClient }), /season.*game id/i);
+  assert.deepEqual(calls, { nflverse: 0, odds: 0 });
+});
+
+test('pregame gather CLI writes count/path-only output without exposing provider details or secrets', async (t) => {
+  const context = await fixture({ gameId: '2026_03_DAL_PHI' });
+  t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+  const logs = [];
+  const secret = 'mock-secret-that-must-not-print';
+  const result = await runCli([
+    '--season', String(season), '--game-id', '2026_03_DAL_PHI', '--output-root', context.outputRoot,
+  ], { log: (line) => logs.push(line) }, { ...context, oddsClient: {
+    async fetchNflSpreads() {
+      context.calls.odds++;
+      return { response: [{ id: `provider-echo-${secret}`, home_team: 'PHI', away_team: 'DAL', commence_time: targetKickoff,
+        bookmakers: [{ key: 'book-a', markets: [{ key: 'spreads', outcomes: [
+          { name: 'PHI', point: -3 }, { name: 'DAL', point: 3 },
+        ] }] }] }], retrievedAt, source: 'the-odds-api' };
+    },
+  } });
+
+  assert.deepEqual(logs, [`season=2026 gameId=2026_03_DAL_PHI snapshotPath=${result.snapshotPath} rawCaptures=1 contributingBooks=1`]);
+  assert.equal(logs.join('\n').includes(secret), false);
+  assert.equal(logs.join('\n').includes('homeSpreads'), false);
+  assert.equal(logs.join('\n').includes('book-a'), false);
+  assert.equal(logs.join('\n').includes('{'), false);
+  assert.equal(context.calls.odds, 1);
 });

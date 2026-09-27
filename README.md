@@ -50,3 +50,22 @@ Both commands accept `--output-root PATH`. Validation uses exactly 2005, 2010, 2
 The team workflow retains the source CSV captures under `data/raw/nflverse/` and publishes four independent accepted/rejected JSONL pairs with pointers in `data/normalized/nfl/`: `nflverse-team-identity-<start>-<end>.current.json`, `nflverse-team-postgame-<start>-<end>.current.json`, `nflverse-team-pregame-<start>-<end>.current.json`, and `nflverse-team-matchups-<start>-<end>.current.json`. Read each pointer once and resolve both relative paths against `data/normalized/nfl/`; each accepted/rejected pair switches together through an atomic pointer rename. Older immutable runs remain available.
 
 Postgame records contain factual team-game outcomes and available core efficiency/statistics. Yards per play subtracts the magnitude of `sack_yards_lost` once, handling the live source's negative values as well as positive values. Turnover margin normalizes both source naming pairs (`passing_interceptions` or `interceptions`; `fumbles_lost_total` or `lost_fumbles`) and retains original columns under `rawStats`. Pregame records are derived only from results completed before kickoff; teams with no completed games in that season have null early-season feature values rather than invented zeros. Matchups safely join the pregame features to the existing market game records. Invalid or incomplete source pairs are written to their dataset's rejected JSONL with machine-readable reasons; they are not silently repaired. Inspect accepted and rejected records alongside the raw source captures before bulk use. The source may not provide every optional statistic in every season; unavailable measures remain null.
+
+## Gather an upcoming pregame snapshot
+
+```bash
+npm run gather:pregame -- --season 2026 --game-id 2026_03_DAL_PHI
+```
+
+Both `--season` and `--game-id` are required. Add `--output-root PATH` to write under a different local root. The command prints only a one-line summary with the season, game ID, snapshot path, raw-capture count, and contributing-book count; it does not print provider payloads, bookmaker names, spreads, or credentials.
+
+Current odds come from [The Odds API](https://the-odds-api.com/) NFL U.S. `spreads` endpoint. Put the API key in `~/Sites/.env` as `theoddsapi=<key>`. This workflow uses only the provider's current/future NFL spread market and does not require a paid plan, historical odds, scraping, player data, or play-by-play data.
+
+The target game is resolved from the public nflverse schedule by game ID and season. The gathered team features use public nflverse identity and weekly team-stat sources, and include only final games completed before the target kickoff. The value written to `closingSpreadHome` is the **current consensus home-team spread**: the median of valid current home-team spread quotes from distinct bookmakers for the matched provider event. It is included for compatibility with the historical matchup schema, but it is not a historical closing line or line-movement feed.
+
+Successful runs write:
+
+- Snapshot JSON: `data/current/<game-id>-<timestamp>.json`
+- Raw The Odds API response capture: `data/raw/odds-api/<retrieval-timestamp>-capture.json`
+
+These files are ignored local research artifacts and are never overwritten; repeated timestamps receive a unique suffix. The provider request URL and API key are not stored, and client-side provider responses are redacted before raw capture. A missing/blank `theoddsapi` key, provider failure, missing target, started kickoff, invalid nflverse source shape, unresolved teams, missing prior stats, no unique provider event, no valid spread quotes, or snapshot write failure causes the command to fail closed. Failed validation writes no snapshot; if the raw provider capture was staged but the snapshot cannot be written, the raw capture is removed.
