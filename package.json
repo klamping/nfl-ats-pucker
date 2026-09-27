@@ -10,5 +10,8 @@
     "test": "node --test",
     "validate:market-data": "node src/ingest-nfl-lines.js validate",
     "ingest:market-data": "node src/ingest-nfl-lines.js ingest"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.3"
   }
 }
