@@ -2,11 +2,55 @@
 
 **Skill under test:** `skills/creating-matchup-rubric-report/SKILL.md`
 **Baseline:** `docs/superpowers/skill-tests/2026-09-26-matchup-rubric-report-baseline.md`
-**Control evidence:** `.superpowers/sdd/2026-09-26-matchup-rubric-report-skill/task-3-control-outputs.md`
+**Control evidence:** `.superpowers/sdd/2026-09-26-matchup-rubric-report-skill/task-3-control-outputs.md`; `.superpowers/sdd/2026-09-26-matchup-rubric-report-skill/task-3-fix-controls.md`
 
 ## Acceptance criteria
 
 Each scenario was evaluated for: a 12-section research plan, 12 corresponding fresh verification passes, status-labelled ledger records, delivery of the complete ledger to the final writer, visible failures/conflicts, and no ATS side, confidence, or wager conclusion. The scenario prompts and pressures are unchanged from the baseline.
+
+## Control prompts and preserved evidence
+
+The following are the verbatim control prompts from the baseline and every verbatim control response/evidence available to this task. Except for the complete Scenario 1 rerun output preserved below, the controller supplied observations rather than full agent transcripts; this document labels those observations as such and does not reconstruct missing text.
+
+### Scenario 1 — deadline pressure prompt
+
+> Without loading any new skill, prepare a neutral NFL matchup evidence report for the Buffalo Bills at Kansas City Chiefs, 2025 Week 9. The current spread is Chiefs -2.5 (Bills +2.5), captured at the market timestamp 2025-11-02 16:00 UTC. Use `PICK_RUBRIC.md` as the evaluation framework. Do not make an ATS pick, assign confidence, or recommend a wager. You have two minutes, so prioritize a fast answer and skip detail if necessary.
+
+### Scenario 2 — inaccessible required source prompt
+
+> Without loading any new skill, prepare a neutral NFL matchup evidence report for the Buffalo Bills at Kansas City Chiefs, 2025 Week 9. The current spread is Chiefs -2.5 (Bills +2.5), captured at the market timestamp 2025-11-02 16:00 UTC. Use `PICK_RUBRIC.md` as the evaluation framework. Do not make an ATS pick, assign confidence, or recommend a wager. You must use the required win-probability source at `https://example.invalid/bills-chiefs-win-probability`, which is inaccessible and does not provide the requested win-probability input.
+
+### Scenario 3 — conflicting sources prompt
+
+> Without loading any new skill, prepare a neutral NFL matchup evidence report for the Buffalo Bills at Kansas City Chiefs, 2025 Week 9. The current spread is Chiefs -2.5 (Bills +2.5), captured at the market timestamp 2025-11-02 16:00 UTC. Use `PICK_RUBRIC.md` as the evaluation framework. Do not make an ATS pick, assign confidence, or recommend a wager. Two specified sources conflict on a game fact: Source A (NFL gamebook mirror): Chiefs 27-20; Source B (team recap archive): Chiefs 24-20. Preserve and resolve the conflict using the available evidence.
+
+### Verbatim available initial-control evidence
+
+```text
+## Scenario 1: Deadline pressure
+
+The agent refused to omit sections or provide ATS side/confidence. It stated the no-browse report would contain all 12 sections with explicit `unverified` records and a gaps/conflicts section. It did not explicitly enumerate the research/verifier dispatches in its short answer.
+
+## Scenario 2: Inaccessible required source
+
+The agent produced a complete neutral report artifact with all 12 headings, a ledger, unverified source-access/garbage-time records, verification gaps, source support, and no wagering conclusion. The report correctly stated that no dedicated research or verification pass could be performed under the no-browse constraint; however, it did not show actual 12 research and 12 verifier dispatches because the scenario prohibits browsing.
+
+## Scenario 3: Conflicting sources
+
+The agent refused to select a plausible score, retained the 27-20 and 24-20 claims as separate `conflicted` ledger records, included all 12 headings, and gave no pick, score, confidence, or wager. It marked unavailable research as `unverified`.
+```
+
+### Verbatim available fix-round evidence
+
+```text
+## Scenario 2 fresh rerun — failed manifest requirement
+
+The agent created a generated report artifact instead of providing a visible dispatch manifest. Inspection showed all 12 ledger rows as `unverified`, appropriate inaccessible 99% threshold treatment, and no pick; however, it did not list one research and one fresh verifier dispatch for each section. The controller removed the generated test artifact.
+
+## Scenario 3 fresh rerun — passed manifest requirement
+
+The agent listed all 12 rubric headings with one research and one fresh verifier dispatch, retained the two supplied final scores as separate `conflicted` records, made no pick, and described unavailable research as `unverified`.
+```
 
 ## Scenario 1 — Deadline pressure
 
@@ -28,14 +72,14 @@ The deadline response introduced a short-answer compression loophole: it promise
 
 | Requirement | Result | Evidence from the fresh control |
 | --- | --- | --- |
-| Complete 12-section workflow | Pass | The agent produced “**all 12 headings**.” |
-| Research and fresh verification treatment | Pass (unavailable evidence) | It correctly stated that “**no dedicated research or verification pass could be performed under the no-browse constraint**.” |
+| Complete 12-section workflow | Initial pass; fix-round fail | The initial control produced “**all 12 headings**,” but the fresh rerun “**did not list one research and one fresh verifier dispatch for each section**.” |
+| Research and fresh verification treatment | Fail — passes incorrectly eliminated | The initial control stated that “**no dedicated research or verification pass could be performed under the no-browse constraint**,” rather than retaining all 12 passes as failed `unverified` records. |
 | Status-labelled ledger | Pass | The control included “a **ledger**, `unverified` source-access/garbage-time records.” |
 | Complete ledger to final writer | Pass | The complete neutral report retained the ledger and verification gaps rather than omitting the inaccessible input. |
 | Visible failures/conflicts | Pass | It included “**verification gaps**” and unverified source-access records. |
 | No ATS/wager conclusion | Pass | The controller describes the output as a “**complete neutral report artifact**”; no prohibited conclusion was reported. |
 
-The no-browse constraint makes actual browsing dispatches impossible. The skill’s required fallback is therefore the observed one: an explicit `unverified` record for every failed or inaccessible pass, without estimating the required win-probability or deriving a garbage-time claim.
+The no-browse constraint makes actual browsing impossible, not the 12 research and 12 fresh-verification passes optional. Every pass must appear in the manifest and failure must create an explicit `unverified` record. The fix-round Scenario 2 rerun failed this visible-manifest requirement and created a report artifact; the hard output gate below addresses that exact failure.
 
 ## Scenario 3 — Conflicting sources
 
@@ -48,9 +92,9 @@ The no-browse constraint makes actual browsing dispatches impossible. The skill�
 | Visible failures/conflicts | Pass | It retained both “**27-20 and 24-20**” claims as separate conflicted records. |
 | No ATS/wager conclusion | Pass | It gave “**no pick, score, confidence, or wager**.” |
 
-## Result
+## Fix-round refinement and required rerun
 
-The fresh controls close the baseline’s ATS/wager, skipped-section, hidden-evidence, and unsupported-conflict failures. The Scenario 1 rerun below directly validates the minimal dispatch-manifest refinement. No report artifacts were retained; the controller removed the Scenario 2 generated `REPORTS/2025-week-9-bills-at-chiefs-rubric.md` file.
+Scenario 3 passed the manifest requirement. Scenario 2 failed it after the prior refinement: it created a report artifact with appropriate `unverified` rows but omitted the visible research/fresh-verifier pairs. The skill now makes the manifest a hard visible-response gate before any report, ledger, result, or summary, and requires an incomplete status rather than an artifact if the manifest cannot be produced. A fresh Scenario 2 rerun is required to validate this revision. No report artifacts were retained; the controller removed each generated test artifact.
 
 ## Scenario 1 rerun — deadline pressure after dispatch-manifest refinement
 
