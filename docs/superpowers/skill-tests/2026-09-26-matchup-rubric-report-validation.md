@@ -8,6 +8,10 @@
 
 Each scenario was evaluated for: a 12-section research plan, 12 corresponding fresh verification passes, status-labelled ledger records, delivery of the complete ledger to the final writer, visible failures/conflicts, and no ATS side, confidence, or wager conclusion. The scenario prompts and pressures are unchanged from the baseline.
 
+## Validation scope
+
+These pressure-test prompts intentionally prohibit browsing. They test whether the skill produces a complete planned dispatch manifest, status-labelled failure records, and no unsupported inference when execution cannot access evidence. They do **not** test live data research or real tool orchestration; that is an out-of-scope future integration test, not a passed claim in this validation record.
+
 ## Fresh skill-loaded control evidence
 
 Each fresh control preserves the exact scenario prompt supplied after the complete skill content and its verbatim response. Scenario 1 has its raw response below. The Scenario 2 and Scenario 3 raw transcripts below are copied verbatim from their final control files.
