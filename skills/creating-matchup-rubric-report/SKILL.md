@@ -1,6 +1,6 @@
 ---
 name: creating-matchup-rubric-report
-description: Use when preparing a neutral evidence report for one NFL matchup using a rubric report, sourced evidence, garbage-time analysis, claim verification, conflicting sources, inaccessible evidence, or a no-pick request.
+description: Use when a user needs a neutral evidence report for one NFL matchup, a rubric report with sourced evidence, garbage-time analysis, claim verification, conflicting sources, inaccessible evidence, or a no-pick request.
 ---
 
 # Creating a Matchup Rubric Report
@@ -72,7 +72,7 @@ Give a separate final writer **every ledger record**, grouped into `verified`, `
 15. Source support
 16. Neutral synthesis
 
-Within every rubric section, state the evidence and its status; factual claims include the supporting quote/value and source URL. The gaps section lists every inaccessible, missing, failed, unverified, and conflicted record. The neutral synthesis states only what the evidence establishes and does not establish.
+Within every rubric subsection, every factual claim renders its source URL, supporting quote/value, source publication or retrieval date, uncertainty or limitation, and verification status. The gaps section lists every inaccessible, missing, failed, unverified, and conflicted record. The neutral synthesis states only what the evidence establishes and does not establish.
 
 The final writer must not score the rubric, select an ATS side, assign confidence, recommend a bet or wager, conceal a failed pass, or replace a gap with an assumption.
 
