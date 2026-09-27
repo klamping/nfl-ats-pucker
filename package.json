@@ -7,6 +7,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "validate:market-data": "node src/ingest-nfl-lines.js validate",
+    "ingest:market-data": "node src/ingest-nfl-lines.js ingest"
   }
 }
