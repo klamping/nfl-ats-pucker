@@ -11,7 +11,8 @@ const { deriveTeamPregame } = require('./derive-team-pregame');
 const { joinTeamPregameToMarkets } = require('./join-team-matchups');
 
 async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
-  nflverseClient = defaultNflverseClient(), oddsClient, fileSystem = defaultFileSystem } = {}) {
+  nflverseClient = defaultNflverseClient(), oddsClient, fileSystem = defaultFileSystem,
+  now = () => new Date() } = {}) {
   const targetSeason = Number(season);
   if (!Number.isInteger(targetSeason) || targetSeason < 2005 || targetSeason > 3000 ||
       typeof gameId !== 'string' || !gameId || !/^[A-Za-z0-9_-]+$/.test(gameId)) {
@@ -32,7 +33,12 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
     throw new Error('Target must be a supported REG/POST game with a valid kickoff');
   }
   const target = normalizedTarget.accepted;
-  const targetKickoff = kickoffMillis(target.kickoff);
+  const targetKickoff = Date.parse(nflverseKickoffToUtc(target.kickoff));
+  const currentTime = now();
+  if (!(currentTime instanceof Date) || !Number.isFinite(currentTime.getTime())) {
+    throw new Error('The current clock must return a valid Date');
+  }
+  if (targetKickoff <= currentTime.getTime()) throw new Error('Target kickoff must be in the future');
 
   const teams = await nflverseClient.downloadNflverseTeams();
   validateDownload(teams, 'team identity');
@@ -46,7 +52,7 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   for (const row of schedule.rows) {
     if (row === targetRow || Number(row.season) !== targetSeason) continue;
     const kickoff = rowKickoffMillis(row);
-    if (!Number.isFinite(kickoff) || kickoff >= targetKickoff || !hasFinalScore(row)) continue;
+    if (!Number.isFinite(kickoff) || kickoff >= targetKickoff || !hasFinalScore(row) || !hasFinalResult(row)) continue;
     const result = normalizeNflverseGame(row, targetMetadata);
     if (result.accepted && ['REG', 'POST'].includes(result.accepted.gameType)) finalGames.push(result.accepted);
   }
@@ -145,6 +151,10 @@ function hasFinalScore(row) {
     Number.isFinite(Number(row.away_score)) && Number.isFinite(Number(row.home_score));
 }
 
+function hasFinalResult(row) {
+  return row.result !== '' && row.result != null && Number.isFinite(Number(row.result));
+}
+
 function validKickoff(kickoff) {
   return Number.isFinite(kickoffMillis(kickoff));
 }
@@ -158,7 +168,8 @@ function kickoffMillis(kickoff) {
 }
 
 function rowKickoffMillis(row) {
-  return kickoffMillis({ date: row.gameday, time: row.gametime });
+  const kickoff = { date: row.gameday, time: row.gametime };
+  return validKickoff(kickoff) ? Date.parse(nflverseKickoffToUtc(kickoff)) : NaN;
 }
 
 function nflverseKickoffToUtc(kickoff) {

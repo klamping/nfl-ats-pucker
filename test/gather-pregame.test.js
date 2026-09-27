@@ -21,7 +21,8 @@ function identityRow(team, id) {
 function game(gameId, date, time, awayScore, homeScore) {
   return { game_id: gameId, season: String(season), week: '3', game_type: 'REG',
     gameday: date, gametime: time, away_team: 'DAL', home_team: 'PHI',
-    away_score: awayScore, home_score: homeScore, spread_line: '3.5', total_line: '45.5' };
+    away_score: awayScore, home_score: homeScore, result: awayScore === '' || homeScore === '' ? '' : String(Number(homeScore) - Number(awayScore)),
+    overtime: awayScore === '' || homeScore === '' ? '' : '0', spread_line: '3.5', total_line: '45.5' };
 }
 
 function statsFor(gameId, week = '2') {
@@ -39,11 +40,16 @@ async function fixture(overrides = {}) {
   const outputRoot = await mkdtemp(path.join(tmpdir(), 'gather-pregame-'));
   const prior = game('prior', '2026-09-20', '17:00', '20', '24');
   prior.week = '2';
-  const simultaneous = game('simultaneous', '2026-09-27', '17:00', '10', '10');
-  const later = game('later', '2026-09-27', '20:00', '10', '10');
-  const target = game('target-id', '2026-09-27', '17:00', '', '');
-  const schedule = [prior, simultaneous, later, target];
-  const stats = [...statsFor('prior', '2'), ...statsFor('simultaneous', '3'), ...statsFor('later', '3')];
+  const targetDate = overrides.targetDate || '2026-09-27';
+  const targetTime = overrides.targetTime || '17:00';
+  const simultaneous = game('simultaneous', targetDate, targetTime, '10', '10');
+  const later = game('later', targetDate, '20:00', '10', '10');
+  const inProgress = game('in-progress', targetDate, '15:00', '10', '14');
+  inProgress.result = '';
+  inProgress.overtime = '';
+  const target = game('target-id', targetDate, targetTime, '', '');
+  const schedule = [prior, simultaneous, later, inProgress, target];
+  const stats = [...statsFor('prior', '2'), ...statsFor('simultaneous', '3'), ...statsFor('later', '3'), ...statsFor('in-progress', '3')];
   const calls = { seasons: [], odds: 0 };
   const nflverseClient = {
     async downloadNflverseGames() { return { csv: 'schedule csv', rows: overrides.schedule || schedule, sourceUrl, retrievedAt }; },
@@ -53,14 +59,15 @@ async function fixture(overrides = {}) {
       return seasons.map((value) => ({ season: value, csv: 'stats csv', rows: stats, sourceUrl: 'https://example.test/stats.csv', retrievedAt }));
     },
   };
-  const oddsPayload = [{ id: 'event', home_team: 'PHI', away_team: 'DAL', commence_time: targetKickoff,
+  const oddsPayload = [{ id: 'event', home_team: 'PHI', away_team: 'DAL', commence_time: overrides.oddsCommenceTime || targetKickoff,
     bookmakers: [{ key: 'book-a', markets: [{ key: 'spreads', outcomes: [
       { name: 'PHI', point: -3 }, { name: 'DAL', point: 3 },
     ] }] }] }];
   const oddsClient = {
     async fetchNflSpreads() { calls.odds++; return { response: oddsPayload, retrievedAt, source: 'the-odds-api' }; },
   };
-  const result = { outputRoot, calls, nflverseClient, oddsClient };
+  const result = { outputRoot, calls, nflverseClient, oddsClient,
+    now: overrides.now || (() => new Date('2026-09-27T12:00:00.000Z')) };
   if (overrides.nflverseClient) result.nflverseClient = overrides.nflverseClient;
   if (overrides.oddsClient) result.oddsClient = overrides.oddsClient;
   return result;
@@ -88,12 +95,35 @@ test('resolves target by ID and builds a historical-schema snapshot using only e
   assert.deepEqual(Object.keys(result.snapshot.awayPregame).sort(), featureFields);
   assert.equal(result.snapshot.homePregame.gamesPlayed, 1);
   assert.equal(result.snapshot.awayPregame.gamesPlayed, 1);
+  assert.equal(result.snapshot.homePregame.pointsScoredPerGame, 24);
   assert.equal(context.calls.odds, 1);
   assert.deepEqual(context.calls.seasons, [season]);
   assert.equal(result.rawPaths.length, 1);
   assert.match(result.snapshotPath, /data[\/]current[\/]target-id-.*\.json$/);
   assert.deepEqual(JSON.parse(await readFile(result.snapshotPath, 'utf8')), result.snapshot);
   assert.equal((await readdir(path.join(context.outputRoot, 'data', 'raw', 'odds-api'))).length, 1);
+});
+
+test('rejects targets that have started or are no longer upcoming using the injected clock', async (t) => {
+  const context = await fixture({ now: () => new Date('2026-09-27T21:00:00.000Z') });
+  t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+
+  await assert.rejects(gatherPregame({ season, gameId: 'target-id', ...context }), /target kickoff must be in the future/i);
+  assert.equal(context.calls.odds, 0);
+  await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'current')));
+  await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'raw')));
+});
+
+test('matches Eastern kickoff to UTC correctly on both sides of DST transitions', async (t) => {
+  for (const example of [
+    { targetDate: '2026-03-08', targetTime: '13:00', oddsCommenceTime: '2026-03-08T17:00:00.000Z', now: '2026-03-07T12:00:00Z' },
+    { targetDate: '2026-11-01', targetTime: '13:00', oddsCommenceTime: '2026-11-01T18:00:00.000Z', now: '2026-10-31T12:00:00Z' },
+  ]) {
+    const context = await fixture({ ...example, now: () => new Date(example.now) });
+    t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+    const result = await gatherPregame({ season, gameId: 'target-id', ...context });
+    assert.equal(result.snapshot.currentOdds.consensusSpreadHome, -3);
+  }
 });
 
 for (const scenario of ['missing target', 'invalid target kickoff', 'odds mismatch', 'missing final stats']) {
