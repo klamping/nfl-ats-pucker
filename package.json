@@ -12,7 +12,8 @@
     "ingest:market-data": "node src/ingest-nflverse-lines.js ingest",
     "validate:team-data": "node src/ingest-nflverse-team-data.js validate",
     "ingest:team-data": "node src/ingest-nflverse-team-data.js ingest",
-    "gather:pregame": "node src/gather-pregame.js"
+    "gather:pregame": "node src/gather-pregame.js",
+    "compare:historical": "node src/compare-historical.js"
   },
   "dependencies": {
     "csv-parse": "^7.0.3"

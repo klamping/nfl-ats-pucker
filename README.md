@@ -69,3 +69,13 @@ Successful runs write:
 - Raw The Odds API response capture: `data/raw/odds-api/<retrieval-timestamp>-capture.json`
 
 These files are ignored local research artifacts and are never overwritten; repeated timestamps receive a unique suffix. The provider request URL and API key are not stored, and client-side provider responses are redacted before raw capture. A missing/blank `theoddsapi` key, provider failure, missing target, started kickoff, invalid nflverse source shape, unresolved teams, missing prior stats, no unique provider event, no valid spread quotes, or snapshot write failure causes the command to fail closed. Failed validation writes no snapshot; if the raw provider capture was staged but the snapshot cannot be written, the raw capture is removed.
+
+## Compare a gathered matchup with historical games
+
+```bash
+npm run compare:historical -- --input data/current/<game-id>-<timestamp>.json
+```
+
+The read-only command loads `data/normalized/nfl/nflverse-team-matchups-2005-2025.current.json` once and reads only the accepted matchup JSONL named by that manifest. Incomplete records are excluded. Comparison requires finite home and away values for games played, win percentage, points scored/allowed per game, net yards and EPA per play, turnover margin per game, offensive/defensive sack rates, and rest days. The default target-week window is one week before through two weeks after the input week (Week 3 therefore searches Weeks 2–5); the library API also accepts `{ startOffset, endOffset }` to override it. Candidates must have the same `gameType` and a home spread within three points of the snapshot's current consensus home spread.
+
+Candidates are ranked by a normalized distance: for each selected home/away feature and the home spread, the absolute delta is divided by that feature's largest delta among eligible candidates, then multiplied by an equal weight (1/21 per each of 21 comparisons). The reported score is the sum of those contributions; lower scores are closer. ATS margin is exactly `homeScore - awayScore - closingSpreadHome`: positive is a home cover, negative an away cover, and zero a push. The JSON result reports per-game contributions and counts plus home cover rate among decided games (pushes excluded). This is descriptive research output only; it does not produce picks or confidence recommendations, and comparison never writes or changes datasets.
