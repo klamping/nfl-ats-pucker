@@ -2,13 +2,16 @@
   "name": "nfl-ats-pucker",
   "version": "0.1.0",
   "private": true,
-  "description": "Historical NFL Pinnacle market data ingestion utilities.",
+  "description": "Historical NFL closing-line ingestion from nflverse schedules.",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
     "test": "node --test",
-    "validate:market-data": "node src/ingest-nfl-lines.js validate",
-    "ingest:market-data": "node src/ingest-nfl-lines.js ingest"
+    "validate:market-data": "node src/ingest-nflverse-lines.js validate",
+    "ingest:market-data": "node src/ingest-nflverse-lines.js ingest"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.3"
   }
 }

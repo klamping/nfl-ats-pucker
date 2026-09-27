@@ -1,56 +1,35 @@
 # NFL ATS Pucker
 
-Utilities for collecting finalized NFL market data from SportsGameOdds and normalizing Pinnacle opening and closing point spreads.
+Utilities for collecting historical NFL closing lines from the public [nflverse games schedule](https://github.com/nflverse/nfldata/blob/master/data/games.csv). The schedule's `spread_line` is a **home-team closing spread**: a positive value means the home team is favored; a negative value means the away team is favored. The source sign is preserved without inversion. nflverse documents this spread as sourced from Pro-Football-Reference.
 
 ## Requirements
 
-- Node.js 18 or newer.
-- A SportsGameOdds API key stored outside this repository in `~/Sites/.env` under the variable name `sportsgameodds`.
+- Node.js 18 or newer and `npm install`.
+- Network access to nflverse's public `games.csv`. No credentials are required.
 
-Do not commit `~/Sites/.env`, generated raw responses, normalized JSONL files, or command output that contains secrets.
-
-## Validate provider samples first
-
-Before collecting the full 2005-onward history, run the bounded sample-validation command:
+## Validate samples before bulk ingestion
 
 ```bash
 npm run validate:market-data
 ```
 
-This validates the representative seasons 2005, 2010, 2015, 2020, and 2025, prints only counts, and writes local raw and normalized files for inspection. If any sample reports rejected records, inspect the rejected JSONL and matching raw provider response before continuing.
+Validation downloads the schedule **once**, then checks exactly five sample seasons: 2005, 2010, 2015, 2020, and 2025. It reports fetched/in-range/accepted/rejected **counts only**, saves one raw CSV capture, and publishes a separate accepted/rejected JSONL pair for each sample season. Inspect accepted and rejected records alongside the raw source, especially game IDs, teams, scores, spread signs, and missing-data reasons, before a bulk run. Rejections are reported rather than silently filled; they do not automatically abort validation.
 
-## Ingest one bounded season
-
-After sample validation is clean, ingest one season at a time:
+## Ingest an inclusive season range
 
 ```bash
-npm run ingest:market-data -- --season 2025
+npm run ingest:market-data -- --start-season 2005 --end-season 2025
 ```
 
-The default bounded window for a season is July 1 of that season through March 1 of the next year. Override it only when validating a specific provider-contract sample:
-
-```bash
-npm run ingest:market-data -- --season 2025 --starts-after 2025-09-01T00:00:00.000Z --starts-before 2026-02-20T00:00:00.000Z
-```
+Both endpoints are inclusive; seasons before 2005 are not supported. A run downloads `games.csv` once, filters the requested seasons, then sorts accepted and rejected rows separately by game ID. Add `--output-root PATH` to either command to choose a different root directory.
 
 ## Output paths
 
-- Raw provider responses: `data/raw/sportsgameodds/nfl/<season>/`
-- Accepted normalized games: `data/normalized/nfl/pinnacle-lines-<season>.accepted.jsonl`
-- Rejected games: `data/normalized/nfl/pinnacle-lines-<season>.rejected.jsonl`
+- Raw, unmodified CSV captures: `data/raw/nflverse/games-<retrieval-timestamp>-capture-<number>.csv`
+- Published pointer: `data/normalized/nfl/nflverse-lines-<start>-<end>.current.json`
+- Accepted games: `data/normalized/nfl/nflverse-lines-<start>-<end>-run-<unique>/nflverse-lines-<start>-<end>.accepted.jsonl`
+- Rejected games: `data/normalized/nfl/nflverse-lines-<start>-<end>-run-<unique>/nflverse-lines-<start>-<end>.rejected.jsonl`
 
-Both raw and normalized output directories are gitignored.
-Raw filenames identify the request and page, followed by an incrementing capture number; repeating an import preserves prior raw captures rather than replacing them.
+Read the pointer JSON **once** and resolve its `accepted` and `rejected` paths relative to `data/normalized/nfl/`. These fields always refer to the same completed run; do not find runs by listing directories or independently reread the pointer for each file. The JavaScript ingestion API summaries also return `manifestPath`, `acceptedPath`, and `rejectedPath` along with counts and `rawPath`. Raw captures are never overwritten even when a timestamp repeats. Each normalized run uses deterministic accepted/rejected filenames inside its unique directory; publishing the pointer with one atomic rename switches the pair together. Failed writes or publication leave the prior pointer intact (and may leave an unreferenced run directory); older published runs are retained so readers holding an earlier pointer can finish. Legacy flat JSONL files, if present from an earlier version, are not part of the published pair. Both output directories are gitignored. Download and CSV parsing must succeed before any output is written; a download error does not replace prior normalized results.
 
-## Normalized schema
-
-Accepted regular-season and postseason records are one JSON object per line with provider event ID, provider/bookmaker IDs, season, week, season type, kickoff timestamp, away/home teams, final scores, Pinnacle opening and closing spreads with timestamps, spread orientation, spread team, spread market ID, and line movement.
-
-Rejected records include available game metadata and a machine-readable `reason` so incomplete Pinnacle market data or unsupported season types (including preseason) are reported instead of silently filled.
-
-## Inspect before full collection
-
-1. Run `npm run validate:market-data`.
-2. For each sample season, compare a few records in `data/normalized/nfl/` against the corresponding raw JSON under `data/raw/sportsgameodds/nfl/<season>/`.
-3. Confirm teams, kickoff date, final score, Pinnacle-only bookmaker selection, away-team spread orientation, and both opening and closing spread timestamps.
-4. Resolve any rejected sample records before running season-by-season ingestion from 2005 onward.
+Accepted records cover regular season (`REG`) and nflverse postseason rounds (`WC`, `DIV`, `CON`, `SB`). They include game ID, season, week, normalized `gameType` (`REG` or `POST`), original `sourceGameType`, kickoff details, teams, final scores, `closingSpreadHome`, `spreadOrientation: "home_team"`, available closing total/spread prices and schedule context, `sourceUrl`, and `retrievedAt`. Rejected records have a machine-readable `reason` and available identity and source metadata. Missing spread, score, or identity fields are rejected, not guessed. Historical opening-line and line-movement fields are **not available** here; this ingestion does not produce a model or picks.
