@@ -19,7 +19,7 @@ function loadTheOddsApiKey({ envPath = path.join(os.homedir(), 'Sites', '.env') 
     const value = match[1].replace(/\s+#.*$/, '').trim();
     const quoted = /^(?:"([^"]*)"|'([^']*)')(?:\s*#.*)?$/.exec(value);
     const key = quoted ? quoted[1] ?? quoted[2] : value;
-    if (key) return key;
+    if (key.trim()) return key;
     break;
   }
 
@@ -55,7 +55,7 @@ function createOddsApiClient({ apiKey, fetchImpl = globalThis.fetch } = {}) {
       try {
         const payload = await result.json();
         // A provider or proxy must not be able to echo the query credential into stored raw data.
-        response = JSON.parse(JSON.stringify(payload).replaceAll(apiKey, '[REDACTED]'));
+        response = redactCredential(payload, apiKey);
       } catch {
         throw new Error('The Odds API response could not be parsed');
       }
@@ -63,6 +63,17 @@ function createOddsApiClient({ apiKey, fetchImpl = globalThis.fetch } = {}) {
       return { response, retrievedAt: new Date().toISOString(), source: PROVIDER };
     },
   };
+}
+
+function redactCredential(value, apiKey) {
+  if (typeof value === 'string') return value.replaceAll(apiKey, '[REDACTED]');
+  if (Array.isArray(value)) return value.map((item) => redactCredential(item, apiKey));
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [
+      key.replaceAll(apiKey, '[REDACTED]'), redactCredential(item, apiKey),
+    ]));
+  }
+  return value;
 }
 
 function findConsensusHomeSpread({ response, target } = {}) {
@@ -86,6 +97,8 @@ function findConsensusHomeSpread({ response, target } = {}) {
     if (typeof book?.key !== 'string' || !book.key || seenBooks.has(book.key)) continue;
     for (const market of Array.isArray(book.markets) ? book.markets : []) {
       if (market?.key !== 'spreads' || !Array.isArray(market.outcomes)) continue;
+      if (market.outcomes.length !== 2
+        || market.outcomes.filter((outcome) => outcome?.name === target.awayTeam).length !== 1) continue;
       const home = market.outcomes.filter((outcome) => outcome?.name === target.homeTeam);
       if (home.length !== 1 || typeof home[0].point !== 'number' || !Number.isFinite(home[0].point)) continue;
       homeSpreads.push(home[0].point);

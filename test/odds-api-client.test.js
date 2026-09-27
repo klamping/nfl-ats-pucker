@@ -28,6 +28,19 @@ test('loads only theoddsapi from a .env file, ignoring unrelated values and comm
   }
 });
 
+test('rejects quoted whitespace-only theoddsapi values as blank', () => {
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'odds-client-test-'));
+  const envPath = path.join(dir, '.env');
+  try {
+    for (const blank of ['"   "', "' \t '"]) {
+      writeFileSync(envPath, `theoddsapi=${blank}\n`);
+      assert.throws(() => loadTheOddsApiKey({ envPath }), /theoddsapi.*blank/i);
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('requests only current NFL US spreads and returns safe metadata', async () => {
   let requests = 0;
   const client = createOddsApiClient({ apiKey: secret, fetchImpl: async (url, options) => {
@@ -83,6 +96,22 @@ test('does not return a credential echoed in the provider response', async () =>
   assert.equal(result.response[0].id, 'echo-[REDACTED]');
 });
 
+test('redacts quoted and escaped credentials from response values and object keys before serialization', async () => {
+  const key = 'test-"quoted\\escaped-secret';
+  const client = createOddsApiClient({ apiKey: key, fetchImpl: async (url) => {
+    assert.equal(new URL(url).searchParams.get('apiKey'), key);
+    return {
+      ok: true,
+      json: async () => [{ id: `echo-${key}`, nested: { [`key-${key}`]: key } }],
+    };
+  } });
+  const result = await client.fetchNflSpreads();
+  assert.equal(result.response[0].id, 'echo-[REDACTED]');
+  assert.deepEqual(result.response[0].nested, { 'key-[REDACTED]': '[REDACTED]' });
+  assert.equal(JSON.stringify(result).includes(key), false);
+  assert.equal(JSON.stringify(result).includes(JSON.stringify(key).slice(1, -1)), false);
+});
+
 test('takes the median of finite home spreads from distinct bookmakers', () => {
   const currentOdds = findConsensusHomeSpread({ response: fixture, target });
   assert.match(currentOdds.retrievedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
@@ -125,6 +154,22 @@ test('rejects events without finite home quotes and excludes malformed or wrong-
   assert.equal(odds.contributingBooks, 1);
   assert.deepEqual(odds.homeSpreads, [-4.5]);
   assert.equal(odds.consensusSpreadHome, -4.5);
+});
+
+test('rejects spread markets whose two outcomes are not exactly the target home and away teams', () => {
+  const invalid = [
+    { key: 'wrong-opponent', markets: [{ key: 'spreads', outcomes: [
+      { name: target.homeTeam, point: -7 }, { name: 'New York Giants', point: 7 },
+    ] }] },
+    { key: 'extra-outcome', markets: [{ key: 'spreads', outcomes: [
+      { name: target.homeTeam, point: -8 }, { name: target.awayTeam, point: 8 },
+      { name: 'New York Giants', point: 8 },
+    ] }] },
+  ];
+  assert.throws(() => findConsensusHomeSpread({ response: eventWith(invalid), target }), /valid home spread quotes/i);
+  const odds = findConsensusHomeSpread({ response: eventWith([...invalid, fixture[0].bookmakers[0]]), target });
+  assert.equal(odds.contributingBooks, 1);
+  assert.deepEqual(odds.homeSpreads, [-4.5]);
 });
 
 test('rejects malformed bookmaker collections as missing valid quotes', () => {
