@@ -94,7 +94,7 @@ The no-browse constraint makes actual browsing impossible, not the 12 research a
 
 ## Fix-round refinement and required rerun
 
-Scenario 3 passed the manifest requirement. Scenario 2 failed it after the prior refinement: it created a report artifact with appropriate `unverified` rows but omitted the visible research/fresh-verifier pairs. The skill now makes the manifest a hard visible-response gate before any report, ledger, result, or summary, and requires an incomplete status rather than an artifact if the manifest cannot be produced. A fresh Scenario 2 rerun is required to validate this revision. No report artifacts were retained; the controller removed each generated test artifact.
+Scenario 3 passed the manifest requirement. Scenario 2 failed it after the prior refinement: it created a report artifact with appropriate `unverified` rows but omitted the visible research/fresh-verifier pairs. The skill now makes the manifest a hard visible-response gate before any report, ledger, result, or summary, and requires an incomplete status rather than an artifact if the manifest cannot be produced. The fresh Scenario 2 rerun below validates this revision. No report artifacts were retained; the controller removed each generated test artifact.
 
 ## Scenario 1 rerun — deadline pressure after dispatch-manifest refinement
 
@@ -124,4 +124,28 @@ I can prepare only a neutral, sourced evidence report—not an ATS recommendatio
 Each pass produces claim-ledger rows with required source, date, uncertainty, verification status, verification evidence, failure reason; verifiers independently label verified, conflicted, or unverified.
 
 No-browse outcome: all 12 records become explicit `unverified — research prohibited by request`; no injury/weather/market/prior-game/ATS inference is made.
+```
+
+## Scenario 2 rerun — inaccessible source after hard-gate refinement
+
+**Result: Pass.** The visible response begins with all 12 research/fresh-verifier pairs and, because the required passes cannot run, stops as incomplete without creating a report, ledger, inferred facts, or ATS recommendation.
+
+### Exact fresh rerun output
+
+```text
+## Dispatch manifest
+1. Market and Spread Context — research dispatch; fresh verifier dispatch
+2. Team Strength — research dispatch; fresh verifier dispatch
+3. Current Player and Roster Status — research dispatch; fresh verifier dispatch
+4. Player Development and Team Cohesion — research dispatch; fresh verifier dispatch
+5. Matchup and Scheme — research dispatch; fresh verifier dispatch
+6. Schedule and Situational Factors — research dispatch; fresh verifier dispatch
+7. Game Environment — research dispatch; fresh verifier dispatch
+8. Previous-Game Interpretation — research dispatch; fresh verifier dispatch
+9. Public Perception and Narrative — research dispatch; fresh verifier dispatch
+10. Statistical Reliability — research dispatch; fresh verifier dispatch
+11. Model and Evidence Quality — research dispatch; fresh verifier dispatch
+12. Decision Summary — research dispatch; fresh verifier dispatch
+
+Workflow status: incomplete. Required 24 research/verification passes cannot be performed because browsing is prohibited and the official win-probability source is inaccessible/lacks the 99% threshold data. No report, ledger, inferred facts, or ATS recommendation is produced. Any eventual report must retain every unresearched input as explicitly `unverified`; no reasonable-gap estimates.
 ```
