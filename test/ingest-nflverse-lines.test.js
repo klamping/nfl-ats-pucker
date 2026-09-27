@@ -6,6 +6,7 @@ const path = require('node:path');
 const test = require('node:test');
 
 const { runNflverseIngestion, runCli } = require('../src/ingest-nflverse-lines');
+const { downloadNflverseGames } = require('../src/nflverse-client');
 
 const sourceUrl = 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
 const retrievedAt = '2026-09-26T12:34:56.000Z';
@@ -21,12 +22,12 @@ function game(gameId, season, changes = {}) {
     home_team: 'PHI',
     away_score: '24',
     home_score: '27',
-    spread_line: '-2.5',
+    spread_line: '2.5',
     ...changes,
   };
 }
 
-function fixtureClient(rows, csv = 'game_id,season,spread_line\nfixture,2025,-2.5\n') {
+function fixtureClient(rows, csv = 'game_id,season,spread_line\nfixture,2025,2.5\n') {
   return { async downloadNflverseGames() { return { rows, csv, retrievedAt, sourceUrl }; } };
 }
 
@@ -41,10 +42,10 @@ async function jsonLines(file) {
 
 test('ingests inclusive seasons once and stores the original CSV plus sorted, separate JSONL', async () => {
   const outputRoot = await tempRoot();
-  const csv = 'game_id,season,spread_line\noriginal,2025,-2.5\n';
+  const csv = 'game_id,season,spread_line\noriginal,2025,2.5\n';
   const rows = [
     game('out_2023', 2023),
-    game('z_2025', 2025, { game_type: 'POST' }),
+    game('z_2025', 2025, { game_type: 'WC' }),
     game('z_rejected', 2024, { spread_line: '' }),
     game('a_rejected', 2025, { home_team: '' }),
     game('a_2024', 2024),
@@ -71,9 +72,10 @@ test('ingests inclusive seasons once and stores the original CSV plus sorted, se
   assert.deepEqual(accepted.map((record) => record.gameId), ['a_2024', 'z_2025']);
   assert.deepEqual(rejected.map((record) => record.gameId), ['a_rejected', 'z_rejected']);
   assert.deepEqual(rejected.map((record) => record.reason), ['missing_team', 'missing_spread']);
-  assert.equal(accepted[0].closingSpreadHome, -2.5);
+  assert.equal(accepted[0].closingSpreadHome, 2.5);
   assert.equal(accepted[0].spreadOrientation, 'home_team');
   assert.equal(accepted[1].gameType, 'POST');
+  assert.equal(accepted[1].sourceGameType, 'WC');
   for (const record of [...accepted, ...rejected]) {
     assert.equal(record.sourceUrl, sourceUrl);
     assert.equal(record.retrievedAt, retrievedAt);
@@ -110,6 +112,32 @@ test('failed download or malformed response leaves existing normalized files unt
 
   const emptyRoot = await tempRoot();
   await assert.rejects(runNflverseIngestion({ ...args, outputRoot: emptyRoot, client: { async downloadNflverseGames() { throw new Error('offline'); } } }), /offline/);
+  assert.equal(existsSync(path.join(emptyRoot, 'data')), false);
+});
+
+test('a parseable CSV without required schedule columns cannot replace normalized data or create a raw capture', async () => {
+  const outputRoot = await tempRoot();
+  const args = { startSeason: 2025, endSeason: 2025, outputRoot };
+  const first = await runNflverseIngestion({ ...args, client: fixtureClient([game('safe', 2025)]) });
+  const normalizedDirectory = path.join(outputRoot, 'data', 'normalized', 'nfl');
+  const acceptedPath = path.join(normalizedDirectory, 'nflverse-lines-2025-2025.accepted.jsonl');
+  const rejectedPath = path.join(normalizedDirectory, 'nflverse-lines-2025-2025.rejected.jsonl');
+  const acceptedBefore = await readFile(acceptedPath, 'utf8');
+  const rejectedBefore = await readFile(rejectedPath, 'utf8');
+  const rawBefore = await readdir(path.dirname(first.rawPath));
+  const client = { downloadNflverseGames: () => downloadNflverseGames(async () => ({
+    ok: true,
+    status: 200,
+    text: async () => 'game_id,season,week,game_type\n2025_01_DAL_PHI,2025,1,REG\n',
+  })) };
+
+  await assert.rejects(runNflverseIngestion({ ...args, client }), /nflverse.*(csv|column)/i);
+  assert.equal(await readFile(acceptedPath, 'utf8'), acceptedBefore);
+  assert.equal(await readFile(rejectedPath, 'utf8'), rejectedBefore);
+  assert.deepEqual(await readdir(path.dirname(first.rawPath)), rawBefore);
+
+  const emptyRoot = await tempRoot();
+  await assert.rejects(runNflverseIngestion({ ...args, outputRoot: emptyRoot, client }), /nflverse.*(csv|column)/i);
   assert.equal(existsSync(path.join(emptyRoot, 'data')), false);
 });
 

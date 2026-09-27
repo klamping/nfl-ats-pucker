@@ -1,5 +1,5 @@
 const SOURCE_ID = 'nflverse';
-const SUPPORTED_GAME_TYPES = new Set(['REG', 'POST']);
+const POSTSEASON_GAME_TYPES = new Set(['WC', 'DIV', 'CON', 'SB']);
 
 function normalizeNflverseGame(row, metadata = {}) {
   if (!row || typeof row !== 'object' || Array.isArray(row)) {
@@ -12,7 +12,7 @@ function normalizeNflverseGame(row, metadata = {}) {
     return { rejected: buildRejectedGame(extracted, metadata, missingReason) };
   }
 
-  if (!SUPPORTED_GAME_TYPES.has(extracted.gameType)) {
+  if (extracted.gameType !== 'REG' && !POSTSEASON_GAME_TYPES.has(extracted.gameType)) {
     return { rejected: buildRejectedGame(extracted, metadata, 'unsupported_game_type') };
   }
 
@@ -20,7 +20,8 @@ function normalizeNflverseGame(row, metadata = {}) {
     gameId: extracted.gameId,
     season: extracted.season,
     week: extracted.week,
-    gameType: extracted.gameType,
+    gameType: extracted.gameType === 'REG' ? 'REG' : 'POST',
+    sourceGameType: extracted.gameType,
     kickoff: extracted.kickoff,
     awayTeam: extracted.awayTeam,
     homeTeam: extracted.homeTeam,

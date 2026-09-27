@@ -1,6 +1,7 @@
 const { parse } = require('csv-parse/sync');
 
 const NFLVERSE_GAMES_URL = 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
+const REQUIRED_COLUMNS = ['game_id', 'season', 'week', 'game_type', 'gameday', 'away_team', 'home_team', 'away_score', 'home_score', 'spread_line'];
 
 async function downloadNflverseGames(fetchImpl = globalThis.fetch) {
   if (typeof fetchImpl !== 'function') {
@@ -26,6 +27,9 @@ async function downloadNflverseGames(fetchImpl = globalThis.fetch) {
     });
   } catch (error) {
     throw new Error('nflverse games CSV could not be parsed');
+  }
+  if (rows.length === 0 || REQUIRED_COLUMNS.some((column) => !Object.hasOwn(rows[0], column))) {
+    throw new Error('nflverse games CSV is missing required schedule columns or rows');
   }
 
   return {

@@ -21,7 +21,7 @@ function fixtureRow(overrides = {}) {
     home_team: 'PHI',
     away_score: '24',
     home_score: '27',
-    spread_line: '-2.5',
+    spread_line: '2.5',
     total_line: '47.5',
     away_spread_odds: '-105',
     home_spread_odds: '-115',
@@ -46,6 +46,7 @@ test('normalizes nflverse spread_line as the home-team closing spread without si
     season: 2025,
     week: 1,
     gameType: 'REG',
+    sourceGameType: 'REG',
     kickoff: {
       date: '2025-09-04',
       time: '20:20',
@@ -55,7 +56,7 @@ test('normalizes nflverse spread_line as the home-team closing spread without si
     homeTeam: 'PHI',
     awayScore: 24,
     homeScore: 27,
-    closingSpreadHome: -2.5,
+    closingSpreadHome: 2.5,
     spreadOrientation: 'home_team',
     closingTotal: 47.5,
     awaySpreadOdds: -105,
@@ -78,17 +79,26 @@ test('normalizes nflverse spread_line as the home-team closing spread without si
   assert.equal(Object.hasOwn(result.accepted, 'lineMovement'), false);
 });
 
-test('accepts regular-season and postseason rows', () => {
-  for (const gameType of ['REG', 'POST']) {
+test('accepts each nflverse postseason round as POST while preserving the source round', () => {
+  for (const gameType of ['WC', 'DIV', 'CON', 'SB']) {
     const result = normalizeNflverseGame(fixtureRow({ game_type: gameType }), metadata);
 
     assert.equal(result.rejected, undefined);
-    assert.equal(result.accepted.gameType, gameType);
+    assert.equal(result.accepted.gameType, 'POST');
+    assert.equal(result.accepted.sourceGameType, gameType);
+  }
+});
+
+test('preserves both positive and negative nflverse spread signs for the home-team orientation', () => {
+  for (const [spreadLine, expected] of [['2.5', 2.5], ['-3.5', -3.5]]) {
+    const result = normalizeNflverseGame(fixtureRow({ spread_line: spreadLine }), metadata);
+    assert.equal(result.accepted.closingSpreadHome, expected);
+    assert.equal(result.accepted.spreadOrientation, 'home_team');
   }
 });
 
 test('rejects preseason and other unsupported game types', () => {
-  for (const gameType of ['PRE', 'PRO', 'OFF']) {
+  for (const gameType of ['PRE', 'PRO', 'OFF', 'POST']) {
     const result = normalizeNflverseGame(fixtureRow({ game_type: gameType }), metadata);
 
     assert.equal(result.accepted, undefined);

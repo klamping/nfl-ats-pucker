@@ -49,7 +49,7 @@ test('downloads nflverse games CSV without authentication and returns parsed row
         home_team: 'PHI',
         away_score: '24',
         home_score: '27',
-        spread_line: '-2.5',
+        spread_line: '2.5',
         total_line: '47.5',
         roof: 'outdoors',
         surface: 'grass',
@@ -67,7 +67,7 @@ test('downloads nflverse games CSV without authentication and returns parsed row
         home_team: 'LAC',
         away_score: '21',
         home_score: '20',
-        spread_line: '1.5',
+        spread_line: '-1.5',
         total_line: '45.0',
         roof: 'dome',
         surface: 'fieldturf',
@@ -108,5 +108,16 @@ test('rejects malformed nflverse CSV', async () => {
       text: async () => 'game_id,season\n"unterminated,2025\n',
     })),
     /nflverse.*csv/i,
+  );
+});
+
+test('rejects syntactically valid CSV without required nflverse schedule columns', async () => {
+  await assert.rejects(
+    downloadNflverseGames(async () => ({
+      ok: true,
+      status: 200,
+      text: async () => 'game_id,season,week,game_type\n2025_01_DAL_PHI,2025,1,REG\n',
+    })),
+    /nflverse.*(csv|column)/i,
   );
 });
