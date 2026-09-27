@@ -40,9 +40,10 @@ Create the ledger before research. Use one record for every claim, including mis
    10. Statistical Reliability
    11. Model and Evidence Quality
    12. Decision Summary
-2. Dispatch one dedicated research subagent for **each** section. Its prompt includes the matchup inputs, the relevant rubric section, and the ledger fields. It returns claim records with source URLs, dates, supporting values/quotes, and limitations. For section 8, research the game state and timing behind any garbage-time claim rather than infer it from the final score.
-3. When each research response completes, dispatch a **fresh** verifier for that same section. Give it the research records and cited URLs; it independently inspects the source evidence. Its response contains **only** ledger records, each labelled `verified`, `conflicted`, or `unverified`, with verification evidence.
-4. If research, verification, or a source fails, append an `unverified` record for that section with the failure reason. Do not skip the section.
+2. Publish a dispatch manifest before research: list all 12 numbered sections, each with one dedicated research dispatch and one corresponding fresh verifier dispatch. Do this even in a short, deadline-pressured workflow response; do not replace the manifest with a general statement that all sections will be covered.
+3. Dispatch one dedicated research subagent for **each** section. Its prompt includes the matchup inputs, the relevant rubric section, and the ledger fields. It returns claim records with source URLs, dates, supporting values/quotes, and limitations. For section 8, research the game state and timing behind any garbage-time claim rather than infer it from the final score.
+4. When each research response completes, dispatch a **fresh** verifier for that same section. Give it the research records and cited URLs; it independently inspects the source evidence. Its response contains **only** ledger records, each labelled `verified`, `conflicted`, or `unverified`, with verification evidence.
+5. If research, verification, or a source fails, append an `unverified` record for that section with the failure reason. Do not skip the section.
 
 ## Evidence rules
 
