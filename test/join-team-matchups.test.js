@@ -5,6 +5,7 @@ const { joinTeamPregameToMarkets } = require('../src/join-team-matchups');
 
 const market = {
   gameId: '2025_02_ARI_NYG', season: 2025, week: 2,
+  gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
   awayTeam: 'ARI', homeTeam: 'NYG', closingSpreadHome: -3,
   homeScore: 28, awayScore: 17,
 };
@@ -16,11 +17,13 @@ const emptyFeatures = {
 };
 const away = {
   gameId: market.gameId, season: 2025, week: 2, team: 'ARI',
+  gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
   franchiseId: 'nflverse-3800', features: { ...emptyFeatures, gamesPlayed: 1, wins: 1 },
   pointsFor: 42, rawStats: { passing_yards: '300' },
 };
 const home = {
   gameId: market.gameId, season: 2025, week: 2, team: 'NYG',
+  gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
   franchiseId: 'nflverse-3410', features: { ...emptyFeatures, gamesPlayed: 1, wins: 0 },
   pointsFor: 3, rawStats: { passing_yards: '100' },
 };
@@ -32,6 +35,7 @@ test('joins exactly two pregame feature objects by game and side without postgam
   assert.deepEqual(rejected, []);
   assert.deepEqual(accepted, [{
     gameId: market.gameId, season: 2025, week: 2,
+    gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
     awayTeam: 'ARI', homeTeam: 'NYG', closingSpreadHome: -3,
     awayPregame: { ...emptyFeatures, gamesPlayed: 1, wins: 1 },
     homePregame: { ...emptyFeatures, gamesPlayed: 1, wins: 0 },
@@ -73,4 +77,67 @@ test('strips injected postgame fields even when nested inside the feature object
   assert.deepEqual(rejected, []);
   assert.equal(accepted[0].homePregame.pointsFor, undefined);
   assert.equal(accepted[0].homePregame.rawStats, undefined);
+});
+
+test('copies only safe nested kickoff and weather values from the market game', () => {
+  const injected = {
+    ...market,
+    kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday', homeScore: 28 },
+    weather: { temperature: 72, wind: 8, finalScore: '28-17' },
+  };
+  const { accepted, rejected } = joinTeamPregameToMarkets({
+    marketGames: [injected], pregameRecords: [away, home],
+  });
+  assert.deepEqual(rejected, []);
+  assert.deepEqual(accepted[0].kickoff, {
+    date: '2025-09-14', time: '13:00', weekday: 'Sunday',
+  });
+  assert.deepEqual(accepted[0].weather, { temperature: 72, wind: 8 });
+});
+
+test('rejects missing or malformed market kickoff date/time instead of publishing a matchup', () => {
+  for (const kickoff of [
+    undefined,
+    { time: '13:00' },
+    { date: '2025-09-14' },
+    { date: '2025-99-99', time: '13:00' },
+    { date: '2025-09-14', time: '25:00' },
+  ]) {
+    const { accepted, rejected } = joinTeamPregameToMarkets({
+      marketGames: [{ ...market, kickoff }], pregameRecords: [away, home],
+    });
+    assert.deepEqual(accepted, []);
+    assert.deepEqual(rejected.map(({ reason }) => reason), ['invalid_market_kickoff']);
+  }
+});
+
+test('rejects missing or mismatched game types and kickoff identity on either pregame side', () => {
+  for (const [row, reason] of [
+    [{ ...home, gameType: 'POST' }, 'game_type_mismatch'],
+    [{ ...home, gameType: undefined }, 'game_type_mismatch'],
+    [{ ...home, kickoff: { date: '2025-09-15', time: '13:00' } }, 'kickoff_mismatch'],
+    [{ ...home, kickoff: { date: '2025-09-14', time: '16:00' } }, 'kickoff_mismatch'],
+    [{ ...home, kickoff: { date: '2025-09-14' } }, 'kickoff_mismatch'],
+    [{ ...home, kickoff: null }, 'kickoff_mismatch'],
+  ]) {
+    const { accepted, rejected } = joinTeamPregameToMarkets({
+      marketGames: [market], pregameRecords: [away, row],
+    });
+    assert.deepEqual(accepted, []);
+    assert.deepEqual(rejected.map(({ reason: actual }) => actual), [reason]);
+  }
+  const { accepted, rejected } = joinTeamPregameToMarkets({
+    marketGames: [{ ...market, gameType: undefined }], pregameRecords: [away, home],
+  });
+  assert.deepEqual(accepted, []);
+  assert.deepEqual(rejected.map(({ reason }) => reason), ['missing_core_field']);
+});
+
+test('does not require weekday to identify the same kickoff', () => {
+  const { accepted, rejected } = joinTeamPregameToMarkets({
+    marketGames: [{ ...market, kickoff: { date: '2025-09-14', time: '13:00' } }],
+    pregameRecords: [away, { ...home, kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Monday' } }],
+  });
+  assert.deepEqual(rejected, []);
+  assert.deepEqual(accepted[0].kickoff, { date: '2025-09-14', time: '13:00' });
 });
