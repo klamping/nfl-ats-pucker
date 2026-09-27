@@ -1,0 +1,36 @@
+[
+  {
+    "id": "nfl-dal-phi-2026",
+    "sport_key": "americanfootball_nfl",
+    "sport_title": "NFL",
+    "commence_time": "2026-09-27T20:25:00Z",
+    "home_team": "Philadelphia Eagles",
+    "away_team": "Dallas Cowboys",
+    "bookmakers": [
+      {
+        "key": "book-a",
+        "title": "Book A",
+        "last_update": "2026-09-27T10:00:00Z",
+        "markets": [{ "key": "spreads", "last_update": "2026-09-27T10:00:00Z", "outcomes": [{ "name": "Philadelphia Eagles", "price": -110, "point": -4.5 }, { "name": "Dallas Cowboys", "price": -110, "point": 4.5 }] }]
+      },
+      {
+        "key": "book-b",
+        "title": "Book B",
+        "last_update": "2026-09-27T10:00:00Z",
+        "markets": [{ "key": "spreads", "last_update": "2026-09-27T10:00:00Z", "outcomes": [{ "name": "Philadelphia Eagles", "price": -110, "point": -2.5 }, { "name": "Dallas Cowboys", "price": -110, "point": 2.5 }] }]
+      },
+      {
+        "key": "book-c",
+        "title": "Book C",
+        "last_update": "2026-09-27T10:00:00Z",
+        "markets": [{ "key": "spreads", "last_update": "2026-09-27T10:00:00Z", "outcomes": [{ "name": "Philadelphia Eagles", "price": -110, "point": -3.5 }, { "name": "Dallas Cowboys", "price": -110, "point": 3.5 }] }]
+      },
+      {
+        "key": "book-d",
+        "title": "Book D",
+        "last_update": "2026-09-27T10:00:00Z",
+        "markets": [{ "key": "spreads", "last_update": "2026-09-27T10:00:00Z", "outcomes": [{ "name": "Philadelphia Eagles", "price": -110, "point": -1.5 }, { "name": "Dallas Cowboys", "price": -110, "point": 1.5 }] }]
+      }
+    ]
+  }
+]
