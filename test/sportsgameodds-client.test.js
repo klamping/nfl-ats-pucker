@@ -23,8 +23,19 @@ test('requests finalized NFL events with Pinnacle and no API key in the URL', as
   assert.match(capturedUrl, /leagueID=NFL/);
   assert.match(capturedUrl, /finalized=true/);
   assert.match(capturedUrl, /bookmakerID=pinnacle/);
+  assert.equal(new URL(capturedUrl).searchParams.get('includeOpenCloseOdds'), 'true');
   assert.equal(capturedHeaders['x-api-key'], 'test-key');
   assert.doesNotMatch(capturedUrl, /test-key/);
+});
+
+test('fails closed on a Pinnacle subscription-tier HTTP 400', async () => {
+  const client = createSportsGameOddsClient('test-key', async () => ({
+    ok: false,
+    status: 400,
+    json: async () => ({ error: 'The bookmakerID pinnacle is unavailable at your current subscription tier' }),
+  }));
+
+  await assert.rejects(client.fetchFinalizedNflEvents(filters), /SportsGameOdds.*400/);
 });
 
 test('rejects non-success responses before returning data', async () => {

@@ -41,7 +41,7 @@ async function runIngestion({ season, startsAfter, startsBefore, outputRoot = pr
 
   await mkdir(rawDirectory, { recursive: true });
   for (const { response, rawPath } of rawResponses) {
-    await writeFile(rawPath, `${JSON.stringify(response, null, 2)}\n`);
+    await writeRawCapture(rawPath, response);
   }
 
   const accepted = [];
@@ -106,6 +106,22 @@ function rawResponseFilename({ season, page, filters }) {
     .digest('hex')
     .slice(0, 12);
   return `season-${season}-page-${String(page).padStart(3, '0')}-${requestHash}.json`;
+}
+
+async function writeRawCapture(requestPath, response) {
+  const filenameStem = requestPath.slice(0, -'.json'.length);
+  const body = `${JSON.stringify(response, null, 2)}\n`;
+  for (let capture = 1; ; capture += 1) {
+    const capturePath = `${filenameStem}-capture-${String(capture).padStart(3, '0')}.json`;
+    try {
+      await writeFile(capturePath, body, { flag: 'wx' });
+      return;
+    } catch (error) {
+      if (error.code !== 'EEXIST') {
+        throw error;
+      }
+    }
+  }
 }
 
 function seasonDateRange(season, startsAfter, startsBefore) {

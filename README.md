@@ -40,12 +40,13 @@ npm run ingest:market-data -- --season 2025 --starts-after 2025-09-01T00:00:00.0
 - Rejected games: `data/normalized/nfl/pinnacle-lines-<season>.rejected.jsonl`
 
 Both raw and normalized output directories are gitignored.
+Raw filenames identify the request and page, followed by an incrementing capture number; repeating an import preserves prior raw captures rather than replacing them.
 
 ## Normalized schema
 
-Accepted records are one JSON object per line with provider event ID, provider/bookmaker IDs, season, week, season type, kickoff timestamp, away/home teams, final scores, Pinnacle opening and closing spreads with timestamps, spread orientation, spread team, spread market ID, and line movement.
+Accepted regular-season and postseason records are one JSON object per line with provider event ID, provider/bookmaker IDs, season, week, season type, kickoff timestamp, away/home teams, final scores, Pinnacle opening and closing spreads with timestamps, spread orientation, spread team, spread market ID, and line movement.
 
-Rejected records include available game metadata and a machine-readable `reason` so incomplete Pinnacle market data is reported instead of silently filled.
+Rejected records include available game metadata and a machine-readable `reason` so incomplete Pinnacle market data or unsupported season types (including preseason) are reported instead of silently filled.
 
 ## Inspect before full collection
 

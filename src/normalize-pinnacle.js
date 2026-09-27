@@ -21,6 +21,10 @@ function normalizePinnacleEvent(event) {
     return { rejected: buildRejectedGame(metadata, 'missing_required_game_fields') };
   }
 
+  if (!['regular', 'postseason'].includes(metadata.seasonType)) {
+    return { rejected: buildRejectedGame(metadata, 'unsupported_season_type') };
+  }
+
   const spread = findPinnacleGameSpread(event);
   if (!spread) {
     return { rejected: buildRejectedGame(metadata, 'missing_pinnacle_spread') };

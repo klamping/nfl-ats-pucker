@@ -3,6 +3,7 @@ const REQUIRED_QUERY = {
   leagueID: 'NFL',
   finalized: 'true',
   bookmakerID: 'pinnacle',
+  includeOpenCloseOdds: 'true',
 };
 
 function appendOptionalQuery(searchParams, name, value) {

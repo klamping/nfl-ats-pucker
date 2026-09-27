@@ -63,3 +63,21 @@ test('converts a Pinnacle home spread to the away-team perspective', () => {
   assert.equal(result.accepted.closingSpread, 2.5);
   assert.equal(result.accepted.lineMovement, -1);
 });
+
+test('accepts postseason games with complete Pinnacle spreads', () => {
+  const postseason = { ...fixtureEvent, seasonType: 'postseason' };
+  const result = normalizePinnacleEvent(postseason);
+
+  assert.equal(result.accepted.seasonType, 'postseason');
+  assert.equal(result.rejected, undefined);
+});
+
+test('rejects preseason and other season types even when Pinnacle spreads are complete', () => {
+  for (const seasonType of ['preseason', 'offseason', 'exhibition']) {
+    const result = normalizePinnacleEvent({ ...fixtureEvent, seasonType });
+
+    assert.equal(result.accepted, undefined);
+    assert.equal(result.rejected.providerEventID, fixtureEvent.eventID);
+    assert.equal(result.rejected.reason, 'unsupported_season_type');
+  }
+});

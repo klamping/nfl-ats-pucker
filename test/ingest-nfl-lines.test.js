@@ -71,6 +71,35 @@ test('writes separate raw files for paginated requests without mixing normalized
   assert.equal((await readFile(acceptedPath, 'utf8')).trim().split('\n').length, 1);
 });
 
+test('repeated identical requests preserve each raw capture without overwriting earlier responses', async () => {
+  const tempDir = await makeTempDir();
+  const rawDirectory = path.join(tempDir, 'data', 'raw', 'sportsgameodds', 'nfl', '2025');
+  let call = 0;
+  const client = {
+    async fetchFinalizedNflEvents() {
+      call += 1;
+      return { events: [fixtureEvent], capture: `response-${call}` };
+    },
+  };
+
+  await runIngestion({ season: 2025, outputRoot: tempDir, client });
+  const [firstName] = await readdir(rawDirectory);
+  const firstContents = await readFile(path.join(rawDirectory, firstName), 'utf8');
+
+  await runIngestion({ season: 2025, outputRoot: tempDir, client });
+  await runIngestion({ season: 2025, outputRoot: tempDir, client });
+  const filenames = (await readdir(rawDirectory)).sort();
+  const captures = await Promise.all(filenames.map(async (name) => JSON.parse(await readFile(path.join(rawDirectory, name), 'utf8')).capture));
+
+  assert.equal(filenames.length, 3);
+  assert.equal(filenames[0], firstName);
+  assert.match(filenames[0], /^season-2025-page-001-[a-f0-9]{12}-capture-001\.json$/);
+  assert.equal(filenames[1], filenames[0].replace('-capture-001.json', '-capture-002.json'));
+  assert.equal(filenames[2], filenames[0].replace('-capture-001.json', '-capture-003.json'));
+  assert.deepEqual(captures, ['response-1', 'response-2', 'response-3']);
+  assert.equal(await readFile(path.join(rawDirectory, firstName), 'utf8'), firstContents);
+});
+
 test('does not create normalized output when the provider client rejects', async () => {
   const tempDir = await makeTempDir();
   const normalizedPath = path.join(tempDir, 'data', 'normalized', 'nfl', 'pinnacle-lines-2025.accepted.jsonl');
