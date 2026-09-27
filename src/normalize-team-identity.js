@@ -1,8 +1,11 @@
 const { aliasesForRange, findFranchiseAlias } = require('./franchise-aliases');
 
-const REQUIRED_IDENTITY_FIELDS = ['season', 'team', 'nfl_team_id', 'full', 'location', 'nickname'];
+const REQUIRED_IDENTITY_FIELDS = [
+  'season', 'team', 'nfl_team_id', 'full', 'location', 'nickname', 'conference', 'division',
+  'team_color', 'team_color2', 'team_logo_espn', 'team_logo_wikipedia',
+];
 
-function buildTeamIdentity({ teamRows, startSeason, endSeason, sourceUrl, retrievedAt }) {
+function buildTeamIdentity({ teamRows, startSeason, endSeason, sourceUrl, sourceUrls, retrievedAt }) {
   if (!Array.isArray(teamRows)) {
     throw new Error('teamRows are required to build team identity');
   }
@@ -51,7 +54,7 @@ function buildTeamIdentity({ teamRows, startSeason, endSeason, sourceUrl, retrie
     acceptedRows.push({ ...normalizedRow, row, franchiseDefinition: resolved.franchiseDefinition });
   }
 
-  const accepted = buildAcceptedIdentities({ acceptedRows, startSeason, endSeason, sourceUrl, retrievedAt });
+  const accepted = buildAcceptedIdentities({ acceptedRows, startSeason, endSeason, sourceUrl, sourceUrls, retrievedAt });
   const lookup = buildLookup(acceptedRows);
 
   return { accepted, rejected, lookup };
@@ -70,6 +73,7 @@ function normalizeRow(row = {}) {
     teamColor: row.team_color,
     teamColor2: row.team_color2,
     teamLogoEspn: row.team_logo_espn,
+    teamLogoWikipedia: row.team_logo_wikipedia,
   };
 }
 
@@ -97,7 +101,7 @@ function rejection(reason, normalizedRow, row, extras = {}) {
   };
 }
 
-function buildAcceptedIdentities({ acceptedRows, startSeason, endSeason, sourceUrl, retrievedAt }) {
+function buildAcceptedIdentities({ acceptedRows, startSeason, endSeason, sourceUrl, sourceUrls, retrievedAt }) {
   const rowsByFranchise = new Map();
 
   for (const acceptedRow of acceptedRows) {
@@ -120,7 +124,7 @@ function buildAcceptedIdentities({ acceptedRows, startSeason, endSeason, sourceU
         current: currentMetadata(currentRow),
         aliases: aliasesForRange(franchiseDefinition, startSeason, endSeason),
         seasons: sortedRows.map((row) => seasonalMetadata(row)),
-        source: { sourceUrl, retrievedAt },
+        source: { sourceUrl, sourceUrls: sourceUrls || (sourceUrl ? [sourceUrl] : []), retrievedAt },
       };
     })
     .sort((left, right) => left.franchiseId.localeCompare(right.franchiseId));
@@ -138,6 +142,7 @@ function currentMetadata(row) {
     teamColor: row.teamColor,
     teamColor2: row.teamColor2,
     teamLogoEspn: row.teamLogoEspn,
+    teamLogoWikipedia: row.teamLogoWikipedia,
   };
 }
 
@@ -150,6 +155,10 @@ function seasonalMetadata(row) {
     nickname: row.nickname,
     conference: row.conference,
     division: row.division,
+    teamColor: row.teamColor,
+    teamColor2: row.teamColor2,
+    teamLogoEspn: row.teamLogoEspn,
+    teamLogoWikipedia: row.teamLogoWikipedia,
     raw: row.row,
   };
 }

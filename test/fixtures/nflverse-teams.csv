@@ -1,3 +1,3 @@
-season,team,nfl_team_id,full,location,nickname,conference,division,team_color,team_color2,team_logo_espn
-2025,ARI,3800,Arizona Cardinals,Arizona,Cardinals,NFC,NFC West,#97233F,#000000,https://a.espncdn.com/i/teamlogos/nfl/500/ari.png
-2025,LA,2510,Los Angeles Rams,Los Angeles,Rams,NFC,NFC West,#003594,#FFA300,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png
+season,team,nfl_team_id,full,location,nickname
+2025,ARI,3800,Arizona Cardinals,Arizona,Cardinals
+2025,LA,2510,Los Angeles Rams,Los Angeles,Rams

@@ -19,6 +19,7 @@ function teamRow(overrides = {}) {
     team_color: '#003594',
     team_color2: '#FFA300',
     team_logo_espn: 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png',
+    team_logo_wikipedia: 'https://upload.wikimedia.org/lar.png',
     ...overrides,
   };
 }
@@ -29,6 +30,7 @@ function build(teamRows) {
     startSeason: 2005,
     endSeason: 2025,
     sourceUrl,
+    sourceUrls: [sourceUrl, 'https://github.com/nflverse/nflverse-data/releases/download/teams/teams_colors_logos.csv'],
     retrievedAt,
   });
 }
@@ -53,7 +55,14 @@ test('resolves Rams historical and current aliases to one stable franchise ident
   assert.equal(rams.nflTeamId, '2510');
   assert.equal(rams.current.teamAlias, 'LA');
   assert.equal(rams.current.full, 'Los Angeles Rams');
+  assert.equal(rams.current.conference, 'NFC');
+  assert.equal(rams.current.division, 'NFC West');
+  assert.equal(rams.current.teamColor, '#003594');
+  assert.equal(rams.current.teamColor2, '#FFA300');
+  assert.equal(rams.current.teamLogoEspn, 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png');
+  assert.equal(rams.current.teamLogoWikipedia, 'https://upload.wikimedia.org/lar.png');
   assert.equal(rams.source.sourceUrl, sourceUrl);
+  assert.deepEqual(rams.source.sourceUrls, [sourceUrl, 'https://github.com/nflverse/nflverse-data/releases/download/teams/teams_colors_logos.csv']);
   assert.equal(rams.source.retrievedAt, retrievedAt);
   assert.deepEqual(rams.aliases.filter(({ teamAlias }) => ['STL', 'LA'].includes(teamAlias)), [
     { teamAlias: 'STL', startSeason: 2005, endSeason: 2015 },
@@ -200,6 +209,15 @@ test('rejects missing, unknown, duplicate, and conflicting identity rows without
   assert.equal(result.accepted.length, 1);
   assert.equal(result.accepted[0].nflTeamId, '2510');
   assert.equal(result.lookup.get('2025:ABC'), undefined);
+});
+
+test('rejects identity rows that are missing requested conference, division, color, or logo metadata', () => {
+  const result = build([
+    teamRow({ team_color: '' }),
+  ]);
+
+  assert.deepEqual(result.accepted, []);
+  assert.deepEqual(result.rejected.map(({ reason }) => reason), ['missing_identity_field']);
 });
 
 test('rejects non-numeric seasons rather than parsing a partial value', () => {

@@ -11,7 +11,8 @@ const sourceUrl = 'https://example.test/stats.csv';
 
 function identityRow(season, team, id) {
   return { season: String(season), team, nfl_team_id: id, full: team, location: team,
-    nickname: team, conference: 'NFC', division: 'East' };
+    nickname: team, conference: 'NFC', division: 'East', team_color: '#000000', team_color2: '#FFFFFF',
+    team_logo_espn: `https://example.test/${team}.png`, team_logo_wikipedia: `https://example.test/${team}.svg` };
 }
 
 function stat(season, team, opponent) {
@@ -57,7 +58,7 @@ async function setup() {
   const statsBySeason = Array.from({ length: 21 }, (_, index) => 2005 + index).map((year) => ({ season: year, csv: `stats-${year}\n`, rows: [stat(year, 'DAL', 'PHI'), stat(year, 'PHI', 'DAL'), ...(year === 2025 ? [statForGame(year, 'DAL', 'PHI', '2025_02_DAL_PHI', 2), statForGame(year, 'PHI', 'DAL', '2025_02_DAL_PHI', 2)] : [])], sourceUrl, retrievedAt }));
   const calls = { teams: 0, stats: [], market: 0 };
   const client = {
-    async downloadNflverseTeams() { calls.teams++; return { rows: teamRows, csv: 'teams\n', sourceUrl: 'https://example.test/teams.csv', retrievedAt }; },
+    async downloadNflverseTeams() { calls.teams++; return { rows: teamRows, csv: 'teams\n', sourceUrl: 'https://example.test/teams.csv', sourceUrls: ['https://example.test/teams.csv', 'https://example.test/branding.csv'], rawSources: [{ name: 'teams', csv: 'teams\n' }, { name: 'teams_colors_logos', csv: 'branding\n' }], retrievedAt }; },
     async downloadNflverseWeeklyTeamStats({ seasons }) { calls.stats.push(...seasons); return statsBySeason.filter((entry) => seasons.includes(entry.season)); },
   };
   return { outputRoot, directory, manifestPath, client, calls };
@@ -77,7 +78,7 @@ test('downloads sources once, filters inclusively, and atomically publishes four
     assert.match(await readFile(summary.acceptedPath, 'utf8'), /\n$/);
     assert.equal(await readFile(summary.rejectedPath, 'utf8'), '');
     assert.equal(JSON.parse(await readFile(summary.manifestPath, 'utf8')).accepted, path.relative(context.directory, summary.acceptedPath));
-    assert.equal(summary.rawPaths.length, key === 'identity' ? 1 : 11);
+    assert.equal(summary.rawPaths.length, key === 'identity' ? 2 : 11);
   }
   const postgameRows = (await readFile(result.postgame.acceptedPath, 'utf8')).trim().split('\n').map(JSON.parse);
   assert.equal(typeof postgameRows[0].sourceUrl, 'string');
@@ -92,7 +93,8 @@ test('validation processes exactly the five sample seasons from one market manif
   assert.equal(summaries.length, 5);
   assert.equal(context.calls.teams, 1);
   assert.deepEqual(context.calls.stats, [2005, 2010, 2015, 2020, 2025]);
-  assert.equal(new Set(summaries.flatMap((summary) => Object.values(summary).flatMap((dataset) => dataset.rawPaths))).size, 6);
+  assert.equal(new Set(summaries.flatMap((summary) => Object.values(summary).flatMap((dataset) => dataset.rawPaths))).size, 7);
+  assert.deepEqual(await Promise.all(summaries[0].identity.rawPaths.map((rawPath) => readFile(rawPath, 'utf8'))), ['teams\n', 'branding\n']);
   const finalMatchups = (await readFile(summaries[4].matchup.acceptedPath, 'utf8')).trim().split('\n').filter(Boolean).map(JSON.parse);
   assert.deepEqual(finalMatchups.map((row) => row.gameId), ['2025_01_DAL_PHI']);
 });

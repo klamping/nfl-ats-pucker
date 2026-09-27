@@ -6,8 +6,10 @@ const test = require('node:test');
 const { downloadNflverseTeams, downloadNflverseWeeklyTeamStats } = require('../src/nflverse-team-client');
 
 const teamsUrl = 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/teams.csv';
+const brandingUrl = 'https://github.com/nflverse/nflverse-data/releases/download/teams/teams_colors_logos.csv';
 const statsUrl2005 = 'https://github.com/nflverse/nflverse-data/releases/download/stats_team/stats_team_week_2005.csv';
 const teamsCsv = readFileSync(path.join(__dirname, 'fixtures', 'nflverse-teams.csv'), 'utf8');
+const brandingCsv = readFileSync(path.join(__dirname, 'fixtures', 'nflverse-team-branding.csv'), 'utf8');
 const teamStatsCsv = readFileSync(path.join(__dirname, 'fixtures', 'nflverse-team-stats-2005.csv'), 'utf8');
 
 function getHeader(headers, name) {
@@ -23,24 +25,27 @@ function assertPublicCsvRequest(options) {
 test('downloads nflverse teams metadata CSV without authentication and returns parsed rows with source metadata', async () => {
   const previousKey = process.env.sportsgameodds;
   process.env.sportsgameodds = 'must-not-be-sent';
-  let capturedUrl;
-  let capturedOptions;
+  const requests = [];
 
   try {
     const result = await downloadNflverseTeams(async (url, options) => {
-      capturedUrl = url;
-      capturedOptions = options;
+      requests.push({ url, options });
       return {
         ok: true,
         status: 200,
-        text: async () => teamsCsv,
+        text: async () => url === teamsUrl ? teamsCsv : brandingCsv,
       };
     });
 
-    assert.equal(capturedUrl, teamsUrl);
-    assertPublicCsvRequest(capturedOptions);
+    assert.deepEqual(requests.map(({ url }) => url), [teamsUrl, brandingUrl]);
+    for (const request of requests) assertPublicCsvRequest(request.options);
     assert.equal(result.csv, teamsCsv);
     assert.equal(result.sourceUrl, teamsUrl);
+    assert.deepEqual(result.sourceUrls, [teamsUrl, brandingUrl]);
+    assert.deepEqual(result.rawSources.map(({ name, sourceUrl }) => ({ name, sourceUrl })), [
+      { name: 'teams', sourceUrl: teamsUrl },
+      { name: 'teams_colors_logos', sourceUrl: brandingUrl },
+    ]);
     assert.match(result.retrievedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
     assert.deepEqual(result.rows, [
       {
@@ -55,6 +60,7 @@ test('downloads nflverse teams metadata CSV without authentication and returns p
         team_color: '#97233F',
         team_color2: '#000000',
         team_logo_espn: 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png',
+        team_logo_wikipedia: 'https://upload.wikimedia.org/ari.png',
       },
       {
         season: '2025',
@@ -68,6 +74,7 @@ test('downloads nflverse teams metadata CSV without authentication and returns p
         team_color: '#003594',
         team_color2: '#FFA300',
         team_logo_espn: 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png',
+        team_logo_wikipedia: 'https://upload.wikimedia.org/lar.png',
       },
     ]);
   } finally {
@@ -77,6 +84,47 @@ test('downloads nflverse teams metadata CSV without authentication and returns p
       process.env.sportsgameodds = previousKey;
     }
   }
+});
+
+test('rejects a failed team metadata source response before reading the CSV', async () => {
+  let metadataTextCalled = false;
+
+  await assert.rejects(
+    downloadNflverseTeams(async (url) => ({
+      ok: false,
+      status: url === teamsUrl ? 503 : 200,
+      text: async () => {
+        if (url === teamsUrl) metadataTextCalled = true;
+        return teamsCsv;
+      },
+    })),
+    /nflverse.*team.*503/i,
+  );
+  assert.equal(metadataTextCalled, false);
+});
+
+test('rejects malformed team metadata CSV with source-specific context', async () => {
+  await assert.rejects(
+    downloadNflverseTeams(async (url) => ({
+      ok: true,
+      status: 200,
+      text: async () => url === teamsUrl
+        ? 'season,team,nfl_team_id,full,location,nickname\n2025,ARI,3800,"Arizona Cardinals\n'
+        : brandingCsv,
+    })),
+    /nflverse team metadata CSV could not be parsed/i,
+  );
+});
+
+test('rejects the public team-branding release when its required identity fields are absent', async () => {
+  await assert.rejects(
+    downloadNflverseTeams(async (url) => ({
+      ok: true,
+      status: 200,
+      text: async () => url === teamsUrl ? teamsCsv : 'team_abbr,team_id\nARI,3800\n',
+    })),
+    /nflverse.*team.*(csv|column)/i,
+  );
 });
 
 test('downloads nflverse weekly team stats for each requested season without authentication and returns source metadata', async () => {
@@ -118,11 +166,12 @@ test('downloads nflverse weekly team stats for each requested season without aut
       passing_epa: '-3.42',
       rushing_epa: '-1.25',
       sacks_suffered: '2',
+      sack_yards_lost: '-12',
       completions: '19',
       passing_tds: '1',
       rushing_tds: '0',
-      interceptions: '1',
-      lost_fumbles: '1',
+      passing_interceptions: '1',
+      fumbles_lost_total: '1',
     },
     {
       season: '2005',
@@ -138,11 +187,12 @@ test('downloads nflverse weekly team stats for each requested season without aut
       passing_epa: '6.18',
       rushing_epa: '4.73',
       sacks_suffered: '1',
+      sack_yards_lost: '-7',
       completions: '20',
       passing_tds: '2',
       rushing_tds: '1',
-      interceptions: '0',
-      lost_fumbles: '0',
+      passing_interceptions: '0',
+      fumbles_lost_total: '0',
     },
   ]);
 });

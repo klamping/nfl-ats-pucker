@@ -32,14 +32,14 @@
 
 ## File Structure
 
-- `src/nflverse-team-client.js` — downloads/parses current team metadata and per-season weekly team statistics.
+- `src/nflverse-team-client.js` — downloads/parses team-season identity metadata, enriches it from nflverse's public team colors/logos release, and downloads per-season weekly team statistics.
 - `src/franchise-aliases.js` — version-controlled canonical franchise IDs and relocation/rebrand aliases.
 - `src/normalize-team-identity.js` — emits stable franchise identity records and a season/team lookup.
 - `src/normalize-team-postgame.js` — pairs team-stat rows with market games, calculates core factual metrics, and rejects invalid pairs.
 - `src/derive-team-pregame.js` — derives same-season, kickoff-ordered pregame features.
 - `src/join-team-matchups.js` — adds home/away pregame objects to market games.
 - `src/ingest-nflverse-team-data.js` — validates ranges, loads market manifests, coordinates all downloads/derivations, and atomically publishes pairs.
-- `test/fixtures/nflverse-teams.csv`, `test/fixtures/nflverse-team-stats-2005.csv` — minimal source fixtures.
+- `test/fixtures/nflverse-teams.csv`, `test/fixtures/nflverse-team-branding.csv`, `test/fixtures/nflverse-team-stats-2005.csv` — minimal source fixtures.
 - `test/nflverse-team-client.test.js`, `test/normalize-team-identity.test.js`, `test/normalize-team-postgame.test.js`, `test/derive-team-pregame.test.js`, `test/join-team-matchups.test.js`, `test/ingest-nflverse-team-data.test.js` — regression coverage.
 - `package.json`, `README.md` — commands and operator documentation.
 
@@ -55,7 +55,7 @@
 
 ```js
 downloadNflverseTeams(fetchImpl = globalThis.fetch)
-// => Promise<{ csv, rows, sourceUrl, retrievedAt }>
+// => Promise<{ csv, rows, sourceUrl, sourceUrls, rawSources, retrievedAt }>
 
 downloadNflverseWeeklyTeamStats({ seasons, fetchImpl = globalThis.fetch })
 // => Promise<Array<{ season, csv, rows, sourceUrl, retrievedAt }>>
@@ -63,7 +63,7 @@ downloadNflverseWeeklyTeamStats({ seasons, fetchImpl = globalThis.fetch })
 
 - [ ] **Step 1: Write failing source-client tests**
 
-Test the exact metadata URL and exact per-season URL pattern; assert `accept: text/csv`, no authentication header, source metadata, required-column validation, and a non-success or schedule-shaped-invalid response rejection before a result is returned.
+Test the exact identity, branding, and per-season URLs; assert `accept: text/csv`, no authentication header, source metadata, required-column validation, metadata enrichment by team ID, raw capture provenance for both identity sources, and failed or schedule-shaped-invalid responses rejected before a result is returned.
 
 - [ ] **Step 2: Run focused tests to verify failure**
 
@@ -73,7 +73,7 @@ Expected: FAIL because the source-client module does not exist.
 
 - [ ] **Step 3: Implement source downloads and parsing**
 
-Use `csv-parse/sync` with headers. Require metadata columns `season`, `team`, `nfl_team_id`, `full`, `location`, and `nickname`. Require weekly-stat columns `season`, `week`, `team`, `season_type`, `game_id`, `opponent_team`, `attempts`, `carries`, `passing_yards`, `rushing_yards`, `passing_epa`, `rushing_epa`, and `sacks_suffered`. Reject before returning parsed rows when any required column is absent.
+Use `csv-parse/sync` with headers. Require identity columns `season`, `team`, `nfl_team_id`, `full`, `location`, and `nickname`; require branding columns `team_abbr`, `team_id`, `team_conf`, `team_division`, `team_color`, `team_color2`, `team_logo_espn`, and `team_logo_wikipedia`. Merge branding by normalized stable team ID plus exact abbreviation (IDs recur for historical aliases), reject absent/duplicate metadata instead of emitting incomplete identity records, and retain each CSV with its URL. Require weekly-stat columns `season`, `week`, `team`, `season_type`, `game_id`, `opponent_team`, `attempts`, `carries`, `passing_yards`, `rushing_yards`, `passing_epa`, `rushing_epa`, and `sacks_suffered`. Reject before returning parsed rows when any required column is absent.
 
 - [ ] **Step 4: Run focused and full tests**
 
@@ -106,7 +106,7 @@ buildTeamIdentity({ teamRows, startSeason, endSeason, sourceUrl, retrievedAt })
 
 - [ ] **Step 1: Write failing identity tests**
 
-Assert source rows for `STL` in 2015 and `LA` in 2025 resolve to the same stable franchise ID, and likewise test one Raiders or Chargers transition. Assert missing/unknown aliases create machine-readable rejection records rather than a guessed franchise.
+Assert source rows for `STL` in 2015 and `LA` in 2025 resolve to the same stable franchise ID, including conference, division, colors, and logo metadata. Assert missing/unknown aliases or missing requested metadata create machine-readable rejection records rather than guessed/incomplete identities.
 
 - [ ] **Step 2: Run focused test to verify failure**
 
@@ -144,7 +144,7 @@ normalizeTeamPostgame({ marketGames, weeklyStats, franchiseLookup, sourceMetadat
 // => { accepted: TeamPostgame[], rejected: RejectedTeamPostgame[] }
 ```
 
-Each accepted game produces two records, one per team. `TeamPostgame` includes `gameId`, season/week/type/kickoff, team/opponent/franchise IDs, points for/against, and core factual metrics. Compute offensive yards per play as `(passingYards - sackYardsLost + rushingYards) / (attempts + carries + sacksSuffered)` when its denominator is positive. Use the paired opponent row for defensive equivalents. Preserve raw source fields under `rawStats`.
+Each accepted game produces two records, one per team. `TeamPostgame` includes `gameId`, season/week/type/kickoff, team/opponent/franchise IDs, points for/against, and core factual metrics. Compute offensive yards per play as `(passingYards + rushingYards - abs(sackYardsLost)) / (attempts + carries + sacksSuffered)` when its denominator is positive; this handles signed live `sack_yards_lost` values and subtracts the loss once. Use the paired opponent row for defensive equivalents. Normalize live `passing_interceptions` and `fumbles_lost_total` alongside legacy `interceptions` and `lost_fumbles`; preserve raw source fields under `rawStats`.
 
 - [ ] **Step 1: Write failing postgame tests**
 
@@ -193,7 +193,7 @@ joinTeamPregameToMarkets({ marketGames, pregameRecords })
 
 - [ ] **Step 1: Write failing feature and join tests**
 
-Assert Week 1 metrics are `null`; Week 2 reflects only Week 1; a postseason game includes earlier regular-season results; and a later game never changes an earlier feature. Assert one matchup contains exactly one `homePregame` and one `awayPregame`, with no postgame fields, and rejects a missing/duplicate side.
+Assert Week 1 metrics are `null`; Week 2 reflects only Week 1's corrected signed-sack YPP; a postseason game includes earlier regular-season results; and a later game never changes an earlier feature. Assert one matchup contains exactly one `homePregame` and one `awayPregame`, with no postgame fields, and rejects a missing/duplicate side.
 
 - [ ] **Step 2: Run focused tests to verify failure**
 
@@ -237,7 +237,7 @@ The return values expose counts plus `rawPaths`, `manifestPath`, `acceptedPath`,
 
 - [ ] **Step 1: Write failing workflow tests**
 
-Inject fixture downloads and a fixture market manifest. Assert one raw identity capture plus one raw weekly-stat capture per season; four separate published accepted/rejected pairs; inclusive season filtering; exactly five validation seasons (2005, 2010, 2015, 2020, 2025); and previous published pairs survive a write or pointer-publication failure.
+Inject fixture downloads and a fixture market manifest. Assert one raw capture for each identity/branding source plus one raw weekly-stat capture per season; four separate published accepted/rejected pairs; inclusive season filtering; exactly five validation seasons (2005, 2010, 2015, 2020, 2025); and previous published pairs survive a write or pointer-publication failure.
 
 - [ ] **Step 2: Run focused test to verify failure**
 

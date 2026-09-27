@@ -3,6 +3,7 @@ const test = require('node:test');
 
 const { buildTeamIdentity } = require('../src/normalize-team-identity');
 const { normalizeTeamPostgame } = require('../src/normalize-team-postgame');
+const { deriveTeamPregame } = require('../src/derive-team-pregame');
 
 const sourceMetadata = {
   sourceUrl: 'https://github.com/nflverse/nflverse-data/releases/download/stats_team/stats_team_week_2025.csv',
@@ -13,6 +14,10 @@ function identityRow(team, nflTeamId, full) {
   return {
     season: '2025', team, nfl_team_id: nflTeamId, full,
     location: full, nickname: full,
+    conference: 'NFC', division: 'NFC West',
+    team_color: '#000000', team_color2: '#FFFFFF',
+    team_logo_espn: `https://example.test/${team}.png`,
+    team_logo_wikipedia: `https://example.test/${team}.svg`,
   };
 }
 
@@ -104,8 +109,8 @@ test('pairs exactly two team-game facts with market scores, opponent defense, ra
 test('reconciles known cross-era aliases to seasonal franchise aliases while retaining source aliases', () => {
   const oldLookup = buildTeamIdentity({
     teamRows: [
-      { season: '2005', team: 'OAK', nfl_team_id: '2520', full: 'Oakland Raiders', location: 'Oakland', nickname: 'Raiders' },
-      { season: '2005', team: 'SD', nfl_team_id: '4400', full: 'San Diego Chargers', location: 'San Diego', nickname: 'Chargers' },
+      { ...identityRow('OAK', '2520', 'Oakland Raiders'), season: '2005', location: 'Oakland', nickname: 'Raiders' },
+      { ...identityRow('SD', '4400', 'San Diego Chargers'), season: '2005', location: 'San Diego', nickname: 'Chargers' },
     ],
     startSeason: 2005,
     endSeason: 2005,
@@ -125,8 +130,8 @@ test('reconciles known cross-era aliases to seasonal franchise aliases while ret
 
   const ramsLookup = buildTeamIdentity({
     teamRows: [
-      { season: '2015', team: 'STL', nfl_team_id: '2510', full: 'St. Louis Rams', location: 'St. Louis', nickname: 'Rams' },
-      { season: '2015', team: 'ARI', nfl_team_id: '3800', full: 'Arizona Cardinals', location: 'Arizona', nickname: 'Cardinals' },
+      { ...identityRow('STL', '2510', 'St. Louis Rams'), season: '2015', location: 'St. Louis', nickname: 'Rams' },
+      { ...identityRow('ARI', '3800', 'Arizona Cardinals'), season: '2015', location: 'Arizona', nickname: 'Cardinals' },
     ],
     startSeason: 2015,
     endSeason: 2015,
@@ -139,6 +144,42 @@ test('reconciles known cross-era aliases to seasonal franchise aliases while ret
   const rams = normalizeTeamPostgame({ marketGames: [ramsMarket], weeklyStats: ramsStats, franchiseLookup: ramsLookup, sourceMetadata });
   assert.deepEqual(rams.rejected, []);
   assert.deepEqual(rams.accepted.map(({ team, sourceTeamAlias }) => [team, sourceTeamAlias]), [['STL', 'LA'], ['ARI', 'ARI']]);
+});
+
+test('handles signed live sack yards and turnover aliases once, and carries corrected net YPP into pregame', () => {
+  const liveRows = [
+    weeklyRow('ARI', {
+      sack_yards_lost: '-12', interceptions: '', lost_fumbles: '',
+      passing_interceptions: '2', fumbles_lost_total: '1',
+    }),
+    weeklyRow('NYG', {
+      sack_yards_lost: '-7', interceptions: '', lost_fumbles: '',
+      passing_interceptions: '0', fumbles_lost_total: '1',
+    }),
+  ];
+  const result = normalize({ weeklyStats: liveRows });
+
+  assert.deepEqual(result.rejected, []);
+  const [away, home] = result.accepted;
+  assert.equal(away.offensiveYardsPerPlay, 300 / 52);
+  assert.equal(away.defensiveYardsPerPlay, 340 / 56);
+  assert.equal(home.offensiveYardsPerPlay, 340 / 56);
+  assert.equal(home.defensiveYardsPerPlay, 300 / 52);
+  assert.equal(away.turnoverMargin, -2);
+  assert.equal(home.turnoverMargin, 2);
+  assert.equal(away.rawStats.sack_yards_lost, '-12');
+  assert.equal(away.rawStats.passing_interceptions, '2');
+  assert.equal(away.rawStats.fumbles_lost_total, '1');
+
+  const laterAwayGame = {
+    ...away,
+    gameId: '2025_02_ARI_NYG',
+    week: 2,
+    kickoff: { date: '2025-09-14', time: '13:00' },
+  };
+  const pregame = deriveTeamPregame([...result.accepted, laterAwayGame]);
+  const secondWeek = pregame.accepted.find(({ gameId }) => gameId === laterAwayGame.gameId);
+  assert.equal(secondWeek.features.netYardsPerPlay, (300 / 52) - (340 / 56));
 });
 
 test('rejects a game with a missing team row without emitting a partial fact', () => {

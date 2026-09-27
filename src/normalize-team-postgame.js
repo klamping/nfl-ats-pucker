@@ -50,12 +50,18 @@ function groupByGameId(records, field) {
 function normalizeStatsAliases(row, season, franchiseLookup) {
   return {
     ...row,
+    interceptions: firstPresent(row.interceptions, row.passing_interceptions),
+    lost_fumbles: firstPresent(row.lost_fumbles, row.fumbles_lost_total),
     team: seasonalTeamAlias(row.team, season, franchiseLookup) || row.team,
     opponent_team: seasonalTeamAlias(row.opponent_team, season, franchiseLookup) || row.opponent_team,
     sourceTeamAlias: row.team,
     sourceOpponentAlias: row.opponent_team,
     sourceRawStats: row,
   };
+}
+
+function firstPresent(...values) {
+  return values.find((value) => value !== null && value !== undefined && String(value).trim() !== '');
 }
 
 function seasonalTeamAlias(alias, season, franchiseLookup) {
@@ -137,11 +143,13 @@ function buildPostgame(game, row, opponentRow, identity, opponentIdentity, sourc
 }
 
 function yardsPerPlay(row) {
-  const yards = total(row.passing_yards, row.rushing_yards);
+  const passingYards = number(row.passing_yards);
+  const rushingYards = number(row.rushing_yards);
   const sackYards = number(row.sack_yards_lost);
   const plays = total(row.attempts, row.carries, row.sacks_suffered);
-  return yards === null || sackYards === null || plays === null || plays <= 0
-    ? null : (yards - sackYards) / plays;
+  // Live sack_yards_lost is negative; subtract its magnitude once for either sign convention.
+  return passingYards === null || rushingYards === null || sackYards === null || plays === null || plays <= 0
+    ? null : (passingYards + rushingYards - Math.abs(sackYards)) / plays;
 }
 
 function epaPerPlay(row) {

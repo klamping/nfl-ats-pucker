@@ -1,8 +1,13 @@
 const { parse } = require('csv-parse/sync');
 
 const NFLVERSE_TEAMS_URL = 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/teams.csv';
+const NFLVERSE_TEAM_BRANDING_URL = 'https://github.com/nflverse/nflverse-data/releases/download/teams/teams_colors_logos.csv';
 const NFLVERSE_TEAM_STATS_URL_PREFIX = 'https://github.com/nflverse/nflverse-data/releases/download/stats_team/stats_team_week_';
 const TEAM_METADATA_REQUIRED_COLUMNS = ['season', 'team', 'nfl_team_id', 'full', 'location', 'nickname'];
+const TEAM_BRANDING_REQUIRED_COLUMNS = [
+  'team_abbr', 'team_id', 'team_conf', 'team_division', 'team_color', 'team_color2',
+  'team_logo_espn', 'team_logo_wikipedia',
+];
 const WEEKLY_TEAM_STATS_REQUIRED_COLUMNS = [
   'season',
   'week',
@@ -20,12 +25,31 @@ const WEEKLY_TEAM_STATS_REQUIRED_COLUMNS = [
 ];
 
 async function downloadNflverseTeams(fetchImpl = globalThis.fetch) {
-  return downloadCsv({
-    fetchImpl,
-    requiredColumns: TEAM_METADATA_REQUIRED_COLUMNS,
-    sourceName: 'nflverse team metadata',
-    sourceUrl: NFLVERSE_TEAMS_URL,
-  });
+  const [teams, branding] = await Promise.all([
+    downloadCsv({
+      fetchImpl,
+      requiredColumns: TEAM_METADATA_REQUIRED_COLUMNS,
+      sourceName: 'nflverse team metadata',
+      sourceUrl: NFLVERSE_TEAMS_URL,
+    }),
+    downloadCsv({
+      fetchImpl,
+      requiredColumns: TEAM_BRANDING_REQUIRED_COLUMNS,
+      sourceName: 'nflverse team branding',
+      sourceUrl: NFLVERSE_TEAM_BRANDING_URL,
+    }),
+  ]);
+
+  return {
+    ...teams,
+    rows: enrichTeamMetadata(teams.rows, branding.rows),
+    sourceUrls: [teams.sourceUrl, branding.sourceUrl],
+    enrichmentSourceUrl: branding.sourceUrl,
+    rawSources: [
+      { name: 'teams', ...teams },
+      { name: 'teams_colors_logos', ...branding },
+    ],
+  };
 }
 
 async function downloadNflverseWeeklyTeamStats({ seasons, fetchImpl = globalThis.fetch } = {}) {
@@ -89,6 +113,48 @@ function assertRequiredColumns(rows, requiredColumns, sourceName) {
   if (rows.length === 0 || requiredColumns.some((column) => !Object.hasOwn(rows[0], column))) {
     throw new Error(`${sourceName} CSV is missing required columns or rows`);
   }
+}
+
+function enrichTeamMetadata(teamRows, brandingRows) {
+  const brandingByTeamAlias = new Map();
+  for (const row of brandingRows) {
+    const key = teamAliasKey(row.team_id, row.team_abbr);
+    if (!key || brandingByTeamAlias.has(key)) {
+      throw new Error('nflverse team branding CSV contains invalid or duplicate team IDs and aliases');
+    }
+    brandingByTeamAlias.set(key, row);
+  }
+
+  return teamRows.map((row) => {
+    const branding = brandingByTeamAlias.get(teamAliasKey(row.nfl_team_id, row.team));
+    if (!branding || [
+      branding.team_conf, branding.team_division, branding.team_color, branding.team_color2,
+      branding.team_logo_espn, branding.team_logo_wikipedia,
+    ].some((value) => value == null || String(value).trim() === '')) {
+      throw new Error(`nflverse team branding CSV is missing metadata for franchise ${row.nfl_team_id}`);
+    }
+    return {
+      ...row,
+      conference: branding.team_conf,
+      division: branding.team_division,
+      team_color: branding.team_color,
+      team_color2: branding.team_color2,
+      team_logo_espn: branding.team_logo_espn,
+      team_logo_wikipedia: branding.team_logo_wikipedia,
+    };
+  });
+}
+
+function normalizeTeamId(value) {
+  const id = String(value ?? '').trim();
+  if (!/^\d+$/.test(id)) return id;
+  return String(Number(id));
+}
+
+function teamAliasKey(teamId, teamAlias) {
+  const id = normalizeTeamId(teamId);
+  const alias = String(teamAlias ?? '').trim().toUpperCase();
+  return id && alias ? `${id}:${alias}` : null;
 }
 
 module.exports = { downloadNflverseTeams, downloadNflverseWeeklyTeamStats };

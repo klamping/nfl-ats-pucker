@@ -82,7 +82,7 @@ function parseJsonLines(text) {
 
 async function processRange({ start, end, outputRoot, fileSystem, teams, stats, marketGames, rawCaptures }) {
   const identityBuild = buildTeamIdentity({ teamRows: teams.rows, startSeason: start, endSeason: end,
-    sourceUrl: teams.sourceUrl, retrievedAt: teams.retrievedAt });
+    sourceUrl: teams.sourceUrl, sourceUrls: teams.sourceUrls, retrievedAt: teams.retrievedAt });
   const bySeason = new Map(stats.map((download) => [download.season, download]));
   const weeklyStats = stats.flatMap((download) => download.rows.filter((row) => {
     const season = Number(row.season);
@@ -103,19 +103,20 @@ async function processRange({ start, end, outputRoot, fileSystem, teams, stats, 
   const pregameBuild = deriveTeamPregame(postgameBuild.accepted);
   const matchupBuild = joinTeamPregameToMarkets({ marketGames, pregameRecords: pregameBuild.accepted });
 
-  const rawPaths = rawCaptures || [await writeRawCapture(fileSystem, outputRoot, 'teams', teams)];
+  const teamRawPaths = rawCaptures?.teams || await writeTeamRawCaptures(fileSystem, outputRoot, teams);
+  const statsRawPaths = rawCaptures?.stats || [];
   if (!rawCaptures) {
-    for (const download of stats) rawPaths.push(await writeRawCapture(fileSystem, outputRoot, `stats_team_week_${download.season}`, download));
+    for (const download of stats) statsRawPaths.push(await writeRawCapture(fileSystem, outputRoot, `stats_team_week_${download.season}`, download));
   }
   const suffix = `${start}-${end}`;
   const identity = await publishPair({ fileSystem, outputRoot, prefix: `nflverse-team-identity-${suffix}`,
-    accepted: identityBuild.accepted, rejected: identityBuild.rejected, rawPaths: [rawPaths[0]] });
+    accepted: identityBuild.accepted, rejected: identityBuild.rejected, rawPaths: teamRawPaths });
   const postgame = await publishPair({ fileSystem, outputRoot, prefix: `nflverse-team-postgame-${suffix}`,
-    accepted: postgameBuild.accepted, rejected: postgameBuild.rejected, rawPaths: rawPaths.slice(1) });
+    accepted: postgameBuild.accepted, rejected: postgameBuild.rejected, rawPaths: statsRawPaths });
   const pregame = await publishPair({ fileSystem, outputRoot, prefix: `nflverse-team-pregame-${suffix}`,
-    accepted: pregameBuild.accepted, rejected: pregameBuild.rejected, rawPaths: rawPaths.slice(1) });
+    accepted: pregameBuild.accepted, rejected: pregameBuild.rejected, rawPaths: statsRawPaths });
   const matchup = await publishPair({ fileSystem, outputRoot, prefix: `nflverse-team-matchups-${suffix}`,
-    accepted: matchupBuild.accepted, rejected: matchupBuild.rejected, rawPaths: rawPaths.slice(1) });
+    accepted: matchupBuild.accepted, rejected: matchupBuild.rejected, rawPaths: statsRawPaths });
   return { identity, postgame, pregame, matchup };
 }
 
@@ -132,6 +133,24 @@ async function writeRawCapture(fileSystem, outputRoot, stem, download) {
       if (error.code !== 'EEXIST') throw error;
     }
   }
+}
+
+async function writeTeamRawCaptures(fileSystem, outputRoot, teams) {
+  const sources = Array.isArray(teams.rawSources) && teams.rawSources.length
+    ? teams.rawSources
+    : [{ name: 'teams', csv: teams.csv, retrievedAt: teams.retrievedAt }];
+  const rawPaths = [];
+  for (const source of sources) {
+    if (typeof source.name !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(source.name) ||
+        typeof source.csv !== 'string' || !source.csv.trim()) {
+      throw new Error('invalid nflverse team metadata raw source');
+    }
+    rawPaths.push(await writeRawCapture(fileSystem, outputRoot, source.name, {
+      ...source,
+      retrievedAt: source.retrievedAt || teams.retrievedAt,
+    }));
+  }
+  return rawPaths;
 }
 
 async function publishPair({ fileSystem, outputRoot, prefix, accepted, rejected, rawPaths }) {
@@ -180,14 +199,17 @@ async function runCli(argv = process.argv.slice(2), output = console, client = d
     if (!Array.isArray(downloads) || downloads.length !== SAMPLE_SEASONS.length || downloads.some((download, index) => download?.season !== SAMPLE_SEASONS[index] || !validDownload(download))) {
       throw new Error('invalid nflverse weekly team stats downloads');
     }
-    const rawCaptures = [await writeRawCapture(defaultFileSystem, root, 'teams', teams)];
-    for (const download of downloads) rawCaptures.push(await writeRawCapture(defaultFileSystem, root, `stats_team_week_${download.season}`, download));
+    const rawCaptures = {
+      teams: await writeTeamRawCaptures(defaultFileSystem, root, teams),
+      stats: [],
+    };
+    for (const download of downloads) rawCaptures.stats.push(await writeRawCapture(defaultFileSystem, root, `stats_team_week_${download.season}`, download));
     const summaries = [];
     for (const [index, season] of SAMPLE_SEASONS.entries()) {
       const sampleStats = downloads.find((download) => download.season === season);
       const result = await processRange({ start: season, end: season, outputRoot: root, fileSystem: defaultFileSystem,
         teams, stats: [sampleStats], marketGames: marketGames.filter((game) => game.season === season),
-        rawCaptures: [rawCaptures[0], rawCaptures[index + 1]] });
+        rawCaptures: { teams: rawCaptures.teams, stats: [rawCaptures.stats[index]] } });
       summaries.push(result);
       output.log(`season=${season} ${Object.entries(result).map(([name, value]) => `${name}=${value.accepted}/${value.rejected}`).join(' ')}`);
     }
