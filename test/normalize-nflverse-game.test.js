@@ -119,3 +119,13 @@ test('rejects missing required nflverse fields with machine-readable reasons', (
     assert.equal(result.rejected.retrievedAt, metadata.retrievedAt);
   }
 });
+
+test('rejects missing spread_line even when a closingSpreadHome fallback is supplied', () => {
+  const result = normalizeNflverseGame(fixtureRow({
+    spread_line: '',
+    closingSpreadHome: '-3.5',
+  }), metadata);
+
+  assert.equal(result.accepted, undefined);
+  assert.equal(result.rejected.reason, 'missing_spread');
+});

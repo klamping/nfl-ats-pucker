@@ -64,7 +64,7 @@ function extractGame(row) {
     homeTeam: firstPresent(row.home_team, row.homeTeam),
     awayScore: parseNumber(firstPresent(row.away_score, row.awayScore)),
     homeScore: parseNumber(firstPresent(row.home_score, row.homeScore)),
-    closingSpreadHome: parseNumber(firstPresent(row.spread_line, row.closingSpreadHome)),
+    closingSpreadHome: parseNumber(row.spread_line),
   };
 }
 
