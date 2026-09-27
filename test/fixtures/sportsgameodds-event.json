@@ -1,0 +1,55 @@
+{
+  "eventID": "sgo-nfl-2025-week-01-dal-sea",
+  "leagueID": "NFL",
+  "season": 2025,
+  "week": 1,
+  "seasonType": "regular",
+  "startsAt": "2025-09-07T20:25:00.000Z",
+  "awayTeam": {
+    "teamID": "dal",
+    "name": "Dallas Cowboys",
+    "abbreviation": "DAL"
+  },
+  "homeTeam": {
+    "teamID": "sea",
+    "name": "Seattle Seahawks",
+    "abbreviation": "SEA"
+  },
+  "awayScore": 24,
+  "homeScore": 21,
+  "status": {
+    "finalized": true
+  },
+  "odds": {
+    "points-away-game-sp-away": {
+      "oddID": "points-away-game-sp-away",
+      "statID": "points",
+      "statEntityID": "away",
+      "periodID": "game",
+      "betTypeID": "sp",
+      "sideID": "away",
+      "byBookmaker": {
+        "pinnacle": {
+          "bookmakerID": "pinnacle",
+          "available": true,
+          "odds": "-108",
+          "spread": "2.5",
+          "openOdds": "-110",
+          "closeOdds": "-108",
+          "openSpread": "3.5",
+          "closeSpread": "2.5",
+          "openTimestamp": "2025-05-15T16:00:00.000Z",
+          "closeTimestamp": "2025-09-07T20:24:00.000Z"
+        },
+        "draftkings": {
+          "bookmakerID": "draftkings",
+          "available": true,
+          "openSpread": "4.5",
+          "closeSpread": "3.5",
+          "openTimestamp": "2025-05-15T17:00:00.000Z",
+          "closeTimestamp": "2025-09-07T20:24:00.000Z"
+        }
+      }
+    }
+  }
+}
