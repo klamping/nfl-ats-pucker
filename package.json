@@ -1,0 +1,12 @@
+{
+  "name": "nfl-ats-pucker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Historical NFL Pinnacle market data ingestion utilities.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
