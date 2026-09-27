@@ -1,0 +1,5 @@
+team_abbr,team_name,team_id,team_nick,team_conf,team_division,team_color,team_color2,team_logo_espn,team_logo_wikipedia
+ARI,Arizona Cardinals,3800,Cardinals,NFC,NFC West,#97233F,#000000,https://a.espncdn.com/i/teamlogos/nfl/500/ari.png,https://upload.wikimedia.org/ari.png
+LA,Los Angeles Rams,2510,Rams,NFC,NFC West,#003594,#FFA300,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png,https://upload.wikimedia.org/lar.png
+LAR,Los Angeles Rams,2510,Rams,NFC,NFC West,#003594,#FFA300,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png,https://upload.wikimedia.org/lar.png
+STL,St. Louis Rams,2510,Rams,NFC,NFC West,#003594,#FFA300,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png,https://upload.wikimedia.org/lar.png

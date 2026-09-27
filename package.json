@@ -9,7 +9,9 @@
   "scripts": {
     "test": "node --test",
     "validate:market-data": "node src/ingest-nflverse-lines.js validate",
-    "ingest:market-data": "node src/ingest-nflverse-lines.js ingest"
+    "ingest:market-data": "node src/ingest-nflverse-lines.js ingest",
+    "validate:team-data": "node src/ingest-nflverse-team-data.js validate",
+    "ingest:team-data": "node src/ingest-nflverse-team-data.js ingest"
   },
   "dependencies": {
     "csv-parse": "^7.0.3"
