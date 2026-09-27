@@ -13,7 +13,7 @@ Utilities for collecting historical NFL closing lines from the public [nflverse 
 npm run validate:market-data
 ```
 
-Validation downloads the schedule **once**, then checks exactly five sample seasons: 2005, 2010, 2015, 2020, and 2025. It reports fetched/in-range/accepted/rejected **counts only**, saves one raw CSV capture, and writes separate accepted/rejected JSONL for each sample season. Inspect accepted and rejected records alongside the raw source, especially game IDs, teams, scores, spread signs, and missing-data reasons, before a bulk run. Rejections are reported rather than silently filled; they do not automatically abort validation.
+Validation downloads the schedule **once**, then checks exactly five sample seasons: 2005, 2010, 2015, 2020, and 2025. It reports fetched/in-range/accepted/rejected **counts only**, saves one raw CSV capture, and publishes a separate accepted/rejected JSONL pair for each sample season. Inspect accepted and rejected records alongside the raw source, especially game IDs, teams, scores, spread signs, and missing-data reasons, before a bulk run. Rejections are reported rather than silently filled; they do not automatically abort validation.
 
 ## Ingest an inclusive season range
 
@@ -26,9 +26,10 @@ Both endpoints are inclusive; seasons before 2005 are not supported. A run downl
 ## Output paths
 
 - Raw, unmodified CSV captures: `data/raw/nflverse/games-<retrieval-timestamp>-capture-<number>.csv`
-- Accepted games: `data/normalized/nfl/nflverse-lines-<start>-<end>.accepted.jsonl`
-- Rejected games: `data/normalized/nfl/nflverse-lines-<start>-<end>.rejected.jsonl`
+- Published pointer: `data/normalized/nfl/nflverse-lines-<start>-<end>.current.json`
+- Accepted games: `data/normalized/nfl/nflverse-lines-<start>-<end>-run-<unique>/nflverse-lines-<start>-<end>.accepted.jsonl`
+- Rejected games: `data/normalized/nfl/nflverse-lines-<start>-<end>-run-<unique>/nflverse-lines-<start>-<end>.rejected.jsonl`
 
-Raw captures are never overwritten even when a timestamp repeats. Normalized outputs use stable filenames for a season range and are replaced on a successful run. Both output directories are gitignored. Download and CSV parsing must succeed before any output is written; a download error does not replace prior normalized results.
+Read the pointer JSON **once** and resolve its `accepted` and `rejected` paths relative to `data/normalized/nfl/`. These fields always refer to the same completed run; do not find runs by listing directories or independently reread the pointer for each file. The JavaScript ingestion API summaries also return `manifestPath`, `acceptedPath`, and `rejectedPath` along with counts and `rawPath`. Raw captures are never overwritten even when a timestamp repeats. Each normalized run uses deterministic accepted/rejected filenames inside its unique directory; publishing the pointer with one atomic rename switches the pair together. Failed writes or publication leave the prior pointer intact (and may leave an unreferenced run directory); older published runs are retained so readers holding an earlier pointer can finish. Legacy flat JSONL files, if present from an earlier version, are not part of the published pair. Both output directories are gitignored. Download and CSV parsing must succeed before any output is written; a download error does not replace prior normalized results.
 
 Accepted records cover regular season (`REG`) and nflverse postseason rounds (`WC`, `DIV`, `CON`, `SB`). They include game ID, season, week, normalized `gameType` (`REG` or `POST`), original `sourceGameType`, kickoff details, teams, final scores, `closingSpreadHome`, `spreadOrientation: "home_team"`, available closing total/spread prices and schedule context, `sourceUrl`, and `retrievedAt`. Rejected records have a machine-readable `reason` and available identity and source metadata. Missing spread, score, or identity fields are rejected, not guessed. Historical opening-line and line-movement fields are **not available** here; this ingestion does not produce a model or picks.

@@ -1,4 +1,4 @@
-const { mkdir, writeFile } = require('node:fs/promises');
+const defaultFileSystem = require('node:fs/promises');
 const path = require('node:path');
 
 const { downloadNflverseGames } = require('./nflverse-client');
@@ -6,7 +6,7 @@ const { normalizeNflverseGame } = require('./normalize-nflverse-game');
 
 const SAMPLE_SEASONS = [2005, 2010, 2015, 2020, 2025];
 
-async function runNflverseIngestion({ startSeason, endSeason, outputRoot = process.cwd(), client = { downloadNflverseGames } }) {
+async function runNflverseIngestion({ startSeason, endSeason, outputRoot = process.cwd(), client = { downloadNflverseGames }, fileSystem = defaultFileSystem }) {
   const start = Number(startSeason);
   const end = Number(endSeason);
   if (!Number.isInteger(start) || !Number.isInteger(end) || start < 2005 || end < start || end > 3000 ||
@@ -18,10 +18,10 @@ async function runNflverseIngestion({ startSeason, endSeason, outputRoot = proce
   }
 
   const download = await client.downloadNflverseGames();
-  return ingestDownloadedRange({ start, end, outputRoot, download });
+  return ingestDownloadedRange({ start, end, outputRoot, download, fileSystem });
 }
 
-async function ingestDownloadedRange({ start, end, outputRoot = process.cwd(), download, rawPath }) {
+async function ingestDownloadedRange({ start, end, outputRoot = process.cwd(), download, rawPath, fileSystem = defaultFileSystem }) {
   // Validate the entire source before touching any existing output.
   if (!download || typeof download.csv !== 'string' || !download.csv.trim() ||
       !Array.isArray(download.rows) || download.rows.length === 0 ||
@@ -49,12 +49,12 @@ async function ingestDownloadedRange({ start, end, outputRoot = process.cwd(), d
   const rawDirectory = path.join(outputRoot, 'data', 'raw', 'nflverse');
   const normalizedDirectory = path.join(outputRoot, 'data', 'normalized', 'nfl');
   if (!rawPath) {
-    await mkdir(rawDirectory, { recursive: true });
+    await fileSystem.mkdir(rawDirectory, { recursive: true });
     const timestamp = download.retrievedAt.replace(/:/g, '-');
     for (let capture = 1; ; capture += 1) {
       const candidate = path.join(rawDirectory, `games-${timestamp}-capture-${String(capture).padStart(3, '0')}.csv`);
       try {
-        await writeFile(candidate, download.csv, { flag: 'wx' });
+        await fileSystem.writeFile(candidate, download.csv, { flag: 'wx' });
         rawPath = candidate;
         break;
       } catch (error) {
@@ -63,16 +63,27 @@ async function ingestDownloadedRange({ start, end, outputRoot = process.cwd(), d
     }
   }
 
-  await mkdir(normalizedDirectory, { recursive: true });
+  await fileSystem.mkdir(normalizedDirectory, { recursive: true });
   const prefix = `nflverse-lines-${start}-${end}`;
-  await writeJsonLines(path.join(normalizedDirectory, `${prefix}.accepted.jsonl`), accepted);
-  await writeJsonLines(path.join(normalizedDirectory, `${prefix}.rejected.jsonl`), rejected);
+  // A run is immutable once published. Only the single pointer rename changes what readers see.
+  const runDirectory = await fileSystem.mkdtemp(path.join(normalizedDirectory, `${prefix}-run-`));
+  const acceptedPath = path.join(runDirectory, `${prefix}.accepted.jsonl`);
+  const rejectedPath = path.join(runDirectory, `${prefix}.rejected.jsonl`);
+  const manifestPath = path.join(normalizedDirectory, `${prefix}.current.json`);
+  await writeJsonLines(fileSystem, acceptedPath, accepted);
+  await writeJsonLines(fileSystem, rejectedPath, rejected);
+  await fileSystem.writeFile(path.join(runDirectory, 'publication.json'), `${JSON.stringify({
+    accepted: path.relative(normalizedDirectory, acceptedPath),
+    rejected: path.relative(normalizedDirectory, rejectedPath),
+  })}\n`);
+  await fileSystem.rename(path.join(runDirectory, 'publication.json'), manifestPath);
 
-  return { fetchedRows: download.rows.length, inRangeRows: rows.length, accepted: accepted.length, rejected: rejected.length, rawPath };
+  return { fetchedRows: download.rows.length, inRangeRows: rows.length, accepted: accepted.length, rejected: rejected.length,
+    rawPath, manifestPath, acceptedPath, rejectedPath };
 }
 
-async function writeJsonLines(filename, records) {
-  await writeFile(filename, records.length ? `${records.map((record) => JSON.stringify(record)).join('\n')}\n` : '');
+async function writeJsonLines(fileSystem, filename, records) {
+  await fileSystem.writeFile(filename, records.length ? `${records.map((record) => JSON.stringify(record)).join('\n')}\n` : '');
 }
 
 async function runCli(argv = process.argv.slice(2), output = console, client = { downloadNflverseGames }) {

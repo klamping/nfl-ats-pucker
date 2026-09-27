@@ -40,6 +40,19 @@ async function jsonLines(file) {
   return text ? text.trimEnd().split('\n').map(JSON.parse) : [];
 }
 
+async function publishedPair(outputRoot, start, end) {
+  const directory = path.join(outputRoot, 'data', 'normalized', 'nfl');
+  const prefix = `nflverse-lines-${start}-${end}`;
+  const manifestPath = path.join(directory, `${prefix}.current.json`);
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  const acceptedPath = path.join(directory, manifest.accepted);
+  const rejectedPath = path.join(directory, manifest.rejected);
+  assert.equal(path.dirname(acceptedPath), path.dirname(rejectedPath));
+  assert.equal(path.basename(acceptedPath), `${prefix}.accepted.jsonl`);
+  assert.equal(path.basename(rejectedPath), `${prefix}.rejected.jsonl`);
+  return { manifestPath, acceptedPath, rejectedPath, accepted: await jsonLines(acceptedPath), rejected: await jsonLines(rejectedPath) };
+}
+
 test('ingests inclusive seasons once and stores the original CSV plus sorted, separate JSONL', async () => {
   const outputRoot = await tempRoot();
   const csv = 'game_id,season,spread_line\noriginal,2025,2.5\n';
@@ -65,10 +78,10 @@ test('ingests inclusive seasons once and stores the original CSV plus sorted, se
   assert.equal(await readFile(result.rawPath, 'utf8'), csv);
   assert.deepEqual(await readdir(path.dirname(result.rawPath)), [path.basename(result.rawPath)]);
 
-  const normalized = path.join(outputRoot, 'data', 'normalized', 'nfl');
-  const accepted = await jsonLines(path.join(normalized, 'nflverse-lines-2024-2025.accepted.jsonl'));
-  const rejected = await jsonLines(path.join(normalized, 'nflverse-lines-2024-2025.rejected.jsonl'));
-  assert.deepEqual(await readdir(normalized), ['nflverse-lines-2024-2025.accepted.jsonl', 'nflverse-lines-2024-2025.rejected.jsonl']);
+  const { manifestPath, acceptedPath, rejectedPath, accepted, rejected } = await publishedPair(outputRoot, 2024, 2025);
+  assert.equal(result.manifestPath, manifestPath);
+  assert.equal(result.acceptedPath, acceptedPath);
+  assert.equal(result.rejectedPath, rejectedPath);
   assert.deepEqual(accepted.map((record) => record.gameId), ['a_2024', 'z_2025']);
   assert.deepEqual(rejected.map((record) => record.gameId), ['a_rejected', 'z_rejected']);
   assert.deepEqual(rejected.map((record) => record.reason), ['missing_team', 'missing_spread']);
@@ -95,19 +108,23 @@ test('repeated downloads preserve each raw CSV without overwriting earlier captu
   assert.match(path.basename(second.rawPath), /-capture-002\.csv$/);
   assert.equal(await readFile(first.rawPath, 'utf8'), 'first\n');
   assert.equal(await readFile(second.rawPath, 'utf8'), 'second\n');
+  assert.notEqual(first.acceptedPath, second.acceptedPath);
+  assert.deepEqual((await publishedPair(outputRoot, 2025, 2025)).accepted.map((row) => row.gameId), ['b']);
+  assert.deepEqual((await jsonLines(first.acceptedPath)).map((row) => row.gameId), ['a']);
 });
 
 test('failed download or malformed response leaves existing normalized files untouched', async () => {
   const outputRoot = await tempRoot();
   const args = { startSeason: 2025, endSeason: 2025, outputRoot };
   await runNflverseIngestion({ ...args, client: fixtureClient([game('a', 2025)]) });
-  const normalized = path.join(outputRoot, 'data', 'normalized', 'nfl', 'nflverse-lines-2025-2025.accepted.jsonl');
-  const before = await readFile(normalized, 'utf8');
+  const first = await publishedPair(outputRoot, 2025, 2025);
+  const before = await readFile(first.manifestPath, 'utf8');
   const rawDirectory = path.join(outputRoot, 'data', 'raw', 'nflverse');
 
   await assert.rejects(runNflverseIngestion({ ...args, client: { async downloadNflverseGames() { throw new Error('download failed'); } } }), /download failed/);
   await assert.rejects(runNflverseIngestion({ ...args, client: fixtureClient(undefined, 'malformed') }), /invalid nflverse download/);
-  assert.equal(await readFile(normalized, 'utf8'), before);
+  assert.equal(await readFile(first.manifestPath, 'utf8'), before);
+  assert.deepEqual((await publishedPair(outputRoot, 2025, 2025)).accepted, first.accepted);
   assert.equal((await readdir(rawDirectory)).length, 1);
 
   const emptyRoot = await tempRoot();
@@ -119,9 +136,8 @@ test('a parseable CSV without required schedule columns cannot replace normalize
   const outputRoot = await tempRoot();
   const args = { startSeason: 2025, endSeason: 2025, outputRoot };
   const first = await runNflverseIngestion({ ...args, client: fixtureClient([game('safe', 2025)]) });
-  const normalizedDirectory = path.join(outputRoot, 'data', 'normalized', 'nfl');
-  const acceptedPath = path.join(normalizedDirectory, 'nflverse-lines-2025-2025.accepted.jsonl');
-  const rejectedPath = path.join(normalizedDirectory, 'nflverse-lines-2025-2025.rejected.jsonl');
+  const { manifestPath, acceptedPath, rejectedPath } = await publishedPair(outputRoot, 2025, 2025);
+  const manifestBefore = await readFile(manifestPath, 'utf8');
   const acceptedBefore = await readFile(acceptedPath, 'utf8');
   const rejectedBefore = await readFile(rejectedPath, 'utf8');
   const rawBefore = await readdir(path.dirname(first.rawPath));
@@ -132,6 +148,7 @@ test('a parseable CSV without required schedule columns cannot replace normalize
   })) };
 
   await assert.rejects(runNflverseIngestion({ ...args, client }), /nflverse.*(csv|column)/i);
+  assert.equal(await readFile(manifestPath, 'utf8'), manifestBefore);
   assert.equal(await readFile(acceptedPath, 'utf8'), acceptedBefore);
   assert.equal(await readFile(rejectedPath, 'utf8'), rejectedBefore);
   assert.deepEqual(await readdir(path.dirname(first.rawPath)), rawBefore);
@@ -170,11 +187,46 @@ test('validate downloads once and writes one raw capture with outputs for exactl
   assert.deepEqual(logs.map((line) => Number(line.match(/^season=(\d+)/)[1])), [2005, 2010, 2015, 2020, 2025]);
   for (const [index, season] of [2005, 2010, 2015, 2020, 2025].entries()) {
     assert.match(logs[index], new RegExp(`^season=${season} .*accepted=1 rejected=0$`));
-    assert.equal(existsSync(path.join(outputRoot, 'data', 'normalized', 'nfl', `nflverse-lines-${season}-${season}.accepted.jsonl`)), true);
+    const pair = await publishedPair(outputRoot, season, season);
+    assert.equal(pair.accepted.length, 1);
+    assert.equal(summaries[index].manifestPath, pair.manifestPath);
   }
-  assert.equal(existsSync(path.join(outputRoot, 'data', 'normalized', 'nfl', 'nflverse-lines-2012-2012.accepted.jsonl')), false);
+  assert.equal(existsSync(path.join(outputRoot, 'data', 'normalized', 'nfl', 'nflverse-lines-2012-2012.current.json')), false);
   assert.equal((await readdir(path.join(outputRoot, 'data', 'normalized', 'nfl'))).length, 10);
 });
+
+for (const failure of ['output write', 'publish']) {
+  test(`${failure} failure preserves prior published accepted/rejected pair`, async () => {
+    const outputRoot = await tempRoot();
+    const args = { startSeason: 2025, endSeason: 2025, outputRoot };
+    const first = await runNflverseIngestion({ ...args, client: fixtureClient([game('old', 2025), game('old_bad', 2025, { spread_line: '' })]) });
+    const pointerBefore = await readFile(first.manifestPath, 'utf8');
+    const fileSystem = {
+      ...require('node:fs/promises'),
+      async writeFile(file, contents, options) {
+        if (failure === 'output write' && file.endsWith('.rejected.jsonl')) throw new Error('injected output write failure');
+        return require('node:fs/promises').writeFile(file, contents, options);
+      },
+      async rename(from, to) {
+        if (failure === 'publish') throw new Error('injected publish failure');
+        return require('node:fs/promises').rename(from, to);
+      },
+    };
+
+    await assert.rejects(runNflverseIngestion({ ...args, fileSystem,
+      client: fixtureClient([game('new', 2025), game('new_bad', 2025, { spread_line: '' })]),
+    }), new RegExp(`injected ${failure} failure`));
+
+    assert.equal(await readFile(first.manifestPath, 'utf8'), pointerBefore);
+    const current = await publishedPair(outputRoot, 2025, 2025);
+    assert.equal(current.acceptedPath, first.acceptedPath);
+    assert.equal(current.rejectedPath, first.rejectedPath);
+    assert.deepEqual(current.accepted.map((row) => row.gameId), ['old']);
+    assert.deepEqual(current.rejected.map((row) => row.gameId), ['old_bad']);
+    const normalizedDirectory = path.dirname(first.manifestPath);
+    assert.equal((await readdir(normalizedDirectory)).filter((name) => name.endsWith('.current.json')).length, 1);
+  });
+}
 
 test('ingest CLI requires and applies an inclusive start/end season', async () => {
   const outputRoot = await tempRoot();
