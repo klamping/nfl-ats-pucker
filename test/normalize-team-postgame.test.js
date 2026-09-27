@@ -101,6 +101,46 @@ test('pairs exactly two team-game facts with market scores, opponent defense, ra
   assert.equal(away.retrievedAt, sourceMetadata.retrievedAt);
 });
 
+test('reconciles known cross-era aliases to seasonal franchise aliases while retaining source aliases', () => {
+  const oldLookup = buildTeamIdentity({
+    teamRows: [
+      { season: '2005', team: 'OAK', nfl_team_id: '2520', full: 'Oakland Raiders', location: 'Oakland', nickname: 'Raiders' },
+      { season: '2005', team: 'SD', nfl_team_id: '4400', full: 'San Diego Chargers', location: 'San Diego', nickname: 'Chargers' },
+    ],
+    startSeason: 2005,
+    endSeason: 2005,
+  }).lookup;
+  const legacyMarket = marketGame({ gameId: '2005_01_OAK_SD', season: 2005, awayTeam: 'OAK', homeTeam: 'SD', week: 1 });
+  const sourceRows = [
+    weeklyRow('LV', { season: '2005', game_id: '2005_01_OAK_SD', opponent_team: 'LAC' }),
+    weeklyRow('LAC', { season: '2005', game_id: '2005_01_OAK_SD', opponent_team: 'LV' }),
+  ];
+
+  const result = normalizeTeamPostgame({ marketGames: [legacyMarket], weeklyStats: sourceRows, franchiseLookup: oldLookup, sourceMetadata });
+
+  assert.deepEqual(result.rejected, []);
+  assert.deepEqual(result.accepted.map(({ team, opponent }) => [team, opponent]), [['OAK', 'SD'], ['SD', 'OAK']]);
+  assert.deepEqual(result.accepted.map(({ sourceTeamAlias, sourceOpponentAlias }) => [sourceTeamAlias, sourceOpponentAlias]), [['LV', 'LAC'], ['LAC', 'LV']]);
+  assert.deepEqual(result.accepted.map(({ rawStats }) => rawStats.team), ['LV', 'LAC']);
+
+  const ramsLookup = buildTeamIdentity({
+    teamRows: [
+      { season: '2015', team: 'STL', nfl_team_id: '2510', full: 'St. Louis Rams', location: 'St. Louis', nickname: 'Rams' },
+      { season: '2015', team: 'ARI', nfl_team_id: '3800', full: 'Arizona Cardinals', location: 'Arizona', nickname: 'Cardinals' },
+    ],
+    startSeason: 2015,
+    endSeason: 2015,
+  }).lookup;
+  const ramsMarket = marketGame({ gameId: '2015_01_STL_ARI', season: 2015, awayTeam: 'STL', homeTeam: 'ARI' });
+  const ramsStats = [
+    weeklyRow('LA', { season: '2015', game_id: '2015_01_STL_ARI', opponent_team: 'ARI' }),
+    weeklyRow('ARI', { season: '2015', game_id: '2015_01_STL_ARI', opponent_team: 'LA' }),
+  ];
+  const rams = normalizeTeamPostgame({ marketGames: [ramsMarket], weeklyStats: ramsStats, franchiseLookup: ramsLookup, sourceMetadata });
+  assert.deepEqual(rams.rejected, []);
+  assert.deepEqual(rams.accepted.map(({ team, sourceTeamAlias }) => [team, sourceTeamAlias]), [['STL', 'LA'], ['ARI', 'ARI']]);
+});
+
 test('rejects a game with a missing team row without emitting a partial fact', () => {
   const result = normalize({ weeklyStats: [weeklyRow('ARI')] });
   assert.deepEqual(result.accepted, []);

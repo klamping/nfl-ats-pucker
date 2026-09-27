@@ -21,6 +21,10 @@ function stat(season, team, opponent) {
     sacks_suffered: '1', sack_yards_lost: '5', interceptions: '0', lost_fumbles: '0' };
 }
 
+function statForGame(season, team, opponent, gameId, week) {
+  return { ...stat(season, team, opponent), game_id: gameId, week: String(week) };
+}
+
 function marketGame(season, awayTeam = 'DAL', homeTeam = 'PHI') {
   return { gameId: `${season}_01_${awayTeam}_${homeTeam}`, season, week: 1, gameType: 'REG',
     kickoff: { date: `${season}-09-10`, time: '17:00' }, awayTeam, homeTeam,
@@ -35,7 +39,11 @@ async function setup() {
   const acceptedPath = path.join(directory, `${prefix}.accepted.jsonl`);
   const rejectedPath = path.join(directory, `${prefix}.rejected.jsonl`);
   await writeFile(acceptedPath, [2005, 2010, 2015, 2020, 2025].map((year) => JSON.stringify(marketGame(year))).join('\n') + '\n');
-  await writeFile(rejectedPath, '');
+  const rejectedMarket = marketGame(2025);
+  rejectedMarket.gameId = '2025_02_DAL_PHI';
+  rejectedMarket.week = 2;
+  delete rejectedMarket.closingSpreadHome;
+  await writeFile(rejectedPath, `${JSON.stringify(rejectedMarket)}\n`);
   const manifestPath = path.join(directory, `${prefix}.current.json`);
   await writeFile(manifestPath, JSON.stringify({ accepted: path.basename(acceptedPath), rejected: path.basename(rejectedPath) }));
   const requestedPrefix = 'nflverse-lines-2010-2020';
@@ -46,7 +54,7 @@ async function setup() {
   await writeFile(path.join(directory, `${requestedPrefix}.current.json`), JSON.stringify({ accepted: path.basename(requestedAccepted), rejected: path.basename(requestedRejected) }));
   const teamRows = [];
   for (let year = 2005; year <= 2025; year++) teamRows.push(identityRow(year, 'DAL', '1200'), identityRow(year, 'PHI', '3700'));
-  const statsBySeason = Array.from({ length: 21 }, (_, index) => 2005 + index).map((year) => ({ season: year, csv: `stats-${year}\n`, rows: [stat(year, 'DAL', 'PHI'), stat(year, 'PHI', 'DAL')], sourceUrl, retrievedAt }));
+  const statsBySeason = Array.from({ length: 21 }, (_, index) => 2005 + index).map((year) => ({ season: year, csv: `stats-${year}\n`, rows: [stat(year, 'DAL', 'PHI'), stat(year, 'PHI', 'DAL'), ...(year === 2025 ? [statForGame(year, 'DAL', 'PHI', '2025_02_DAL_PHI', 2), statForGame(year, 'PHI', 'DAL', '2025_02_DAL_PHI', 2)] : [])], sourceUrl, retrievedAt }));
   const calls = { teams: 0, stats: [], market: 0 };
   const client = {
     async downloadNflverseTeams() { calls.teams++; return { rows: teamRows, csv: 'teams\n', sourceUrl: 'https://example.test/teams.csv', retrievedAt }; },
@@ -85,6 +93,8 @@ test('validation processes exactly the five sample seasons from one market manif
   assert.equal(context.calls.teams, 1);
   assert.deepEqual(context.calls.stats, [2005, 2010, 2015, 2020, 2025]);
   assert.equal(new Set(summaries.flatMap((summary) => Object.values(summary).flatMap((dataset) => dataset.rawPaths))).size, 6);
+  const finalMatchups = (await readFile(summaries[4].matchup.acceptedPath, 'utf8')).trim().split('\n').filter(Boolean).map(JSON.parse);
+  assert.deepEqual(finalMatchups.map((row) => row.gameId), ['2025_01_DAL_PHI']);
 });
 
 for (const failure of ['write', 'publish']) {

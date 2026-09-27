@@ -71,6 +71,14 @@ function findFranchiseAlias(teamAlias, season) {
   return null;
 }
 
+function findFranchiseAliasAnySeason(teamAlias) {
+  for (const franchiseDefinition of FRANCHISE_ALIASES) {
+    const alias = franchiseDefinition.aliases.find((candidate) => candidate.teamAlias === teamAlias);
+    if (alias) return { franchiseDefinition, alias };
+  }
+  return null;
+}
+
 function aliasesForRange(franchiseDefinition, startSeason, endSeason) {
   return franchiseDefinition.aliases
     .map((alias) => ({
@@ -81,4 +89,4 @@ function aliasesForRange(franchiseDefinition, startSeason, endSeason) {
     .filter((alias) => alias.startSeason <= alias.endSeason);
 }
 
-module.exports = { FRANCHISE_ALIASES, aliasesForRange, findFranchiseAlias };
+module.exports = { FRANCHISE_ALIASES, aliasesForRange, findFranchiseAlias, findFranchiseAliasAnySeason };

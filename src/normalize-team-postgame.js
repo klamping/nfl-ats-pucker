@@ -1,3 +1,5 @@
+const { findFranchiseAliasAnySeason } = require('./franchise-aliases');
+
 function normalizeTeamPostgame({ marketGames, weeklyStats, franchiseLookup, sourceMetadata = {} }) {
   if (!Array.isArray(marketGames) || !Array.isArray(weeklyStats) || !(franchiseLookup instanceof Map)) {
     throw new Error('marketGames, weeklyStats, and franchiseLookup are required');
@@ -10,7 +12,7 @@ function normalizeTeamPostgame({ marketGames, weeklyStats, franchiseLookup, sour
 
   for (const [gameId, games] of gamesById) {
     const game = games[0];
-    const rows = statsById.get(gameId) || [];
+    const rows = (statsById.get(gameId) || []).map((row) => normalizeStatsAliases(row, game.season, franchiseLookup));
     const reason = validatePair(games, rows, franchiseLookup);
     if (reason) {
       rejected.push({ gameId, reason, season: game.season, week: game.week });
@@ -43,6 +45,28 @@ function groupByGameId(records, field) {
     grouped.get(gameId).push(record);
   }
   return grouped;
+}
+
+function normalizeStatsAliases(row, season, franchiseLookup) {
+  return {
+    ...row,
+    team: seasonalTeamAlias(row.team, season, franchiseLookup) || row.team,
+    opponent_team: seasonalTeamAlias(row.opponent_team, season, franchiseLookup) || row.opponent_team,
+    sourceTeamAlias: row.team,
+    sourceOpponentAlias: row.opponent_team,
+    sourceRawStats: row,
+  };
+}
+
+function seasonalTeamAlias(alias, season, franchiseLookup) {
+  const historical = findFranchiseAliasAnySeason(alias);
+  if (!historical) return null;
+  for (const identity of franchiseLookup.values()) {
+    if (identity.season === season && identity.franchiseId === historical.franchiseDefinition.franchiseId) {
+      return identity.teamAlias;
+    }
+  }
+  return null;
 }
 
 function validatePair(games, rows, franchiseLookup) {
@@ -103,7 +127,9 @@ function buildPostgame(game, row, opponentRow, identity, opponentIdentity, sourc
       ? null : opponentTurnovers - ownTurnovers,
     offensiveSackRate: sackRate(row),
     defensiveSackRate: sackRate(opponentRow),
-    rawStats: { ...row },
+    sourceTeamAlias: row.sourceTeamAlias,
+    sourceOpponentAlias: row.sourceOpponentAlias,
+    rawStats: { ...(row.sourceRawStats || row) },
     source: 'nflverse',
     sourceUrl: sourceMetadata.sourceUrl,
     retrievedAt: sourceMetadata.retrievedAt,

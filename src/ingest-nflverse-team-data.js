@@ -71,8 +71,8 @@ async function readMarketGames({ start, end, outputRoot, fileSystem }) {
   if (!acceptedPath.startsWith(`${path.resolve(directory)}${path.sep}`) || !rejectedPath.startsWith(`${path.resolve(directory)}${path.sep}`)) {
     throw new Error('published market manifest paths must remain inside the normalized data directory');
   }
-  const [acceptedText, rejectedText] = await Promise.all([fileSystem.readFile(acceptedPath, 'utf8'), fileSystem.readFile(rejectedPath, 'utf8')]);
-  const rows = [...parseJsonLines(acceptedText), ...parseJsonLines(rejectedText)];
+  const acceptedText = await fileSystem.readFile(acceptedPath, 'utf8');
+  const rows = parseJsonLines(acceptedText);
   return rows.filter((row) => Number.isInteger(row.season) && row.season >= start && row.season <= end);
 }
 
