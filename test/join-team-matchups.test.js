@@ -28,7 +28,7 @@ const home = {
   pointsFor: 3, rawStats: { passing_yards: '100' },
 };
 
-test('joins exactly two pregame feature objects by game and side without postgame or score fields', () => {
+test('joins market final scores separately from two pregame feature objects', () => {
   const { accepted, rejected } = joinTeamPregameToMarkets({
     marketGames: [market], pregameRecords: [home, away],
   });
@@ -37,9 +37,18 @@ test('joins exactly two pregame feature objects by game and side without postgam
     gameId: market.gameId, season: 2025, week: 2,
     gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
     awayTeam: 'ARI', homeTeam: 'NYG', closingSpreadHome: -3,
+    homeScore: 28, awayScore: 17,
     awayPregame: { ...emptyFeatures, gamesPlayed: 1, wins: 1 },
     homePregame: { ...emptyFeatures, gamesPlayed: 1, wins: 0 },
   }]);
+});
+
+test('rejects a market game without final scores', () => {
+  const { accepted, rejected } = joinTeamPregameToMarkets({
+    marketGames: [{ ...market, homeScore: null }], pregameRecords: [home, away],
+  });
+  assert.deepEqual(accepted, []);
+  assert.deepEqual(rejected.map(({ reason }) => reason), ['missing_core_field']);
 });
 
 test('rejects missing and duplicate sides rather than emitting partial matchups', () => {

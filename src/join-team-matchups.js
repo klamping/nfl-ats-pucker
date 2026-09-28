@@ -5,7 +5,7 @@ const MARKET_SCALAR_FIELDS = {
     'stadium', 'roof', 'surface',
   ],
   number: [
-    'season', 'week', 'closingSpreadHome', 'closingTotal',
+    'season', 'week', 'homeScore', 'awayScore', 'closingSpreadHome', 'closingTotal',
     'awaySpreadOdds', 'homeSpreadOdds', 'awayRest', 'homeRest',
   ],
   boolean: ['divisionGame'],
@@ -64,6 +64,7 @@ function joinTeamPregameToMarkets({ marketGames, pregameRecords }) {
     if (marketCounts.get(gameId) > 1) reason = 'duplicate_market_game';
     else if (!validKickoff(game.kickoff)) reason = 'invalid_market_kickoff';
     else if (game.gameType !== 'REG' && game.gameType !== 'POST') reason = 'missing_core_field';
+    else if (!Number.isFinite(game.homeScore) || !Number.isFinite(game.awayScore)) reason = 'missing_core_field';
     else if (rows.length > 2) reason = 'duplicate_team_row';
     else if (rows.length < 2) reason = 'incomplete_team_pair';
     else if (game.awayTeam === game.homeTeam ||
