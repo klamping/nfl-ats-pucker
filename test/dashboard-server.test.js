@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const http = require('node:http');
+const fs = require('node:fs/promises');
 const { compareHistorical } = require('../src/compare-historical');
 const { createDashboardServer, runDashboardCli } = require('../src/dashboard-server');
 
@@ -48,6 +49,7 @@ function fixture({ input = snapshot(), manifest = { accepted: 'run/matchups.acce
       if (Object.hasOwn(files, file)) return files[file];
       throw new Error(`Private file not found: ${file}`);
     },
+    async realpath(file) { return file; },
     writeFile(...args) { writes.push(args); throw new Error('read-only'); },
   };
   return { fileSystem, reads, writes };
@@ -179,6 +181,31 @@ test('invalid inputs and manifest paths fail before listening without leaking fi
   unavailable.fileSystem.readFile = async () => { throw new Error('Private file /repo TOP_SECRET'); };
   await assert.rejects(createDashboardServer({ inputPath: INPUT, outputRoot: ROOT,
     fileSystem: unavailable.fileSystem }), (error) => !/Private|TOP_SECRET|\/repo/.test(error.message));
+});
+
+test('rejects an accepted JSONL symlink that escapes the normalized directory', async (t) => {
+  const root = await fs.mkdtemp('/tmp/opencode/dashboard-symlink-');
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const directory = path.join(root, 'data/normalized/nfl');
+  const inputPath = path.join(root, 'input.json');
+  const outsidePath = path.join(root, 'outside.jsonl');
+  await fs.mkdir(path.join(directory, 'run'), { recursive: true });
+  await fs.writeFile(inputPath, JSON.stringify(snapshot()));
+  await fs.writeFile(path.join(directory, 'nflverse-team-matchups-2005-2025.current.json'),
+    JSON.stringify({ accepted: 'run/matchups.accepted.jsonl' }));
+  await fs.writeFile(outsidePath, `${JSON.stringify(historical())}\n`);
+  await fs.symlink(outsidePath, path.join(directory, 'run/matchups.accepted.jsonl'));
+
+  let server;
+  try {
+    server = await createDashboardServer({ inputPath, outputRoot: root, port: 0 });
+    assert.fail('server started with an accepted path outside normalized data');
+  } catch (error) {
+    assert.match(error.message, /invalid historical matchup manifest accepted path/i);
+    assert.equal(error.message.includes(root), false);
+  } finally {
+    if (server) await new Promise((resolve) => server.close(resolve));
+  }
 });
 
 test('unknown GET is 404 and non-GET is 405, without exposing private data', async (t) => {

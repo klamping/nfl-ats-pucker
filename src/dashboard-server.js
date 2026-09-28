@@ -88,10 +88,21 @@ async function loadPayload({ inputPath, fileSystem, outputRoot }) {
   if (acceptedPath !== directory && !acceptedPath.startsWith(`${directory}${path.sep}`)) {
     throw new Error('Invalid historical matchup manifest accepted path');
   }
+  let realDirectory;
+  let realAcceptedPath;
+  try {
+    realDirectory = await fileSystem.realpath(directory);
+    realAcceptedPath = await fileSystem.realpath(acceptedPath);
+  } catch {
+    throw new Error('Invalid historical matchup manifest accepted path');
+  }
+  if (realAcceptedPath !== realDirectory && !realAcceptedPath.startsWith(`${realDirectory}${path.sep}`)) {
+    throw new Error('Invalid historical matchup manifest accepted path');
+  }
 
   let historicalMatchups;
   try {
-    const jsonl = await fileSystem.readFile(acceptedPath, 'utf8');
+    const jsonl = await fileSystem.readFile(realAcceptedPath, 'utf8');
     historicalMatchups = jsonl.split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line));
   } catch {
     throw new Error('Unable to load accepted historical matchups');
