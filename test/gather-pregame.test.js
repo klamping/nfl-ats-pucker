@@ -51,7 +51,9 @@ async function fixture(overrides = {}) {
   const inProgress = game('in-progress', targetDate, '15:00', '10', '14');
   inProgress.result = '';
   inProgress.overtime = '';
-  const target = game(overrides.gameId || 'target-id', targetDate, targetTime, '', '');
+  const target = game(overrides.gameId || 'target-id', targetDate, targetTime,
+    overrides.targetAwayScore ?? '', overrides.targetHomeScore ?? '');
+  target.spread_line = overrides.targetSpreadLine ?? '3.5';
   const schedule = [prior, simultaneous, later, inProgress, target];
   const stats = [...statsFor('prior', '2'), ...statsFor('simultaneous', '3'), ...statsFor('later', '3'), ...statsFor('in-progress', '3')];
   const calls = { seasons: [], odds: 0 };
@@ -121,6 +123,69 @@ test('rejects targets that have started or are no longer upcoming using the inje
   assert.equal(context.calls.odds, 0);
   await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'current')));
   await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'raw')));
+});
+
+test('retrospectively gathers completed current-season targets from nflverse closing lines without odds captures', async (t) => {
+  for (const spreadLine of [-2.5, 4.5]) {
+    const context = await fixture({ targetAwayScore: '17', targetHomeScore: '24', targetSpreadLine: String(spreadLine),
+      now: () => new Date('2026-09-28T12:00:00.000Z') });
+    t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+
+    const { oddsClient, ...retrospectiveContext } = context;
+    const result = await gatherPregame({ season, gameId: 'target-id', retrospective: true, ...retrospectiveContext });
+
+    assert.equal(result.snapshot.closingSpreadHome, spreadLine);
+    assert.deepEqual(result.snapshot.currentOdds, {
+      provider: 'nflverse', retrievedAt, consensusSpreadHome: spreadLine,
+    });
+    assert.equal(result.snapshot.homePregame.gamesPlayed, 1);
+    assert.equal(result.snapshot.awayPregame.gamesPlayed, 1);
+    assert.equal(context.calls.odds, 0);
+    assert.deepEqual(result.rawPaths, []);
+    assert.deepEqual(JSON.parse(await readFile(result.snapshotPath, 'utf8')), result.snapshot);
+    await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'raw')));
+  }
+});
+
+for (const scenario of ['future', 'incomplete', 'line-less', 'prior-season']) {
+  test(`retrospective gathering rejects ${scenario} targets before odds work`, async (t) => {
+    const options = { targetAwayScore: '17', targetHomeScore: '24', now: () => new Date('2026-09-28T12:00:00.000Z') };
+    if (scenario === 'future') {
+      options.targetDate = '2026-10-04';
+    }
+    if (scenario === 'incomplete') {
+      options.targetAwayScore = '';
+      options.targetHomeScore = '';
+    }
+    if (scenario === 'line-less') options.targetSpreadLine = '';
+    if (scenario === 'prior-season') {
+      const target = game('target-id', '2025-12-28', '17:00', '17', '24');
+      target.season = '2025';
+      options.schedule = [target];
+    }
+    const context = await fixture(options);
+    t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+    const targetSeason = scenario === 'prior-season' ? 2025 : season;
+
+    await assert.rejects(gatherPregame({ season: targetSeason, gameId: 'target-id', retrospective: true, ...context }));
+    assert.equal(context.calls.odds, 0);
+    await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'current')));
+    await assert.rejects(readdir(path.join(context.outputRoot, 'data', 'raw')));
+  });
+}
+
+test('treats January as the preceding active NFL season in retrospective mode', async (t) => {
+  const target = game('target-id', '2025-12-28', '17:00', '17', '24');
+  target.season = '2025';
+  const context = await fixture({ schedule: [target], now: () => new Date('2026-01-15T12:00:00.000Z') });
+  t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+  context.nflverseClient.downloadNflverseTeams = async () => {
+    throw new Error('passed current-season validation');
+  };
+
+  await assert.rejects(gatherPregame({ season: 2025, gameId: 'target-id', retrospective: true, ...context }),
+    /passed current-season validation/);
+  assert.equal(context.calls.odds, 0);
 });
 
 test('matches Eastern kickoff to UTC correctly on both sides of DST transitions', async (t) => {

@@ -12,13 +12,13 @@ const { joinTeamPregameToMarkets } = require('./join-team-matchups');
 
 async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   nflverseClient = defaultNflverseClient(), oddsClient, fileSystem = defaultFileSystem,
-  now = () => new Date() } = {}) {
+  now = () => new Date(), retrospective = false } = {}) {
   const targetSeason = Number(season);
   if (!Number.isInteger(targetSeason) || targetSeason < 2005 || targetSeason > 3000 ||
       typeof gameId !== 'string' || !gameId || !/^[A-Za-z0-9_-]+$/.test(gameId)) {
     throw new Error('A valid season and game ID are required');
   }
-  validateClients(nflverseClient, oddsClient);
+  validateClients(nflverseClient, oddsClient, retrospective);
 
   const schedule = await nflverseClient.downloadNflverseGames();
   validateDownload(schedule, 'schedule');
@@ -27,7 +27,8 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   if (targetRows.length !== 1) throw new Error('Target game ID must identify exactly one schedule game');
   const targetRow = targetRows[0];
   const targetMetadata = { sourceUrl: schedule.sourceUrl, retrievedAt: schedule.retrievedAt };
-  const normalizedTarget = normalizeNflverseGame({ ...targetRow, away_score: '0', home_score: '0', spread_line: '0' }, targetMetadata);
+  const normalizedTarget = normalizeNflverseGame(retrospective ? targetRow :
+    { ...targetRow, away_score: '0', home_score: '0', spread_line: '0' }, targetMetadata);
   if (!normalizedTarget.accepted || !['REG', 'POST'].includes(normalizedTarget.accepted.gameType) ||
       !validKickoff(normalizedTarget.accepted.kickoff)) {
     throw new Error('Target must be a supported REG/POST game with a valid kickoff');
@@ -38,7 +39,15 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   if (!(currentTime instanceof Date) || !Number.isFinite(currentTime.getTime())) {
     throw new Error('The current clock must return a valid Date');
   }
-  if (targetKickoff <= currentTime.getTime()) throw new Error('Target kickoff must be in the future');
+  if (retrospective) {
+    if (targetSeason !== currentNflSeason(currentTime)) throw new Error('Target must be in the current NFL season');
+    if (targetKickoff >= currentTime.getTime()) throw new Error('Target kickoff must be in the past');
+    if (!hasFinalScore(targetRow) || !hasFinalResult(targetRow) || !Number.isFinite(Number(targetRow.spread_line))) {
+      throw new Error('Retrospective target must be completed with a finite closing spread');
+    }
+  } else if (targetKickoff <= currentTime.getTime()) {
+    throw new Error('Target kickoff must be in the future');
+  }
 
   const teams = await nflverseClient.downloadNflverseTeams();
   validateDownload(teams, 'team identity');
@@ -89,35 +98,43 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   const targetPregame = pregame.accepted.filter((record) => record.gameId === target.gameId);
   if (targetPregame.length !== 2) throw new Error('Target pregame features could not be derived');
 
-  const oddsDownload = await oddsClient.fetchNflSpreads();
-  if (!oddsDownload || !Array.isArray(oddsDownload.response) || typeof oddsDownload.retrievedAt !== 'string' ||
-      !Number.isFinite(Date.parse(oddsDownload.retrievedAt)) || typeof oddsDownload.source !== 'string') {
-    throw new Error('Invalid current odds provider response');
+  let currentOdds;
+  let oddsDownload;
+  if (retrospective) {
+    currentOdds = { provider: 'nflverse', retrievedAt: schedule.retrievedAt,
+      consensusSpreadHome: target.closingSpreadHome };
+  } else {
+    oddsDownload = await oddsClient.fetchNflSpreads();
+    if (!oddsDownload || !Array.isArray(oddsDownload.response) || typeof oddsDownload.retrievedAt !== 'string' ||
+        !Number.isFinite(Date.parse(oddsDownload.retrievedAt)) || typeof oddsDownload.source !== 'string') {
+      throw new Error('Invalid current odds provider response');
+    }
+    const awayName = findFullName(teams.rows, targetSeason, target.awayTeam);
+    const homeName = findFullName(teams.rows, targetSeason, target.homeTeam);
+    currentOdds = findConsensusHomeSpread({ response: oddsDownload, target: {
+      awayTeam: awayName, homeTeam: homeName,
+      kickoff: nflverseKickoffToUtc(target.kickoff),
+    } });
   }
-  const awayIdentity = identity.lookup.get(`${targetSeason}:${target.awayTeam}`);
-  const homeIdentity = identity.lookup.get(`${targetSeason}:${target.homeTeam}`);
-  const awayName = findFullName(teams.rows, targetSeason, target.awayTeam);
-  const homeName = findFullName(teams.rows, targetSeason, target.homeTeam);
-  const currentOdds = findConsensusHomeSpread({ response: oddsDownload, target: {
-    awayTeam: awayName, homeTeam: homeName,
-    kickoff: nflverseKickoffToUtc(target.kickoff),
-  } });
   const targetMarket = { ...target, closingSpreadHome: currentOdds.consensusSpreadHome };
   const matchup = joinTeamPregameToMarkets({ marketGames: [targetMarket], pregameRecords: targetPregame });
   if (matchup.accepted.length !== 1 || matchup.rejected.length) throw new Error('Target matchup features failed validation');
   const snapshot = { ...matchup.accepted[0], currentOdds };
 
-  const rawPath = await writeUniqueJson(fileSystem, path.join(outputRoot, 'data', 'raw', 'odds-api'),
-    `${safeTimestamp(oddsDownload.retrievedAt)}-capture`, oddsDownload.response);
+  const rawPaths = [];
+  if (!retrospective) {
+    rawPaths.push(await writeUniqueJson(fileSystem, path.join(outputRoot, 'data', 'raw', 'odds-api'),
+      `${safeTimestamp(oddsDownload.retrievedAt)}-capture`, oddsDownload.response));
+  }
   let snapshotPath;
   try {
     snapshotPath = await writeUniqueJson(fileSystem, path.join(outputRoot, 'data', 'current'),
       `${gameId}-${safeTimestamp(new Date().toISOString())}`, snapshot);
   } catch (error) {
-    await fileSystem.unlink(rawPath).catch(() => {});
+    await Promise.all(rawPaths.map((rawPath) => fileSystem.unlink(rawPath).catch(() => {})));
     throw error;
   }
-  return { snapshot, snapshotPath, rawPaths: [rawPath] };
+  return { snapshot, snapshotPath, rawPaths };
 }
 
 function defaultNflverseClient() {
@@ -160,13 +177,17 @@ function parseCliOptions(argv) {
   return options;
 }
 
-function validateClients(nflverseClient, oddsClient) {
+function validateClients(nflverseClient, oddsClient, retrospective) {
   if (typeof nflverseClient?.downloadNflverseGames !== 'function' ||
       typeof nflverseClient?.downloadNflverseTeams !== 'function' ||
       typeof nflverseClient?.downloadNflverseWeeklyTeamStats !== 'function') {
     throw new Error('nflverse schedule, identity, and team-stat clients are required');
   }
-  if (typeof oddsClient?.fetchNflSpreads !== 'function') throw new Error('current odds client is required');
+  if (!retrospective && typeof oddsClient?.fetchNflSpreads !== 'function') throw new Error('current odds client is required');
+}
+
+function currentNflSeason(currentTime) {
+  return currentTime.getUTCFullYear() - (currentTime.getUTCMonth() < 2 ? 1 : 0);
 }
 
 function validateDownload(download, name) {
