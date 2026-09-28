@@ -49,7 +49,7 @@
   function signed(value) { return `${value > 0 ? '+' : ''}${value}`; }
   function percent(value) { return value === null ? '—' : `${Math.round(value * 100)}%`; }
   function spread(value) {
-    return `${signed(value)} · ${value > 0 ? 'home favored' : value < 0 ? 'away favored' : 'even'}`;
+    return `${signed(value)} · ${value < 0 ? 'home favored' : value > 0 ? 'home underdog' : 'even'}`;
   }
   function featureName(key) {
     if (key === 'closingSpreadHome') return features[key];

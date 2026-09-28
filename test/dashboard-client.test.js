@@ -111,6 +111,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   await settled;
   assert.equal(requested, '/api/comparison');
   assert.match(elements['target-title'].textContent, /CHI.*PHI/);
+  assert.match(elements['target-line'].textContent, /\+3.*home underdog/);
   assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
   assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*PHI \+0\.070.*0\.120/);
   assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*—.*0\.080/);
@@ -135,6 +136,19 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.equal(elements['candidate-body'].children[0], selectedRow, 'selection keeps the focused row mounted');
   assert.match(elements.detail.textContent, /SF 20.*LAR 17/);
   assert.equal(elements['candidate-body'].children[0].find((node) => node.tagName === 'button').attributes['aria-pressed'], 'true');
+});
+
+test('labels a negative home spread as home favored', async () => {
+  const homeFavored = {
+    ...sample,
+    target: {
+      ...sample.target,
+      currentOdds: { ...sample.target.currentOdds, consensusSpreadHome: -3.5 },
+    },
+  };
+  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => homeFavored }));
+  await settled;
+  assert.match(elements['target-line'].textContent, /-3\.5.*home favored/);
 });
 
 test('empty candidates and failed fetch have explicit states without stale details', async () => {
