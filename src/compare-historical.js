@@ -2,13 +2,13 @@ const defaultFileSystem = require('node:fs/promises');
 const path = require('node:path');
 
 const FEATURE_FIELDS = [
-  'gamesPlayed', 'winPercentage', 'pointsScoredPerGame', 'pointsAllowedPerGame',
+  'pointsScoredPerGame', 'pointsAllowedPerGame',
   'netYardsPerPlay', 'netEpaPerPlay', 'turnoverMarginPerGame', 'offensiveSackRate',
   'defensiveSackRate', 'restDays', 'passingEpaPerDropback', 'rushingEpaPerCarry',
   'explosivePlayRate',
 ];
-// Equal feature weights keep the score interpretable: each of 20 team-feature
-// deltas and the home spread contributes at most 1/21 of the total distance.
+// Equal feature weights keep the score interpretable: each of 22 team-feature
+// deltas and the home spread contributes at most 1/23 of the total distance.
 const FEATURE_WEIGHTS = Object.fromEntries([
   ...FEATURE_FIELDS.flatMap((field) => [[`home.${field}`, 1], [`away.${field}`, 1]]),
   ['closingSpreadHome', 1],
