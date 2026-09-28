@@ -4,6 +4,12 @@ const path = require('node:path');
 
 const { compareHistorical } = require('./compare-historical');
 
+const STATIC_ASSETS = {
+  '/': ['index.html', 'text/html; charset=utf-8'],
+  '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
+  '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
+};
+
 function buildDashboardPayload(input, comparison) {
   return {
     target: {
@@ -102,15 +108,28 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
   fileSystem = defaultFileSystem, port = 0 } = {}) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid dashboard port');
   const payload = JSON.stringify(await loadPayload({ inputPath, outputRoot, fileSystem }));
+  const assets = {};
+  try {
+    for (const [route, [name, contentType]] of Object.entries(STATIC_ASSETS)) {
+      assets[route] = { body: await defaultFileSystem.readFile(path.join(__dirname, '../public/dashboard', name)), contentType };
+    }
+  } catch {
+    throw new Error('Unable to load dashboard assets');
+  }
   const server = http.createServer((request, response) => {
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('X-Content-Type-Options', 'nosniff');
+    response.setHeader('Referrer-Policy', 'no-referrer');
+    response.setHeader('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'");
     if (request.method !== 'GET') {
       response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET' });
       response.end('Method not allowed');
     } else if (request.url === '/api/comparison') {
       response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       response.end(payload);
+    } else if (Object.hasOwn(assets, request.url)) {
+      response.writeHead(200, { 'Content-Type': assets[request.url].contentType });
+      response.end(assets[request.url].body);
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       response.end('Not found');

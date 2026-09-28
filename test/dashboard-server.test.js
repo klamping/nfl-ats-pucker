@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
+const http = require('node:http');
 const { compareHistorical } = require('../src/compare-historical');
 const { createDashboardServer, runDashboardCli } = require('../src/dashboard-server');
 
@@ -54,6 +55,15 @@ function fixture({ input = snapshot(), manifest = { accepted: 'run/matchups.acce
 
 async function response(server, route = '/api/comparison', options = {}) {
   return fetch(`http://127.0.0.1:${server.address().port}${route}`, options);
+}
+
+async function rawStatus(server, route) {
+  return new Promise((resolve, reject) => {
+    http.get({ hostname: '127.0.0.1', port: server.address().port, path: route }, (result) => {
+      result.resume();
+      result.on('end', () => resolve(result.statusCode));
+    }).on('error', reject);
+  });
 }
 
 test('CLI requires exactly one --input and rejects all other arguments', async () => {
@@ -111,6 +121,28 @@ test('empty comparison returns stable summary and empty candidates', async (t) =
   assert.deepEqual(payload.summary, {
     candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0, homeCoverRate: null,
   });
+});
+
+test('serves only the three exact local dashboard routes with safe content types', async (t) => {
+  const server = await createDashboardServer({ inputPath: INPUT, outputRoot: ROOT,
+    fileSystem: fixture().fileSystem, port: 0 });
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  for (const [route, type, marker] of [
+    ['/', 'text/html', '<main'],
+    ['/app.js', 'text/javascript', '/api/comparison'],
+    ['/styles.css', 'text/css', 'prefers-reduced-motion'],
+  ]) {
+    const result = await response(server, route);
+    assert.equal(result.status, 200, route);
+    assert.match(result.headers.get('content-type'), new RegExp(`^${type}\\b`), route);
+    assert.equal(result.headers.get('x-content-type-options'), 'nosniff');
+    assert.match(await result.text(), new RegExp(marker), route);
+  }
+  for (const route of ['/index.html', '/dashboard/', '/app.js?x=1', '/styles.css/',
+    '/%61pp.js', '/%2e%2e/app.js', '/private/input.json']) {
+    assert.equal(await rawStatus(server, route), 404, route);
+  }
+  assert.equal((await response(server, '/app.js', { method: 'HEAD' })).status, 405);
 });
 
 test('invalid inputs and manifest paths fail before listening without leaking file errors', async () => {
