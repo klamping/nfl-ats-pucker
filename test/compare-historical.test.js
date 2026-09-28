@@ -114,6 +114,12 @@ test('grades home cover, away cover, and push with exact ATS margin math and agg
   ] });
   const grades = Object.fromEntries(result.candidates.map(({ week, homeAtsMargin, outcome }) =>
     [week, { homeAtsMargin, outcome }]));
+  const weekTwoCandidate = result.candidates.find((candidate) => candidate.week === 2);
+  assert.equal(weekTwoCandidate.homeScore, 24);
+  assert.equal(weekTwoCandidate.awayScore, 20);
+  assert.equal(weekTwoCandidate.closingSpreadHome, 3);
+  assert.equal(Object.hasOwn(weekTwoCandidate, 'homePregame'), false);
+  assert.equal(Object.hasOwn(weekTwoCandidate, 'awayPregame'), false);
   assert.deepEqual(grades, {
     2: { homeAtsMargin: 1, outcome: 'home_cover' },
     3: { homeAtsMargin: -1, outcome: 'away_cover' },
