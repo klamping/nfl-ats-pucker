@@ -16,6 +16,7 @@ test('local analysis board contains accessible controls and no remote resources 
   assert.match(html, />Score</);
   assert.match(html, />Home closing line</);
   assert.match(html, />Final margin</);
+  assert.match(html, />Vs spread</);
   assert.doesNotMatch(html, /NFL \/ ATS|LOCAL ANALYSIS BOARD|Descriptive historical research|Local, read-only comparison/);
   assert.match(html, /aria-live=/);
   assert.match(html, /src="\/app\.js"/);
@@ -121,7 +122,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.ok(elements['profile-body'].find((node) => node.className?.includes('profile-away')));
   assert.ok(elements['profile-body'].find((node) => node.className?.includes('profile-edge-home')));
   assert.match(elements['candidate-body'].textContent, /Home cover.*Away cover/);
-  assert.match(elements['candidate-body'].textContent, /MIN 20.*GB 24.*\+3.*\+4/);
+  assert.match(elements['candidate-body'].textContent, /MIN 20.*GB 24.*\+3.*\+4.*\+1.*Home cover/);
   assert.match(elements.detail.textContent, /MIN 20.*GB 24/);
   assert.match(elements.detail.textContent, /ATS margin.*\+1/);
   assert.match(elements.detail.textContent, /Home closing line.*\+3.*home underdog/);

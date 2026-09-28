@@ -180,6 +180,7 @@
         element('td', `${game.awayTeam} ${game.awayScore} – ${game.homeTeam} ${game.homeScore}`, 'tabular'),
         element('td', signed(game.closingSpreadHome), 'tabular'),
         element('td', signed(game.homeScore - game.awayScore), 'tabular'),
+        element('td', signed(game.homeAtsMargin), 'tabular'),
         element('td', labels[game.outcome], `outcome-${game.outcome}`),
         element('td', percent(game.featureCoverage), 'tabular'));
       return row;
