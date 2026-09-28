@@ -7,13 +7,12 @@ const FEATURE_FIELDS = [
   'defensiveSackRate', 'restDays', 'passingEpaPerDropback', 'rushingEpaPerCarry',
   'explosivePlayRate',
 ];
-// Equal feature weights keep the score interpretable: each of 22 team-feature
-// deltas and the home spread contributes at most 1/23 of the total distance.
-const FEATURE_WEIGHTS = Object.fromEntries([
-  ...FEATURE_FIELDS.flatMap((field) => [[`home.${field}`, 1], [`away.${field}`, 1]]),
-  ['closingSpreadHome', 1],
-].map(([field, weight]) => [field, weight / (FEATURE_FIELDS.length * 2 + 1)]));
-const DEFAULT_SPREAD_BAND = 3;
+// Spread is an eligibility filter; each of 22 team-feature deltas contributes
+// at most 1/22 of the score once a historical line is within the spread band.
+const FEATURE_WEIGHTS = Object.fromEntries(FEATURE_FIELDS.flatMap((field) =>
+  [[`home.${field}`, 1], [`away.${field}`, 1]]).map(([field, weight]) =>
+  [field, weight / (FEATURE_FIELDS.length * 2)]));
+const DEFAULT_SPREAD_BAND = 3.5;
 const MINIMUM_FEATURE_COVERAGE = 0.7;
 
 function compareHistorical({ input, historicalMatchups, weekWindow, spreadBand = DEFAULT_SPREAD_BAND,

@@ -47,11 +47,11 @@ test('allows partially populated historical features at 70% coverage and rejects
   const sparse = historical({ week: 3, homePregame: Object.fromEntries(FEATURES.map((field, index) => [field, index < 3 ? 1 : null])) });
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [partial, sparse] });
   assert.equal(result.candidates.length, 1);
-  assert.equal(result.candidates[0].featureCoverage, 22 / 23);
+  assert.equal(result.candidates[0].featureCoverage, 21 / 22);
   assert.deepEqual(result.candidates[0].omittedFeatures, ['home.netEpaPerPlay']);
-  assert.ok(Math.abs(result.candidates[0].distanceContributions['home.pointsScoredPerGame'] - 1 / 22) < 1e-12);
+  assert.ok(Math.abs(result.candidates[0].distanceContributions['home.pointsScoredPerGame'] - 1 / 21) < 1e-12);
   assert.equal(result.filters.minimumFeatureCoverage, 0.7);
-  assert.equal(Object.keys(result.filters.featureWeights).length, 23);
+  assert.equal(Object.keys(result.filters.featureWeights).length, 22);
   assert.ok(Math.abs(Object.values(result.filters.featureWeights).reduce((sum, weight) => sum + weight, 0) - 1) < 1e-12);
 });
 
@@ -96,6 +96,18 @@ test('filters same game type and home spread band before ranking', () => {
   assert.equal(result.candidates[0].week, 2);
 });
 
+test('uses a ±3.5 spread eligibility band without scoring eligible line differences', () => {
+  const eligible = historical({ week: 2, closingSpreadHome: 0.5 });
+  const outside = historical({ week: 3, closingSpreadHome: 0.6 });
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [eligible, outside] });
+
+  assert.equal(result.filters.spreadBand, 3.5);
+  assert.equal(Object.hasOwn(result.filters.featureWeights, 'closingSpreadHome'), false);
+  assert.deepEqual(result.candidates.map((candidate) => candidate.week), [2]);
+  assert.equal(result.candidates[0].similarityScore, 0);
+  assert.equal(Object.hasOwn(result.candidates[0].distanceContributions, 'closingSpreadHome'), false);
+});
+
 test('ranks by normalized weighted feature distances and exposes contributions', () => {
   const near = historical({ week: 2, homePregame: {
     ...snapshot().homePregame, gamesPlayed: 2, passingEpaPerDropback: 2,
@@ -109,9 +121,9 @@ test('ranks by normalized weighted feature distances and exposes contributions',
   assert.equal(Object.hasOwn(result.candidates[0].distanceContributions, 'home.gamesPlayed'), false);
   assert.equal(Object.hasOwn(result.candidates[0].distanceContributions, 'away.gamesPlayed'), false);
   assert.ok(Object.hasOwn(result.candidates[0].distanceContributions, 'home.passingEpaPerDropback'));
-  assert.ok(Object.hasOwn(result.candidates[0].distanceContributions, 'closingSpreadHome'));
+  assert.equal(Object.hasOwn(result.candidates[0].distanceContributions, 'closingSpreadHome'), false);
   assert.equal(result.candidates[0].distanceContributions['home.gamesPlayed'], undefined);
-  assert.equal(result.candidates[0].distanceContributions['home.passingEpaPerDropback'], 1 / 9 / 23);
+  assert.equal(result.candidates[0].distanceContributions['home.passingEpaPerDropback'], 1 / 9 / 22);
   assert.equal(result.candidates[0].distanceContributions['away.gamesPlayed'], undefined);
 });
 
@@ -123,7 +135,7 @@ test('does not score games played or win percentage after week matching', () => 
   } });
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [historicalGame] });
 
-  assert.equal(Object.keys(result.filters.featureWeights).length, 23);
+  assert.equal(Object.keys(result.filters.featureWeights).length, 22);
   assert.equal(result.candidates[0].similarityScore, 0);
   assert.equal(Object.hasOwn(result.candidates[0].distanceContributions, 'home.gamesPlayed'), false);
   assert.equal(Object.hasOwn(result.candidates[0].distanceContributions, 'away.winPercentage'), false);
