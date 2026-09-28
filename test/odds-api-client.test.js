@@ -155,18 +155,18 @@ test('takes the median of finite home spreads from distinct bookmakers', () => {
     retrievedAt: undefined,
     contributingBooks: 4,
     homeSpreads: [-4.5, -3.5, -2.5, -1.5],
-    consensusSpreadHome: 3,
+    consensusSpreadHome: -3,
   });
 });
 
-test('normalizes a provider-native home-underdog quote to a negative home spread', () => {
+test('preserves a provider-native home-underdog quote as a positive home spread', () => {
   const event = eventWith([{ key: 'book-underdog', markets: [{ key: 'spreads', outcomes: [
     { name: target.homeTeam, point: 3.5 }, { name: target.awayTeam, point: -3.5 },
   ] }] }]);
   const odds = findConsensusHomeSpread({ response: event, target });
 
   assert.deepEqual(odds.homeSpreads, [3.5]);
-  assert.equal(odds.consensusSpreadHome, -3.5);
+  assert.equal(odds.consensusSpreadHome, 3.5);
 });
 
 test('carries the retrieval timestamp through a fetched response', () => {
@@ -198,7 +198,7 @@ test('rejects events without finite home quotes and excludes malformed or wrong-
   const odds = findConsensusHomeSpread({ response: eventWith([...invalidBooks, fixture[0].bookmakers[0]]), target });
   assert.equal(odds.contributingBooks, 1);
   assert.deepEqual(odds.homeSpreads, [-4.5]);
-  assert.equal(odds.consensusSpreadHome, 4.5);
+  assert.equal(odds.consensusSpreadHome, -4.5);
 });
 
 test('rejects spread markets whose two outcomes are not exactly the target home and away teams', () => {

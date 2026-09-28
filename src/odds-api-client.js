@@ -146,8 +146,9 @@ function findConsensusHomeSpread({ response, target } = {}) {
     retrievedAt: retrievedAt || new Date().toISOString(),
     contributingBooks: homeSpreads.length,
     homeSpreads,
-    // The Odds API uses negative for the favored team; historical home spreads use positive.
-    consensusSpreadHome: -(homeSpreads.length % 2 ? homeSpreads[middle] : (homeSpreads[middle - 1] + homeSpreads[middle]) / 2),
+    // Both sources use a home-team spread: negative means home favored.
+    consensusSpreadHome: homeSpreads.length % 2 ? homeSpreads[middle] :
+      (homeSpreads[middle - 1] + homeSpreads[middle]) / 2,
   };
 }
 
