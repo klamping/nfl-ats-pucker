@@ -202,11 +202,25 @@ test('grades home cover, away cover, and push with exact ATS margin math and agg
   assert.equal(Object.hasOwn(weekTwoCandidate, 'homePregame'), false);
   assert.equal(Object.hasOwn(weekTwoCandidate, 'awayPregame'), false);
   assert.deepEqual(grades, {
-    2: { homeAtsMargin: 3.5, outcome: 'home_cover' },
-    3: { homeAtsMargin: -1, outcome: 'away_cover' },
+    2: { homeAtsMargin: 4.5, outcome: 'home_cover' },
+    3: { homeAtsMargin: -7, outcome: 'away_cover' },
     4: { homeAtsMargin: 0, outcome: 'push' },
   });
   assert.deepEqual(result.summary, { candidateCount: 3, homeCovers: 1, awayCovers: 1, pushes: 1, homeCoverRate: 0.5 });
+});
+
+test('grades a home +7 team that loses by one as a home cover', () => {
+  const input = snapshot({
+    closingSpreadHome: 7,
+    currentOdds: { ...snapshot().currentOdds, consensusSpreadHome: 7 },
+  });
+  const result = compareHistorical({ input, historicalMatchups: [
+    historical({ week: 2, homeScore: 20, awayScore: 21, closingSpreadHome: 7 }),
+  ] });
+
+  assert.equal(result.candidates[0].homeAtsMargin, 6);
+  assert.equal(result.candidates[0].outcome, 'home_cover');
+  assert.deepEqual(result.summary, { candidateCount: 1, homeCovers: 1, awayCovers: 0, pushes: 0, homeCoverRate: 1 });
 });
 
 test('returns a stable empty result when no candidates match', () => {

@@ -42,7 +42,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
       return [key, normalizedDelta * weight];
     }));
     const similarityScore = Object.values(distanceContributions).reduce((sum, contribution) => sum + contribution, 0);
-    const homeAtsMargin = record.homeScore - record.awayScore - record.closingSpreadHome;
+    const homeAtsMargin = record.homeScore - record.awayScore + record.closingSpreadHome;
     return {
       gameId: record.gameId,
       season: record.season,
