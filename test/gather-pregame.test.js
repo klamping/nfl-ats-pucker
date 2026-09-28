@@ -263,13 +263,15 @@ test('pregame gather CLI retrospectively gathers without an odds client', async 
   const context = await fixture({ targetAwayScore: '17', targetHomeScore: '24', now: () => new Date('2026-09-28T12:00:00.000Z') });
   t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
   const { oddsClient, ...retrospectiveContext } = context;
+  const logs = [];
 
   const result = await runCli([
     '--season', String(season), '--game-id', 'target-id', '--retrospective', '--output-root', context.outputRoot,
-  ], { log() {} }, retrospectiveContext);
+  ], { log: (line) => logs.push(line) }, retrospectiveContext);
 
   assert.equal(result.snapshot.currentOdds.provider, 'nflverse');
   assert.equal(context.calls.odds, 0);
+  assert.deepEqual(logs, [`season=2026 gameId=target-id snapshotPath=${result.snapshotPath} rawCaptures=0 contributingBooks=n/a`]);
 });
 
 test('pregame gather CLI requires a single valueless retrospective flag', async () => {

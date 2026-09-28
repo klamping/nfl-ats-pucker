@@ -161,7 +161,8 @@ async function runCli(argv = process.argv.slice(2), output = console, dependenci
     now: dependencies.now,
     retrospective: options.retrospective,
   });
-  output.log(`season=${Number(options.season)} gameId=${options.gameId} snapshotPath=${result.snapshotPath} rawCaptures=${result.rawPaths.length} contributingBooks=${result.snapshot.currentOdds.contributingBooks}`);
+  const contributingBooks = options.retrospective ? 'n/a' : result.snapshot.currentOdds.contributingBooks;
+  output.log(`season=${Number(options.season)} gameId=${options.gameId} snapshotPath=${result.snapshotPath} rawCaptures=${result.rawPaths.length} contributingBooks=${contributingBooks}`);
   return result;
 }
 
