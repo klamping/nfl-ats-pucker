@@ -1,6 +1,6 @@
 # NFL ATS Pucker
 
-Utilities for collecting historical NFL closing lines from the public [nflverse games schedule](https://github.com/nflverse/nfldata/blob/master/data/games.csv). The schedule's `spread_line` is a **home-team closing spread**: a positive value means the home team is favored; a negative value means the away team is favored. The source sign is preserved without inversion. nflverse documents this spread as sourced from Pro-Football-Reference.
+Utilities for collecting historical NFL closing lines from the public [nflverse games schedule](https://github.com/nflverse/nfldata/blob/master/data/games.csv). The schedule's `spread_line` is a **home-team closing spread**: a positive value means the home team is the underdog; a negative value means the home team is favored. The source sign is preserved without inversion. nflverse documents this spread as sourced from Pro-Football-Reference.
 
 ## Requirements
 
@@ -61,7 +61,7 @@ Both `--season` and `--game-id` are required. Add `--output-root PATH` to write 
 
 Current odds come from [The Odds API](https://the-odds-api.com/) NFL U.S. `spreads` endpoint. Put the API key in `~/Sites/.env` as `theoddsapi=<key>`. This workflow uses only the provider's current/future NFL spread market and does not require a paid plan, historical odds, scraping, player data, or play-by-play data.
 
-The target game is resolved from the public nflverse schedule by game ID and season. The gathered team features use public nflverse identity and weekly team-stat sources, and include only final games completed before the target kickoff. The value written to `closingSpreadHome` is the **current consensus home-team spread**: the median of valid current home-team spread quotes from distinct bookmakers for the matched provider event, sign-normalized to the repository convention (positive means home favored). `currentOdds.homeSpreads` retains the provider-native quotes; `currentOdds.consensusSpreadHome` is normalized to the repository convention. This is included for compatibility with the historical matchup schema, but it is not a historical closing line or line-movement feed.
+The target game is resolved from the public nflverse schedule by game ID and season. The gathered team features use public nflverse identity and weekly team-stat sources, and include only final games completed before the target kickoff. The value written to `closingSpreadHome` is the **current consensus home-team spread**: the median of valid current home-team spread quotes from distinct bookmakers for the matched provider event, where positive means home underdog and negative means home favored. `currentOdds.homeSpreads` and `currentOdds.consensusSpreadHome` preserve the provider's home-team sign convention. This is included for compatibility with the historical matchup schema, but it is not a historical closing line or line-movement feed.
 
 Successful runs write:
 

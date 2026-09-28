@@ -25,7 +25,7 @@
 - A provider event with reversed teams, mismatched kickoff, or no valid home quotes must fail closed; test in Task 1.
 - Same-week later or simultaneous games must not influence gathered pregame fields; test in Task 2.
 - The default Week 3 window must be Weeks 2–5, while an explicit offset override is honored; test in Task 4.
-- ATS grading must use `homeScore - awayScore - closingSpreadHome`, including pushes; test in Task 4.
+- ATS grading must use `homeScore - awayScore + closingSpreadHome`, including pushes; test in Task 4.
 
 ---
 
@@ -116,7 +116,7 @@ runComparisonCli({ inputPath, output = console, fileSystem })
 
 - [ ] Write failing tests for valid snapshot validation; default Week 3 window of 2–5; explicit offsets; same-game-type/spread-band filtering; weighted normalized ranking with distance contributions; home ATS win/away ATS win/push grading; aggregates; no-candidate response; and read-only behavior.
 - [ ] Run `node --test test/compare-historical.test.js`; expect failure.
-- [ ] Implement comparison. Load only accepted historical matchup records from a manifest once; require finite selected features; normalize feature deltas against the filtered candidate set; sum documented weights for home and away features plus spread; sort ascending score; grade outcomes with `homeScore - awayScore - closingSpreadHome`.
+- [ ] Implement comparison. Load only accepted historical matchup records from a manifest once; require finite selected features; normalize feature deltas against the filtered candidate set; sum documented weights for home and away features plus spread; sort ascending score; grade outcomes with `homeScore - awayScore + closingSpreadHome`.
 - [ ] Add `compare:historical -- --input <snapshot>` script and README examples. Output machine-readable JSON to stdout without modifying datasets.
 - [ ] Run `npm test`; expect pass.
 - [ ] Commit: `git add src/compare-historical.js test/compare-historical.test.js package.json README.md && git commit -m "feat: compare historical matchups"`.

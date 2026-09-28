@@ -39,7 +39,7 @@ npm run gather:pregame -- --season <YYYY> --game-id <nflverse-game-id>
 - Request `americanfootball_nfl`, U.S. `spreads` from The Odds API.
 - Match the provider event to the scheduled game by canonical home/away names and kickoff.
 - Validate each bookmaker’s home-team spread quote.
-- Set `closingSpreadHome` in the output to the median valid home-team point spread, normalized so positive means home favored (matching historical `closingSpreadHome`).
+- Set `closingSpreadHome` in the output to the median valid home-team point spread, where positive means home underdog and negative means home favored (matching historical `closingSpreadHome`).
 - Include a `currentOdds` object with provider identifier, retrieval timestamp, count of contributing books, provider-native individual home quotes, and normalized consensus median.
 - The field is a **current consensus spread**, never described as a historical closing spread.
 - No matching event or no valid quotes is an error; no value is guessed.
@@ -77,7 +77,7 @@ npm run compare:historical -- --input <path-to-gathered-matchup.json>
 - Evaluate ATS from the home-team perspective:
 
 ```text
-homeAtsMargin = homeScore - awayScore - closingSpreadHome
+homeAtsMargin = homeScore - awayScore + closingSpreadHome
 ```
 
 - Positive margin means the home team covered; negative means the away team covered; zero is a push.
