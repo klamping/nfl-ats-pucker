@@ -88,4 +88,10 @@ First rebuild the historical matchup data with `npm run ingest:market-data -- --
 npm run dashboard -- --input data/current/<game-id>-<timestamp>.json
 ```
 
+To gather a requested game and open its dashboard in one step, reuse the existing historical matchup data:
+
+```bash
+npm run game:dashboard -- --season 2026 --game-id 2026_03_PHI_CHI
+```
+
 Open the printed local address in a browser. The dashboard binds only to `127.0.0.1`, serves local assets and a sanitized `/api/comparison` response, and has no external scripts, fonts, or browser-side provider requests. It displays the target context, outcome counts, sortable historical analogues, and selected-game score, line, textual ATS result, feature coverage, omissions, and distance contributions. Select a row with its distance button (Tab and Enter/Space work); sort using column-heading buttons. Loading, failed-fetch, and no-candidate states are explicit. The server reads the snapshot and accepted matchup data on startup, never modifies them, and does not deliver keys, raw provider records, individual bookmaker quotes, or local file paths. This board is descriptive research only, not picks or betting advice.

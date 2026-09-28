@@ -14,7 +14,8 @@
     "ingest:team-data": "node src/ingest-nflverse-team-data.js ingest",
     "gather:pregame": "node src/gather-pregame.js",
     "compare:historical": "node src/compare-historical.js",
-    "dashboard": "node src/dashboard-server.js"
+    "dashboard": "node src/dashboard-server.js",
+    "game:dashboard": "node src/run-game-dashboard.js"
   },
   "dependencies": {
     "csv-parse": "^7.0.3"
