@@ -150,6 +150,29 @@ test('applies an explicit candidate limit when requested', () => {
   assert.equal(result.filters.limit, 3);
 });
 
+test('keeps candidates at or below the 0.150 similarity-distance threshold', () => {
+  const featureFields = ['pointsScoredPerGame', 'pointsAllowedPerGame', 'netYardsPerPlay', 'netEpaPerPlay'];
+  const atThreshold = historical({
+    gameId: 'at-threshold', week: 2,
+    homePregame: {
+      ...snapshot().homePregame,
+      [featureFields[0]]: 2,
+      [featureFields[1]]: 2,
+      [featureFields[2]]: 2,
+      [featureFields[3]]: 1.3,
+    },
+  });
+  const beyondThreshold = historical({
+    gameId: 'beyond-threshold', week: 3,
+    homePregame: Object.fromEntries(FEATURES.map((field) => [field, featureFields.includes(field) ? 2 : 1])),
+  });
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [atThreshold, beyondThreshold] });
+
+  assert.equal(result.filters.maximumSimilarityDistance, 0.15);
+  assert.deepEqual(result.candidates.map((candidate) => candidate.gameId), ['at-threshold']);
+  assert.equal(result.candidates[0].similarityScore, 0.15);
+});
+
 test('does not score games played or win percentage after week matching', () => {
   const historicalGame = historical({ week: 2, homePregame: {
     ...snapshot().homePregame, gamesPlayed: 10, winPercentage: 0.9,

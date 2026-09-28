@@ -92,7 +92,7 @@ const sample = {
       rushingExplosiveRate: 0.14, penaltyYardsPerGame: 45, offensiveSackRate: 0.07, defensiveSackRate: 0.05 } },
   filters: { gameType: 'REG', weekWindow: { startWeek: 2, endWeek: 5 }, spreadBand: 3,
     featureWeights: { 'home.restDays': 0.05, closingSpreadHome: 0.05 },
-    minimumFeatureCoverage: 0.7, limit: null },
+    minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
   candidates: [
     { gameId: 'one', season: 2020, week: 2, gameType: 'REG', homeTeam: 'GB', awayTeam: 'MIN',
@@ -113,6 +113,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements['target-title'].textContent, /CHI.*PHI/);
   assert.match(elements['target-line'].textContent, /\+3.*home underdog/);
   assert.match(elements['count-label'].textContent, /^2 qualifying games$/);
+  assert.match(elements.scope.textContent, /85% similarity/);
   assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
   assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*PHI \+0\.070.*0\.120/);
   assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*—.*0\.080/);

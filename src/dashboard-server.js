@@ -42,6 +42,7 @@ function buildDashboardPayload(input, comparison) {
       spreadBand: comparison.filters.spreadBand,
       featureWeights: { ...comparison.filters.featureWeights },
       minimumFeatureCoverage: comparison.filters.minimumFeatureCoverage,
+      maximumSimilarityDistance: comparison.filters.maximumSimilarityDistance,
       limit: comparison.filters.limit,
     },
     summary: {

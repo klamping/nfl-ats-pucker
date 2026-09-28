@@ -62,7 +62,8 @@
     byId('target-title').textContent = `${target.awayTeam} at ${target.homeTeam}`;
     byId('target-meta').textContent = `${target.season} · Week ${target.week} · ${target.gameType === 'REG' ? 'Regular season' : 'Postseason'} · ${target.kickoff.date} ${target.kickoff.time}`;
     byId('target-line').textContent = spread(target.currentOdds.consensusSpreadHome);
-    byId('scope').textContent = `${filters.gameType} · Weeks ${filters.weekWindow.startWeek}–${filters.weekWindow.endWeek} · ±${filters.spreadBand} · ${target.currentOdds.contributingBooks} books · ${percent(filters.minimumFeatureCoverage)} coverage`;
+    const minimumSimilarity = Math.round((1 - filters.maximumSimilarityDistance) * 100);
+    byId('scope').textContent = `${filters.gameType} · Weeks ${filters.weekWindow.startWeek}–${filters.weekWindow.endWeek} · ±${filters.spreadBand} · ${target.currentOdds.contributingBooks} books · ${percent(filters.minimumFeatureCoverage)} coverage · ${minimumSimilarity}% similarity`;
     const cards = [
       ['Games', summary.candidateCount],
       ['Home covers', summary.homeCovers],

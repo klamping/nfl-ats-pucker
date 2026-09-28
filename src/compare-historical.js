@@ -14,6 +14,7 @@ const FEATURE_WEIGHTS = Object.fromEntries(FEATURE_FIELDS.flatMap((field) =>
   [field, weight / (FEATURE_FIELDS.length * 2)]));
 const DEFAULT_SPREAD_BAND = 3.5;
 const MINIMUM_FEATURE_COVERAGE = 0.7;
+const MAXIMUM_SIMILARITY_DISTANCE = 0.15;
 
 function compareHistorical({ input, historicalMatchups, weekWindow,
   limit } = {}) {
@@ -61,7 +62,9 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     };
   }).sort((left, right) => left.similarityScore - right.similarityScore ||
     left.season - right.season || left.week - right.week || String(left.gameId).localeCompare(String(right.gameId)));
-  const candidates = limit === undefined ? ranked : ranked.slice(0, limit);
+  const similarityEligible = ranked.filter((candidate) =>
+    candidate.similarityScore <= MAXIMUM_SIMILARITY_DISTANCE + Number.EPSILON);
+  const candidates = limit === undefined ? similarityEligible : similarityEligible.slice(0, limit);
   const homeCovers = candidates.filter((candidate) => candidate.outcome === 'home_cover').length;
   const awayCovers = candidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const pushes = candidates.filter((candidate) => candidate.outcome === 'push').length;
@@ -73,6 +76,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
       spreadBand,
     featureWeights: FEATURE_WEIGHTS,
     minimumFeatureCoverage: MINIMUM_FEATURE_COVERAGE,
+      maximumSimilarityDistance: MAXIMUM_SIMILARITY_DISTANCE,
        limit: limit ?? null,
     },
     candidates,
