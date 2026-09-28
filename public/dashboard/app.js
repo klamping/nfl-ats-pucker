@@ -89,10 +89,11 @@
   function profileEdge(away, home, format, direction, awayTeam, homeTeam) {
     if (!Number.isFinite(away) || !Number.isFinite(home)) return ['—', 'profile-edge'];
     const difference = direction === 'higher' ? home - away : away - home;
-    if (difference === 0) return ['Even', 'profile-edge'];
+    const displayedDifference = profileValue(Math.abs(difference), format);
+    if (displayedDifference === profileValue(0, format)) return ['Even', 'profile-edge'];
     const homeWins = difference > 0;
     const team = homeWins ? homeTeam : awayTeam;
-    return [`${team} +${profileValue(Math.abs(difference), format)}`,
+    return [`${team} +${displayedDifference}`,
       `profile-edge profile-edge-${homeWins ? 'home' : 'away'}`];
   }
 

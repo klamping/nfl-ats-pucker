@@ -149,3 +149,17 @@ test('empty candidates and failed fetch have explicit states without stale detai
   assert.match(failed.elements.status.textContent, /Unable to load/);
   assert.equal(failed.elements['candidate-body'].children.length, 0);
 });
+
+test('shows an even profile edge when a nonzero delta rounds to zero at display precision', async () => {
+  const roundedTie = {
+    ...sample,
+    target: {
+      ...sample.target,
+      awayPregame: { ...sample.target.awayPregame, passingCpoe: 1.2 },
+      homePregame: { ...sample.target.homePregame, passingCpoe: 1.20004 },
+    },
+  };
+  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => roundedTie }));
+  await settled;
+  assert.match(elements['profile-body'].textContent, /Passing CPOE.*1\.200.*Even.*1\.200/);
+});
