@@ -112,8 +112,11 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.equal(requested, '/api/comparison');
   assert.match(elements['target-title'].textContent, /CHI.*PHI/);
   assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
-  assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*0\.120/);
-  assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*0\.080/);
+  assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*PHI \+0\.070.*0\.120/);
+  assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*—.*0\.080/);
+  assert.match(elements['profile-body'].textContent, /Penalty yards.*45.*PHI \+15.*30/);
+  assert.ok(elements['profile-body'].find((node) => node.className?.includes('profile-away')));
+  assert.ok(elements['profile-body'].find((node) => node.className?.includes('profile-edge-home')));
   assert.match(elements['candidate-body'].textContent, /Home cover.*Away cover/);
   assert.match(elements['candidate-body'].textContent, /MIN 20.*GB 24.*\+3.*\+4/);
   assert.match(elements.detail.textContent, /MIN 20.*GB 24/);

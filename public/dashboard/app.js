@@ -22,17 +22,17 @@
     closingSpreadHome: 'Home spread',
   };
   const profileMetrics = [
-    ['passingEpaPerDropback', 'Passing EPA per dropback', 'decimal'],
-    ['passingCpoe', 'Passing CPOE', 'decimal'],
-    ['interceptionRate', 'Interception rate', 'percent'],
-    ['rushingEpaPerCarry', 'Rushing EPA per carry', 'decimal'],
-    ['rushingYardsPerCarry', 'Yards per carry', 'decimal'],
-    ['explosivePlayRate', 'Explosive-play rate', 'percent'],
-    ['passingExplosiveRate', 'Pass 20+ rate', 'percent'],
-    ['rushingExplosiveRate', 'Rush 10+ rate', 'percent'],
-    ['offensiveSackRate', 'Offensive sack rate', 'percent'],
-    ['defensiveSackRate', 'Defensive sack rate', 'percent'],
-    ['penaltyYardsPerGame', 'Penalty yards per game', 'number'],
+    ['passingEpaPerDropback', 'Passing EPA per dropback', 'decimal', 'higher'],
+    ['passingCpoe', 'Passing CPOE', 'decimal', 'higher'],
+    ['interceptionRate', 'Interception rate', 'percent', 'lower'],
+    ['rushingEpaPerCarry', 'Rushing EPA per carry', 'decimal', 'higher'],
+    ['rushingYardsPerCarry', 'Yards per carry', 'decimal', 'higher'],
+    ['explosivePlayRate', 'Explosive-play rate', 'percent', 'higher'],
+    ['passingExplosiveRate', 'Pass 20+ rate', 'percent', 'higher'],
+    ['rushingExplosiveRate', 'Rush 10+ rate', 'percent', 'higher'],
+    ['offensiveSackRate', 'Offensive sack rate', 'percent', 'lower'],
+    ['defensiveSackRate', 'Defensive sack rate', 'percent', 'higher'],
+    ['penaltyYardsPerGame', 'Penalty yards per game', 'number', 'lower'],
   ];
   let data;
   let selectedId;
@@ -86,12 +86,25 @@
     return value.toFixed(3);
   }
 
+  function profileEdge(away, home, format, direction, awayTeam, homeTeam) {
+    if (!Number.isFinite(away) || !Number.isFinite(home)) return ['—', 'profile-edge'];
+    const difference = direction === 'higher' ? home - away : away - home;
+    if (difference === 0) return ['Even', 'profile-edge'];
+    const homeWins = difference > 0;
+    const team = homeWins ? homeTeam : awayTeam;
+    return [`${team} +${profileValue(Math.abs(difference), format)}`,
+      `profile-edge profile-edge-${homeWins ? 'home' : 'away'}`];
+  }
+
   function renderProfile(target) {
-    byId('profile-body').replaceChildren(...profileMetrics.map(([field, label, format]) => {
+    byId('profile-body').replaceChildren(...profileMetrics.map(([field, label, format, direction]) => {
       const row = element('tr');
+      const [edge, edgeClass] = profileEdge(target.awayPregame?.[field], target.homePregame?.[field],
+        format, direction, target.awayTeam, target.homeTeam);
       row.append(element('th', label),
-        element('td', profileValue(target.awayPregame?.[field], format), 'tabular'),
-        element('td', profileValue(target.homePregame?.[field], format), 'tabular'));
+        element('td', profileValue(target.awayPregame?.[field], format), 'tabular profile-away'),
+        element('td', edge, edgeClass),
+        element('td', profileValue(target.homePregame?.[field], format), 'tabular profile-home'));
       return row;
     }));
   }

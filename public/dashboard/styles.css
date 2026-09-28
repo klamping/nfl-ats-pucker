@@ -56,7 +56,10 @@ caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-pa
 th { background: #edf0ed; color: #43575e; font-size: 10px; text-align: left; text-transform: uppercase; letter-spacing: .08em; }
 th, td { padding: 16px 12px; border-bottom: 1px solid var(--line); }
 .profile-section th:not([scope="col"]) { background: white; color: var(--ink); font-size: 13px; text-transform: none; letter-spacing: 0; }
-.profile-section td { text-align: right; }
+.profile-section th[scope="col"]:not(:first-child), .profile-section td { text-align: center; }
+.profile-away, .profile-edge-away { color: #713d88; font-weight: 700; }
+.profile-home, .profile-edge-home { color: #1b5f9e; font-weight: 700; }
+.profile-edge { font-size: 12px; white-space: nowrap; }
 th:first-child, td:first-child { padding-left: 20px; }
 th button { padding: 0; border: 0; background: none; color: inherit; font-size: inherit; font-weight: 750; text-transform: inherit; letter-spacing: inherit; }
 th[aria-sort]:not([aria-sort="none"]) button { color: var(--teal); text-decoration: underline; text-underline-offset: 4px; }
