@@ -14,7 +14,7 @@ test('local analysis board contains accessible controls and no remote resources 
   assert.match(html, /<table\b/);
   assert.match(html, /<button\b/);
   assert.match(html, />Score</);
-  assert.match(html, />Line</);
+  assert.match(html, />Home closing line</);
   assert.match(html, />Final margin</);
   assert.doesNotMatch(html, /NFL \/ ATS|LOCAL ANALYSIS BOARD|Descriptive historical research|Local, read-only comparison/);
   assert.match(html, /aria-live=/);
@@ -122,6 +122,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements['candidate-body'].textContent, /MIN 20.*GB 24.*\+3.*\+4/);
   assert.match(elements.detail.textContent, /MIN 20.*GB 24/);
   assert.match(elements.detail.textContent, /ATS margin.*\+1/);
+  assert.match(elements.detail.textContent, /Home closing line.*\+3.*home underdog/);
   assert.match(elements.detail.textContent, /Home · Rest days/);
   assert.match(elements.detail.textContent, /Home · Passing EPA per dropback/);
   assert.match(elements.detail.textContent, /Omitted.*Away · Net EPA per play/);
@@ -149,6 +150,19 @@ test('labels a negative home spread as home favored', async () => {
   const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => homeFavored }));
   await settled;
   assert.match(elements['target-line'].textContent, /-3\.5.*home favored/);
+});
+
+test('labels a zero home spread as even', async () => {
+  const even = {
+    ...sample,
+    target: {
+      ...sample.target,
+      currentOdds: { ...sample.target.currentOdds, consensusSpreadHome: 0 },
+    },
+  };
+  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => even }));
+  await settled;
+  assert.match(elements['target-line'].textContent, /0.*even/);
 });
 
 test('empty candidates and failed fetch have explicit states without stale details', async () => {
