@@ -82,7 +82,7 @@ Candidates are ranked by a normalized distance: for each selected home/away feat
 
 ### Open the local analysis board
 
-First rebuild the historical matchup data with `npm run ingest:market-data -- --start-season 2005 --end-season 2025` and `npm run ingest:team-data -- --start-season 2005 --end-season 2025` if the published `nflverse-team-matchups-2005-2025.current.json` manifest and accepted records are not already present. Gather a current snapshot as above, then start:
+First rebuild the historical matchup data with `npm run ingest:market-data -- --start-season 2005 --end-season 2025` and `npm run ingest:team-data -- --start-season 2005 --end-season 2025` if the published `nflverse-team-matchups-2005-2025.current.json` manifest and accepted records are not already present. Rebuild once after updates that add matchup-profile fields, so historical analogues use the same feature schema as newly gathered snapshots. Gather a current snapshot as above, then start:
 
 ```bash
 npm run dashboard -- --input data/current/<game-id>-<timestamp>.json
