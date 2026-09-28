@@ -47,17 +47,17 @@
     byId('target-title').textContent = `${target.awayTeam} at ${target.homeTeam}`;
     byId('target-meta').textContent = `${target.season} · Week ${target.week} · ${target.gameType === 'REG' ? 'Regular season' : 'Postseason'} · ${target.kickoff.date} ${target.kickoff.time}`;
     byId('target-line').textContent = spread(target.currentOdds.consensusSpreadHome);
-    byId('scope').textContent = `Compared with ${filters.gameType === 'REG' ? 'regular-season' : 'postseason'} games in Weeks ${filters.weekWindow.startWeek}–${filters.weekWindow.endWeek}, within ${filters.spreadBand} spread points · ${target.currentOdds.contributingBooks} contributing books · minimum ${percent(filters.minimumFeatureCoverage)} feature coverage.`;
+    byId('scope').textContent = `${filters.gameType} · Weeks ${filters.weekWindow.startWeek}–${filters.weekWindow.endWeek} · ±${filters.spreadBand} · ${target.currentOdds.contributingBooks} books · ${percent(filters.minimumFeatureCoverage)} coverage`;
     const cards = [
-      ['Analogues', summary.candidateCount, 'Closest eligible games'],
-      ['Home covers', summary.homeCovers, 'Home side beat the line'],
-      ['Away covers', summary.awayCovers, 'Away side beat the line'],
-      ['Pushes', summary.pushes, 'Exactly on the line'],
-      ['Home cover rate', percent(summary.homeCoverRate), 'Decided games only'],
+      ['Games', summary.candidateCount],
+      ['Home covers', summary.homeCovers],
+      ['Away covers', summary.awayCovers],
+      ['Pushes', summary.pushes],
+      ['Home cover rate', percent(summary.homeCoverRate)],
     ];
-    byId('summary').replaceChildren(...cards.map(([title, value, description]) => {
+    byId('summary').replaceChildren(...cards.map(([title, value]) => {
       const card = element('div', undefined, 'summary-card');
-      card.append(element('h3', title, 'overline'), element('p', value, 'card-value'), element('p', description, 'micro'));
+      card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));
       return card;
     }));
     byId('count-label').textContent = `${summary.candidateCount} of up to ${filters.limit} games`;
@@ -68,7 +68,7 @@
     if (!game) { panel.replaceChildren(); return; }
     const title = element('h3', `${game.awayTeam} at ${game.homeTeam}`);
     const heading = element('div', undefined, 'detail-heading');
-    heading.append(element('p', 'SELECTED GAME / FINAL', 'overline'), title,
+    heading.append(title,
       element('p', `${game.season} · Week ${game.week} · ${game.gameType === 'REG' ? 'Regular season' : 'Postseason'}`, 'muted'));
     const score = element('p', `${game.awayTeam} ${game.awayScore}  ·  ${game.homeTeam} ${game.homeScore}`, 'final-score');
     const outcome = element('p', labels[game.outcome], `outcome outcome-${game.outcome}`);
@@ -83,8 +83,7 @@
       facts.append(element('dt', name), element('dd', value));
     }
     const contributions = element('div', undefined, 'contributions');
-    contributions.append(element('h4', 'Distance contributions'),
-      element('p', 'Larger contributions add more distance; lower total distance means a closer match.', 'micro'));
+    contributions.append(element('h4', 'Distance contributions'));
     const list = element('ul');
     for (const [name, value] of Object.entries(game.distanceContributions)) {
       const row = element('li');
@@ -130,6 +129,9 @@
       distance.append(button);
       row.append(distance, element('td', `${game.season} · W${game.week}`),
         element('td', `${game.awayTeam} at ${game.homeTeam}`),
+        element('td', `${game.awayTeam} ${game.awayScore} – ${game.homeTeam} ${game.homeScore}`, 'tabular'),
+        element('td', signed(game.closingSpreadHome), 'tabular'),
+        element('td', signed(game.homeScore - game.awayScore), 'tabular'),
         element('td', labels[game.outcome], `outcome-${game.outcome}`),
         element('td', percent(game.featureCoverage), 'tabular'));
       return row;
@@ -151,7 +153,7 @@
       data = await response.json();
       renderHeader();
       if (!data.candidates.length) {
-        byId('status').textContent = 'No historical games match this target and its comparison filters.';
+        byId('status').textContent = 'No games.';
         byId('candidate-body').replaceChildren();
         renderDetail(null);
         return;
@@ -159,9 +161,9 @@
       selectedId = data.candidates[0].gameId;
       renderTable();
       renderDetail(data.candidates[0]);
-      byId('status').textContent = `${data.summary.candidateCount} historical analogues loaded.`;
+      byId('status').textContent = `${data.summary.candidateCount} games`;
     } catch {
-      byId('status').textContent = 'Unable to load historical comparison. Check that the local dashboard is running and refresh this page.';
+      byId('status').textContent = 'Unable to load.';
       byId('candidate-body').replaceChildren();
       renderDetail(null);
     }

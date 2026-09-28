@@ -13,6 +13,10 @@ test('local analysis board contains accessible controls and no remote resources 
   assert.match(html, /<main\b/);
   assert.match(html, /<table\b/);
   assert.match(html, /<button\b/);
+  assert.match(html, />Score</);
+  assert.match(html, />Line</);
+  assert.match(html, />Final margin</);
+  assert.doesNotMatch(html, /NFL \/ ATS|LOCAL ANALYSIS BOARD|Descriptive historical research|Local, read-only comparison/);
   assert.match(html, /aria-live=/);
   assert.match(html, /src="\/app\.js"/);
   assert.match(html, /href="\/styles\.css"/);
@@ -22,7 +26,7 @@ test('local analysis board contains accessible controls and no remote resources 
   assert.match(js, /Home cover/);
   assert.match(js, /Away cover/);
   assert.match(js, /Push/);
-  assert.match(js, /No historical games match/);
+  assert.match(js, /No games/);
   assert.match(js, /Unable to load/);
   assert.match(js, /distanceContributions/);
   assert.match(css, /focus-visible/);
@@ -103,6 +107,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements['target-title'].textContent, /CHI.*PHI/);
   assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
   assert.match(elements['candidate-body'].textContent, /Home cover.*Away cover/);
+  assert.match(elements['candidate-body'].textContent, /MIN 20.*GB 24.*\+3.*\+4/);
   assert.match(elements.detail.textContent, /MIN 20.*GB 24/);
   assert.match(elements.detail.textContent, /ATS margin.*\+1/);
   assert.match(elements.detail.textContent, /Home · Rest days/);
@@ -125,7 +130,7 @@ test('empty candidates and failed fetch have explicit states without stale detai
     summary: { candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0, homeCoverRate: null },
     candidates: [] }) }));
   await empty.settled;
-  assert.match(empty.elements.status.textContent, /No historical games match/);
+  assert.match(empty.elements.status.textContent, /No games/);
   assert.equal(empty.elements.detail.textContent, '');
   const failed = runClient(Promise.resolve({ ok: false, status: 500 }));
   await failed.settled;
