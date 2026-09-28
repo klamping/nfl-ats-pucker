@@ -5,7 +5,8 @@ const { compareHistorical, runComparisonCli } = require('../src/compare-historic
 
 const FEATURES = ['gamesPlayed', 'winPercentage', 'pointsScoredPerGame', 'pointsAllowedPerGame',
   'netYardsPerPlay', 'netEpaPerPlay', 'turnoverMarginPerGame', 'offensiveSackRate',
-  'defensiveSackRate', 'restDays'];
+  'defensiveSackRate', 'restDays', 'passingEpaPerDropback', 'rushingEpaPerCarry',
+  'explosivePlayRate'];
 
 function matchup(overrides = {}) {
   const features = Object.fromEntries(FEATURES.map((field) => [field, 1]));
@@ -46,10 +47,12 @@ test('allows partially populated historical features at 70% coverage and rejects
   const sparse = historical({ week: 3, homePregame: Object.fromEntries(FEATURES.map((field, index) => [field, index < 3 ? 1 : null])) });
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [partial, sparse] });
   assert.equal(result.candidates.length, 1);
-  assert.equal(result.candidates[0].featureCoverage, 20 / 21);
+  assert.equal(result.candidates[0].featureCoverage, 26 / 27);
   assert.deepEqual(result.candidates[0].omittedFeatures, ['home.netEpaPerPlay']);
-  assert.ok(Math.abs(result.candidates[0].distanceContributions['home.gamesPlayed'] - 1 / 20) < 1e-12);
+  assert.ok(Math.abs(result.candidates[0].distanceContributions['home.gamesPlayed'] - 1 / 26) < 1e-12);
   assert.equal(result.filters.minimumFeatureCoverage, 0.7);
+  assert.equal(Object.keys(result.filters.featureWeights).length, 27);
+  assert.ok(Math.abs(Object.values(result.filters.featureWeights).reduce((sum, weight) => sum + weight, 0) - 1) < 1e-12);
 });
 
 test('rejects a snapshot without gameId before comparing historical matchups', () => {
@@ -94,15 +97,21 @@ test('filters same game type and home spread band before ranking', () => {
 });
 
 test('ranks by normalized weighted feature distances and exposes contributions', () => {
-  const near = historical({ week: 2, homePregame: { ...snapshot().homePregame, gamesPlayed: 2 } });
-  const far = historical({ week: 4, homePregame: { ...snapshot().homePregame, gamesPlayed: 10 } });
+  const near = historical({ week: 2, homePregame: {
+    ...snapshot().homePregame, gamesPlayed: 2, passingEpaPerDropback: 2,
+  } });
+  const far = historical({ week: 4, homePregame: {
+    ...snapshot().homePregame, gamesPlayed: 10, passingEpaPerDropback: 10,
+  } });
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [far, near] });
   assert.deepEqual(result.candidates.map((candidate) => candidate.week), [2, 4]);
   assert.ok(result.candidates[0].similarityScore < result.candidates[1].similarityScore);
   assert.ok(Object.hasOwn(result.candidates[0].distanceContributions, 'home.gamesPlayed'));
   assert.ok(Object.hasOwn(result.candidates[0].distanceContributions, 'away.gamesPlayed'));
+  assert.ok(Object.hasOwn(result.candidates[0].distanceContributions, 'home.passingEpaPerDropback'));
   assert.ok(Object.hasOwn(result.candidates[0].distanceContributions, 'closingSpreadHome'));
-  assert.equal(result.candidates[0].distanceContributions['home.gamesPlayed'], 1 / 9 / 21);
+  assert.equal(result.candidates[0].distanceContributions['home.gamesPlayed'], 1 / 9 / 27);
+  assert.equal(result.candidates[0].distanceContributions['home.passingEpaPerDropback'], 1 / 9 / 27);
   assert.equal(result.candidates[0].distanceContributions['away.gamesPlayed'], 0);
 });
 

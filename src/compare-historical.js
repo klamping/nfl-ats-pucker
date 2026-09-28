@@ -4,7 +4,8 @@ const path = require('node:path');
 const FEATURE_FIELDS = [
   'gamesPlayed', 'winPercentage', 'pointsScoredPerGame', 'pointsAllowedPerGame',
   'netYardsPerPlay', 'netEpaPerPlay', 'turnoverMarginPerGame', 'offensiveSackRate',
-  'defensiveSackRate', 'restDays',
+  'defensiveSackRate', 'restDays', 'passingEpaPerDropback', 'rushingEpaPerCarry',
+  'explosivePlayRate',
 ];
 // Equal feature weights keep the score interpretable: each of 20 team-feature
 // deltas and the home spread contributes at most 1/21 of the total distance.
