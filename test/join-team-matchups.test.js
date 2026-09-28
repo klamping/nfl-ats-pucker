@@ -14,11 +14,14 @@ const emptyFeatures = {
   pointsScoredPerGame: null, pointsAllowedPerGame: null,
   netYardsPerPlay: null, netEpaPerPlay: null, turnoverMarginPerGame: null,
   offensiveSackRate: null, defensiveSackRate: null, restDays: null,
+  passingEpaPerDropback: null, rushingEpaPerCarry: null, explosivePlayRate: null,
+  passingCpoe: null, interceptionRate: null, rushingYardsPerCarry: null,
+  passingExplosiveRate: null, rushingExplosiveRate: null, penaltyYardsPerGame: null,
 };
 const away = {
   gameId: market.gameId, season: 2025, week: 2, team: 'ARI',
   gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
-  franchiseId: 'nflverse-3800', features: { ...emptyFeatures, gamesPlayed: 1, wins: 1 },
+  franchiseId: 'nflverse-3800', features: { ...emptyFeatures, gamesPlayed: 1, wins: 1, passingEpaPerDropback: 0.15 },
   pointsFor: 42, rawStats: { passing_yards: '300' },
 };
 const home = {
@@ -38,7 +41,7 @@ test('joins market final scores separately from two pregame feature objects', ()
     gameType: 'REG', kickoff: { date: '2025-09-14', time: '13:00', weekday: 'Sunday' },
     awayTeam: 'ARI', homeTeam: 'NYG', closingSpreadHome: -3,
     homeScore: 28, awayScore: 17,
-    awayPregame: { ...emptyFeatures, gamesPlayed: 1, wins: 1 },
+    awayPregame: { ...emptyFeatures, gamesPlayed: 1, wins: 1, passingEpaPerDropback: 0.15 },
     homePregame: { ...emptyFeatures, gamesPlayed: 1, wins: 0 },
   }]);
 });

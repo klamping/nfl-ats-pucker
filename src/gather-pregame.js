@@ -81,6 +81,9 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
     pointsFor: 0, pointsAgainst: 0, result: 'tie',
     offensiveYardsPerPlay: null, defensiveYardsPerPlay: null, offensiveEpaPerPlay: null,
     defensiveEpaPerPlay: null, turnoverMargin: null, offensiveSackRate: null, defensiveSackRate: null,
+    passingEpaPerDropback: null, rushingEpaPerCarry: null, explosivePlayRate: null,
+    passingCpoe: null, interceptionRate: null, rushingYardsPerCarry: null,
+    passingExplosiveRate: null, rushingExplosiveRate: null, penaltyYardsPerGame: null,
   }));
   const pregame = deriveTeamPregame([...postgame.accepted, ...targetMarkers]);
   const targetPregame = pregame.accepted.filter((record) => record.gameId === target.gameId);

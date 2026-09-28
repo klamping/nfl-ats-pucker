@@ -31,10 +31,12 @@ function statsFor(gameId, week = '2') {
   return [
     { season: String(season), week, team: 'DAL', opponent_team: 'PHI', season_type: 'REG', game_id: gameId,
       attempts: '20', carries: '10', passing_yards: '200', rushing_yards: '50', passing_epa: '2', rushing_epa: '1',
-      sacks_suffered: '1', sack_yards_lost: '5', interceptions: '0', lost_fumbles: '0' },
+      sacks_suffered: '1', sack_yards_lost: '5', interceptions: '0', lost_fumbles: '0', passing_20: '2', rushing_10: '3',
+      passing_cpoe: '1', passing_interceptions: '0', penalty_yards: '30' },
     { season: String(season), week, team: 'PHI', opponent_team: 'DAL', season_type: 'REG', game_id: gameId,
       attempts: '20', carries: '10', passing_yards: '180', rushing_yards: '70', passing_epa: '1', rushing_epa: '2',
-      sacks_suffered: '2', sack_yards_lost: '8', interceptions: '1', lost_fumbles: '0' },
+      sacks_suffered: '2', sack_yards_lost: '8', interceptions: '1', lost_fumbles: '0', passing_20: '1', rushing_10: '4',
+      passing_cpoe: '-1', passing_interceptions: '1', penalty_yards: '45' },
   ];
 }
 
@@ -92,12 +94,16 @@ test('resolves target by ID and builds a historical-schema snapshot using only e
   const featureFields = [
     'gamesPlayed', 'wins', 'losses', 'winPercentage', 'pointsScoredPerGame', 'pointsAllowedPerGame',
     'netYardsPerPlay', 'netEpaPerPlay', 'turnoverMarginPerGame', 'offensiveSackRate', 'defensiveSackRate', 'restDays',
+    'passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate', 'passingCpoe', 'interceptionRate',
+    'rushingYardsPerCarry', 'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame',
   ].sort();
   assert.deepEqual(Object.keys(result.snapshot.homePregame).sort(), featureFields);
   assert.deepEqual(Object.keys(result.snapshot.awayPregame).sort(), featureFields);
   assert.equal(result.snapshot.homePregame.gamesPlayed, 1);
   assert.equal(result.snapshot.awayPregame.gamesPlayed, 1);
   assert.equal(result.snapshot.homePregame.pointsScoredPerGame, 24);
+  assert.equal(result.snapshot.homePregame.passingEpaPerDropback, 1 / 22);
+  assert.equal(result.snapshot.homePregame.explosivePlayRate, 5 / 32);
   assert.equal(context.calls.odds, 1);
   assert.deepEqual(context.calls.seasons, [season]);
   assert.equal(result.rawPaths.length, 1);

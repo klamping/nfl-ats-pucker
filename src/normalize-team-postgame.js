@@ -133,6 +133,15 @@ function buildPostgame(game, row, opponentRow, identity, opponentIdentity, sourc
       ? null : opponentTurnovers - ownTurnovers,
     offensiveSackRate: sackRate(row),
     defensiveSackRate: sackRate(opponentRow),
+    passingEpaPerDropback: ratio(row.passing_epa, dropbacks(row)),
+    rushingEpaPerCarry: ratio(row.rushing_epa, row.carries),
+    explosivePlayRate: ratio(total(row.passing_20, row.rushing_10), total(dropbacks(row), row.carries)),
+    passingCpoe: number(row.passing_cpoe),
+    interceptionRate: ratio(row.passing_interceptions, row.attempts),
+    rushingYardsPerCarry: ratio(row.rushing_yards, row.carries),
+    passingExplosiveRate: ratio(row.passing_20, dropbacks(row)),
+    rushingExplosiveRate: ratio(row.rushing_10, row.carries),
+    penaltyYardsPerGame: number(row.penalty_yards),
     sourceTeamAlias: row.sourceTeamAlias,
     sourceOpponentAlias: row.sourceOpponentAlias,
     rawStats: { ...(row.sourceRawStats || row) },
@@ -163,6 +172,16 @@ function sackRate(row) {
   const attempts = number(row.attempts);
   return sacks === null || attempts === null || sacks + attempts <= 0
     ? null : sacks / (attempts + sacks);
+}
+
+function dropbacks(row) {
+  return total(row.attempts, row.sacks_suffered);
+}
+
+function ratio(numerator, denominator) {
+  const top = number(numerator);
+  const bottom = number(denominator);
+  return top === null || bottom === null || bottom <= 0 ? null : top / bottom;
 }
 
 function total(...values) {

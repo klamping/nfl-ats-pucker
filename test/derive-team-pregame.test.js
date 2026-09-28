@@ -13,6 +13,9 @@ function postgame(gameId, season, week, date, overrides = {}) {
     offensiveYardsPerPlay: 6, defensiveYardsPerPlay: 4,
     offensiveEpaPerPlay: 0.2, defensiveEpaPerPlay: 0.1,
     turnoverMargin: 2, offensiveSackRate: 0.05, defensiveSackRate: 0.1,
+    passingEpaPerDropback: 0.15, rushingEpaPerCarry: 0.05, explosivePlayRate: 0.12,
+    passingCpoe: 1.5, interceptionRate: 0.02, rushingYardsPerCarry: 4.5,
+    passingExplosiveRate: 0.08, rushingExplosiveRate: 0.18, penaltyYardsPerGame: 35,
     rawStats: { passing_yards: '300' }, source: 'nflverse',
     ...overrides,
   };
@@ -35,12 +38,18 @@ test('opening week has null history, and week two uses only earlier same-season 
     pointsScoredPerGame: null, pointsAllowedPerGame: null,
     netYardsPerPlay: null, netEpaPerPlay: null, turnoverMarginPerGame: null,
     offensiveSackRate: null, defensiveSackRate: null, restDays: null,
+    passingEpaPerDropback: null, rushingEpaPerCarry: null, explosivePlayRate: null,
+    passingCpoe: null, interceptionRate: null, rushingYardsPerCarry: null,
+    passingExplosiveRate: null, rushingExplosiveRate: null, penaltyYardsPerGame: null,
   });
   assert.deepEqual(weekTwo.features, {
     gamesPlayed: 1, wins: 1, losses: 0, winPercentage: 1,
     pointsScoredPerGame: 24, pointsAllowedPerGame: 14,
     netYardsPerPlay: 2, netEpaPerPlay: 0.1, turnoverMarginPerGame: 2,
     offensiveSackRate: 0.05, defensiveSackRate: 0.1, restDays: 7,
+    passingEpaPerDropback: 0.15, rushingEpaPerCarry: 0.05, explosivePlayRate: 0.12,
+    passingCpoe: 1.5, interceptionRate: 0.02, rushingYardsPerCarry: 4.5,
+    passingExplosiveRate: 0.08, rushingExplosiveRate: 0.18, penaltyYardsPerGame: 35,
   });
   assert.deepEqual(Object.keys(weekTwo).sort(), [
     'features', 'franchiseId', 'gameId', 'gameType', 'kickoff', 'opponent',
@@ -60,7 +69,9 @@ test('postseason includes earlier regular and postseason games but a new season 
   const newSeason = postgame('2026_01_ARI_NYG', 2026, 1, '2026-09-06');
   const { accepted, rejected } = deriveTeamPregame([divisional, newSeason, wildcard, regular]);
   assert.deepEqual(rejected, []);
-  const { defensiveSackRate, ...postseasonFeatures } = accepted[2].features;
+  const { defensiveSackRate, passingEpaPerDropback, rushingEpaPerCarry, explosivePlayRate,
+    passingCpoe, interceptionRate, rushingYardsPerCarry, passingExplosiveRate,
+    rushingExplosiveRate, penaltyYardsPerGame, ...postseasonFeatures } = accepted[2].features;
   assert.deepEqual(postseasonFeatures, {
     gamesPlayed: 2, wins: 1, losses: 1, winPercentage: 0.5,
     pointsScoredPerGame: 17, pointsAllowedPerGame: 17,
@@ -68,6 +79,15 @@ test('postseason includes earlier regular and postseason games but a new season 
     offensiveSackRate: 0.1, restDays: 7,
   });
   assert.ok(Math.abs(defensiveSackRate - 0.15) < 1e-12);
+  assert.equal(passingEpaPerDropback, 0.15);
+  assert.equal(rushingEpaPerCarry, 0.05);
+  assert.equal(explosivePlayRate, 0.12);
+  assert.equal(passingCpoe, 1.5);
+  assert.equal(interceptionRate, 0.02);
+  assert.equal(rushingYardsPerCarry, 4.5);
+  assert.equal(passingExplosiveRate, 0.08);
+  assert.equal(rushingExplosiveRate, 0.18);
+  assert.equal(penaltyYardsPerGame, 35);
   assert.equal(accepted[3].features.gamesPlayed, null);
 });
 

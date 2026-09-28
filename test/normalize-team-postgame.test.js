@@ -52,6 +52,11 @@ function weeklyRow(team, overrides = {}) {
     rushing_yards: team === 'ARI' ? '100' : '140',
     passing_epa: team === 'ARI' ? '5' : '12',
     rushing_epa: team === 'ARI' ? '-1' : '3',
+    passing_20: team === 'ARI' ? '3' : '4',
+    rushing_10: team === 'ARI' ? '4' : '5',
+    passing_cpoe: team === 'ARI' ? '1.5' : '-0.5',
+    passing_interceptions: team === 'ARI' ? '2' : '0',
+    penalty_yards: team === 'ARI' ? '25' : '40',
     interceptions: team === 'ARI' ? '2' : '0',
     lost_fumbles: team === 'ARI' ? '1' : '1',
     ...overrides,
@@ -99,6 +104,15 @@ test('pairs exactly two team-game facts with market scores, opponent defense, ra
   assert.equal(home.turnoverMargin, 2);
   assert.equal(away.offensiveSackRate, 2 / 32);
   assert.equal(away.defensiveSackRate, 1 / 26);
+  assert.equal(away.passingEpaPerDropback, 5 / 32);
+  assert.equal(away.rushingEpaPerCarry, -1 / 20);
+  assert.equal(away.explosivePlayRate, 7 / 52);
+  assert.equal(away.passingCpoe, 1.5);
+  assert.equal(away.interceptionRate, 2 / 30);
+  assert.equal(away.rushingYardsPerCarry, 5);
+  assert.equal(away.passingExplosiveRate, 3 / 32);
+  assert.equal(away.rushingExplosiveRate, 4 / 20);
+  assert.equal(away.penaltyYardsPerGame, 25);
   assert.deepEqual(away.rawStats, weeklyRow('ARI'));
   assert.deepEqual(home.rawStats, weeklyRow('NYG'));
   assert.equal(away.source, 'nflverse');
@@ -212,6 +226,7 @@ test('retains non-computable metrics as null, including zero-play and zero-dropb
   const result = normalize({ weeklyStats: [
     weeklyRow('ARI', {
       attempts: '0', carries: '0', sacks_suffered: '0', interceptions: '',
+      passing_interceptions: '',
     }),
     weeklyRow('NYG', { sack_yards_lost: '', passing_epa: '' }),
   ] });
@@ -222,6 +237,15 @@ test('retains non-computable metrics as null, including zero-play and zero-dropb
   assert.equal(away.offensiveEpaPerPlay, null);
   assert.equal(away.offensiveSackRate, null);
   assert.equal(away.turnoverMargin, null);
+  assert.equal(away.passingEpaPerDropback, null);
+  assert.equal(away.rushingEpaPerCarry, null);
+  assert.equal(away.explosivePlayRate, null);
+  assert.equal(away.passingCpoe, 1.5);
+  assert.equal(away.interceptionRate, null);
+  assert.equal(away.rushingYardsPerCarry, null);
+  assert.equal(away.passingExplosiveRate, null);
+  assert.equal(away.rushingExplosiveRate, null);
+  assert.equal(away.penaltyYardsPerGame, 25);
   assert.equal(away.defensiveYardsPerPlay, null);
   assert.equal(away.defensiveEpaPerPlay, null);
   assert.equal(home.defensiveYardsPerPlay, null);

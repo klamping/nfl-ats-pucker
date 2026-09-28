@@ -2,7 +2,11 @@ const METRICS = [
   'offensiveYardsPerPlay', 'defensiveYardsPerPlay',
   'offensiveEpaPerPlay', 'defensiveEpaPerPlay',
   'turnoverMargin', 'offensiveSackRate', 'defensiveSackRate',
+  'passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate',
+  'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry',
+  'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame',
 ];
+const PROFILE_METRICS = METRICS.slice(7);
 
 function deriveTeamPregame(postgameRecords) {
   if (!Array.isArray(postgameRecords)) throw new Error('postgameRecords are required');
@@ -90,6 +94,7 @@ function featuresFor(history, date) {
       pointsScoredPerGame: null, pointsAllowedPerGame: null,
       netYardsPerPlay: null, netEpaPerPlay: null, turnoverMarginPerGame: null,
       offensiveSackRate: null, defensiveSackRate: null, restDays: null,
+      ...Object.fromEntries(PROFILE_METRICS.map((metric) => [metric, null])),
     };
   }
   const wins = history.filter((game) => game.result === 'win').length;
@@ -110,6 +115,8 @@ function featuresFor(history, date) {
     turnoverMarginPerGame: average(history.map((game) => game.turnoverMargin)),
     offensiveSackRate: average(history.map((game) => game.offensiveSackRate)),
     defensiveSackRate: average(history.map((game) => game.defensiveSackRate)),
+    ...Object.fromEntries(PROFILE_METRICS.map((metric) => [metric,
+      average(history.map((game) => game[metric]))])),
     restDays: (Date.parse(`${date}T00:00:00Z`) - Date.parse(`${latest}T00:00:00Z`)) / 86400000,
   };
 }

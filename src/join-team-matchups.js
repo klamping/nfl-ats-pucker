@@ -14,6 +14,9 @@ const FEATURE_FIELDS = [
   'gamesPlayed', 'wins', 'losses', 'winPercentage', 'pointsScoredPerGame',
   'pointsAllowedPerGame', 'netYardsPerPlay', 'netEpaPerPlay',
   'turnoverMarginPerGame', 'offensiveSackRate', 'defensiveSackRate', 'restDays',
+  'passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate',
+  'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry',
+  'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame',
 ];
 
 function pick(source, fields) {
