@@ -86,10 +86,10 @@ test('uses explicit week offsets from the target week', () => {
   assert.deepEqual(result.candidates.map((candidate) => candidate.week), [1, 6, 7]);
 });
 
-test('filters same game type and home spread band before ranking', () => {
-  const result = compareHistorical({ input: snapshot(), spreadBand: 2, historicalMatchups: [
+test('filters same game type and fixed home spread band before ranking', () => {
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [
     historical({ week: 2, closingSpreadHome: -4 }),
-    historical({ week: 3, closingSpreadHome: 0 }),
+    historical({ week: 3, closingSpreadHome: 1 }),
     historical({ week: 4, gameType: 'POST', closingSpreadHome: -3 }),
   ] });
   assert.equal(result.candidates.length, 1);
@@ -99,7 +99,7 @@ test('filters same game type and home spread band before ranking', () => {
 test('uses a ±3.5 spread eligibility band without scoring eligible line differences', () => {
   const eligible = historical({ week: 2, closingSpreadHome: 0.5 });
   const outside = historical({ week: 3, closingSpreadHome: 0.6 });
-  const result = compareHistorical({ input: snapshot(), historicalMatchups: [eligible, outside] });
+  const result = compareHistorical({ input: snapshot(), spreadBand: 10, historicalMatchups: [eligible, outside] });
 
   assert.equal(result.filters.spreadBand, 3.5);
   assert.equal(Object.hasOwn(result.filters.featureWeights, 'closingSpreadHome'), false);
@@ -142,21 +142,21 @@ test('does not score games played or win percentage after week matching', () => 
 });
 
 test('grades home cover, away cover, and push with exact ATS margin math and aggregates', () => {
-  const result = compareHistorical({ input: snapshot(), spreadBand: 10, historicalMatchups: [
-    historical({ week: 2, homeScore: 24, awayScore: 20, closingSpreadHome: 3 }),
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [
+    historical({ week: 2, homeScore: 24, awayScore: 20, closingSpreadHome: 0.5 }),
     historical({ week: 3, homeScore: 20, awayScore: 24, closingSpreadHome: -3 }),
-    historical({ week: 4, homeScore: 23, awayScore: 20, closingSpreadHome: 3 }),
+    historical({ week: 4, homeScore: 23, awayScore: 23, closingSpreadHome: 0 }),
   ] });
   const grades = Object.fromEntries(result.candidates.map(({ week, homeAtsMargin, outcome }) =>
     [week, { homeAtsMargin, outcome }]));
   const weekTwoCandidate = result.candidates.find((candidate) => candidate.week === 2);
   assert.equal(weekTwoCandidate.homeScore, 24);
   assert.equal(weekTwoCandidate.awayScore, 20);
-  assert.equal(weekTwoCandidate.closingSpreadHome, 3);
+  assert.equal(weekTwoCandidate.closingSpreadHome, 0.5);
   assert.equal(Object.hasOwn(weekTwoCandidate, 'homePregame'), false);
   assert.equal(Object.hasOwn(weekTwoCandidate, 'awayPregame'), false);
   assert.deepEqual(grades, {
-    2: { homeAtsMargin: 1, outcome: 'home_cover' },
+    2: { homeAtsMargin: 3.5, outcome: 'home_cover' },
     3: { homeAtsMargin: -1, outcome: 'away_cover' },
     4: { homeAtsMargin: 0, outcome: 'push' },
   });

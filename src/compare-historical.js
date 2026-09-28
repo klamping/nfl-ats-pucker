@@ -15,11 +15,11 @@ const FEATURE_WEIGHTS = Object.fromEntries(FEATURE_FIELDS.flatMap((field) =>
 const DEFAULT_SPREAD_BAND = 3.5;
 const MINIMUM_FEATURE_COVERAGE = 0.7;
 
-function compareHistorical({ input, historicalMatchups, weekWindow, spreadBand = DEFAULT_SPREAD_BAND,
+function compareHistorical({ input, historicalMatchups, weekWindow,
   limit = 10 } = {}) {
   validateInput(input);
   if (!Array.isArray(historicalMatchups)) throw new Error('historicalMatchups must be an array');
-  if (!Number.isFinite(spreadBand) || spreadBand < 0) throw new Error('spreadBand must be a non-negative number');
+  const spreadBand = DEFAULT_SPREAD_BAND;
   if (!Number.isInteger(limit) || limit < 0) throw new Error('limit must be a non-negative integer');
   const window = resolveWeekWindow(input.week, weekWindow);
   const eligible = historicalMatchups.filter((record) => isCompleteHistorical(record) && featureKeysFor(input, record).length / Object.keys(FEATURE_WEIGHTS).length >= MINIMUM_FEATURE_COVERAGE &&
