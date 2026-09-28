@@ -17,8 +17,23 @@
     netYardsPerPlay: 'Net yards per play', netEpaPerPlay: 'Net EPA per play',
     turnoverMarginPerGame: 'Turnover margin per game', offensiveSackRate: 'Offensive sack rate',
     defensiveSackRate: 'Defensive sack rate', restDays: 'Rest days',
+    passingEpaPerDropback: 'Passing EPA per dropback', rushingEpaPerCarry: 'Rushing EPA per carry',
+    explosivePlayRate: 'Explosive-play rate',
     closingSpreadHome: 'Home spread',
   };
+  const profileMetrics = [
+    ['passingEpaPerDropback', 'Passing EPA per dropback', 'decimal'],
+    ['passingCpoe', 'Passing CPOE', 'decimal'],
+    ['interceptionRate', 'Interception rate', 'percent'],
+    ['rushingEpaPerCarry', 'Rushing EPA per carry', 'decimal'],
+    ['rushingYardsPerCarry', 'Yards per carry', 'decimal'],
+    ['explosivePlayRate', 'Explosive-play rate', 'percent'],
+    ['passingExplosiveRate', 'Pass 20+ rate', 'percent'],
+    ['rushingExplosiveRate', 'Rush 10+ rate', 'percent'],
+    ['offensiveSackRate', 'Offensive sack rate', 'percent'],
+    ['defensiveSackRate', 'Defensive sack rate', 'percent'],
+    ['penaltyYardsPerGame', 'Penalty yards per game', 'number'],
+  ];
   let data;
   let selectedId;
   let sortKey = 'score';
@@ -61,6 +76,24 @@
       return card;
     }));
     byId('count-label').textContent = `${summary.candidateCount} of up to ${filters.limit} games`;
+    renderProfile(target);
+  }
+
+  function profileValue(value, format) {
+    if (value === null || !Number.isFinite(value)) return '—';
+    if (format === 'percent') return `${(value * 100).toFixed(1)}%`;
+    if (format === 'number') return String(Math.round(value));
+    return value.toFixed(3);
+  }
+
+  function renderProfile(target) {
+    byId('profile-body').replaceChildren(...profileMetrics.map(([field, label, format]) => {
+      const row = element('tr');
+      row.append(element('th', label),
+        element('td', profileValue(target.awayPregame?.[field], format), 'tabular'),
+        element('td', profileValue(target.homePregame?.[field], format), 'tabular'));
+      return row;
+    }));
   }
 
   function renderDetail(game) {

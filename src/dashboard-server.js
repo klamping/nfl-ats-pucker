@@ -9,6 +9,12 @@ const STATIC_ASSETS = {
   '/app.js': ['app.js', 'text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
 };
+const PROFILE_FIELDS = [
+  'passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate',
+  'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry',
+  'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame',
+  'offensiveSackRate', 'defensiveSackRate',
+];
 
 function buildDashboardPayload(input, comparison) {
   return {
@@ -24,6 +30,8 @@ function buildDashboardPayload(input, comparison) {
         consensusSpreadHome: input.currentOdds.consensusSpreadHome,
         contributingBooks: input.currentOdds.contributingBooks,
       },
+      homePregame: projectProfile(input.homePregame),
+      awayPregame: projectProfile(input.awayPregame),
     },
     filters: {
       gameType: comparison.filters.gameType,
@@ -61,6 +69,11 @@ function buildDashboardPayload(input, comparison) {
       outcome: candidate.outcome,
     })),
   };
+}
+
+function projectProfile(features) {
+  return Object.fromEntries(PROFILE_FIELDS.map((field) => [field,
+    Number.isFinite(features?.[field]) ? features[field] : null]));
 }
 
 async function loadPayload({ inputPath, fileSystem, outputRoot }) {

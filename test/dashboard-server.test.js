@@ -8,7 +8,12 @@ const { createDashboardServer, runDashboardCli } = require('../src/dashboard-ser
 
 const FEATURES = ['gamesPlayed', 'winPercentage', 'pointsScoredPerGame', 'pointsAllowedPerGame',
   'netYardsPerPlay', 'netEpaPerPlay', 'turnoverMarginPerGame', 'offensiveSackRate',
-  'defensiveSackRate', 'restDays'];
+  'defensiveSackRate', 'restDays', 'passingEpaPerDropback', 'rushingEpaPerCarry',
+  'explosivePlayRate', 'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry',
+  'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame'];
+const PROFILE_FIELDS = ['passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate',
+  'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry', 'passingExplosiveRate',
+  'rushingExplosiveRate', 'penaltyYardsPerGame', 'offensiveSackRate', 'defensiveSackRate'];
 const ROOT = '/repo';
 const INPUT = '/private/input.json';
 const MANIFEST = path.join(ROOT, 'data/normalized/nfl/nflverse-team-matchups-2005-2025.current.json');
@@ -94,6 +99,8 @@ test('GET returns a strictly projected target and comparator result without rere
     gameId: 'target-1', season: 2026, week: 3, gameType: 'REG',
     homeTeam: 'HME', awayTeam: 'AWY', kickoff: { date: '2026-09-20', time: '13:00' },
     currentOdds: { consensusSpreadHome: -3, contributingBooks: 2 },
+    homePregame: Object.fromEntries(PROFILE_FIELDS.map((field) => [field, 1])),
+    awayPregame: Object.fromEntries(PROFILE_FIELDS.map((field) => [field, 1])),
   });
   const expected = compareHistorical({ input: snapshot(), historicalMatchups: [historical()] });
   assert.deepEqual(payload.filters, expected.filters);

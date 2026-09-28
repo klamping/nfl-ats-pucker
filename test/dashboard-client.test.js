@@ -62,7 +62,7 @@ class Element {
 }
 
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
-  'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
+  'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label'];
 
 function runClient(reply) {
@@ -83,7 +83,13 @@ function runClient(reply) {
 const sample = {
   target: { gameId: 'target', season: 2026, week: 3, gameType: 'REG', homeTeam: 'PHI',
     awayTeam: 'CHI', kickoff: { date: '2026-09-20', time: '13:00' },
-    currentOdds: { consensusSpreadHome: 3, contributingBooks: 2 } },
+    currentOdds: { consensusSpreadHome: 3, contributingBooks: 2 },
+    homePregame: { passingEpaPerDropback: 0.12, rushingEpaPerCarry: 0.08, explosivePlayRate: 0.1,
+      passingCpoe: 1.2, interceptionRate: 0.02, rushingYardsPerCarry: 4.2, passingExplosiveRate: 0.07,
+      rushingExplosiveRate: 0.16, penaltyYardsPerGame: 30, offensiveSackRate: 0.04, defensiveSackRate: 0.06 },
+    awayPregame: { passingEpaPerDropback: 0.05, rushingEpaPerCarry: null, explosivePlayRate: 0.08,
+      passingCpoe: -0.3, interceptionRate: 0.03, rushingYardsPerCarry: 3.8, passingExplosiveRate: 0.04,
+      rushingExplosiveRate: 0.14, penaltyYardsPerGame: 45, offensiveSackRate: 0.07, defensiveSackRate: 0.05 } },
   filters: { gameType: 'REG', weekWindow: { startWeek: 2, endWeek: 5 }, spreadBand: 3,
     featureWeights: { 'home.restDays': 0.05, closingSpreadHome: 0.05 },
     minimumFeatureCoverage: 0.7, limit: 10 },
@@ -91,7 +97,7 @@ const sample = {
   candidates: [
     { gameId: 'one', season: 2020, week: 2, gameType: 'REG', homeTeam: 'GB', awayTeam: 'MIN',
       homeScore: 24, awayScore: 20, closingSpreadHome: 3, similarityScore: 0.1,
-      distanceContributions: { 'home.restDays': 0.04, closingSpreadHome: 0.06 },
+      distanceContributions: { 'home.restDays': 0.04, 'home.passingEpaPerDropback': 0.01, closingSpreadHome: 0.06 },
       featureCoverage: 0.9, omittedFeatures: ['away.netEpaPerPlay'], homeAtsMargin: 1, outcome: 'home_cover' },
     { gameId: 'two', season: 2018, week: 5, gameType: 'REG', homeTeam: 'LAR', awayTeam: 'SF',
       homeScore: 17, awayScore: 20, closingSpreadHome: 1, similarityScore: 0.3,
@@ -106,11 +112,14 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.equal(requested, '/api/comparison');
   assert.match(elements['target-title'].textContent, /CHI.*PHI/);
   assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
+  assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*0\.120/);
+  assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*0\.080/);
   assert.match(elements['candidate-body'].textContent, /Home cover.*Away cover/);
   assert.match(elements['candidate-body'].textContent, /MIN 20.*GB 24.*\+3.*\+4/);
   assert.match(elements.detail.textContent, /MIN 20.*GB 24/);
   assert.match(elements.detail.textContent, /ATS margin.*\+1/);
   assert.match(elements.detail.textContent, /Home · Rest days/);
+  assert.match(elements.detail.textContent, /Home · Passing EPA per dropback/);
   assert.match(elements.detail.textContent, /Omitted.*Away · Net EPA per play/);
   const first = elements['candidate-body'].children[0];
   assert.equal(first.attributes.tabindex, '0');
