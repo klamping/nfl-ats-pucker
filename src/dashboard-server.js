@@ -26,10 +26,7 @@ function buildDashboardPayload(input, comparison) {
       homeTeam: input.homeTeam,
       awayTeam: input.awayTeam,
       kickoff: { date: input.kickoff.date, time: input.kickoff.time },
-      currentOdds: {
-        consensusSpreadHome: input.currentOdds.consensusSpreadHome,
-        contributingBooks: input.currentOdds.contributingBooks,
-      },
+      currentOdds: projectCurrentOdds(input.currentOdds),
       homePregame: projectProfile(input.homePregame),
       awayPregame: projectProfile(input.awayPregame),
     },
@@ -70,6 +67,17 @@ function buildDashboardPayload(input, comparison) {
       outcome: candidate.outcome,
     })),
   };
+}
+
+function projectCurrentOdds(currentOdds) {
+  const projected = {
+    provider: currentOdds.provider,
+    consensusSpreadHome: currentOdds.consensusSpreadHome,
+  };
+  if (currentOdds.provider === 'the-odds-api') {
+    projected.contributingBooks = currentOdds.contributingBooks;
+  }
+  return projected;
 }
 
 function projectProfile(features) {

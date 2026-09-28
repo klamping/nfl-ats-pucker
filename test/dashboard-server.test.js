@@ -98,7 +98,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.deepEqual(payload.target, {
     gameId: 'target-1', season: 2026, week: 3, gameType: 'REG',
     homeTeam: 'HME', awayTeam: 'AWY', kickoff: { date: '2026-09-20', time: '13:00' },
-    currentOdds: { consensusSpreadHome: -3, contributingBooks: 2 },
+    currentOdds: { provider: 'the-odds-api', consensusSpreadHome: -3, contributingBooks: 2 },
     homePregame: Object.fromEntries(PROFILE_FIELDS.map((field) => [field, 1])),
     awayPregame: Object.fromEntries(PROFILE_FIELDS.map((field) => [field, 1])),
   });
@@ -119,6 +119,23 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.equal((await response(server)).status, 200);
   assert.deepEqual(reads, [[INPUT, 'utf8'], [MANIFEST, 'utf8'], [ACCEPTED, 'utf8']]);
   assert.deepEqual(writes, []);
+});
+
+test('GET projects retrospective market metadata without live odds details', async (t) => {
+  const input = snapshot({
+    currentOdds: { provider: 'nflverse', retrievedAt: '2026-09-01T00:00:00Z', consensusSpreadHome: -3,
+      sourceUrl: 'https://secret.example/nflverse', rawResponse: { apiKey: 'TOP_SECRET' } },
+  });
+  const server = await createDashboardServer({ inputPath: INPUT, outputRoot: ROOT,
+    fileSystem: fixture({ input }).fileSystem, port: 0 });
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+
+  const payload = await (await response(server)).json();
+  assert.deepEqual(payload.target.currentOdds, { provider: 'nflverse', consensusSpreadHome: -3 });
+  const serialized = JSON.stringify(payload);
+  for (const sensitiveField of ['retrievedAt', 'homeSpreads', 'sourceUrl', 'rawResponse', 'TOP_SECRET']) {
+    assert.equal(serialized.includes(sensitiveField), false, `leaked ${sensitiveField}`);
+  }
 });
 
 test('empty comparison returns stable summary and empty candidates', async (t) => {

@@ -114,15 +114,9 @@ async function runComparisonCli({ inputPath, output = console, fileSystem = defa
 function validateInput(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input) ||
       !nonEmpty(input.gameId) || !Number.isInteger(input.season) || !Number.isInteger(input.week) || input.week < 1 ||
-      !['REG', 'POST'].includes(input.gameType) || !nonEmpty(input.homeTeam) || !nonEmpty(input.awayTeam) ||
-      input.homeTeam === input.awayTeam || !Number.isFinite(input.closingSpreadHome) ||
-      !validKickoff(input.kickoff) || !input.currentOdds || input.currentOdds.provider !== 'the-odds-api' ||
-      typeof input.currentOdds.retrievedAt !== 'string' || !Number.isFinite(Date.parse(input.currentOdds.retrievedAt)) ||
-      !Number.isInteger(input.currentOdds.contributingBooks) || input.currentOdds.contributingBooks < 1 ||
-      !Array.isArray(input.currentOdds.homeSpreads) || !input.currentOdds.homeSpreads.length ||
-      !input.currentOdds.homeSpreads.every(Number.isFinite) ||
-      !Number.isFinite(input.currentOdds.consensusSpreadHome) ||
-      input.currentOdds.consensusSpreadHome !== input.closingSpreadHome) {
+       !['REG', 'POST'].includes(input.gameType) || !nonEmpty(input.homeTeam) || !nonEmpty(input.awayTeam) ||
+       input.homeTeam === input.awayTeam || !Number.isFinite(input.closingSpreadHome) ||
+       !validKickoff(input.kickoff) || !validCurrentOdds(input.currentOdds, input.closingSpreadHome)) {
     throw new Error('Invalid input matchup snapshot');
   }
   for (const side of ['homePregame', 'awayPregame']) {
@@ -130,6 +124,18 @@ function validateInput(input) {
       throw new Error(`Input ${side} requires complete finite comparison features`);
     }
   }
+}
+
+function validCurrentOdds(currentOdds, closingSpreadHome) {
+  if (!currentOdds || typeof currentOdds !== 'object' || Array.isArray(currentOdds) ||
+      !['the-odds-api', 'nflverse'].includes(currentOdds.provider) ||
+      typeof currentOdds.retrievedAt !== 'string' || !Number.isFinite(Date.parse(currentOdds.retrievedAt)) ||
+      !Number.isFinite(currentOdds.consensusSpreadHome) ||
+      currentOdds.consensusSpreadHome !== closingSpreadHome) return false;
+  if (currentOdds.provider === 'nflverse') return true;
+  return Number.isInteger(currentOdds.contributingBooks) && currentOdds.contributingBooks > 0 &&
+    Array.isArray(currentOdds.homeSpreads) && currentOdds.homeSpreads.length > 0 &&
+    currentOdds.homeSpreads.every(Number.isFinite);
 }
 
 function isCompleteHistorical(record) {

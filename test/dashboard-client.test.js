@@ -155,6 +155,20 @@ test('labels a negative home spread as home favored', async () => {
   assert.match(elements['target-line'].textContent, /-3\.5.*home favored/);
 });
 
+test('identifies nflverse retrospective data as closing-line data instead of books', async () => {
+  const retrospective = {
+    ...sample,
+    target: {
+      ...sample.target,
+      currentOdds: { provider: 'nflverse', consensusSpreadHome: 3 },
+    },
+  };
+  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => retrospective }));
+  await settled;
+  assert.match(elements.scope.textContent, /nflverse closing-line data/);
+  assert.doesNotMatch(elements.scope.textContent, /books/);
+});
+
 test('labels a zero home spread as even', async () => {
   const even = {
     ...sample,

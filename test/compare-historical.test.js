@@ -40,6 +40,25 @@ test('validates the gathered snapshot and selected finite features', () => {
   assert.throws(() => compareHistorical({ input: invalid, historicalMatchups: [] }), /finite|valid/i);
 });
 
+test('accepts an nflverse retrospective market with a matching finite consensus line', () => {
+  const input = snapshot({
+    currentOdds: { provider: 'nflverse', retrievedAt: '2026-09-01T00:00:00Z', consensusSpreadHome: -3 },
+  });
+
+  assert.deepEqual(compareHistorical({ input, historicalMatchups: [] }).summary, {
+    candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0, homeCoverRate: null,
+  });
+});
+
+test('rejects nflverse retrospective markets with a missing or mismatched consensus line', () => {
+  for (const currentOdds of [
+    { provider: 'nflverse', retrievedAt: '2026-09-01T00:00:00Z' },
+    { provider: 'nflverse', retrievedAt: '2026-09-01T00:00:00Z', consensusSpreadHome: -2.5 },
+  ]) {
+    assert.throws(() => compareHistorical({ input: snapshot({ currentOdds }), historicalMatchups: [] }), /valid/i);
+  }
+});
+
 test('allows partially populated historical features at 70% coverage and rejects lower coverage', () => {
   const partial = historical({ week: 2, homePregame: {
     ...snapshot().homePregame, pointsScoredPerGame: 2, netEpaPerPlay: null,
