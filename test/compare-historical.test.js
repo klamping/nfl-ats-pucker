@@ -39,6 +39,19 @@ test('validates the gathered snapshot and selected finite features', () => {
   assert.throws(() => compareHistorical({ input: invalid, historicalMatchups: [] }), /finite|valid/i);
 });
 
+test('allows partially populated historical features at 70% coverage and rejects lower coverage', () => {
+  const partial = historical({ week: 2, homePregame: {
+    ...snapshot().homePregame, gamesPlayed: 2, netEpaPerPlay: null,
+  } });
+  const sparse = historical({ week: 3, homePregame: Object.fromEntries(FEATURES.map((field, index) => [field, index < 3 ? 1 : null])) });
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [partial, sparse] });
+  assert.equal(result.candidates.length, 1);
+  assert.equal(result.candidates[0].featureCoverage, 20 / 21);
+  assert.deepEqual(result.candidates[0].omittedFeatures, ['home.netEpaPerPlay']);
+  assert.ok(Math.abs(result.candidates[0].distanceContributions['home.gamesPlayed'] - 1 / 20) < 1e-12);
+  assert.equal(result.filters.minimumFeatureCoverage, 0.7);
+});
+
 test('rejects a snapshot without gameId before comparing historical matchups', () => {
   const input = snapshot();
   delete input.gameId;

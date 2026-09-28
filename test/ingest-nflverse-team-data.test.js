@@ -97,6 +97,9 @@ test('validation processes exactly the five sample seasons from one market manif
   assert.deepEqual(await Promise.all(summaries[0].identity.rawPaths.map((rawPath) => readFile(rawPath, 'utf8'))), ['teams\n', 'branding\n']);
   const finalMatchups = (await readFile(summaries[4].matchup.acceptedPath, 'utf8')).trim().split('\n').filter(Boolean).map(JSON.parse);
   assert.deepEqual(finalMatchups.map((row) => row.gameId), ['2025_01_DAL_PHI']);
+  assert.deepEqual(finalMatchups.map(({ homeScore, awayScore }) => ({ homeScore, awayScore })), [
+    { homeScore: 24, awayScore: 20 },
+  ]);
 });
 
 for (const failure of ['write', 'publish']) {

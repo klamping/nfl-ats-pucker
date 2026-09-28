@@ -13,6 +13,7 @@ const FEATURE_WEIGHTS = Object.fromEntries([
   ['closingSpreadHome', 1],
 ].map(([field, weight]) => [field, weight / (FEATURE_FIELDS.length * 2 + 1)]));
 const DEFAULT_SPREAD_BAND = 3;
+const MINIMUM_FEATURE_COVERAGE = 0.7;
 
 function compareHistorical({ input, historicalMatchups, weekWindow, spreadBand = DEFAULT_SPREAD_BAND,
   limit = 10 } = {}) {
@@ -21,14 +22,18 @@ function compareHistorical({ input, historicalMatchups, weekWindow, spreadBand =
   if (!Number.isFinite(spreadBand) || spreadBand < 0) throw new Error('spreadBand must be a non-negative number');
   if (!Number.isInteger(limit) || limit < 0) throw new Error('limit must be a non-negative integer');
   const window = resolveWeekWindow(input.week, weekWindow);
-  const eligible = historicalMatchups.filter((record) => isCompleteHistorical(record) &&
+  const eligible = historicalMatchups.filter((record) => isCompleteHistorical(record) && featureKeysFor(input, record).length / Object.keys(FEATURE_WEIGHTS).length >= MINIMUM_FEATURE_COVERAGE &&
     record.gameType === input.gameType && record.week >= window.startWeek && record.week <= window.endWeek &&
     Math.abs(record.closingSpreadHome - input.closingSpreadHome) <= spreadBand);
   const maximumDeltas = Object.fromEntries(Object.keys(FEATURE_WEIGHTS).map((key) => [key,
-    eligible.reduce((maximum, record) => Math.max(maximum, Math.abs(deltaFor(input, record, key))), 0)]));
+    eligible.reduce((maximum, record) => featureKeysFor(input, record).includes(key) ? Math.max(maximum, Math.abs(deltaFor(input, record, key))) : maximum, 0)]));
 
   const ranked = eligible.map((record) => {
-    const distanceContributions = Object.fromEntries(Object.entries(FEATURE_WEIGHTS).map(([key, weight]) => {
+    const featureKeys = featureKeysFor(input, record);
+    const weightTotal = featureKeys.length === Object.keys(FEATURE_WEIGHTS).length ? 1 :
+      featureKeys.reduce((sum, key) => sum + FEATURE_WEIGHTS[key], 0);
+    const distanceContributions = Object.fromEntries(featureKeys.map((key) => {
+      const weight = FEATURE_WEIGHTS[key] / weightTotal;
       const maximum = maximumDeltas[key];
       const normalizedDelta = maximum === 0 ? 0 : Math.abs(deltaFor(input, record, key)) / maximum;
       return [key, normalizedDelta * weight];
@@ -44,6 +49,8 @@ function compareHistorical({ input, historicalMatchups, weekWindow, spreadBand =
       awayTeam: record.awayTeam,
       similarityScore,
       distanceContributions,
+      featureCoverage: featureKeys.length / Object.keys(FEATURE_WEIGHTS).length,
+      omittedFeatures: Object.keys(FEATURE_WEIGHTS).filter((key) => !featureKeys.includes(key)),
       homeAtsMargin,
       outcome: homeAtsMargin > 0 ? 'home_cover' : homeAtsMargin < 0 ? 'away_cover' : 'push',
     };
@@ -59,7 +66,8 @@ function compareHistorical({ input, historicalMatchups, weekWindow, spreadBand =
       gameType: input.gameType,
       weekWindow: window,
       spreadBand,
-      featureWeights: FEATURE_WEIGHTS,
+    featureWeights: FEATURE_WEIGHTS,
+    minimumFeatureCoverage: MINIMUM_FEATURE_COVERAGE,
       limit,
     },
     candidates,
@@ -122,8 +130,11 @@ function isCompleteHistorical(record) {
     nonEmpty(record.homeTeam) && nonEmpty(record.awayTeam) &&
     Number.isFinite(record.homeScore) && Number.isFinite(record.awayScore) &&
     Number.isFinite(record.closingSpreadHome) &&
-    ['homePregame', 'awayPregame'].every((side) => record[side] &&
-      FEATURE_FIELDS.every((field) => Number.isFinite(record[side][field])));
+    ['homePregame', 'awayPregame'].every((side) => record[side] && typeof record[side] === 'object');
+}
+
+function featureKeysFor(input, record) {
+  return Object.keys(FEATURE_WEIGHTS).filter((key) => key === 'closingSpreadHome' || Number.isFinite(record[`${key.split('.')[0]}Pregame`]?.[key.split('.')[1]]));
 }
 
 function resolveWeekWindow(week, weekWindow) {

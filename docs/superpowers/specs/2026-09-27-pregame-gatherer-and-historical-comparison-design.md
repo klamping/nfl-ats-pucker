@@ -68,7 +68,7 @@ npm run compare:historical -- --input <path-to-gathered-matchup.json>
 - Default week window for target week `W` is `max(1, W - 1)` through `W + 2`; therefore Week 3 searches Weeks 2–5.
 - Permit an explicit `weekWindow` override using `startOffset` and `endOffset`.
 - Filter candidates to a configurable home-spread band around the input consensus spread.
-- Require finite values for all selected comparison features on both sides.
+- Require a complete gathered input snapshot. Historical candidates may omit optional selected features when at least 70% of total comparison weight remains available; rank them with their available weights renormalized and report coverage and omissions.
 
 ### Ranking and Results
 

@@ -101,7 +101,9 @@ async function processRange({ start, end, outputRoot, fileSystem, teams, stats, 
     postgameBuild.rejected.push(...seasonBuild.rejected);
   }
   const pregameBuild = deriveTeamPregame(postgameBuild.accepted);
-  const matchupBuild = joinTeamPregameToMarkets({ marketGames, pregameRecords: pregameBuild.accepted });
+  const matchupBuild = joinTeamPregameToMarkets({
+    marketGames, pregameRecords: pregameBuild.accepted, includeFinalScores: true,
+  });
 
   const teamRawPaths = rawCaptures?.teams || await writeTeamRawCaptures(fileSystem, outputRoot, teams);
   const statsRawPaths = rawCaptures?.stats || [];

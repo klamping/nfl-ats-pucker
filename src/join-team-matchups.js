@@ -21,10 +21,11 @@ function pick(source, fields) {
     .map((field) => [field, source[field]]));
 }
 
-function pickMarketScalars(game) {
+function pickMarketScalars(game, includeFinalScores) {
   const scalars = {};
   for (const [type, fields] of Object.entries(MARKET_SCALAR_FIELDS)) {
-    for (const field of fields) {
+    for (const field of fields.filter((field) => includeFinalScores ||
+      (field !== 'homeScore' && field !== 'awayScore'))) {
       if (!Object.hasOwn(game, field)) continue;
       const value = game[field];
       if (value === null || (typeof value === type &&
@@ -42,7 +43,7 @@ function validKickoff(kickoff) {
   return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === date;
 }
 
-function joinTeamPregameToMarkets({ marketGames, pregameRecords }) {
+function joinTeamPregameToMarkets({ marketGames, pregameRecords, includeFinalScores = false }) {
   if (!Array.isArray(marketGames) || !Array.isArray(pregameRecords)) {
     throw new Error('marketGames and pregameRecords are required');
   }
@@ -64,7 +65,7 @@ function joinTeamPregameToMarkets({ marketGames, pregameRecords }) {
     if (marketCounts.get(gameId) > 1) reason = 'duplicate_market_game';
     else if (!validKickoff(game.kickoff)) reason = 'invalid_market_kickoff';
     else if (game.gameType !== 'REG' && game.gameType !== 'POST') reason = 'missing_core_field';
-    else if (!Number.isFinite(game.homeScore) || !Number.isFinite(game.awayScore)) reason = 'missing_core_field';
+    else if (includeFinalScores && (!Number.isFinite(game.homeScore) || !Number.isFinite(game.awayScore))) reason = 'missing_core_field';
     else if (rows.length > 2) reason = 'duplicate_team_row';
     else if (rows.length < 2) reason = 'incomplete_team_pair';
     else if (game.awayTeam === game.homeTeam ||
@@ -86,7 +87,7 @@ function joinTeamPregameToMarkets({ marketGames, pregameRecords }) {
       continue;
     }
     const matchup = {
-      ...pickMarketScalars(game),
+      ...pickMarketScalars(game, includeFinalScores),
       homePregame: pick(rows.find((row) => row.team === game.homeTeam).features, FEATURE_FIELDS),
       awayPregame: pick(rows.find((row) => row.team === game.awayTeam).features, FEATURE_FIELDS),
     };

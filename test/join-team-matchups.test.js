@@ -30,7 +30,7 @@ const home = {
 
 test('joins market final scores separately from two pregame feature objects', () => {
   const { accepted, rejected } = joinTeamPregameToMarkets({
-    marketGames: [market], pregameRecords: [home, away],
+    marketGames: [market], pregameRecords: [home, away], includeFinalScores: true,
   });
   assert.deepEqual(rejected, []);
   assert.deepEqual(accepted, [{
@@ -45,7 +45,7 @@ test('joins market final scores separately from two pregame feature objects', ()
 
 test('rejects a market game without final scores', () => {
   const { accepted, rejected } = joinTeamPregameToMarkets({
-    marketGames: [{ ...market, homeScore: null }], pregameRecords: [home, away],
+    marketGames: [{ ...market, homeScore: null }], pregameRecords: [home, away], includeFinalScores: true,
   });
   assert.deepEqual(accepted, []);
   assert.deepEqual(rejected.map(({ reason }) => reason), ['missing_core_field']);
