@@ -15,9 +15,10 @@ Add an explicit retrospective mode to the existing game dashboard command:
 npm run game:dashboard -- --season 2026 --game-id 2026_03_LAR_DEN --retrospective
 ```
 
-The mode supports completed games in the requested current season only. It is
-not a replacement for live gathering and does not reconstruct historical live
-odds or line movement.
+The mode supports completed games in the requested current season only. The
+active NFL season is the UTC calendar year from March through December, and
+the preceding year in January or February. It is not a replacement for live
+gathering and does not reconstruct historical live odds or line movement.
 
 ## Mode Semantics
 
