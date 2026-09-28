@@ -7,8 +7,8 @@ test('gathers a requested game and launches the dashboard with its returned snap
   const calls = [];
   const dashboard = { address: () => ({ port: 38769 }) };
   const result = await runGameDashboardCli(['--season', '2026', '--game-id', '2026_03_PHI_CHI'], { log() {} }, {
-    gatherPregame: async (options) => {
-      calls.push(['gather', options]);
+    runGatherCli: async (argv, output) => {
+      calls.push(['gather', argv, output]);
       return { snapshotPath: '/tmp/current.json' };
     },
     runDashboardCli: async (argv, output) => {
@@ -18,15 +18,15 @@ test('gathers a requested game and launches the dashboard with its returned snap
   });
 
   assert.equal(result, dashboard);
-  assert.deepEqual(calls[0], ['gather', { season: '2026', gameId: '2026_03_PHI_CHI' }]);
+  assert.deepEqual(calls[0].slice(0, 2), ['gather', ['--season', '2026', '--game-id', '2026_03_PHI_CHI']]);
   assert.deepEqual(calls[1].slice(0, 2), ['dashboard', ['--input', '/tmp/current.json']]);
 });
 
 test('requires one valid season and game ID before gathering or launching', async () => {
-  for (const argv of [[], ['--season', '2026'], ['--game-id', 'game'], ['--season', '2026', '--season', '2027', '--game-id', 'game']]) {
+  for (const argv of [[], ['--season', '2026'], ['--game-id', 'game'], ['--season', '2026', '--season', '2027', '--game-id', 'game'], ['--season', 'not-a-year', '--game-id', 'game'], ['--season', '2004', '--game-id', 'game'], ['--season', '2026', '--game-id', 'not a game id']]) {
     let started = false;
     await assert.rejects(runGameDashboardCli(argv, console, {
-      gatherPregame: async () => { started = true; },
+      runGatherCli: async () => { started = true; },
       runDashboardCli: async () => { started = true; },
     }), /season and game ID/i);
     assert.equal(started, false);
@@ -36,7 +36,7 @@ test('requires one valid season and game ID before gathering or launching', asyn
 test('does not launch the dashboard when gathering fails', async () => {
   let launched = false;
   await assert.rejects(runGameDashboardCli(['--season', '2026', '--game-id', 'game'], console, {
-    gatherPregame: async () => { throw new Error('odds unavailable'); },
+    runGatherCli: async () => { throw new Error('odds unavailable'); },
     runDashboardCli: async () => { launched = true; },
   }), /odds unavailable/);
   assert.equal(launched, false);

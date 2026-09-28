@@ -1,4 +1,4 @@
-const { gatherPregame } = require('./gather-pregame');
+const { runCli: runGatherCli } = require('./gather-pregame');
 const { runDashboardCli } = require('./dashboard-server');
 
 function parseCli(argv) {
@@ -10,7 +10,10 @@ function parseCli(argv) {
         options[option] !== undefined) throw new Error('A valid season and game ID are required');
     options[option] = value;
   }
-  if (!options['--season'] || !options['--game-id'] || argv.length !== 4) {
+  const season = Number(options['--season']);
+  if (!options['--season'] || !options['--game-id'] || argv.length !== 4 ||
+      !Number.isInteger(season) || season < 2005 || season > 3000 ||
+      !/^[A-Za-z0-9_-]+$/.test(options['--game-id'])) {
     throw new Error('A valid season and game ID are required');
   }
   return { season: options['--season'], gameId: options['--game-id'] };
@@ -18,9 +21,9 @@ function parseCli(argv) {
 
 async function runGameDashboardCli(argv = process.argv.slice(2), output = console, dependencies = {}) {
   const { season, gameId } = parseCli(argv);
-  const gather = dependencies.gatherPregame || gatherPregame;
+  const gather = dependencies.runGatherCli || runGatherCli;
   const launch = dependencies.runDashboardCli || runDashboardCli;
-  const result = await gather({ season, gameId });
+  const result = await gather(['--season', season, '--game-id', gameId], output);
   if (typeof result?.snapshotPath !== 'string' || !result.snapshotPath) {
     throw new Error('Gathering did not return a snapshot path');
   }
