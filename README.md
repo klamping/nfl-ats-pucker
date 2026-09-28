@@ -94,4 +94,12 @@ To gather a requested game and open its dashboard in one step, reuse the existin
 npm run game:dashboard -- --season 2026 --game-id 2026_03_PHI_CHI
 ```
 
+For a completed game in the current NFL season, gather its nflverse closing-line snapshot without Odds API credentials or a live provider request:
+
+```bash
+npm run game:dashboard -- --season 2026 --game-id 2026_03_PHI_CHI --retrospective
+```
+
+`--retrospective` is a valueless flag. Retrospective snapshots use nflverse's recorded closing spread; they do not include bookmaker quotes or line movement.
+
 Open the printed local address in a browser. The dashboard binds only to `127.0.0.1`, serves local assets and a sanitized `/api/comparison` response, and has no external scripts, fonts, or browser-side provider requests. It displays the target context, outcome counts, sortable historical analogues, and selected-game score, line, textual ATS result, feature coverage, omissions, and distance contributions. Select a row with its distance button (Tab and Enter/Space work); sort using column-heading buttons. Loading, failed-fetch, and no-candidate states are explicit. The server reads the snapshot and accepted matchup data on startup, never modifies them, and does not deliver keys, raw provider records, individual bookmaker quotes, or local file paths. This board is descriptive research only, not picks or betting advice.

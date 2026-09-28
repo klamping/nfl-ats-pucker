@@ -22,8 +22,21 @@ test('gathers a requested game and launches the dashboard with its returned snap
   assert.deepEqual(calls[1].slice(0, 2), ['dashboard', ['--input', '/tmp/current.json']]);
 });
 
+test('forwards the retrospective flag to gathering before launching the dashboard', async () => {
+  const calls = [];
+  await runGameDashboardCli(['--season', '2026', '--game-id', '2026_03_PHI_CHI', '--retrospective'], { log() {} }, {
+    runGatherCli: async (argv) => {
+      calls.push(argv);
+      return { snapshotPath: '/tmp/current.json' };
+    },
+    runDashboardCli: async () => { calls.push('dashboard'); },
+  });
+
+  assert.deepEqual(calls, [['--season', '2026', '--game-id', '2026_03_PHI_CHI', '--retrospective'], 'dashboard']);
+});
+
 test('requires one valid season and game ID before gathering or launching', async () => {
-  for (const argv of [[], ['--season', '2026'], ['--game-id', 'game'], ['--season', '2026', '--season', '2027', '--game-id', 'game'], ['--season', 'not-a-year', '--game-id', 'game'], ['--season', '2004', '--game-id', 'game'], ['--season', '2026', '--game-id', 'not a game id']]) {
+  for (const argv of [[], ['--season', '2026'], ['--game-id', 'game'], ['--season', '2026', '--season', '2027', '--game-id', 'game'], ['--season', 'not-a-year', '--game-id', 'game'], ['--season', '2004', '--game-id', 'game'], ['--season', '2026', '--game-id', 'not a game id'], ['--season', '2026', '--game-id', 'game', '--retrospective', '--retrospective'], ['--season', '2026', '--game-id', 'game', '--retrospective', 'true']]) {
     let started = false;
     await assert.rejects(runGameDashboardCli(argv, console, {
       runGatherCli: async () => { started = true; },
@@ -35,9 +48,12 @@ test('requires one valid season and game ID before gathering or launching', asyn
 
 test('does not launch the dashboard when gathering fails', async () => {
   let launched = false;
-  await assert.rejects(runGameDashboardCli(['--season', '2026', '--game-id', 'game'], console, {
-    runGatherCli: async () => { throw new Error('odds unavailable'); },
+  await assert.rejects(runGameDashboardCli(['--season', '2026', '--game-id', 'game', '--retrospective'], console, {
+    runGatherCli: async (argv) => {
+      assert.deepEqual(argv, ['--season', '2026', '--game-id', 'game', '--retrospective']);
+      throw new Error('retrospective gathering failed');
+    },
     runDashboardCli: async () => { launched = true; },
-  }), /odds unavailable/);
+  }), /retrospective gathering failed/);
   assert.equal(launched, false);
 });

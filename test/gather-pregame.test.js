@@ -259,6 +259,29 @@ test('pregame gather CLI requires season and game ID before downloading data', a
   assert.deepEqual(calls, { nflverse: 0, odds: 0 });
 });
 
+test('pregame gather CLI retrospectively gathers without an odds client', async (t) => {
+  const context = await fixture({ targetAwayScore: '17', targetHomeScore: '24', now: () => new Date('2026-09-28T12:00:00.000Z') });
+  t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+  const { oddsClient, ...retrospectiveContext } = context;
+
+  const result = await runCli([
+    '--season', String(season), '--game-id', 'target-id', '--retrospective', '--output-root', context.outputRoot,
+  ], { log() {} }, retrospectiveContext);
+
+  assert.equal(result.snapshot.currentOdds.provider, 'nflverse');
+  assert.equal(context.calls.odds, 0);
+});
+
+test('pregame gather CLI requires a single valueless retrospective flag', async () => {
+  const dependencies = { nflverseClient: { async downloadNflverseGames() { throw new Error('should not download'); } } };
+  for (const argv of [
+    ['--season', String(season), '--game-id', 'target-id', '--retrospective', '--retrospective'],
+    ['--season', String(season), '--game-id', 'target-id', '--retrospective', 'true'],
+  ]) {
+    await assert.rejects(runCli(argv, { log() {} }, dependencies), /--retrospective (may be specified only once|does not accept a value)/i);
+  }
+});
+
 test('pregame gather CLI writes count/path-only output without exposing provider details or secrets', async (t) => {
   const context = await fixture({ gameId: '2026_03_DAL_PHI' });
   t.after(() => rm(context.outputRoot, { recursive: true, force: true }));

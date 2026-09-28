@@ -147,7 +147,7 @@ async function runCli(argv = process.argv.slice(2), output = console, dependenci
     throw new Error('A valid season and game ID are required');
   }
   const nflverseClient = dependencies.nflverseClient || defaultNflverseClient();
-  const oddsClient = dependencies.oddsClient || createOddsApiClient({
+  const oddsClient = options.retrospective ? dependencies.oddsClient : dependencies.oddsClient || createOddsApiClient({
     apiKey: dependencies.apiKey || loadTheOddsApiKey({ envPath: dependencies.envPath }),
     fetchImpl: dependencies.fetchImpl,
   });
@@ -159,6 +159,7 @@ async function runCli(argv = process.argv.slice(2), output = console, dependenci
     oddsClient,
     fileSystem: dependencies.fileSystem,
     now: dependencies.now,
+    retrospective: options.retrospective,
   });
   output.log(`season=${Number(options.season)} gameId=${options.gameId} snapshotPath=${result.snapshotPath} rawCaptures=${result.rawPaths.length} contributingBooks=${result.snapshot.currentOdds.contributingBooks}`);
   return result;
@@ -169,10 +170,18 @@ function parseCliOptions(argv) {
   const options = {};
   while (args.length) {
     const argument = args.shift();
+    if (argument === '--retrospective') {
+      if (options.retrospective) throw new Error('--retrospective may be specified only once');
+      if (args[0] !== undefined && !args[0].startsWith('--')) throw new Error('--retrospective does not accept a value');
+      options.retrospective = true;
+      continue;
+    }
     if (!['--season', '--game-id', '--output-root'].includes(argument)) throw new Error(`Unknown option: ${argument}`);
     const value = args.shift();
     if (value === undefined || value.startsWith('--')) throw new Error(`Missing value for ${argument}`);
-    options[argument.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+    const key = argument.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+    if (options[key] !== undefined) throw new Error(`Duplicate option: ${argument}`);
+    options[key] = value;
   }
   return options;
 }
