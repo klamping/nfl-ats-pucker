@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const defaultFileSystem = require('node:fs/promises');
 const { mkdtemp, readdir, readFile, rm } = require('node:fs/promises');
 const { tmpdir } = require('node:os');
@@ -80,9 +81,9 @@ test('resolves target by ID and builds a historical-schema snapshot using only e
   const result = await gatherPregame({ season, gameId: 'target-id', ...context });
 
   assert.equal(result.snapshot.gameId, 'target-id');
-  assert.equal(result.snapshot.closingSpreadHome, -3);
+  assert.equal(result.snapshot.closingSpreadHome, 3);
   assert.deepEqual(result.snapshot.currentOdds, {
-    provider: 'the-odds-api', retrievedAt, contributingBooks: 1, homeSpreads: [-3], consensusSpreadHome: -3,
+    provider: 'the-odds-api', retrievedAt, contributingBooks: 1, homeSpreads: [-3], consensusSpreadHome: 3,
   });
   assert.deepEqual(Object.keys(result.snapshot).sort(), [
     'awayPregame', 'awayTeam', 'closingSpreadHome', 'closingTotal', 'currentOdds', 'gameId', 'gameType', 'homePregame', 'homeTeam',
@@ -101,6 +102,7 @@ test('resolves target by ID and builds a historical-schema snapshot using only e
   assert.deepEqual(context.calls.seasons, [season]);
   assert.equal(result.rawPaths.length, 1);
   assert.match(result.snapshotPath, /data[\/]current[\/]target-id-.*\.json$/);
+  execFileSync('git', ['check-ignore', '-q', 'data/current/example-snapshot.json'], { cwd: process.cwd(), stdio: 'ignore' });
   assert.deepEqual(JSON.parse(await readFile(result.snapshotPath, 'utf8')), result.snapshot);
   assert.equal((await readdir(path.join(context.outputRoot, 'data', 'raw', 'odds-api'))).length, 1);
 });
@@ -123,7 +125,7 @@ test('matches Eastern kickoff to UTC correctly on both sides of DST transitions'
     const context = await fixture({ ...example, now: () => new Date(example.now) });
     t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
     const result = await gatherPregame({ season, gameId: 'target-id', ...context });
-    assert.equal(result.snapshot.currentOdds.consensusSpreadHome, -3);
+    assert.equal(result.snapshot.currentOdds.consensusSpreadHome, 3);
   }
 });
 

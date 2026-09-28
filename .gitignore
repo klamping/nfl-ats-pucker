@@ -5,3 +5,4 @@ node_modules/
 Sites/.env
 data/raw/
 data/normalized/
+data/current/

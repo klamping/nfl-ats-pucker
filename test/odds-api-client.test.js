@@ -112,6 +112,26 @@ test('redacts quoted and escaped credentials from response values and object key
   assert.equal(JSON.stringify(result).includes(JSON.stringify(key).slice(1, -1)), false);
 });
 
+test('redacts literal and URL-encoded echoes of a key containing special characters', async () => {
+  const key = 'secret+with/chars?&= %"';
+  const client = createOddsApiClient({ apiKey: key, fetchImpl: async () => ({
+    ok: true,
+    json: async () => [{
+      literal: `literal-${key}`,
+      encoded: `encoded-${encodeURIComponent(key)}`,
+      formEncoded: `form-${new URLSearchParams({ apiKey: key }).toString().slice('apiKey='.length)}`,
+    }],
+  }) });
+
+  const result = await client.fetchNflSpreads();
+  const serialized = JSON.stringify(result);
+  assert.equal(serialized.includes(key), false);
+  assert.equal(serialized.includes(encodeURIComponent(key)), false);
+  assert.equal(result.response[0].literal, 'literal-[REDACTED]');
+  assert.equal(result.response[0].encoded, 'encoded-[REDACTED]');
+  assert.equal(result.response[0].formEncoded, 'form-[REDACTED]');
+});
+
 test('takes the median of finite home spreads from distinct bookmakers', () => {
   const currentOdds = findConsensusHomeSpread({ response: fixture, target });
   assert.match(currentOdds.retrievedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
@@ -120,8 +140,18 @@ test('takes the median of finite home spreads from distinct bookmakers', () => {
     retrievedAt: undefined,
     contributingBooks: 4,
     homeSpreads: [-4.5, -3.5, -2.5, -1.5],
-    consensusSpreadHome: -3,
+    consensusSpreadHome: 3,
   });
+});
+
+test('normalizes a provider-native home-underdog quote to a negative home spread', () => {
+  const event = eventWith([{ key: 'book-underdog', markets: [{ key: 'spreads', outcomes: [
+    { name: target.homeTeam, point: 3.5 }, { name: target.awayTeam, point: -3.5 },
+  ] }] }]);
+  const odds = findConsensusHomeSpread({ response: event, target });
+
+  assert.deepEqual(odds.homeSpreads, [3.5]);
+  assert.equal(odds.consensusSpreadHome, -3.5);
 });
 
 test('carries the retrieval timestamp through a fetched response', () => {
@@ -153,7 +183,7 @@ test('rejects events without finite home quotes and excludes malformed or wrong-
   const odds = findConsensusHomeSpread({ response: eventWith([...invalidBooks, fixture[0].bookmakers[0]]), target });
   assert.equal(odds.contributingBooks, 1);
   assert.deepEqual(odds.homeSpreads, [-4.5]);
-  assert.equal(odds.consensusSpreadHome, -4.5);
+  assert.equal(odds.consensusSpreadHome, 4.5);
 });
 
 test('rejects spread markets whose two outcomes are not exactly the target home and away teams', () => {

@@ -66,14 +66,30 @@ function createOddsApiClient({ apiKey, fetchImpl = globalThis.fetch } = {}) {
 }
 
 function redactCredential(value, apiKey) {
-  if (typeof value === 'string') return value.replaceAll(apiKey, '[REDACTED]');
+  const credentials = credentialRepresentations(apiKey);
+  if (typeof value === 'string') return redactString(value, credentials);
   if (Array.isArray(value)) return value.map((item) => redactCredential(item, apiKey));
   if (value && typeof value === 'object') {
     return Object.fromEntries(Object.entries(value).map(([key, item]) => [
-      key.replaceAll(apiKey, '[REDACTED]'), redactCredential(item, apiKey),
+      redactString(key, credentials), redactCredential(item, apiKey),
     ]));
   }
   return value;
+}
+
+function credentialRepresentations(apiKey) {
+  const formEncoded = new URLSearchParams({ apiKey }).toString().slice('apiKey='.length);
+  const encoded = encodeURIComponent(apiKey);
+  return [...new Set([apiKey, encoded, lowercasePercentEscapes(encoded), formEncoded, lowercasePercentEscapes(formEncoded)])]
+    .filter(Boolean).sort((left, right) => right.length - left.length);
+}
+
+function lowercasePercentEscapes(value) {
+  return value.replace(/%[0-9A-F]{2}/g, (escape) => escape.toLowerCase());
+}
+
+function redactString(value, credentials) {
+  return credentials.reduce((redacted, credential) => redacted.replaceAll(credential, '[REDACTED]'), value);
 }
 
 function findConsensusHomeSpread({ response, target } = {}) {
@@ -118,7 +134,8 @@ function findConsensusHomeSpread({ response, target } = {}) {
     retrievedAt: retrievedAt || new Date().toISOString(),
     contributingBooks: homeSpreads.length,
     homeSpreads,
-    consensusSpreadHome: homeSpreads.length % 2 ? homeSpreads[middle] : (homeSpreads[middle - 1] + homeSpreads[middle]) / 2,
+    // The Odds API uses negative for the favored team; historical home spreads use positive.
+    consensusSpreadHome: -(homeSpreads.length % 2 ? homeSpreads[middle] : (homeSpreads[middle - 1] + homeSpreads[middle]) / 2),
   };
 }
 

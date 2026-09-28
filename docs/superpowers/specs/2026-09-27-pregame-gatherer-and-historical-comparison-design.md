@@ -39,14 +39,14 @@ npm run gather:pregame -- --season <YYYY> --game-id <nflverse-game-id>
 - Request `americanfootball_nfl`, U.S. `spreads` from The Odds API.
 - Match the provider event to the scheduled game by canonical home/away names and kickoff.
 - Validate each bookmaker’s home-team spread quote.
-- Set `closingSpreadHome` in the output to the median valid home-team point spread.
-- Include a `currentOdds` object with provider identifier, retrieval timestamp, count of contributing books, individual home spreads, and the consensus median.
+- Set `closingSpreadHome` in the output to the median valid home-team point spread, normalized so positive means home favored (matching historical `closingSpreadHome`).
+- Include a `currentOdds` object with provider identifier, retrieval timestamp, count of contributing books, provider-native individual home quotes, and normalized consensus median.
 - The field is a **current consensus spread**, never described as a historical closing spread.
 - No matching event or no valid quotes is an error; no value is guessed.
 
 ### Output
 
-- Write a timestamped JSON snapshot to ignored local storage, defaulting to `data/current/`.
+- Write a timestamped JSON snapshot to Git-ignored local storage, defaulting to `data/current/`.
 - Do not overwrite prior snapshots.
 - Output contains season, week, game type, teams, kickoff, `closingSpreadHome`, `currentOdds`, and `homePregame`/`awayPregame` feature objects matching historical matchup schema.
 
