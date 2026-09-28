@@ -132,6 +132,21 @@ test('redacts literal and URL-encoded echoes of a key containing special charact
   assert.equal(result.response[0].formEncoded, 'form-[REDACTED]');
 });
 
+test('redacts mixed-case percent escapes without matching altered credentials', async () => {
+  const key = 'secret+with/chars?&= %"';
+  const encoded = encodeURIComponent(key);
+  const mixedCaseEncoded = encoded.replace('%2B', '%2b').replace('%3F', '%3f');
+  const alteredEncoded = mixedCaseEncoded.replace('%2b', '%2c');
+  const client = createOddsApiClient({ apiKey: key, fetchImpl: async () => ({
+    ok: true,
+    json: async () => [{ mixedCaseEncoded: `echo-${mixedCaseEncoded}`, alteredEncoded: `echo-${alteredEncoded}` }],
+  }) });
+
+  const result = await client.fetchNflSpreads();
+  assert.equal(result.response[0].mixedCaseEncoded, 'echo-[REDACTED]');
+  assert.equal(result.response[0].alteredEncoded, `echo-${alteredEncoded}`);
+});
+
 test('takes the median of finite home spreads from distinct bookmakers', () => {
   const currentOdds = findConsensusHomeSpread({ response: fixture, target });
   assert.match(currentOdds.retrievedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);

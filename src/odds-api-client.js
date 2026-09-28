@@ -80,16 +80,28 @@ function redactCredential(value, apiKey) {
 function credentialRepresentations(apiKey) {
   const formEncoded = new URLSearchParams({ apiKey }).toString().slice('apiKey='.length);
   const encoded = encodeURIComponent(apiKey);
-  return [...new Set([apiKey, encoded, lowercasePercentEscapes(encoded), formEncoded, lowercasePercentEscapes(formEncoded)])]
-    .filter(Boolean).sort((left, right) => right.length - left.length);
-}
-
-function lowercasePercentEscapes(value) {
-  return value.replace(/%[0-9A-F]{2}/g, (escape) => escape.toLowerCase());
+  return [...new Map([
+    [apiKey, { value: apiKey, percentEncoded: false }],
+    [encoded, { value: encoded, percentEncoded: true }],
+    [formEncoded, { value: formEncoded, percentEncoded: true }],
+  ].filter(([value]) => value).map(([value, representation]) => [value, representation])).values()]
+    .sort((left, right) => right.value.length - left.value.length);
 }
 
 function redactString(value, credentials) {
-  return credentials.reduce((redacted, credential) => redacted.replaceAll(credential, '[REDACTED]'), value);
+  return credentials.reduce((redacted, { value: credential, percentEncoded }) => {
+    const escaped = credential.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = percentEncoded
+      ? escaped.replace(/%([0-9A-F])([0-9A-F])/gi, (_, high, low) => (
+        `%${hexDigitPattern(high)}${hexDigitPattern(low)}`
+      ))
+      : escaped;
+    return redacted.replace(new RegExp(pattern, 'g'), '[REDACTED]');
+  }, value);
+}
+
+function hexDigitPattern(digit) {
+  return /[A-F]/i.test(digit) ? `[${digit.toLowerCase()}${digit.toUpperCase()}]` : digit;
 }
 
 function findConsensusHomeSpread({ response, target } = {}) {

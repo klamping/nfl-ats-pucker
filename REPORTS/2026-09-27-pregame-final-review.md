@@ -12,3 +12,9 @@
 
 - Focused: `node --test test/odds-api-client.test.js test/gather-pregame.test.js` — 26 passed.
 - Full: `npm test` — 102 passed.
+
+## Task 4 Security Follow-up
+
+- Made percent-encoded credential matching insensitive to hex-letter case while keeping plain-text credentials case-sensitive and matching only the exact encoded/form-encoded credential bytes. Added regression coverage for mixed-case escapes and a one-byte altered near-match.
+- Focused: `node --test test/odds-api-client.test.js` — 16 passed.
+- Full: `npm test` — 103 passed.
