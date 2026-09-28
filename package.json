@@ -13,7 +13,8 @@
     "validate:team-data": "node src/ingest-nflverse-team-data.js validate",
     "ingest:team-data": "node src/ingest-nflverse-team-data.js ingest",
     "gather:pregame": "node src/gather-pregame.js",
-    "compare:historical": "node src/compare-historical.js"
+    "compare:historical": "node src/compare-historical.js",
+    "dashboard": "node src/dashboard-server.js"
   },
   "dependencies": {
     "csv-parse": "^7.0.3"

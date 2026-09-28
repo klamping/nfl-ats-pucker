@@ -1,0 +1,154 @@
+const defaultFileSystem = require('node:fs/promises');
+const http = require('node:http');
+const path = require('node:path');
+
+const { compareHistorical } = require('./compare-historical');
+
+function buildDashboardPayload(input, comparison) {
+  return {
+    target: {
+      gameId: input.gameId,
+      season: input.season,
+      week: input.week,
+      gameType: input.gameType,
+      homeTeam: input.homeTeam,
+      awayTeam: input.awayTeam,
+      kickoff: { date: input.kickoff.date, time: input.kickoff.time },
+      currentOdds: {
+        consensusSpreadHome: input.currentOdds.consensusSpreadHome,
+        contributingBooks: input.currentOdds.contributingBooks,
+      },
+    },
+    filters: {
+      gameType: comparison.filters.gameType,
+      weekWindow: {
+        startWeek: comparison.filters.weekWindow.startWeek,
+        endWeek: comparison.filters.weekWindow.endWeek,
+      },
+      spreadBand: comparison.filters.spreadBand,
+      featureWeights: { ...comparison.filters.featureWeights },
+      minimumFeatureCoverage: comparison.filters.minimumFeatureCoverage,
+      limit: comparison.filters.limit,
+    },
+    summary: {
+      candidateCount: comparison.summary.candidateCount,
+      homeCovers: comparison.summary.homeCovers,
+      awayCovers: comparison.summary.awayCovers,
+      pushes: comparison.summary.pushes,
+      homeCoverRate: comparison.summary.homeCoverRate,
+    },
+    candidates: comparison.candidates.map((candidate) => ({
+      gameId: candidate.gameId,
+      season: candidate.season,
+      week: candidate.week,
+      gameType: candidate.gameType,
+      homeTeam: candidate.homeTeam,
+      awayTeam: candidate.awayTeam,
+      homeScore: candidate.homeScore,
+      awayScore: candidate.awayScore,
+      closingSpreadHome: candidate.closingSpreadHome,
+      similarityScore: candidate.similarityScore,
+      distanceContributions: { ...candidate.distanceContributions },
+      featureCoverage: candidate.featureCoverage,
+      omittedFeatures: [...candidate.omittedFeatures],
+      homeAtsMargin: candidate.homeAtsMargin,
+      outcome: candidate.outcome,
+    })),
+  };
+}
+
+async function loadPayload({ inputPath, fileSystem, outputRoot }) {
+  if (typeof inputPath !== 'string' || !inputPath) throw new Error('A valid --input path is required');
+  let input;
+  try {
+    input = JSON.parse(await fileSystem.readFile(path.resolve(inputPath), 'utf8'));
+  } catch {
+    throw new Error('Unable to load input snapshot');
+  }
+
+  const directory = path.resolve(outputRoot, 'data', 'normalized', 'nfl');
+  let manifest;
+  try {
+    manifest = JSON.parse(await fileSystem.readFile(
+      path.join(directory, 'nflverse-team-matchups-2005-2025.current.json'), 'utf8'));
+  } catch {
+    throw new Error('Unable to load historical matchup manifest');
+  }
+  if (typeof manifest?.accepted !== 'string' || !manifest.accepted || path.isAbsolute(manifest.accepted) ||
+      manifest.accepted.split(/[\\/]/).includes('..')) {
+    throw new Error('Invalid historical matchup manifest accepted path');
+  }
+  const acceptedPath = path.resolve(directory, manifest.accepted);
+  if (acceptedPath !== directory && !acceptedPath.startsWith(`${directory}${path.sep}`)) {
+    throw new Error('Invalid historical matchup manifest accepted path');
+  }
+
+  let historicalMatchups;
+  try {
+    const jsonl = await fileSystem.readFile(acceptedPath, 'utf8');
+    historicalMatchups = jsonl.split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line));
+  } catch {
+    throw new Error('Unable to load accepted historical matchups');
+  }
+
+  try {
+    return buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }));
+  } catch {
+    throw new Error('Invalid comparison input');
+  }
+}
+
+async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
+  fileSystem = defaultFileSystem, port = 0 } = {}) {
+  if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid dashboard port');
+  const payload = JSON.stringify(await loadPayload({ inputPath, outputRoot, fileSystem }));
+  const server = http.createServer((request, response) => {
+    response.setHeader('Cache-Control', 'no-store');
+    response.setHeader('X-Content-Type-Options', 'nosniff');
+    if (request.method !== 'GET') {
+      response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET' });
+      response.end('Method not allowed');
+    } else if (request.url === '/api/comparison') {
+      response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      response.end(payload);
+    } else {
+      response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      response.end('Not found');
+    }
+  });
+  try {
+    await new Promise((resolve, reject) => {
+      server.once('error', reject);
+      server.listen(port, '127.0.0.1', () => {
+        server.removeListener('error', reject);
+        resolve();
+      });
+    });
+  } catch {
+    throw new Error('Unable to start local dashboard server');
+  }
+  return server;
+}
+
+function parseCli(argv) {
+  if (argv.length !== 2 || argv[0] !== '--input' || !argv[1] || argv[1].startsWith('--')) {
+    throw new Error('A single --input path is required');
+  }
+  return argv[1];
+}
+
+async function runDashboardCli(argv = process.argv.slice(2), output = console, dependencies = {}) {
+  const inputPath = parseCli(argv);
+  const server = await createDashboardServer({ ...dependencies, inputPath });
+  output.log(`http://127.0.0.1:${server.address().port}/`);
+  return server;
+}
+
+if (require.main === module) {
+  runDashboardCli().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { createDashboardServer, runDashboardCli };
