@@ -16,11 +16,13 @@ const DEFAULT_SPREAD_BAND = 3.5;
 const MINIMUM_FEATURE_COVERAGE = 0.7;
 
 function compareHistorical({ input, historicalMatchups, weekWindow,
-  limit = 10 } = {}) {
+  limit } = {}) {
   validateInput(input);
   if (!Array.isArray(historicalMatchups)) throw new Error('historicalMatchups must be an array');
   const spreadBand = DEFAULT_SPREAD_BAND;
-  if (!Number.isInteger(limit) || limit < 0) throw new Error('limit must be a non-negative integer');
+  if (limit !== undefined && (!Number.isInteger(limit) || limit < 0)) {
+    throw new Error('limit must be a non-negative integer');
+  }
   const window = resolveWeekWindow(input.week, weekWindow);
   const eligible = historicalMatchups.filter((record) => isCompleteHistorical(record) && featureKeysFor(input, record).length / Object.keys(FEATURE_WEIGHTS).length >= MINIMUM_FEATURE_COVERAGE &&
     record.gameType === input.gameType && record.week >= window.startWeek && record.week <= window.endWeek &&
@@ -59,7 +61,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     };
   }).sort((left, right) => left.similarityScore - right.similarityScore ||
     left.season - right.season || left.week - right.week || String(left.gameId).localeCompare(String(right.gameId)));
-  const candidates = ranked.slice(0, limit);
+  const candidates = limit === undefined ? ranked : ranked.slice(0, limit);
   const homeCovers = candidates.filter((candidate) => candidate.outcome === 'home_cover').length;
   const awayCovers = candidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const pushes = candidates.filter((candidate) => candidate.outcome === 'push').length;
@@ -71,7 +73,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
       spreadBand,
     featureWeights: FEATURE_WEIGHTS,
     minimumFeatureCoverage: MINIMUM_FEATURE_COVERAGE,
-      limit,
+       limit: limit ?? null,
     },
     candidates,
     summary: {

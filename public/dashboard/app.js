@@ -75,7 +75,7 @@
       card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));
       return card;
     }));
-    byId('count-label').textContent = `${summary.candidateCount} of up to ${filters.limit} games`;
+    byId('count-label').textContent = `${summary.candidateCount} qualifying game${summary.candidateCount === 1 ? '' : 's'}`;
     renderProfile(target);
   }
 

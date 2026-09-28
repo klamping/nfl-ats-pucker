@@ -127,6 +127,29 @@ test('ranks by normalized weighted feature distances and exposes contributions',
   assert.equal(result.candidates[0].distanceContributions['away.gamesPlayed'], undefined);
 });
 
+test('returns every qualifying historical game by default', () => {
+  const historicalMatchups = Array.from({ length: 11 }, (_, index) => historical({
+    gameId: `game-${index + 1}`,
+    week: 2,
+  }));
+  const result = compareHistorical({ input: snapshot(), historicalMatchups });
+
+  assert.equal(result.candidates.length, 11);
+  assert.equal(result.summary.candidateCount, 11);
+  assert.equal(result.filters.limit, null);
+});
+
+test('applies an explicit candidate limit when requested', () => {
+  const historicalMatchups = Array.from({ length: 11 }, (_, index) => historical({
+    gameId: `game-${index + 1}`,
+    week: 2,
+  }));
+  const result = compareHistorical({ input: snapshot(), historicalMatchups, limit: 3 });
+
+  assert.equal(result.candidates.length, 3);
+  assert.equal(result.filters.limit, 3);
+});
+
 test('does not score games played or win percentage after week matching', () => {
   const historicalGame = historical({ week: 2, homePregame: {
     ...snapshot().homePregame, gamesPlayed: 10, winPercentage: 0.9,
