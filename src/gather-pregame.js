@@ -290,4 +290,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { gatherPregame, runCli };
+module.exports = { gatherPregame, runCli, nflverseKickoffToUtc };

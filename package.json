@@ -15,7 +15,8 @@
     "gather:pregame": "node src/gather-pregame.js",
     "compare:historical": "node src/compare-historical.js",
     "dashboard": "node src/dashboard-server.js",
-    "game:dashboard": "node src/run-game-dashboard.js"
+    "game:dashboard": "node src/run-game-dashboard.js",
+    "week:dashboard": "node src/week-dashboard.js"
   },
   "dependencies": {
     "csv-parse": "^7.0.3"
