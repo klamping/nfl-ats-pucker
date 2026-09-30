@@ -201,7 +201,8 @@
 
   async function load() {
     try {
-      const response = await fetch('/api/comparison', { cache: 'no-store' });
+      const game = typeof location !== 'undefined' && location.pathname.match(/^\/games\/([A-Za-z0-9_-]+)\/$/);
+      const response = await fetch(game ? `/api/comparison/${game[1]}` : '/api/comparison', { cache: 'no-store' });
       if (!response.ok) throw new Error('Comparison unavailable');
       data = await response.json();
       renderHeader();

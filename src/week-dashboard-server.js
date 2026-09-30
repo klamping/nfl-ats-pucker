@@ -28,11 +28,14 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
   for (const [route, name, type] of [
     ['/app.js', 'app.js', 'text/javascript; charset=utf-8'], ['/styles.css', 'styles.css', 'text/css; charset=utf-8'],
   ]) assets[route] = { body: await defaultFileSystem.readFile(path.join(__dirname, '../public/dashboard', name)), type };
+  assets['/week-app.js'] = { body: await defaultFileSystem.readFile(path.join(__dirname, '../public/week-dashboard/app.js')), type: 'text/javascript; charset=utf-8' };
+  const slateHtml = await defaultFileSystem.readFile(path.join(__dirname, '../public/week-dashboard/index.html'));
   const detailHtml = await defaultFileSystem.readFile(path.join(__dirname, '../public/dashboard/index.html'));
   const server = http.createServer((request, response) => {
     response.setHeader('Cache-Control', 'no-store'); response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer'); response.setHeader('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'");
     if (request.method !== 'GET') { response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET' }); response.end('Method not allowed'); return; }
+    if (request.url === '/') { response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); response.end(slateHtml); return; }
     if (request.url === '/api/slate') { response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(slate); return; }
     const detail = request.url && request.url.match(/^\/api\/comparison\/([A-Za-z0-9_-]+)$/);
     const page = request.url && request.url.match(/^\/games\/([A-Za-z0-9_-]+)\/$/);

@@ -66,7 +66,7 @@ const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 's
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label'];
 
-function runClient(reply) {
+function runClient(reply, pathname = '/') {
   const elements = Object.fromEntries(IDS.map((id) => [id, new Element()]));
   for (const id of IDS.filter((name) => name.startsWith('sort-'))) {
     elements[id].parentElement = new Element('th');
@@ -77,9 +77,15 @@ function runClient(reply) {
   };
   let requested;
   const fetch = async (url) => { requested = url; return reply; };
-  vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), { document, fetch });
+  vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), { document, fetch, location: { pathname } });
   return { elements, requested, settled: new Promise((resolve) => setImmediate(resolve)) };
 }
+
+test('loads a weekly detail page from its game-specific comparison endpoint', async () => {
+  const client = runClient({ ok: true, json: async () => sample }, '/games/2026_03_LA_DEN/');
+  await client.settled;
+  assert.equal(client.requested, '/api/comparison/2026_03_LA_DEN');
+});
 
 const sample = {
   target: { gameId: 'target', season: 2026, week: 3, gameType: 'REG', homeTeam: 'PHI',
