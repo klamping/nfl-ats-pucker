@@ -95,6 +95,15 @@ async function loadPayload({ inputPath, fileSystem, outputRoot }) {
     throw new Error('Unable to load input snapshot');
   }
 
+  const historicalMatchups = await loadHistoricalMatchups({ outputRoot, fileSystem });
+  try {
+    return buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }));
+  } catch {
+    throw new Error('Invalid comparison input');
+  }
+}
+
+async function loadHistoricalMatchups({ outputRoot, fileSystem }) {
   const directory = path.resolve(outputRoot, 'data', 'normalized', 'nfl');
   let manifest;
   try {
@@ -131,11 +140,7 @@ async function loadPayload({ inputPath, fileSystem, outputRoot }) {
     throw new Error('Unable to load accepted historical matchups');
   }
 
-  try {
-    return buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }));
-  } catch {
-    throw new Error('Invalid comparison input');
-  }
+  return historicalMatchups;
 }
 
 async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
@@ -204,4 +209,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { createDashboardServer, runDashboardCli };
+module.exports = { buildDashboardPayload, createDashboardServer, loadHistoricalMatchups, runDashboardCli };
