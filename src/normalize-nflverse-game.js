@@ -55,6 +55,8 @@ function normalizeNflverseGame(row, metadata = {}) {
 }
 
 function extractGame(row) {
+  const sourceSpreadLine = parseNumber(row.spread_line);
+
   return {
     gameId: firstPresent(row.game_id, row.gameId),
     season: parseNumber(row.season),
@@ -65,7 +67,7 @@ function extractGame(row) {
     homeTeam: firstPresent(row.home_team, row.homeTeam),
     awayScore: parseNumber(firstPresent(row.away_score, row.awayScore)),
     homeScore: parseNumber(firstPresent(row.home_score, row.homeScore)),
-    closingSpreadHome: parseNumber(row.spread_line),
+    closingSpreadHome: isFiniteNumber(sourceSpreadLine) ? -sourceSpreadLine : sourceSpreadLine,
   };
 }
 

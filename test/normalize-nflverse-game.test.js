@@ -37,7 +37,7 @@ function fixtureRow(overrides = {}) {
   };
 }
 
-test('normalizes nflverse spread_line as the home-team closing spread without sign inversion', () => {
+test('normalizes nflverse source spread_line into the home-team closing spread orientation', () => {
   const result = normalizeNflverseGame(fixtureRow(), metadata);
 
   assert.equal(result.rejected, undefined);
@@ -56,7 +56,7 @@ test('normalizes nflverse spread_line as the home-team closing spread without si
     homeTeam: 'PHI',
     awayScore: 24,
     homeScore: 27,
-    closingSpreadHome: 2.5,
+    closingSpreadHome: -2.5,
     spreadOrientation: 'home_team',
     closingTotal: 47.5,
     awaySpreadOdds: -105,
@@ -89,8 +89,8 @@ test('accepts each nflverse postseason round as POST while preserving the source
   }
 });
 
-test('preserves both positive and negative nflverse spread signs for the home-team orientation', () => {
-  for (const [spreadLine, expected] of [['2.5', 2.5], ['-3.5', -3.5]]) {
+test('inverts positive and negative nflverse source spread signs for the home-team orientation', () => {
+  for (const [spreadLine, expected] of [['2.5', -2.5], ['-3.5', 3.5]]) {
     const result = normalizeNflverseGame(fixtureRow({ spread_line: spreadLine }), metadata);
     assert.equal(result.accepted.closingSpreadHome, expected);
     assert.equal(result.accepted.spreadOrientation, 'home_team');

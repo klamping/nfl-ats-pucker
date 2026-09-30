@@ -85,7 +85,7 @@ test('ingests inclusive seasons once and stores the original CSV plus sorted, se
   assert.deepEqual(accepted.map((record) => record.gameId), ['a_2024', 'z_2025']);
   assert.deepEqual(rejected.map((record) => record.gameId), ['a_rejected', 'z_rejected']);
   assert.deepEqual(rejected.map((record) => record.reason), ['missing_team', 'missing_spread']);
-  assert.equal(accepted[0].closingSpreadHome, 2.5);
+  assert.equal(accepted[0].closingSpreadHome, -2.5);
   assert.equal(accepted[0].spreadOrientation, 'home_team');
   assert.equal(accepted[1].gameType, 'POST');
   assert.equal(accepted[1].sourceGameType, 'WC');
