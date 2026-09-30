@@ -8,20 +8,23 @@
   let orderedGames = [];
   let unavailableGames = [];
   let storageKey;
-  const saveRanks = () => localStorage.setItem(storageKey, JSON.stringify(orderedGames.map((game) => game.gameId)));
+  const saveRanks = () => { try { localStorage.setItem(storageKey, JSON.stringify(orderedGames.map((game) => game.gameId))); } catch {} };
   function restoreRanks(games) {
-    const stored = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    let stored;
+    try { stored = JSON.parse(localStorage.getItem(storageKey) || '[]'); } catch { return games; }
     if (stored.length !== games.length || new Set(stored).size !== games.length || stored.some((id) => !games.some((game) => game.gameId === id))) return games;
     return stored.map((id) => games.find((game) => game.gameId === id));
   }
   function move(gameId, targetIndex) {
     const currentIndex = orderedGames.findIndex((game) => game.gameId === gameId);
+    if (currentIndex < 0 || !Number.isInteger(targetIndex) || targetIndex < 0 || targetIndex >= orderedGames.length) return;
     const [game] = orderedGames.splice(currentIndex, 1);
     orderedGames.splice(targetIndex, 0, game);
     saveRanks(); renderRows();
   }
   function swapRank(gameId, rank) {
     const currentIndex = orderedGames.findIndex((game) => game.gameId === gameId);
+    if (currentIndex < 0 || !Number.isInteger(rank)) return;
     const targetIndex = Math.max(0, Math.min(orderedGames.length - 1, rank - 1));
     [orderedGames[currentIndex], orderedGames[targetIndex]] = [orderedGames[targetIndex], orderedGames[currentIndex]];
     saveRanks(); renderRows();
