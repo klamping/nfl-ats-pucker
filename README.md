@@ -7,6 +7,16 @@ Utilities for collecting historical NFL closing lines from the public [nflverse 
 - Node.js 18 or newer and `npm install`.
 - Network access to nflverse's public `games.csv`. No credentials are required.
 
+## Weekly dashboard
+
+Generate one local dashboard for an NFL week:
+
+```bash
+npm run week:dashboard -- --season 2026 --week 3
+```
+
+Open the printed loopback URL. Upcoming games use current live odds. Completed games in the current NFL season use nflverse closing lines and strictly pre-kickoff features. If one game cannot be gathered, it remains visible as unavailable while the rest of the weekly slate continues.
+
 ## Validate samples before bulk ingestion
 
 ```bash

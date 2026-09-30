@@ -46,13 +46,13 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
     }
   }
   const createWeekDashboardServer = dependencies.createWeekDashboardServer || require('./week-dashboard-server').createWeekDashboardServer;
-  return createWeekDashboardServer({ season, week, games, failures });
+  const server = await createWeekDashboardServer({ season, week, games, failures });
+  output.log(`http://127.0.0.1:${server.address().port}/`);
+  return server;
 }
 
 if (require.main === module) {
-  runWeekDashboardCli().then((server) => {
-    console.log(`http://127.0.0.1:${server.address().port}/`);
-  }).catch((error) => {
+  runWeekDashboardCli().catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
   });

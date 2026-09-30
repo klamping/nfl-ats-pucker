@@ -37,9 +37,10 @@ test('orchestrates supported games with shared schedule and isolates failures', 
   let downloads = 0;
   const gathers = [];
   const launched = [];
+  const lines = [];
   const server = { address: () => ({ port: 41234 }) };
 
-  const result = await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log() {} }, {
+  const result = await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log: (line) => lines.push(line) }, {
     now: () => new Date('2026-09-27T18:00:00.000Z'),
     nflverseClient: { async downloadNflverseGames() { downloads++; return download; } },
     gatherPregame: async (options) => {
@@ -51,6 +52,7 @@ test('orchestrates supported games with shared schedule and isolates failures', 
   });
 
   assert.equal(result, server);
+  assert.deepEqual(lines, ['http://127.0.0.1:41234/']);
   assert.equal(downloads, 1);
   assert.deepEqual(gathers.map(({ gameId, retrospective, scheduleDownload: shared }) =>
     ({ gameId, retrospective, shared: shared === download })), [
