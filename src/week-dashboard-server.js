@@ -18,11 +18,20 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
   fileSystem = defaultFileSystem, port = 0 } = {}) {
   if (!Number.isInteger(season) || !Number.isInteger(week) || !Array.isArray(games) || !Array.isArray(failures) || !Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid weekly dashboard options');
   const historicalMatchups = await loadHistoricalMatchups({ outputRoot, fileSystem });
-  const comparisons = new Map(games.map((input) => [input.gameId, buildDashboardPayload(input,
-    compareHistorical({ input, historicalMatchups }))]));
+  const comparisons = new Map();
+  const readyGames = [];
+  const unavailable = [...failures];
+  for (const input of games) {
+    try {
+      comparisons.set(input.gameId, buildDashboardPayload(input, compareHistorical({ input, historicalMatchups })));
+      readyGames.push(input);
+    } catch {
+      unavailable.push({ gameId: input.gameId, message: 'Unable to gather game' });
+    }
+  }
   const slate = JSON.stringify({ season, week, games: [
-    ...games.map((input) => projectSlateGame(input, comparisons.get(input.gameId))),
-    ...failures.map((failure) => ({ status: 'unavailable', gameId: failure.gameId, message: 'Unable to gather game' })),
+    ...readyGames.map((input) => projectSlateGame(input, comparisons.get(input.gameId))),
+    ...unavailable.map((failure) => ({ status: 'unavailable', gameId: failure.gameId, message: 'Unable to gather game' })),
   ] });
   const assets = {};
   for (const [route, name, type] of [
@@ -34,6 +43,7 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
   const server = http.createServer((request, response) => {
     response.setHeader('Cache-Control', 'no-store'); response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer'); response.setHeader('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'");
+    if (!/^((127\.0\.0\.1|localhost)(:\d+)?|\[::1\](?::\d+)?)$/i.test(request.headers.host || '')) { response.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); response.end('Forbidden'); return; }
     if (request.method !== 'GET') { response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET' }); response.end('Method not allowed'); return; }
     if (request.url === '/') { response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); response.end(slateHtml); return; }
     if (request.url === '/api/slate') { response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(slate); return; }

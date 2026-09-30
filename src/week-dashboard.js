@@ -1,5 +1,6 @@
 const { downloadNflverseGames } = require('./nflverse-client');
 const { gatherPregame, nflverseKickoffToUtc } = require('./gather-pregame');
+const { createOddsApiClient, loadTheOddsApiKey } = require('./odds-api-client');
 const { normalizeNflverseGame } = require('./normalize-nflverse-game');
 
 function parseCli(argv) {
@@ -34,11 +35,16 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
   }).accepted).filter((game) => game && game.season === season && game.week === week &&
     ['REG', 'POST'].includes(game.gameType) && hasValidKickoff(game.kickoff));
   const gather = dependencies.gatherPregame || gatherPregame;
+  let oddsClient = dependencies.oddsClient;
   const games = [];
   const failures = [];
   for (const target of targets) {
     try {
-      const result = await gather({ season, gameId: target.gameId, retrospective: Date.parse(nflverseKickoffToUtc(target.kickoff)) < currentTime.getTime(),
+      const retrospective = Date.parse(nflverseKickoffToUtc(target.kickoff)) < currentTime.getTime();
+      if (!retrospective && !oddsClient) oddsClient = createOddsApiClient({
+        apiKey: dependencies.apiKey || loadTheOddsApiKey({ envPath: dependencies.envPath }), fetchImpl: dependencies.fetchImpl,
+      });
+      const result = await gather({ season, gameId: target.gameId, retrospective, oddsClient: retrospective ? undefined : oddsClient,
         scheduleDownload, outputRoot: dependencies.outputRoot });
       games.push(result.snapshot);
     } catch {

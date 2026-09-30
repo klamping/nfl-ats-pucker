@@ -38,11 +38,13 @@ test('orchestrates supported games with shared schedule and isolates failures', 
   const gathers = [];
   const launched = [];
   const lines = [];
+  const oddsClient = { fetchNflSpreads() {} };
   const server = { address: () => ({ port: 41234 }) };
 
   const result = await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log: (line) => lines.push(line) }, {
     now: () => new Date('2026-09-27T18:00:00.000Z'),
     nflverseClient: { async downloadNflverseGames() { downloads++; return download; } },
+    oddsClient,
     gatherPregame: async (options) => {
       gathers.push(options);
       if (options.gameId === 'past') throw new Error('completed target lacks a line');
@@ -54,10 +56,10 @@ test('orchestrates supported games with shared schedule and isolates failures', 
   assert.equal(result, server);
   assert.deepEqual(lines, ['http://127.0.0.1:41234/']);
   assert.equal(downloads, 1);
-  assert.deepEqual(gathers.map(({ gameId, retrospective, scheduleDownload: shared }) =>
-    ({ gameId, retrospective, shared: shared === download })), [
-    { gameId: 'past', retrospective: true, shared: true },
-    { gameId: 'future', retrospective: false, shared: true },
+  assert.deepEqual(gathers.map(({ gameId, retrospective, scheduleDownload: shared, oddsClient: odds }) =>
+    ({ gameId, retrospective, shared: shared === download, odds: odds === oddsClient })), [
+    { gameId: 'past', retrospective: true, shared: true, odds: false },
+    { gameId: 'future', retrospective: false, shared: true, odds: true },
   ]);
   assert.deepEqual(launched, [{ season: 2026, week: 3, games: [{ gameId: 'future' }],
     failures: [{ gameId: 'past', message: 'Unable to gather game' }] }]);
