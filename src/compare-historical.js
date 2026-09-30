@@ -14,7 +14,8 @@ const FEATURE_WEIGHTS = Object.fromEntries(FEATURE_FIELDS.flatMap((field) =>
   [field, weight / (FEATURE_FIELDS.length * 2)]));
 const DEFAULT_SPREAD_BAND = 3.5;
 const MINIMUM_FEATURE_COVERAGE = 0.7;
-const MAXIMUM_SIMILARITY_DISTANCE = 0.15;
+const MAXIMUM_SIMILARITY_DISTANCE = 0.175;
+const DISTANCE_GROUP_MAXIMA = [0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175];
 
 function compareHistorical({ input, historicalMatchups, weekWindow,
   limit } = {}) {
@@ -69,6 +70,17 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
   const awayCovers = candidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const pushes = candidates.filter((candidate) => candidate.outcome === 'push').length;
   const decisions = homeCovers + awayCovers;
+  const distanceGroups = DISTANCE_GROUP_MAXIMA.map((maximumDistance) => {
+    const group = candidates.filter((candidate) => candidate.similarityScore <= maximumDistance + Number.EPSILON);
+    const groupHomeCovers = group.filter((candidate) => candidate.outcome === 'home_cover').length;
+    const groupAwayCovers = group.filter((candidate) => candidate.outcome === 'away_cover').length;
+    const groupPushes = group.filter((candidate) => candidate.outcome === 'push').length;
+    const groupDecisions = groupHomeCovers + groupAwayCovers;
+    return { maximumDistance, candidateCount: group.length, homeCovers: groupHomeCovers,
+      awayCovers: groupAwayCovers, pushes: groupPushes,
+      homeCoverRate: groupDecisions ? groupHomeCovers / groupDecisions : null,
+      awayCoverRate: groupDecisions ? groupAwayCovers / groupDecisions : null };
+  });
   return {
     filters: {
       gameType: input.gameType,
@@ -80,6 +92,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
        limit: limit ?? null,
     },
     candidates,
+    distanceGroups,
     summary: {
       candidateCount: candidates.length,
       homeCovers,

@@ -95,6 +95,8 @@ const sample = {
     featureWeights: { 'home.restDays': 0.05, closingSpreadHome: 0.05 },
     minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
+  distanceGroups: [{ maximumDistance: 0.025, candidateCount: 2, homeCovers: 1, awayCovers: 1,
+    pushes: 0, homeCoverRate: 0.5, awayCoverRate: 0.5 }],
   candidates: [
     { gameId: 'one', season: 2020, week: 2, gameType: 'REG', homeTeam: 'GB', awayTeam: 'MIN',
       homeScore: 24, awayScore: 20, closingSpreadHome: 3, similarityScore: 0.1,
@@ -116,6 +118,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements['count-label'].textContent, /^2 qualifying games$/);
   assert.match(elements.scope.textContent, /85% similarity/);
   assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
+  assert.match(elements.summary.textContent, /≤ 0\.025.*H 50%.*A 50%/);
   assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*PHI \+0\.070.*0\.120/);
   assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*—.*0\.080/);
   assert.match(elements['profile-body'].textContent, /Penalty yards.*45.*PHI \+15.*30/);

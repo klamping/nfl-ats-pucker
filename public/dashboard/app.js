@@ -72,6 +72,8 @@
       ['Away covers', summary.awayCovers],
       ['Pushes', summary.pushes],
       ['Home cover rate', percent(summary.homeCoverRate)],
+      ...data.distanceGroups.map((group) => [`≤ ${group.maximumDistance.toFixed(3)}`,
+        `${group.candidateCount} · H ${percent(group.homeCoverRate)} · A ${percent(group.awayCoverRate)} · P ${group.pushes}`]),
     ];
     byId('summary').replaceChildren(...cards.map(([title, value]) => {
       const card = element('div', undefined, 'summary-card');

@@ -49,6 +49,7 @@ function buildDashboardPayload(input, comparison) {
       pushes: comparison.summary.pushes,
       homeCoverRate: comparison.summary.homeCoverRate,
     },
+    distanceGroups: comparison.distanceGroups.map((group) => ({ ...group })),
     candidates: comparison.candidates.map((candidate) => ({
       gameId: candidate.gameId,
       season: candidate.season,
