@@ -46,7 +46,7 @@
       const matchup = element('td'); const link = element('a', game.matchup);
       link.setAttribute('href', `/games/${encodeURIComponent(game.gameId)}/`); matchup.append(link);
       row.append(rankCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
-        element('td', source(game.currentOdds)), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`), element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
+        element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`), element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
       return row;
     });
     for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '8'); row.append(cell); rows.push(row); }
@@ -55,7 +55,8 @@
   function render(data) {
     byId('status').textContent = `${data.season} · Week ${data.week}`;
     storageKey = `nfl-ats-pucker:week-ranks:${data.season}:${data.week}`;
-    orderedGames = restoreRanks(data.games.filter((game) => game.status === 'ready'));
+    const ready = data.games.filter((game) => game.status === 'ready').sort((a, b) => b.weightedConfidence - a.weightedConfidence || Math.abs(b.coverSplit) - Math.abs(a.coverSplit) || a.matchup.localeCompare(b.matchup));
+    orderedGames = restoreRanks(ready);
     unavailableGames = data.games.filter((game) => game.status !== 'ready');
     renderRows();
   }

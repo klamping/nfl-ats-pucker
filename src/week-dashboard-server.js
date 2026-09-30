@@ -7,7 +7,8 @@ const { buildDashboardPayload, loadHistoricalMatchups } = require('./dashboard-s
 function projectSlateGame(input, comparison) {
   const currentOdds = { provider: input.currentOdds.provider, consensusSpreadHome: input.currentOdds.consensusSpreadHome };
   if (input.currentOdds.provider === 'the-odds-api') currentOdds.contributingBooks = input.currentOdds.contributingBooks;
-  return { status: 'ready', gameId: input.gameId, matchup: `${input.awayTeam} at ${input.homeTeam}`,
+  const recommendedPick = comparison.confidence.coverSplit > 0 ? input.homeTeam : comparison.confidence.coverSplit < 0 ? input.awayTeam : null;
+  return { status: 'ready', gameId: input.gameId, matchup: `${input.awayTeam} at ${input.homeTeam}`, recommendedPick,
     kickoff: { date: input.kickoff.date, time: input.kickoff.time }, currentOdds,
     candidateCount: comparison.summary.candidateCount, coverSplit: comparison.confidence.coverSplit,
     weightedConfidence: comparison.confidence.weightedConfidence };
