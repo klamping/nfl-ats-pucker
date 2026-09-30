@@ -77,11 +77,18 @@
       ...data.distanceGroups.filter((group) => group.candidateCount > 0).map((group) => [`≤ ${group.maximumDistance.toFixed(3)}`,
         `${group.candidateCount} · H ${percent(group.homeCoverRate)} · A ${percent(group.awayCoverRate)} · P ${group.pushes}`]),
     ];
-    byId('summary').replaceChildren(...cards.map(([title, value]) => {
+    const marginCards = cards.filter(([title]) => /Cover split|Weighted confidence|cover margin|Median margin gap/.test(title));
+    const standardCards = cards.filter(([title]) => !/Cover split|Weighted confidence|cover margin|Median margin gap/.test(title));
+    const table = element('table');
+    table.append(element('caption', 'Cover split and margin profile'));
+    const body = element('tbody');
+    body.replaceChildren(...marginCards.map(([title, value]) => { const row = element('tr'); row.append(element('th', title), element('td', value)); return row; }));
+    table.append(body);
+    byId('summary').replaceChildren(...standardCards.map(([title, value]) => {
       const card = element('div', undefined, 'summary-card');
       card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));
       return card;
-    }));
+    }), table);
     byId('count-label').textContent = `${summary.candidateCount} qualifying game${summary.candidateCount === 1 ? '' : 's'}`;
     renderProfile(target);
   }
