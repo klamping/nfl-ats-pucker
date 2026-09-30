@@ -94,7 +94,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.equal(first.status, 200);
   assert.match(first.headers.get('content-type'), /^application\/json\b/);
   const payload = await first.json();
-  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'coverMargins', 'distanceGroups', 'filters', 'summary', 'target']);
+  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'summary', 'target']);
   assert.deepEqual(payload.target, {
     gameId: 'target-1', season: 2026, week: 3, gameType: 'REG',
     homeTeam: 'HME', awayTeam: 'AWY', kickoff: { date: '2026-09-20', time: '13:00' },
@@ -106,6 +106,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.deepEqual(payload.filters, expected.filters);
   assert.deepEqual(payload.summary, expected.summary);
   assert.deepEqual(payload.coverMargins, expected.coverMargins);
+  assert.deepEqual(payload.confidence, expected.confidence);
   assert.deepEqual(payload.distanceGroups, expected.distanceGroups);
   assert.deepEqual(payload.candidates, expected.candidates);
   assert.deepEqual(Object.keys(payload.candidates[0]).sort(), [

@@ -58,7 +58,7 @@
   }
 
   function renderHeader() {
-    const { target, filters, summary, coverMargins } = data;
+    const { target, filters, summary, coverMargins, confidence } = data;
     byId('target-title').textContent = `${target.awayTeam} at ${target.homeTeam}`;
     byId('target-meta').textContent = `${target.season} · Week ${target.week} · ${target.gameType === 'REG' ? 'Regular season' : 'Postseason'} · ${target.kickoff.date} ${target.kickoff.time}`;
     byId('target-line').textContent = spread(target.currentOdds.consensusSpreadHome);
@@ -68,10 +68,9 @@
     byId('scope').textContent = `${filters.gameType} · Weeks ${filters.weekWindow.startWeek}–${filters.weekWindow.endWeek} · ±${filters.spreadBand} · ${marketScope} · ${percent(filters.minimumFeatureCoverage)} coverage · ${minimumSimilarity}% similarity`;
     const cards = [
       ['Games', summary.candidateCount],
-      ['Home covers', summary.homeCovers],
-      ['Away covers', summary.awayCovers],
       ['Pushes', summary.pushes],
-      ['Home cover rate', percent(summary.homeCoverRate)],
+      ['Cover split', confidence.coverSplit === null ? '—' : `${confidence.coverSplit > 0 ? '+' : ''}${Math.round(confidence.coverSplit)} pp`],
+      ['Weighted confidence', confidence.weightedConfidence === null ? '—' : `${confidence.weightedConfidence}/100 · ${confidence.weightedSplit > 0 ? '+' : ''}${Math.round(confidence.weightedSplit)} pp`],
       ['Home cover margin', `${coverMargins.home.count} · median ${coverMargins.home.median ?? '—'} · middle 50% ${coverMargins.home.lowerQuartile ?? '—'}–${coverMargins.home.upperQuartile ?? '—'}`],
       ['Away cover margin', `${coverMargins.away.count} · median ${coverMargins.away.median ?? '—'} · middle 50% ${coverMargins.away.lowerQuartile ?? '—'}–${coverMargins.away.upperQuartile ?? '—'}`],
       ['Median margin gap', coverMargins.medianGap === null ? '—' : signed(coverMargins.medianGap)],

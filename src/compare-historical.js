@@ -14,8 +14,8 @@ const FEATURE_WEIGHTS = Object.fromEntries(FEATURE_FIELDS.flatMap((field) =>
   [field, weight / (FEATURE_FIELDS.length * 2)]));
 const DEFAULT_SPREAD_BAND = 3.5;
 const MINIMUM_FEATURE_COVERAGE = 0.7;
-const MAXIMUM_SIMILARITY_DISTANCE = 0.175;
-const DISTANCE_GROUP_MAXIMA = [0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175];
+const MAXIMUM_SIMILARITY_DISTANCE = 0.2;
+const DISTANCE_GROUP_MAXIMA = [0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2];
 
 function compareHistorical({ input, historicalMatchups, weekWindow,
   limit } = {}) {
@@ -89,6 +89,11 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
       homeCoverRate: groupDecisions ? groupHomeCovers / groupDecisions : null,
       awayCoverRate: groupDecisions ? groupAwayCovers / groupDecisions : null };
   });
+  const scoredGroups = distanceGroups.map((group) => ({ ...group, decisions: group.homeCovers + group.awayCovers,
+    split: group.homeCoverRate === null ? null : (group.homeCoverRate - 0.5) * 100 })).filter((group) => group.decisions);
+  const weightedSplit = scoredGroups.length ? scoredGroups.reduce((sum, group) => sum + group.split * group.decisions, 0) / scoredGroups.reduce((sum, group) => sum + group.decisions, 0) : null;
+  const consistency = weightedSplit === null ? null : Math.abs(weightedSplit) / (scoredGroups.reduce((sum, group) => sum + Math.abs(group.split) * group.decisions, 0) / scoredGroups.reduce((sum, group) => sum + group.decisions, 0));
+  const confidence = consistency === null ? null : Math.round(100 * consistency * (1 - Math.exp(-decisions / 20)));
   return {
     filters: {
       gameType: input.gameType,
@@ -102,6 +107,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     candidates,
     distanceGroups, coverMargins: { home: homeMargin, away: awayMargin,
       medianGap: homeMargin.median === null || awayMargin.median === null ? null : homeMargin.median - awayMargin.median },
+    confidence: { coverSplit: decisions ? ((homeCovers / decisions) - 0.5) * 100 : null, weightedConfidence: confidence, weightedSplit },
     summary: {
       candidateCount: candidates.length,
       homeCovers,

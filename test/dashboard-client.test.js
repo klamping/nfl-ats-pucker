@@ -102,6 +102,7 @@ const sample = {
     minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
   coverMargins: { home: { count: 1, median: 3, lowerQuartile: 3, upperQuartile: 3 }, away: { count: 1, median: 1, lowerQuartile: 1, upperQuartile: 1 }, medianGap: 2 },
+  confidence: { coverSplit: 0, weightedConfidence: 0, weightedSplit: 0 },
   distanceGroups: [{ maximumDistance: 0.025, candidateCount: 0, homeCovers: 0, awayCovers: 0,
     pushes: 0, homeCoverRate: null, awayCoverRate: null }, { maximumDistance: 0.05, candidateCount: 2,
     homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5, awayCoverRate: 0.5 }],
@@ -125,7 +126,7 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements['target-line'].textContent, /\+3.*home underdog/);
   assert.match(elements['count-label'].textContent, /^2 qualifying games$/);
   assert.match(elements.scope.textContent, /85% similarity/);
-  assert.match(elements.summary.textContent, /Home covers.*Away covers.*Pushes/);
+  assert.match(elements.summary.textContent, /Games.*Pushes.*Cover split/);
   assert.doesNotMatch(elements.summary.textContent, /≤ 0\.025/);
   assert.match(elements.summary.textContent, /≤ 0\.050.*H 50%.*A 50%/);
   assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*PHI \+0\.070.*0\.120/);

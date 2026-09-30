@@ -46,7 +46,7 @@
       const matchup = element('td'); const link = element('a', game.matchup);
       link.setAttribute('href', `/games/${encodeURIComponent(game.gameId)}/`); matchup.append(link);
       row.append(rankCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
-        element('td', source(game.currentOdds)), element('td', game.candidateCount), element('td', percent(game.homeCoverRate)), element('td', percent(game.awayCoverRate)));
+        element('td', source(game.currentOdds)), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`), element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
       return row;
     });
     for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '8'); row.append(cell); rows.push(row); }

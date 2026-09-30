@@ -9,9 +9,8 @@ function projectSlateGame(input, comparison) {
   if (input.currentOdds.provider === 'the-odds-api') currentOdds.contributingBooks = input.currentOdds.contributingBooks;
   return { status: 'ready', gameId: input.gameId, matchup: `${input.awayTeam} at ${input.homeTeam}`,
     kickoff: { date: input.kickoff.date, time: input.kickoff.time }, currentOdds,
-    candidateCount: comparison.summary.candidateCount, homeCoverRate: comparison.summary.homeCoverRate,
-    awayCoverRate: comparison.summary.awayCovers + comparison.summary.homeCovers ?
-      comparison.summary.awayCovers / (comparison.summary.awayCovers + comparison.summary.homeCovers) : null };
+    candidateCount: comparison.summary.candidateCount, coverSplit: comparison.confidence.coverSplit,
+    weightedConfidence: comparison.confidence.weightedConfidence };
 }
 
 async function createWeekDashboardServer({ season, week, games = [], failures = [], outputRoot = process.cwd(),

@@ -169,7 +169,7 @@ test('applies an explicit candidate limit when requested', () => {
   assert.equal(result.filters.limit, 3);
 });
 
-test('keeps candidates at or below the 0.150 similarity-distance threshold', () => {
+test('keeps candidates at or below the 0.200 similarity-distance threshold', () => {
   const featureFields = ['pointsScoredPerGame', 'pointsAllowedPerGame', 'netYardsPerPlay', 'netEpaPerPlay'];
   const atThreshold = historical({
     gameId: 'at-threshold', week: 2,
@@ -187,21 +187,21 @@ test('keeps candidates at or below the 0.150 similarity-distance threshold', () 
   });
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [atThreshold, beyondThreshold] });
 
-  assert.equal(result.filters.maximumSimilarityDistance, 0.175);
-  assert.deepEqual(result.candidates.map((candidate) => candidate.gameId), ['at-threshold']);
+  assert.equal(result.filters.maximumSimilarityDistance, 0.2);
+  assert.deepEqual(result.candidates.map((candidate) => candidate.gameId), ['at-threshold', 'beyond-threshold']);
   assert.equal(result.candidates[0].similarityScore, 0.15);
 });
 
-test('reports cumulative cover rates through the 0.175 distance threshold', () => {
+test('reports cumulative cover rates through the 0.200 distance threshold', () => {
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [
     historical({ week: 2, homeScore: 20, awayScore: 21, closingSpreadHome: 3 }),
     historical({ week: 3, homeScore: 20, awayScore: 24, closingSpreadHome: -3 }),
     historical({ week: 4, homeScore: 20, awayScore: 20, closingSpreadHome: 0 }),
   ] });
 
-  assert.equal(result.filters.maximumSimilarityDistance, 0.175);
+  assert.equal(result.filters.maximumSimilarityDistance, 0.2);
   assert.deepEqual(result.distanceGroups.at(-1), {
-    maximumDistance: 0.175, candidateCount: 2, homeCovers: 0, awayCovers: 1, pushes: 1,
+    maximumDistance: 0.2, candidateCount: 2, homeCovers: 0, awayCovers: 1, pushes: 1,
     homeCoverRate: 0, awayCoverRate: 1,
   });
 });

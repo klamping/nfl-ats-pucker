@@ -40,7 +40,7 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   assert.deepEqual(slate, { season: 2026, week: 3, games: [
     { status: 'ready', gameId: 'game-1', matchup: 'AWY at HME', kickoff: { date: '2026-09-27', time: '17:00' },
       currentOdds: { provider: 'the-odds-api', consensusSpreadHome: -3, contributingBooks: 2 }, candidateCount: 1,
-      homeCoverRate: 1, awayCoverRate: 0 },
+      coverSplit: 50, weightedConfidence: 5 },
     { status: 'unavailable', gameId: 'broken', message: 'Unable to gather game' },
   ] });
   assert.equal(JSON.stringify(slate).includes('secret'), false);
