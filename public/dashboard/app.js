@@ -58,7 +58,7 @@
   }
 
   function renderHeader() {
-    const { target, filters, summary } = data;
+    const { target, filters, summary, coverMargins } = data;
     byId('target-title').textContent = `${target.awayTeam} at ${target.homeTeam}`;
     byId('target-meta').textContent = `${target.season} · Week ${target.week} · ${target.gameType === 'REG' ? 'Regular season' : 'Postseason'} · ${target.kickoff.date} ${target.kickoff.time}`;
     byId('target-line').textContent = spread(target.currentOdds.consensusSpreadHome);
@@ -72,6 +72,9 @@
       ['Away covers', summary.awayCovers],
       ['Pushes', summary.pushes],
       ['Home cover rate', percent(summary.homeCoverRate)],
+      ['Home cover margin', `${coverMargins.home.count} · median ${coverMargins.home.median ?? '—'} · middle 50% ${coverMargins.home.lowerQuartile ?? '—'}–${coverMargins.home.upperQuartile ?? '—'}`],
+      ['Away cover margin', `${coverMargins.away.count} · median ${coverMargins.away.median ?? '—'} · middle 50% ${coverMargins.away.lowerQuartile ?? '—'}–${coverMargins.away.upperQuartile ?? '—'}`],
+      ['Median margin gap', coverMargins.medianGap === null ? '—' : signed(coverMargins.medianGap)],
       ...data.distanceGroups.filter((group) => group.candidateCount > 0).map((group) => [`≤ ${group.maximumDistance.toFixed(3)}`,
         `${group.candidateCount} · H ${percent(group.homeCoverRate)} · A ${percent(group.awayCoverRate)} · P ${group.pushes}`]),
     ];

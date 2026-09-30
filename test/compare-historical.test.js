@@ -256,6 +256,20 @@ test('grades a home +7 team that loses by one as a home cover', () => {
   assert.deepEqual(result.summary, { candidateCount: 1, homeCovers: 1, awayCovers: 0, pushes: 0, homeCoverRate: 1 });
 });
 
+test('summarizes robust home and away cover margins without pushes', () => {
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [
+    historical({ week: 2, homeScore: 24, awayScore: 20, closingSpreadHome: 0 }),
+    historical({ week: 3, homeScore: 22, awayScore: 20, closingSpreadHome: 0 }),
+    historical({ week: 4, homeScore: 20, awayScore: 23, closingSpreadHome: 0 }),
+    historical({ week: 5, homeScore: 20, awayScore: 21, closingSpreadHome: 0 }),
+    historical({ week: 6, homeScore: 20, awayScore: 20, closingSpreadHome: 0 }),
+  ] });
+  assert.deepEqual(result.coverMargins, {
+    home: { count: 2, median: 3, lowerQuartile: 2, upperQuartile: 4 },
+    away: { count: 2, median: 2, lowerQuartile: 1, upperQuartile: 3 }, medianGap: 1,
+  });
+});
+
 test('returns a stable empty result when no candidates match', () => {
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [] });
   assert.deepEqual(result.candidates, []);

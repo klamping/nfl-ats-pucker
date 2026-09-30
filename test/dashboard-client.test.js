@@ -101,6 +101,7 @@ const sample = {
     featureWeights: { 'home.restDays': 0.05, closingSpreadHome: 0.05 },
     minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
+  coverMargins: { home: { count: 1, median: 3, lowerQuartile: 3, upperQuartile: 3 }, away: { count: 1, median: 1, lowerQuartile: 1, upperQuartile: 1 }, medianGap: 2 },
   distanceGroups: [{ maximumDistance: 0.025, candidateCount: 0, homeCovers: 0, awayCovers: 0,
     pushes: 0, homeCoverRate: null, awayCoverRate: null }, { maximumDistance: 0.05, candidateCount: 2,
     homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5, awayCoverRate: 0.5 }],

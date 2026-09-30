@@ -70,6 +70,14 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
   const awayCovers = candidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const pushes = candidates.filter((candidate) => candidate.outcome === 'push').length;
   const decisions = homeCovers + awayCovers;
+  const coverMargin = (outcome) => candidates.filter((candidate) => candidate.outcome === outcome)
+    .map((candidate) => Math.abs(candidate.homeAtsMargin)).sort((a, b) => a - b);
+  const percentile = (values, fraction) => values.length ? values[Math.round((values.length - 1) * fraction)] : null;
+  const median = (values) => !values.length ? null : values.length % 2 ? values[(values.length - 1) / 2] : (values[values.length / 2 - 1] + values[values.length / 2]) / 2;
+  const profile = (values) => ({ count: values.length, median: median(values),
+    lowerQuartile: percentile(values, 0.25), upperQuartile: percentile(values, 0.75) });
+  const homeMargin = profile(coverMargin('home_cover'));
+  const awayMargin = profile(coverMargin('away_cover'));
   const distanceGroups = DISTANCE_GROUP_MAXIMA.map((maximumDistance) => {
     const group = candidates.filter((candidate) => candidate.similarityScore <= maximumDistance + Number.EPSILON);
     const groupHomeCovers = group.filter((candidate) => candidate.outcome === 'home_cover').length;
@@ -92,7 +100,8 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
        limit: limit ?? null,
     },
     candidates,
-    distanceGroups,
+    distanceGroups, coverMargins: { home: homeMargin, away: awayMargin,
+      medianGap: homeMargin.median === null || awayMargin.median === null ? null : homeMargin.median - awayMargin.median },
     summary: {
       candidateCount: candidates.length,
       homeCovers,
