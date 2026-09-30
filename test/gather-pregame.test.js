@@ -143,7 +143,10 @@ test('rejects targets that have started or are no longer upcoming using the inje
 });
 
 test('retrospectively gathers completed current-season targets from nflverse closing lines without odds captures', async (t) => {
-  for (const spreadLine of [-2.5, 4.5]) {
+  for (const { spreadLine, closingSpreadHome } of [
+    { spreadLine: 2.5, closingSpreadHome: -2.5 },
+    { spreadLine: -4.5, closingSpreadHome: 4.5 },
+  ]) {
     const context = await fixture({ targetAwayScore: '17', targetHomeScore: '24', targetSpreadLine: String(spreadLine),
       now: () => new Date('2026-09-28T12:00:00.000Z') });
     t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
@@ -151,9 +154,9 @@ test('retrospectively gathers completed current-season targets from nflverse clo
     const { oddsClient, ...retrospectiveContext } = context;
     const result = await gatherPregame({ season, gameId: 'target-id', retrospective: true, ...retrospectiveContext });
 
-    assert.equal(result.snapshot.closingSpreadHome, spreadLine);
+    assert.equal(result.snapshot.closingSpreadHome, closingSpreadHome);
     assert.deepEqual(result.snapshot.currentOdds, {
-      provider: 'nflverse', retrievedAt, consensusSpreadHome: spreadLine,
+      provider: 'nflverse', retrievedAt, consensusSpreadHome: closingSpreadHome,
     });
     assert.equal(result.snapshot.homePregame.gamesPlayed, 1);
     assert.equal(result.snapshot.awayPregame.gamesPlayed, 1);
