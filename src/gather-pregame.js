@@ -12,7 +12,7 @@ const { joinTeamPregameToMarkets } = require('./join-team-matchups');
 
 async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   nflverseClient = defaultNflverseClient(), oddsClient, fileSystem = defaultFileSystem,
-  now = () => new Date(), retrospective = false } = {}) {
+  now = () => new Date(), retrospective = false, scheduleDownload } = {}) {
   const targetSeason = Number(season);
   if (!Number.isInteger(targetSeason) || targetSeason < 2005 || targetSeason > 3000 ||
       typeof gameId !== 'string' || !gameId || !/^[A-Za-z0-9_-]+$/.test(gameId)) {
@@ -20,7 +20,7 @@ async function gatherPregame({ season, gameId, outputRoot = process.cwd(),
   }
   validateClients(nflverseClient, oddsClient, retrospective);
 
-  const schedule = await nflverseClient.downloadNflverseGames();
+  const schedule = scheduleDownload || await nflverseClient.downloadNflverseGames();
   validateDownload(schedule, 'schedule');
   const targetRows = schedule.rows.filter((row) => String(row.game_id ?? row.gameId ?? '') === gameId &&
     Number(row.season) === targetSeason);

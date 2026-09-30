@@ -115,6 +115,23 @@ test('resolves target by ID and builds a historical-schema snapshot using only e
   assert.equal((await readdir(path.join(context.outputRoot, 'data', 'raw', 'odds-api'))).length, 1);
 });
 
+test('uses a supplied schedule download without downloading it again', async (t) => {
+  const context = await fixture();
+  t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
+  const scheduleDownload = await context.nflverseClient.downloadNflverseGames();
+  let scheduleDownloads = 0;
+  context.nflverseClient.downloadNflverseGames = async () => {
+    scheduleDownloads++;
+    throw new Error('must use supplied schedule');
+  };
+
+  const result = await gatherPregame({ season, gameId: 'target-id', ...context, scheduleDownload });
+
+  assert.equal(scheduleDownloads, 0);
+  assert.equal(result.snapshot.gameId, 'target-id');
+  assert.equal(result.snapshot.currentOdds.consensusSpreadHome, -3);
+});
+
 test('rejects targets that have started or are no longer upcoming using the injected clock', async (t) => {
   const context = await fixture({ now: () => new Date('2026-09-27T21:00:00.000Z') });
   t.after(() => rm(context.outputRoot, { recursive: true, force: true }));
