@@ -21,5 +21,8 @@
   "dependencies": {
     "chart.js": "^4.5.1",
     "csv-parse": "^7.0.3"
+  },
+  "devDependencies": {
+    "webdriverio": "^10.0.0"
   }
 }
