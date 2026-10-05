@@ -161,7 +161,11 @@
     const marginBound = Math.max(1, ...points.map(({ finalMargin }) => Math.abs(finalMargin)));
     const coverCanvas = element('canvas');
     const marginCanvas = element('canvas');
-    byId('trend-chart').replaceChildren(coverCanvas, marginCanvas);
+    const coverPanel = element('div', undefined, 'trend-chart-panel');
+    const marginPanel = element('div', undefined, 'trend-chart-panel');
+    coverPanel.append(coverCanvas);
+    marginPanel.append(marginCanvas);
+    byId('trend-chart').replaceChildren(coverPanel, marginPanel);
     new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: 'Running cover split',
       data: points.map(({ coverSplit }) => Math.round(coverSplit)), borderColor: '#c83f49', tension: 0.2 }] },
     options: chartOptions(coverBound, 'Running cover split', 'pp') });

@@ -31,6 +31,7 @@ test('local analysis board contains accessible controls and no remote resources 
   assert.match(js, /Unable to load/);
   assert.match(js, /distanceContributions/);
   assert.match(css, /focus-visible/);
+  assert.match(css, /\.trend-chart-panel\s*\{[^}]*height:\s*300px/s);
   for (const asset of [html, js, css]) {
     assert.doesNotMatch(asset, /theoddsapi|homeSpreads|https?:\/\//i);
   }
