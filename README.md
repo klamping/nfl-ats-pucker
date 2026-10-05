@@ -17,6 +17,8 @@ npm run week:dashboard -- --season 2026 --week 3
 
 Open the printed loopback URL. Upcoming games use current live odds. Completed games in the current NFL season use nflverse closing lines and strictly pre-kickoff features. If one game cannot be gathered, it remains visible as unavailable while the rest of the weekly slate continues.
 
+Both dashboards show the unweighted historical home-cover split in percentage points (PP), its 95% Wilson confidence interval, and the decided-game count (home covers + away covers; pushes excluded). The interval is expressed relative to 50%: an interval containing 0 pp is compatible with a 50/50 split. Empty or push-only samples have no interval. These are descriptive intervals, not predictions or significance badges; they assume independent observations, and shared teams/seasons and analogue selection can overstate precision. Picks, rankings, and the separate weighted-confidence score are unchanged. Comparison JSON exposes `confidence.coverSplitInterval` (`lower`/`upper` in PP, or `null`) and `confidence.decidedGameCount`.
+
 ## Validate samples before bulk ingestion
 
 ```bash

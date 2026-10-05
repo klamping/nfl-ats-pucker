@@ -18,6 +18,18 @@ const MINIMUM_FEATURE_COVERAGE = 0.7;
 const MAXIMUM_SIMILARITY_DISTANCE = 0.2;
 const DISTANCE_GROUP_MAXIMA = [0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2];
 
+function coverSplitInterval(homeCovers, decisions) {
+  if (!decisions) return null;
+  // Two-sided 95% Wilson score interval, converted from a proportion to PP.
+  const z = 1.959963984540054;
+  const rate = homeCovers / decisions;
+  const adjustment = z * z / decisions;
+  const center = (rate + adjustment / 2) / (1 + adjustment);
+  const radius = z * Math.sqrt(rate * (1 - rate) / decisions + z * z / (4 * decisions * decisions)) / (1 + adjustment);
+  return { lower: (Math.max(0, center - radius) - 0.5) * 100,
+    upper: (Math.min(1, center + radius) - 0.5) * 100 };
+}
+
 function compareHistorical({ input, historicalMatchups, weekWindow,
   limit } = {}) {
   validateInput(input);
@@ -108,7 +120,9 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     candidates,
     distanceGroups, coverMargins: { home: homeMargin, away: awayMargin,
       medianGap: homeMargin.median === null || awayMargin.median === null ? null : homeMargin.median - awayMargin.median },
-    confidence: { coverSplit: decisions ? ((homeCovers / decisions) - 0.5) * 100 : null, weightedConfidence: confidence, weightedSplit },
+    confidence: { coverSplit: decisions ? ((homeCovers / decisions) - 0.5) * 100 : null,
+      coverSplitInterval: coverSplitInterval(homeCovers, decisions), decidedGameCount: decisions,
+      weightedConfidence: confidence, weightedSplit },
     summary: {
       candidateCount: candidates.length,
       homeCovers,

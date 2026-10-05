@@ -36,6 +36,33 @@ function historical(overrides = {}) {
   return matchup({ season: 2020, gameType: 'REG', ...overrides });
 }
 
+test('reports Wilson 95% PP intervals using decided games only', () => {
+  for (const [covers, losses, pushes, lower, upper] of [
+    [12, 8, 3, -11.34, 28.12],
+    [120, 80, 0, 3.09, 16.54],
+    [1, 0, 0, -29.35, 50],
+    [0, 1, 0, -50, 29.35],
+    [1, 1, 0, -40.55, 40.55],
+  ]) {
+    const historicalMatchups = Array.from({ length: covers + losses + pushes }, (_, index) =>
+      historical({ gameId: `old-${index}`, homeScore: index < covers ? 4 : index < covers + losses ? 2 : 3 }));
+    const { confidence } = compareHistorical({ input: snapshot(), historicalMatchups });
+    assert.equal(confidence.decidedGameCount, covers + losses);
+    assert.ok(Math.abs(confidence.coverSplitInterval.lower - lower) < 0.02);
+    assert.ok(Math.abs(confidence.coverSplitInterval.upper - upper) < 0.02);
+    assert.ok(Math.abs(confidence.coverSplit - (covers / (covers + losses) - 0.5) * 100) < 1e-10);
+  }
+});
+
+test('has no PP interval when there are no decided games', () => {
+  for (const historicalMatchups of [[], [historical({ homeScore: 3 })]]) {
+    const { confidence } = compareHistorical({ input: snapshot(), historicalMatchups });
+    assert.equal(confidence.decidedGameCount, 0);
+    assert.equal(confidence.coverSplit, null);
+    assert.equal(confidence.coverSplitInterval, null);
+  }
+});
+
 test('validates the gathered snapshot and selected finite features', () => {
   const invalid = snapshot({ homePregame: { ...snapshot().homePregame, netEpaPerPlay: null } });
   assert.throws(() => compareHistorical({ input: invalid, historicalMatchups: [] }), /finite|valid/i);

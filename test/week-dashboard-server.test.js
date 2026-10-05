@@ -37,6 +37,14 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   assert.equal(server.address().address, '127.0.0.1');
 
   const slate = await (await response(server, '/api/slate')).json();
+  assert.equal(slate.games[0].decidedGameCount, 1);
+  assert.ok(Math.abs(slate.games[0].coverSplitInterval.lower - (-29.35)) < 0.02);
+  assert.equal(slate.games[0].coverSplitInterval.upper, 50);
+  const detail = await (await response(server, '/api/comparison/game-1')).json();
+  assert.deepEqual(detail.confidence.coverSplitInterval, slate.games[0].coverSplitInterval);
+  assert.equal(detail.confidence.decidedGameCount, 1);
+  const { coverSplitInterval, decidedGameCount, ...existingFields } = slate.games[0];
+  slate.games[0] = existingFields;
   assert.deepEqual(slate, { season: 2026, week: 3, games: [
     { status: 'ready', gameId: 'game-1', matchup: 'AWY at HME', kickoff: { date: '2026-09-27', time: '17:00' },
       currentOdds: { provider: 'the-odds-api', consensusSpreadHome: -3, contributingBooks: 2 }, candidateCount: 1,

@@ -103,7 +103,8 @@ const sample = {
     minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
   coverMargins: { home: { count: 1, median: 3, lowerQuartile: 3, upperQuartile: 3 }, away: { count: 1, median: 1, lowerQuartile: 1, upperQuartile: 1 }, medianGap: 2 },
-  confidence: { coverSplit: 0, weightedConfidence: 0, weightedSplit: 0 },
+  confidence: { coverSplit: 0, weightedConfidence: 0, weightedSplit: 0,
+    decidedGameCount: 2, coverSplitInterval: { lower: -40.5469, upper: 40.5469 } },
   distanceGroups: [{ maximumDistance: 0.025, candidateCount: 0, homeCovers: 0, awayCovers: 0,
   pushes: 0, homeCoverRate: null, awayCoverRate: null }, { maximumDistance: 0.05, candidateCount: 1,
     homeCovers: 1, awayCovers: 0, pushes: 0, homeCoverRate: 1, awayCoverRate: 0 }],
@@ -119,6 +120,19 @@ const sample = {
   ],
 };
 
+test('shows no PP interval for a game with only pushes', async () => {
+  const reply = { ...sample,
+    summary: { candidateCount: 2, homeCovers: 0, awayCovers: 0, pushes: 2, homeCoverRate: null },
+    confidence: { coverSplit: null, weightedConfidence: null, weightedSplit: null,
+      decidedGameCount: 0, coverSplitInterval: null },
+  };
+  const { elements, settled } = runClient({ ok: true, json: async () => reply });
+  await settled;
+  assert.match(elements.summary.textContent, /Cover split 95% CI—/);
+  assert.match(elements.summary.textContent, /Decided games0/);
+  assert.doesNotMatch(elements.summary.textContent, /NaN|undefined/);
+});
+
 test('renders target, summary, ATS text, details and keyboard-usable sort and selection', async () => {
   const { elements, requested, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
   await settled;
@@ -128,6 +142,8 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements['count-label'].textContent, /^2 qualifying games$/);
   assert.match(elements.scope.textContent, /85% similarity/);
   assert.match(elements.summary.textContent, /Games.*Pushes.*Cover split/);
+  assert.match(elements.summary.textContent, /Cover split 95% CI.*-40\.5 to \+40\.5 pp/);
+  assert.match(elements.summary.textContent, /Decided games.*2/);
   assert.doesNotMatch(elements.summary.textContent, /≤ 0\.025/);
   const distanceGroup = elements.summary.find((node) => node.tagName === 'dl' && /Cover split/.test(node.textContent));
   assert.ok(distanceGroup, 'populated distance groups render as data lists');

@@ -11,6 +11,7 @@ function projectSlateGame(input, comparison) {
   return { status: 'ready', gameId: input.gameId, matchup: `${input.awayTeam} at ${input.homeTeam}`, recommendedPick,
     kickoff: { date: input.kickoff.date, time: input.kickoff.time }, currentOdds,
     candidateCount: comparison.summary.candidateCount, coverSplit: comparison.confidence.coverSplit,
+    coverSplitInterval: comparison.confidence.coverSplitInterval, decidedGameCount: comparison.confidence.decidedGameCount,
     weightedConfidence: comparison.confidence.weightedConfidence };
 }
 

@@ -70,6 +70,8 @@
       ['Games', summary.candidateCount],
       ['Pushes', summary.pushes],
       ['Cover split', confidence.coverSplit === null ? '—' : `${confidence.coverSplit > 0 ? '+' : ''}${Math.round(confidence.coverSplit)} pp`],
+      ['Cover split 95% CI', confidence.coverSplitInterval ? `${signed(confidence.coverSplitInterval.lower.toFixed(1))} to ${signed(confidence.coverSplitInterval.upper.toFixed(1))} pp` : '—'],
+      ['Decided games', confidence.decidedGameCount],
       ['Weighted confidence', confidence.weightedConfidence === null ? '—' : `${confidence.weightedConfidence}/100 · ${confidence.weightedSplit > 0 ? '+' : ''}${Math.round(confidence.weightedSplit)} pp`],
       ['Home cover margin', `${coverMargins.home.count} · median ${coverMargins.home.median ?? '—'} · middle 50% ${coverMargins.home.lowerQuartile ?? '—'}–${coverMargins.home.upperQuartile ?? '—'}`],
       ['Away cover margin', `${coverMargins.away.count} · median ${coverMargins.away.median ?? '—'} · middle 50% ${coverMargins.away.lowerQuartile ?? '—'}–${coverMargins.away.upperQuartile ?? '—'}`],

@@ -5,6 +5,8 @@
   const percent = (value) => value === null ? '—' : `${Math.round(value * 100)}%`;
   const line = (value) => `${value > 0 ? '+' : ''}${value} · ${value < 0 ? 'home favored' : value > 0 ? 'home underdog' : 'even'}`;
   const source = (odds) => odds.provider === 'nflverse' ? 'closing line' : `${odds.contributingBooks} books`;
+  const signed = (value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}`;
+  const interval = (value) => value ? `${signed(value.lower)} to ${signed(value.upper)} pp` : '—';
   let orderedGames = [];
   let unavailableGames = [];
   let storageKey;
@@ -46,10 +48,12 @@
       const matchup = element('td'); const link = element('a', game.matchup);
       link.setAttribute('href', `/games/${encodeURIComponent(game.gameId)}/`); matchup.append(link);
       row.append(pointsCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
-        element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`), element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
+        element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`),
+        element('td', interval(game.coverSplitInterval)), element('td', game.decidedGameCount),
+        element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
       return row;
     });
-    for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '8'); row.append(cell); rows.push(row); }
+    for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '10'); row.append(cell); rows.push(row); }
     byId('slate-body').replaceChildren(...rows);
   }
   function render(data) {
