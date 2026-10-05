@@ -22,17 +22,17 @@
     orderedGames.splice(targetIndex, 0, game);
     saveRanks(); renderRows();
   }
-  function swapRank(gameId, rank) {
+  function swapPoints(gameId, points) {
     const currentIndex = orderedGames.findIndex((game) => game.gameId === gameId);
-    if (currentIndex < 0 || !Number.isInteger(rank)) return;
-    const targetIndex = Math.max(0, Math.min(orderedGames.length - 1, rank - 1));
+    if (currentIndex < 0 || !Number.isInteger(points)) return;
+    const targetIndex = Math.max(0, Math.min(orderedGames.length - 1, orderedGames.length - points));
     [orderedGames[currentIndex], orderedGames[targetIndex]] = [orderedGames[targetIndex], orderedGames[currentIndex]];
     saveRanks(); renderRows();
   }
-  function rankCell(game, index) {
+  function pointsCell(game, index) {
     const cell = element('td');
-    const input = element('input'); input.setAttribute('type', 'number'); input.setAttribute('min', '1'); input.setAttribute('max', orderedGames.length); input.value = String(index + 1);
-    input.setAttribute('aria-label', `Rank ${game.matchup}`); input.addEventListener('change', (event) => swapRank(game.gameId, Number(event.target.value)));
+    const input = element('input'); input.setAttribute('type', 'number'); input.setAttribute('min', '1'); input.setAttribute('max', orderedGames.length); input.value = String(orderedGames.length - index);
+    input.setAttribute('aria-label', `Points ${game.matchup}`); input.addEventListener('change', (event) => swapPoints(game.gameId, Number(event.target.value)));
     const up = element('button', '↑'); up.type = 'button'; up.setAttribute('aria-label', `Move ${game.matchup} up`); up.addEventListener('click', () => { if (index) move(game.gameId, index - 1); });
     const down = element('button', '↓'); down.type = 'button'; down.setAttribute('aria-label', `Move ${game.matchup} down`); down.addEventListener('click', () => { if (index < orderedGames.length - 1) move(game.gameId, index + 1); });
     cell.append(input, up, down); return cell;
@@ -45,7 +45,7 @@
       row.addEventListener('drop', (event) => { event.preventDefault(); const id = event.dataTransfer?.getData('text/plain'); if (id && id !== game.gameId) move(id, index); });
       const matchup = element('td'); const link = element('a', game.matchup);
       link.setAttribute('href', `/games/${encodeURIComponent(game.gameId)}/`); matchup.append(link);
-      row.append(rankCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
+      row.append(pointsCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
         element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`), element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
       return row;
     });
