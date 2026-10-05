@@ -124,6 +124,88 @@
     }));
   }
 
+  function svgElement(tag, text) {
+    const node = document.createElementNS(['http:', '', 'www.w3.org/2000/svg'].join('/'), tag);
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function renderTrend() {
+    const games = [...data.candidates].sort((left, right) => left.season - right.season || left.week - right.week ||
+      left.gameId.localeCompare(right.gameId));
+    const points = [];
+    let homeCovers = 0;
+    let awayCovers = 0;
+    for (const game of games) {
+      if (game.outcome === 'home_cover') homeCovers += 1;
+      if (game.outcome === 'away_cover') awayCovers += 1;
+      const resolvedGames = homeCovers + awayCovers;
+      points.push({
+        game,
+        coverSplit: resolvedGames ? ((homeCovers - awayCovers) / resolvedGames) * 100 : 0,
+        finalMargin: game.homeScore - game.awayScore,
+      });
+    }
+
+    const width = 1200;
+    const xStart = 60;
+    const xEnd = 1160;
+    const lineTop = 35;
+    const lineBottom = 200;
+    const lineZero = (lineTop + lineBottom) / 2;
+    const barTop = 265;
+    const barBottom = 430;
+    const barZero = (barTop + barBottom) / 2;
+    const xFor = (index) => points.length === 1 ? (xStart + xEnd) / 2 : xStart + ((xEnd - xStart) * index) / (points.length - 1);
+    const lineScale = (lineBottom - lineTop) / 200;
+    const largestMargin = Math.max(1, ...points.map(({ finalMargin }) => Math.abs(finalMargin)));
+    const barScale = ((barBottom - barTop) / 2) / largestMargin;
+    const svg = svgElement('svg');
+    svg.setAttribute('viewBox', `0 0 ${width} 470`);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-labelledby', 'trend-chart-title trend-chart-description');
+    const title = svgElement('title', 'Historical cover split and final point difference');
+    title.setAttribute('id', 'trend-chart-title');
+    const description = svgElement('desc', points.map(({ game, coverSplit, finalMargin }) =>
+      `${game.season} W${game.week} ${game.homeTeam} vs ${game.awayTeam}: ${signed(Math.round(coverSplit))} pp, ${signed(finalMargin)} points`).join('; '));
+    description.setAttribute('id', 'trend-chart-description');
+    svg.append(title, description);
+    for (const [zero, label] of [[lineZero, '0 pp'], [barZero, '0 points']]) {
+      const baseline = svgElement('line');
+      baseline.setAttribute('x1', xStart);
+      baseline.setAttribute('x2', xEnd);
+      baseline.setAttribute('y1', zero);
+      baseline.setAttribute('y2', zero);
+      baseline.setAttribute('stroke', '#8a9895');
+      baseline.setAttribute('stroke-dasharray', '4 4');
+      svg.append(baseline);
+      const zeroLabel = svgElement('text', label);
+      zeroLabel.setAttribute('x', 8);
+      zeroLabel.setAttribute('y', zero + 4);
+      zeroLabel.setAttribute('fill', '#596973');
+      zeroLabel.setAttribute('font-size', '12');
+      svg.append(zeroLabel);
+    }
+    const polyline = svgElement('polyline');
+    polyline.setAttribute('fill', 'none');
+    polyline.setAttribute('stroke', '#c83f49');
+    polyline.setAttribute('stroke-width', '4');
+    polyline.setAttribute('points', points.map(({ coverSplit }, index) =>
+      `${xFor(index)},${lineZero - (coverSplit * lineScale)}`).join(' '));
+    svg.append(polyline);
+    for (const [index, { finalMargin }] of points.entries()) {
+      const height = Math.abs(finalMargin * barScale);
+      const bar = svgElement('rect');
+      bar.setAttribute('x', xFor(index) - 8);
+      bar.setAttribute('y', finalMargin >= 0 ? barZero - height : barZero);
+      bar.setAttribute('width', '16');
+      bar.setAttribute('height', height);
+      bar.setAttribute('fill', '#9acb78');
+      svg.append(bar);
+    }
+    byId('trend-chart').replaceChildren(svg);
+  }
+
   function renderDetail(game) {
     const panel = byId('detail');
     if (!game) { panel.replaceChildren(); return; }
@@ -215,6 +297,7 @@
       if (!response.ok) throw new Error('Comparison unavailable');
       data = await response.json();
       renderHeader();
+      renderTrend();
       if (!data.candidates.length) {
         byId('status').textContent = 'No games.';
         byId('candidate-body').replaceChildren();
