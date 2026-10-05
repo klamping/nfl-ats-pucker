@@ -77,9 +77,13 @@ function runClient(reply, pathname = '/') {
     createElementNS: (_namespace, tag) => new Element(tag),
   };
   let requested;
+  const charts = [];
+  class Chart {
+    constructor(canvas, config) { charts.push({ canvas, config }); }
+  }
   const fetch = async (url) => { requested = url; return reply; };
-  vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), { document, fetch, location: { pathname } });
-  return { elements, requested, settled: new Promise((resolve) => setImmediate(resolve)) };
+  vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), { Chart, document, fetch, location: { pathname } });
+  return { elements, requested, charts, settled: new Promise((resolve) => setImmediate(resolve)) };
 }
 
 test('loads a weekly detail page from its game-specific comparison endpoint', async () => {
@@ -175,17 +179,16 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.equal(elements['candidate-body'].children[0].find((node) => node.tagName === 'button').attributes['aria-pressed'], 'true');
 });
 
-test('renders a chronological running cover-split line and final-margin bars', async () => {
-  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
+test('renders distance-ordered running cover-split and final-margin charts with tooltips', async () => {
+  const { charts, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
   await settled;
 
-  assert.match(elements['trend-chart'].textContent,
-    /2018 W5 LAR vs SF: -100 pp, -3 points.*2020 W2 GB vs MIN: 0 pp, \+4 points/);
-  const line = elements['trend-chart'].find((node) => node.tagName === 'polyline');
-  assert.equal(line.attributes.stroke, '#c83f49');
-  const bars = elements['trend-chart'].children[0].children.filter((node) => node.tagName === 'rect');
-  assert.equal(bars.length, 2);
-  assert.ok(bars.every((bar) => bar.attributes.fill === '#9acb78'));
+  assert.equal(charts.length, 2);
+  assert.deepEqual(Array.from(charts[0].config.data.labels), ['0.100', '0.300']);
+  assert.deepEqual(Array.from(charts[0].config.data.datasets[0].data), [100, 0]);
+  assert.equal(charts[0].config.data.datasets[0].borderColor, '#c83f49');
+  assert.equal(charts[1].config.data.datasets[0].backgroundColor, '#9acb78');
+  assert.equal(charts[0].config.options.plugins.tooltip.enabled, true);
 });
 
 test('labels a negative home spread as home favored', async () => {

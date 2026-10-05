@@ -134,14 +134,8 @@
     }));
   }
 
-  function svgElement(tag, text) {
-    const node = document.createElementNS(['http:', '', 'www.w3.org/2000/svg'].join('/'), tag);
-    if (text !== undefined) node.textContent = text;
-    return node;
-  }
-
   function renderTrend() {
-    const games = [...data.candidates].sort((left, right) => left.season - right.season || left.week - right.week ||
+    const games = [...data.candidates].sort((left, right) => left.similarityScore - right.similarityScore ||
       left.gameId.localeCompare(right.gameId));
     const points = [];
     let homeCovers = 0;
@@ -157,63 +151,23 @@
       });
     }
 
-    const width = 1200;
-    const xStart = 60;
-    const xEnd = 1160;
-    const lineTop = 35;
-    const lineBottom = 200;
-    const lineZero = (lineTop + lineBottom) / 2;
-    const barTop = 265;
-    const barBottom = 430;
-    const barZero = (barTop + barBottom) / 2;
-    const xFor = (index) => points.length === 1 ? (xStart + xEnd) / 2 : xStart + ((xEnd - xStart) * index) / (points.length - 1);
-    const lineScale = (lineBottom - lineTop) / 200;
-    const largestMargin = Math.max(1, ...points.map(({ finalMargin }) => Math.abs(finalMargin)));
-    const barScale = ((barBottom - barTop) / 2) / largestMargin;
-    const svg = svgElement('svg');
-    svg.setAttribute('viewBox', `0 0 ${width} 470`);
-    svg.setAttribute('role', 'img');
-    svg.setAttribute('aria-labelledby', 'trend-chart-title trend-chart-description');
-    const title = svgElement('title', 'Historical cover split and final point difference');
-    title.setAttribute('id', 'trend-chart-title');
-    const description = svgElement('desc', points.map(({ game, coverSplit, finalMargin }) =>
-      `${game.season} W${game.week} ${game.homeTeam} vs ${game.awayTeam}: ${signed(Math.round(coverSplit))} pp, ${signed(finalMargin)} points`).join('; '));
-    description.setAttribute('id', 'trend-chart-description');
-    svg.append(title, description);
-    for (const [zero, label] of [[lineZero, '0 pp'], [barZero, '0 points']]) {
-      const baseline = svgElement('line');
-      baseline.setAttribute('x1', xStart);
-      baseline.setAttribute('x2', xEnd);
-      baseline.setAttribute('y1', zero);
-      baseline.setAttribute('y2', zero);
-      baseline.setAttribute('stroke', '#8a9895');
-      baseline.setAttribute('stroke-dasharray', '4 4');
-      svg.append(baseline);
-      const zeroLabel = svgElement('text', label);
-      zeroLabel.setAttribute('x', 8);
-      zeroLabel.setAttribute('y', zero + 4);
-      zeroLabel.setAttribute('fill', '#596973');
-      zeroLabel.setAttribute('font-size', '12');
-      svg.append(zeroLabel);
-    }
-    const polyline = svgElement('polyline');
-    polyline.setAttribute('fill', 'none');
-    polyline.setAttribute('stroke', '#c83f49');
-    polyline.setAttribute('stroke-width', '4');
-    polyline.setAttribute('points', points.map(({ coverSplit }, index) =>
-      `${xFor(index)},${lineZero - (coverSplit * lineScale)}`).join(' '));
-    svg.append(polyline);
-    for (const [index, { finalMargin }] of points.entries()) {
-      const height = Math.abs(finalMargin * barScale);
-      const bar = svgElement('rect');
-      bar.setAttribute('x', xFor(index) - 8);
-      bar.setAttribute('y', finalMargin >= 0 ? barZero - height : barZero);
-      bar.setAttribute('width', '16');
-      bar.setAttribute('height', height);
-      bar.setAttribute('fill', '#9acb78');
-      svg.append(bar);
-    }
-    byId('trend-chart').replaceChildren(svg);
+    const labels = points.map(({ game }) => game.similarityScore.toFixed(3));
+    const chartOptions = (bound, label, suffix) => ({ responsive: true, maintainAspectRatio: false,
+      plugins: { tooltip: { enabled: true, callbacks: { label: (context) => `${label}: ${signed(context.raw)} ${suffix}` } } },
+      scales: { y: { min: -bound, max: bound, title: { display: true, text: label } },
+        x: { title: { display: true, text: 'Distance' } } },
+    });
+    const coverBound = Math.max(100, ...points.map(({ coverSplit }) => Math.abs(coverSplit)));
+    const marginBound = Math.max(1, ...points.map(({ finalMargin }) => Math.abs(finalMargin)));
+    const coverCanvas = element('canvas');
+    const marginCanvas = element('canvas');
+    byId('trend-chart').replaceChildren(coverCanvas, marginCanvas);
+    new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: 'Running cover split',
+      data: points.map(({ coverSplit }) => Math.round(coverSplit)), borderColor: '#c83f49', tension: 0.2 }] },
+    options: chartOptions(coverBound, 'Running cover split', 'pp') });
+    new Chart(marginCanvas, { type: 'bar', data: { labels, datasets: [{ label: 'Final point difference',
+      data: points.map(({ finalMargin }) => finalMargin), backgroundColor: '#9acb78' }] },
+    options: chartOptions(marginBound, 'Final point difference', 'points') });
   }
 
   function renderDetail(game) {

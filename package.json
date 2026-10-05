@@ -19,6 +19,7 @@
     "week:dashboard": "node src/week-dashboard.js"
   },
   "dependencies": {
+    "chart.js": "^4.5.1",
     "csv-parse": "^7.0.3"
   }
 }

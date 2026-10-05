@@ -152,13 +152,14 @@ test('empty comparison returns stable summary and empty candidates', async (t) =
   });
 });
 
-test('serves only the three exact local dashboard routes with safe content types', async (t) => {
+test('serves only the four exact local dashboard routes with safe content types', async (t) => {
   const server = await createDashboardServer({ inputPath: INPUT, outputRoot: ROOT,
     fileSystem: fixture().fileSystem, port: 0 });
   t.after(() => new Promise((resolve) => server.close(resolve)));
   for (const [route, type, marker] of [
     ['/', 'text/html', '<main'],
     ['/app.js', 'text/javascript', '/api/comparison'],
+    ['/chart.js', 'text/javascript', 'Chart'],
     ['/styles.css', 'text/css', 'prefers-reduced-motion'],
   ]) {
     const result = await response(server, route);
@@ -167,7 +168,7 @@ test('serves only the three exact local dashboard routes with safe content types
     assert.equal(result.headers.get('x-content-type-options'), 'nosniff');
     assert.match(await result.text(), new RegExp(marker), route);
   }
-  for (const route of ['/index.html', '/dashboard/', '/app.js?x=1', '/styles.css/',
+  for (const route of ['/index.html', '/dashboard/', '/app.js?x=1', '/chart.js?x=1', '/styles.css/',
     '/%61pp.js', '/%2e%2e/app.js', '/private/input.json']) {
     assert.equal(await rawStatus(server, route), 404, route);
   }
