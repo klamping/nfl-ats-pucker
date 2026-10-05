@@ -1,0 +1,108 @@
+{
+  "retrievedAt": "2026-10-02T18:14:31.008517+00:00",
+  "caveat": "Current HTML with historical publication metadata, not immutable pregame captures",
+  "assets": [
+    {
+      "path": "spikes/roster-feasibility/external/no-week4-final.html",
+      "url": "https://www.neworleanssaints.com/news/falcons-saints-friday-injury-report-2024-nfl-week-4-atlanta-new-orleans",
+      "sha256": "e649bab545516afd4d4ab501ef81e7b5e895e4a46890cb863e75abea412923cb",
+      "bytes": 341820,
+      "dates": {
+        "datePublished": [
+          "2024-09-27T20:16:07.416Z"
+        ],
+        "dateModified": [
+          "2024-09-27T20:38:02.574Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/no-week6-final.html",
+      "url": "https://www.neworleanssaints.com/news/buccaneers-saints-friday-injury-report-2024-nfl-week-6-tampa-bay-new-orleans",
+      "sha256": "1405a8ca490d5e0c38f86921e9832af4e4981a8e4f9b85f5a4cbe330ce413849",
+      "bytes": 345575,
+      "dates": {
+        "datePublished": [
+          "2024-10-11T19:56:27.225Z"
+        ],
+        "dateModified": [
+          "2024-10-11T19:56:27.225Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/sf-week13-final.html",
+      "url": "https://www.49ers.com/news/brock-purdy-questionable-trent-williams-out-for-week-13-vs-bills-injury-report-sfvsbuf",
+      "sha256": "2650f8e6bb49b566648fd334642853496ddd9d4be0656c933515b13af8d317b2",
+      "bytes": 465944,
+      "dates": {
+        "datePublished": [
+          "2024-11-29T22:30:00Z"
+        ],
+        "dateModified": [
+          "2024-11-29T22:32:02.741Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/dalman-ir.html",
+      "url": "https://www.atlantafalcons.com/news/drew-dalman-injured-reserve-elijah-wilkinson-signed-transaction-week-4",
+      "sha256": "a9a2203b1c4237168c225ab2b7696aee61470a61906095705c7d9173e80b48c3",
+      "bytes": 481977,
+      "dates": {
+        "datePublished": [
+          "2024-09-24T20:00:18.567Z"
+        ],
+        "dateModified": [
+          "2024-09-24T20:00:20.148Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/hargrave-season-ending.html",
+      "url": "https://www.49ers.com/news/49ers-discuss-next-man-up-at-defensive-tackle-following-hargrave-injury",
+      "sha256": "0e5a2c41e6fc2943b30ad49b8dcffa333ef36a661f81c793d6687427f933c6a3",
+      "bytes": 462997,
+      "dates": {
+        "datePublished": [
+          "2024-09-26T01:00:00Z"
+        ],
+        "dateModified": [
+          "2024-09-26T01:06:01.399Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/aiyuk-ir.html",
+      "url": "https://www.49ers.com/news/morning-reports/morning-report-49ers-place-aiyuk-on-ir-practice-opens-up-for-dalvssf",
+      "sha256": "db9f8f32867afec26e9ce666dad4153fda12c920e883a7dd3ce3353374030446",
+      "bytes": 651380,
+      "dates": {
+        "datePublished": [
+          "2024-10-20T20:15:00Z",
+          "2024-10-20T23:55:00Z",
+          "2024-10-24T14:00:00Z"
+        ],
+        "dateModified": [
+          "2024-10-24T14:00:16.997Z",
+          "2025-07-29T20:23:58.928Z",
+          "2025-07-29T20:26:41.918Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/aiyuk-season-ending.html",
+      "url": "https://www.49ers.com/news/kyle-shanahan-confirms-brandon-aiyuk-season-ending-acl-and-mcl-tear",
+      "bytes": 458862,
+      "sha256": "bb17a33453d28820618a97e3f5fb40460cef9a95ce8d7f8261276814d5a8899e",
+      "dates": {
+        "datePublished": [
+          "2024-10-21T22:50:00Z"
+        ],
+        "dateModified": [
+          "2024-10-21T22:59:17.625Z"
+        ]
+      }
+    }
+  ]
+}

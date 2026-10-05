@@ -1,0 +1,5135 @@
+[
+  {
+    "gameId": "2010_04_BAL_PIT",
+    "season": 2010,
+    "week": 4,
+    "affectedTeam": "PIT",
+    "opponent": "BAL",
+    "affectedHome": true,
+    "kickoffUtc": "2010-10-03T17:00:00+00:00",
+    "knownOutQb": "Dennis Dixon",
+    "knownOutGsis": "00-0026296",
+    "reportUpdatedUtc": "2010-10-01T10:04:51Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 5,
+      "affectedSpread": -2.0,
+      "passingEpa": -0.12684952457639276
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_05_CHI_CAR",
+    "season": 2010,
+    "week": 5,
+    "affectedTeam": "CHI",
+    "opponent": "CAR",
+    "affectedHome": false,
+    "kickoffUtc": "2010-10-10T17:00:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2010-10-08T12:53:49Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 57,
+      "affectedSpread": 2.5,
+      "passingEpa": -0.05744596165413718
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_05_PHI_SF",
+    "season": 2010,
+    "week": 5,
+    "affectedTeam": "PHI",
+    "opponent": "SF",
+    "affectedHome": false,
+    "kickoffUtc": "2010-10-11T00:20:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2010-10-08T09:23:42Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 33,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.1243862299952003
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_07_JAX_KC",
+    "season": 2010,
+    "week": 7,
+    "affectedTeam": "JAX",
+    "opponent": "KC",
+    "affectedHome": false,
+    "kickoffUtc": "2010-10-24T17:00:00+00:00",
+    "knownOutQb": "David Garrard",
+    "knownOutGsis": "00-0021231",
+    "reportUpdatedUtc": "2010-10-22T10:14:44Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 64,
+      "affectedSpread": 9.0,
+      "passingEpa": 0.0440674807172243
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_08_DEN_SF",
+    "season": 2010,
+    "week": 8,
+    "affectedTeam": "SF",
+    "opponent": "DEN",
+    "affectedHome": true,
+    "kickoffUtc": "2010-10-31T17:00:00+00:00",
+    "knownOutQb": "Alex Smith",
+    "knownOutGsis": "00-0023436",
+    "reportUpdatedUtc": "2010-10-29T11:11:56Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 47,
+      "affectedSpread": -2.0,
+      "passingEpa": -0.07007720956946967
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_08_JAX_DAL",
+    "season": 2010,
+    "week": 8,
+    "affectedTeam": "DAL",
+    "opponent": "JAX",
+    "affectedHome": true,
+    "kickoffUtc": "2010-10-31T17:00:00+00:00",
+    "knownOutQb": "Tony Romo",
+    "knownOutGsis": "00-0021678",
+    "reportUpdatedUtc": "2010-10-29T11:30:43Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 61,
+      "affectedSpread": -6.5,
+      "passingEpa": 0.09142743459225965
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_08_WAS_DET",
+    "season": 2010,
+    "week": 8,
+    "affectedTeam": "DET",
+    "opponent": "WAS",
+    "affectedHome": true,
+    "kickoffUtc": "2010-10-31T17:00:00+00:00",
+    "knownOutQb": "Shaun Hill",
+    "knownOutGsis": "00-0020679",
+    "reportUpdatedUtc": "2010-10-29T12:41:09Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 21,
+      "affectedSpread": -2.5,
+      "passingEpa": 0.027425468936485193
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_09_NYG_SEA",
+    "season": 2010,
+    "week": 9,
+    "affectedTeam": "SEA",
+    "opponent": "NYG",
+    "affectedHome": true,
+    "kickoffUtc": "2010-11-07T21:05:00+00:00",
+    "knownOutQb": "Matt Hasselbeck",
+    "knownOutGsis": "00-0007091",
+    "reportUpdatedUtc": "2010-11-05T13:44:57Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 71,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.05064255306992636
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_09_DAL_GB",
+    "season": 2010,
+    "week": 9,
+    "affectedTeam": "DAL",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2010-11-08T01:20:00+00:00",
+    "knownOutQb": "Tony Romo",
+    "knownOutGsis": "00-0021678",
+    "reportUpdatedUtc": "2010-11-05T11:30:58Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 38,
+      "affectedSpread": 7.0,
+      "passingEpa": 0.08363807905293255
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_10_DET_BUF",
+    "season": 2010,
+    "week": 10,
+    "affectedTeam": "DET",
+    "opponent": "BUF",
+    "affectedHome": false,
+    "kickoffUtc": "2010-11-14T18:00:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2010-11-12T12:43:08Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 13,
+      "affectedSpread": 1.5,
+      "passingEpa": 0.011406672141460399
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_10_DAL_NYG",
+    "season": 2010,
+    "week": 10,
+    "affectedTeam": "DAL",
+    "opponent": "NYG",
+    "affectedHome": false,
+    "kickoffUtc": "2010-11-14T21:15:00+00:00",
+    "knownOutQb": "Tony Romo",
+    "knownOutGsis": "00-0021678",
+    "reportUpdatedUtc": "2010-11-12T11:34:22Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 39,
+      "affectedSpread": 11.5,
+      "passingEpa": 0.035938075828453854
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_10_STL_SF",
+    "season": 2010,
+    "week": 10,
+    "affectedTeam": "SF",
+    "opponent": "STL",
+    "affectedHome": true,
+    "kickoffUtc": "2010-11-14T21:15:00+00:00",
+    "knownOutQb": "Alex Smith",
+    "knownOutGsis": "00-0023436",
+    "reportUpdatedUtc": "2010-11-12T13:11:40Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 3,
+      "affectedSpread": -4.5,
+      "passingEpa": 0.02408900303202325
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_11_BAL_CAR",
+    "season": 2010,
+    "week": 11,
+    "affectedTeam": "CAR",
+    "opponent": "BAL",
+    "affectedHome": true,
+    "kickoffUtc": "2010-11-21T18:00:00+00:00",
+    "knownOutQb": "Jimmy Clausen",
+    "knownOutGsis": "00-0027659",
+    "reportUpdatedUtc": "2010-11-19T11:22:20Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 4,
+      "affectedSpread": 13.0,
+      "passingEpa": -0.23553922078286474
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2010_11_DET_DAL",
+    "season": 2010,
+    "week": 11,
+    "affectedTeam": "DAL",
+    "opponent": "DET",
+    "affectedHome": true,
+    "kickoffUtc": "2010-11-21T18:00:00+00:00",
+    "knownOutQb": "Tony Romo",
+    "knownOutGsis": "00-0021678",
+    "reportUpdatedUtc": "2010-11-19T11:27:12Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 40,
+      "affectedSpread": -5.0,
+      "passingEpa": 0.12754202713869234
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_12_NO_DAL",
+    "season": 2010,
+    "week": 12,
+    "affectedTeam": "DAL",
+    "opponent": "NO",
+    "affectedHome": true,
+    "kickoffUtc": "2010-11-25T21:15:00+00:00",
+    "knownOutQb": "Tony Romo",
+    "knownOutGsis": "00-0021678",
+    "reportUpdatedUtc": "2010-11-24T10:54:37Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 41,
+      "affectedSpread": 4.5,
+      "passingEpa": 0.1420669027345473
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_13_CHI_DET",
+    "season": 2010,
+    "week": 13,
+    "affectedTeam": "DET",
+    "opponent": "CHI",
+    "affectedHome": true,
+    "kickoffUtc": "2010-12-05T18:00:00+00:00",
+    "knownOutQb": "Shaun Hill",
+    "knownOutGsis": "00-0020679",
+    "reportUpdatedUtc": "2010-12-03T13:45:39Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 24,
+      "affectedSpread": 5.0,
+      "passingEpa": 0.009707492256331367
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2010_14_GB_DET",
+    "season": 2010,
+    "week": 14,
+    "affectedTeam": "DET",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2010-12-12T18:00:00+00:00",
+    "knownOutQb": "Shaun Hill",
+    "knownOutGsis": "00-0020679",
+    "reportUpdatedUtc": "2010-12-10T12:55:51Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2010.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 7.0,
+      "passingEpa": 0.010419541840887078
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2011_07_KC_OAK",
+    "season": 2011,
+    "week": 7,
+    "affectedTeam": "OAK",
+    "opponent": "KC",
+    "affectedHome": true,
+    "kickoffUtc": "2011-10-23T20:05:00+00:00",
+    "knownOutQb": "Jason Campbell",
+    "knownOutGsis": "00-0023460",
+    "reportUpdatedUtc": "2011-10-21T12:42:23Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 70,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.13096285692037635
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2011_08_NO_STL",
+    "season": 2011,
+    "week": 8,
+    "affectedTeam": "STL",
+    "opponent": "NO",
+    "affectedHome": true,
+    "kickoffUtc": "2011-10-30T17:00:00+00:00",
+    "knownOutQb": "Sam Bradford",
+    "knownOutGsis": "00-0027854",
+    "reportUpdatedUtc": "2011-10-28T11:22:46Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 4,
+      "affectedSpread": 13.5,
+      "passingEpa": -0.2104836093053736
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2011_09_DEN_OAK",
+    "season": 2011,
+    "week": 9,
+    "affectedTeam": "OAK",
+    "opponent": "DEN",
+    "affectedHome": true,
+    "kickoffUtc": "2011-11-06T21:05:00+00:00",
+    "knownOutQb": "Jason Campbell",
+    "knownOutGsis": "00-0023460",
+    "reportUpdatedUtc": "2011-11-04T12:57:53Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 22,
+      "affectedSpread": -7.0,
+      "passingEpa": -0.004532782069601631
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2011_10_OAK_SD",
+    "season": 2011,
+    "week": 10,
+    "affectedTeam": "OAK",
+    "opponent": "SD",
+    "affectedHome": false,
+    "kickoffUtc": "2011-11-11T01:20:00+00:00",
+    "knownOutQb": "Jason Campbell",
+    "knownOutGsis": "00-0023460",
+    "reportUpdatedUtc": "2011-11-09T12:50:48Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 84,
+      "affectedSpread": 7.5,
+      "passingEpa": 0.02932151685685104
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2011_11_OAK_MIN",
+    "season": 2011,
+    "week": 11,
+    "affectedTeam": "OAK",
+    "opponent": "MIN",
+    "affectedHome": false,
+    "kickoffUtc": "2011-11-20T18:00:00+00:00",
+    "knownOutQb": "Jason Campbell",
+    "knownOutGsis": "00-0023460",
+    "reportUpdatedUtc": "2011-11-18T12:08:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 85,
+      "affectedSpread": 1.0,
+      "passingEpa": 0.08003633135042415
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2011_11_KC_NE",
+    "season": 2011,
+    "week": 11,
+    "affectedTeam": "KC",
+    "opponent": "NE",
+    "affectedHome": false,
+    "kickoffUtc": "2011-11-22T01:30:00+00:00",
+    "knownOutQb": "Matt Cassel",
+    "knownOutGsis": "00-0023662",
+    "reportUpdatedUtc": "2011-11-19T13:03:13Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 55,
+      "affectedSpread": 17.0,
+      "passingEpa": -0.05067324789000263
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2011_13_PHI_SEA",
+    "season": 2011,
+    "week": 13,
+    "affectedTeam": "PHI",
+    "opponent": "SEA",
+    "affectedHome": false,
+    "kickoffUtc": "2011-12-02T01:20:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2011-11-30T08:08:41Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 50,
+      "affectedSpread": -3.0,
+      "passingEpa": 0.05369747244242873
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2011_13_KC_CHI",
+    "season": 2011,
+    "week": 13,
+    "affectedTeam": "CHI",
+    "opponent": "KC",
+    "affectedHome": true,
+    "kickoffUtc": "2011-12-04T18:00:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2011-12-02T12:27:48Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": -9.0,
+      "passingEpa": -0.02849790486975048
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2011_14_CHI_DEN",
+    "season": 2011,
+    "week": 14,
+    "affectedTeam": "CHI",
+    "opponent": "DEN",
+    "affectedHome": false,
+    "kickoffUtc": "2011-12-11T21:05:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2011-12-09T11:16:39Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 3.5,
+      "passingEpa": -0.08393406451071374
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2011_14_STL_SEA",
+    "season": 2011,
+    "week": 14,
+    "affectedTeam": "STL",
+    "opponent": "SEA",
+    "affectedHome": false,
+    "kickoffUtc": "2011-12-13T01:30:00+00:00",
+    "knownOutQb": "A.J. Feeley",
+    "knownOutGsis": "00-0020305",
+    "reportUpdatedUtc": "2011-12-10T10:39:41Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2011.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 6,
+      "affectedSpread": 9.0,
+      "passingEpa": -0.2099273820179519
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_05_TEN_MIN",
+    "season": 2012,
+    "week": 5,
+    "affectedTeam": "TEN",
+    "opponent": "MIN",
+    "affectedHome": false,
+    "kickoffUtc": "2012-10-07T20:15:00+00:00",
+    "knownOutQb": "Jake Locker",
+    "knownOutGsis": "00-0027946",
+    "reportUpdatedUtc": "2012-10-05T11:22:23Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 4,
+      "affectedSpread": 6.0,
+      "passingEpa": -0.1309975647028509
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_06_PIT_TEN",
+    "season": 2012,
+    "week": 6,
+    "affectedTeam": "TEN",
+    "opponent": "PIT",
+    "affectedHome": true,
+    "kickoffUtc": "2012-10-12T00:20:00+00:00",
+    "knownOutQb": "Jake Locker",
+    "knownOutGsis": "00-0027946",
+    "reportUpdatedUtc": "2012-10-10T10:19:18Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 95,
+      "affectedSpread": 5.5,
+      "passingEpa": -0.10507403223042164
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2012_06_KC_TB",
+    "season": 2012,
+    "week": 6,
+    "affectedTeam": "KC",
+    "opponent": "TB",
+    "affectedHome": false,
+    "kickoffUtc": "2012-10-14T17:00:00+00:00",
+    "knownOutQb": "Matt Cassel",
+    "knownOutGsis": "00-0023662",
+    "reportUpdatedUtc": "2012-10-12T11:05:47Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 60,
+      "affectedSpread": 5.0,
+      "passingEpa": -0.0748094172599186
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_07_ARI_MIN",
+    "season": 2012,
+    "week": 7,
+    "affectedTeam": "ARI",
+    "opponent": "MIN",
+    "affectedHome": false,
+    "kickoffUtc": "2012-10-21T17:00:00+00:00",
+    "knownOutQb": "Kevin Kolb",
+    "knownOutGsis": "00-0025423",
+    "reportUpdatedUtc": "2012-10-19T12:54:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 21,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.10151995143720956
+    },
+    "affectedCover": null
+  },
+  {
+    "gameId": "2012_07_TEN_BUF",
+    "season": 2012,
+    "week": 7,
+    "affectedTeam": "TEN",
+    "opponent": "BUF",
+    "affectedHome": false,
+    "kickoffUtc": "2012-10-21T17:00:00+00:00",
+    "knownOutQb": "Jake Locker",
+    "knownOutGsis": "00-0027946",
+    "reportUpdatedUtc": "2012-10-19T11:05:20Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 96,
+      "affectedSpread": 4.0,
+      "passingEpa": -0.0915398124300238
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2012_08_SF_ARI",
+    "season": 2012,
+    "week": 8,
+    "affectedTeam": "ARI",
+    "opponent": "SF",
+    "affectedHome": true,
+    "kickoffUtc": "2012-10-30T00:30:00+00:00",
+    "knownOutQb": "Kevin Kolb",
+    "knownOutGsis": "00-0025423",
+    "reportUpdatedUtc": "2012-10-27T13:29:33Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 13,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.13406296698012612
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_09_KC_SD",
+    "season": 2012,
+    "week": 9,
+    "affectedTeam": "KC",
+    "opponent": "SD",
+    "affectedHome": false,
+    "kickoffUtc": "2012-11-02T00:20:00+00:00",
+    "knownOutQb": "Brady Quinn",
+    "knownOutGsis": "00-0025409",
+    "reportUpdatedUtc": "2012-10-31T14:15:35Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 14,
+      "affectedSpread": 7.5,
+      "passingEpa": -0.15247280228618945
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_09_ARI_GB",
+    "season": 2012,
+    "week": 9,
+    "affectedTeam": "ARI",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2012-11-04T18:00:00+00:00",
+    "knownOutQb": "Kevin Kolb",
+    "knownOutGsis": "00-0025423",
+    "reportUpdatedUtc": "2012-11-02T13:07:10Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 14,
+      "affectedSpread": 10.5,
+      "passingEpa": -0.12972676112481132
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_11_PHI_WAS",
+    "season": 2012,
+    "week": 11,
+    "affectedTeam": "PHI",
+    "opponent": "WAS",
+    "affectedHome": false,
+    "kickoffUtc": "2012-11-18T18:00:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2012-11-16T11:16:55Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 63,
+      "affectedSpread": 3.5,
+      "passingEpa": -0.011003217441631146
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_11_BAL_PIT",
+    "season": 2012,
+    "week": 11,
+    "affectedTeam": "PIT",
+    "opponent": "BAL",
+    "affectedHome": true,
+    "kickoffUtc": "2012-11-19T01:20:00+00:00",
+    "knownOutQb": "Ben Roethlisberger",
+    "knownOutGsis": "00-0022924",
+    "reportUpdatedUtc": "2012-11-16T10:37:38Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 109,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.1678790434973083
+    },
+    "affectedCover": null
+  },
+  {
+    "gameId": "2012_11_CHI_SF",
+    "season": 2012,
+    "week": 11,
+    "affectedTeam": "CHI",
+    "opponent": "SF",
+    "affectedHome": false,
+    "kickoffUtc": "2012-11-20T01:30:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2012-11-17T11:38:24Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 87,
+      "affectedSpread": 3.5,
+      "passingEpa": -0.034660492080719085
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_12_PIT_CLE",
+    "season": 2012,
+    "week": 12,
+    "affectedTeam": "PIT",
+    "opponent": "CLE",
+    "affectedHome": false,
+    "kickoffUtc": "2012-11-25T18:00:00+00:00",
+    "knownOutQb": "Byron Leftwich",
+    "knownOutGsis": "00-0022177",
+    "reportUpdatedUtc": "2012-11-23T10:21:11Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 23,
+      "affectedSpread": -1.0,
+      "passingEpa": 0.1357739945508025
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_12_CAR_PHI",
+    "season": 2012,
+    "week": 12,
+    "affectedTeam": "PHI",
+    "opponent": "CAR",
+    "affectedHome": true,
+    "kickoffUtc": "2012-11-27T01:30:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2012-11-24T16:23:26Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 3.0,
+      "passingEpa": -0.02623567728968913
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2012_13_PIT_BAL",
+    "season": 2012,
+    "week": 13,
+    "affectedTeam": "PIT",
+    "opponent": "BAL",
+    "affectedHome": false,
+    "kickoffUtc": "2012-12-02T21:25:00+00:00",
+    "knownOutQb": "Ben Roethlisberger",
+    "knownOutGsis": "00-0022924",
+    "reportUpdatedUtc": "2012-11-30T10:40:37Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 8,
+      "affectedSpread": 7.0,
+      "passingEpa": 0.101727648737848
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2012_13_PHI_DAL",
+    "season": 2012,
+    "week": 13,
+    "affectedTeam": "PHI",
+    "opponent": "DAL",
+    "affectedHome": false,
+    "kickoffUtc": "2012-12-03T01:20:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2012-11-30T10:29:04Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 10.5,
+      "passingEpa": -0.03263142607306268
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2012_14_PHI_TB",
+    "season": 2012,
+    "week": 14,
+    "affectedTeam": "PHI",
+    "opponent": "TB",
+    "affectedHome": false,
+    "kickoffUtc": "2012-12-09T18:00:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2012-12-07T10:36:35Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2012.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 3,
+      "affectedSpread": 8.0,
+      "passingEpa": -0.010741755898766482
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_04_CIN_CLE",
+    "season": 2013,
+    "week": 4,
+    "affectedTeam": "CLE",
+    "opponent": "CIN",
+    "affectedHome": true,
+    "kickoffUtc": "2013-09-29T17:00:00+00:00",
+    "knownOutQb": "Brandon Weeden",
+    "knownOutGsis": "00-0029677",
+    "reportUpdatedUtc": "2013-09-27T11:43:36Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 3.5,
+      "passingEpa": -0.16085271902236828
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_04_PIT_MIN",
+    "season": 2013,
+    "week": 4,
+    "affectedTeam": "MIN",
+    "opponent": "PIT",
+    "affectedHome": true,
+    "kickoffUtc": "2013-09-29T17:00:00+00:00",
+    "knownOutQb": "Christian Ponder",
+    "knownOutGsis": "00-0027950",
+    "reportUpdatedUtc": "2013-09-27T08:47:38Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 28,
+      "affectedSpread": 3.0,
+      "passingEpa": -0.1029903994608762
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_05_KC_TEN",
+    "season": 2013,
+    "week": 5,
+    "affectedTeam": "TEN",
+    "opponent": "KC",
+    "affectedHome": true,
+    "kickoffUtc": "2013-10-06T17:00:00+00:00",
+    "knownOutQb": "Jake Locker",
+    "knownOutGsis": "00-0027946",
+    "reportUpdatedUtc": "2013-10-04T11:18:04Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 15,
+      "affectedSpread": 2.5,
+      "passingEpa": 0.17041248969177994
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_06_CIN_BUF",
+    "season": 2013,
+    "week": 6,
+    "affectedTeam": "BUF",
+    "opponent": "CIN",
+    "affectedHome": true,
+    "kickoffUtc": "2013-10-13T17:00:00+00:00",
+    "knownOutQb": "E.J. Manuel",
+    "knownOutGsis": "00-0030526",
+    "reportUpdatedUtc": "2013-10-11T10:44:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 5,
+      "affectedSpread": 6.0,
+      "passingEpa": -0.1388850931748979
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_06_DET_CLE",
+    "season": 2013,
+    "week": 6,
+    "affectedTeam": "CLE",
+    "opponent": "DET",
+    "affectedHome": true,
+    "kickoffUtc": "2013-10-13T17:00:00+00:00",
+    "knownOutQb": "Brian Hoyer",
+    "knownOutGsis": "00-0026625",
+    "reportUpdatedUtc": "2013-10-11T11:59:53Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 4,
+      "affectedSpread": 1.0,
+      "passingEpa": -0.04944811486941946
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_06_JAX_DEN",
+    "season": 2013,
+    "week": 6,
+    "affectedTeam": "JAX",
+    "opponent": "DEN",
+    "affectedHome": false,
+    "kickoffUtc": "2013-10-13T20:05:00+00:00",
+    "knownOutQb": "Blaine Gabbert",
+    "knownOutGsis": "00-0027948",
+    "reportUpdatedUtc": "2013-10-11T10:06:12Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 27,
+      "affectedSpread": 27.0,
+      "passingEpa": -0.35059306446261357
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_06_TEN_SEA",
+    "season": 2013,
+    "week": 6,
+    "affectedTeam": "TEN",
+    "opponent": "SEA",
+    "affectedHome": false,
+    "kickoffUtc": "2013-10-13T20:05:00+00:00",
+    "knownOutQb": "Jake Locker",
+    "knownOutGsis": "00-0027946",
+    "reportUpdatedUtc": "2013-10-11T11:21:57Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 69,
+      "affectedSpread": 11.0,
+      "passingEpa": 0.09785513433854176
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_07_BUF_MIA",
+    "season": 2013,
+    "week": 7,
+    "affectedTeam": "BUF",
+    "opponent": "MIA",
+    "affectedHome": false,
+    "kickoffUtc": "2013-10-20T17:00:00+00:00",
+    "knownOutQb": "E.J. Manuel",
+    "knownOutGsis": "00-0030526",
+    "reportUpdatedUtc": "2013-10-18T10:29:04Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 6.0,
+      "passingEpa": -0.1024263253779573
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_07_HOU_KC",
+    "season": 2013,
+    "week": 7,
+    "affectedTeam": "HOU",
+    "opponent": "KC",
+    "affectedHome": false,
+    "kickoffUtc": "2013-10-20T20:25:00+00:00",
+    "knownOutQb": "Matt Schaub",
+    "knownOutGsis": "00-0022787",
+    "reportUpdatedUtc": "2013-10-18T11:20:08Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 88,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.13788547483694286
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_08_BUF_NO",
+    "season": 2013,
+    "week": 8,
+    "affectedTeam": "BUF",
+    "opponent": "NO",
+    "affectedHome": false,
+    "kickoffUtc": "2013-10-27T17:00:00+00:00",
+    "knownOutQb": "E.J. Manuel",
+    "knownOutGsis": "00-0030526",
+    "reportUpdatedUtc": "2013-10-25T12:30:18Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 3,
+      "affectedSpread": 10.5,
+      "passingEpa": -0.09191410236019573
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_08_NYG_PHI",
+    "season": 2013,
+    "week": 8,
+    "affectedTeam": "PHI",
+    "opponent": "NYG",
+    "affectedHome": true,
+    "kickoffUtc": "2013-10-27T17:00:00+00:00",
+    "knownOutQb": "Nick Foles",
+    "knownOutGsis": "00-0029567",
+    "reportUpdatedUtc": "2013-10-25T09:43:43Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 8,
+      "affectedSpread": -5.5,
+      "passingEpa": 0.1168196556267901
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_08_GB_MIN",
+    "season": 2013,
+    "week": 8,
+    "affectedTeam": "MIN",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2013-10-28T00:30:00+00:00",
+    "knownOutQb": "Josh Freeman",
+    "knownOutGsis": "00-0026993",
+    "reportUpdatedUtc": "2013-10-25T10:53:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 60,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.05479739175511972
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_09_KC_BUF",
+    "season": 2013,
+    "week": 9,
+    "affectedTeam": "BUF",
+    "opponent": "KC",
+    "affectedHome": true,
+    "kickoffUtc": "2013-11-03T18:00:00+00:00",
+    "knownOutQb": "E.J. Manuel",
+    "knownOutGsis": "00-0030526",
+    "reportUpdatedUtc": "2013-11-01T10:59:38Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 4,
+      "affectedSpread": 4.5,
+      "passingEpa": -0.09692020183299462
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_09_PHI_OAK",
+    "season": 2013,
+    "week": 9,
+    "affectedTeam": "PHI",
+    "opponent": "OAK",
+    "affectedHome": false,
+    "kickoffUtc": "2013-11-03T21:05:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2013-11-01T09:25:36Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 70,
+      "affectedSpread": -1.0,
+      "passingEpa": 0.04969951104676729
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_09_CHI_GB",
+    "season": 2013,
+    "week": 9,
+    "affectedTeam": "CHI",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2013-11-05T01:30:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2013-11-02T10:53:03Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 100,
+      "affectedSpread": 10.0,
+      "passingEpa": 0.05640053506933588
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_10_PHI_GB",
+    "season": 2013,
+    "week": 10,
+    "affectedTeam": "GB",
+    "opponent": "PHI",
+    "affectedHome": true,
+    "kickoffUtc": "2013-11-10T18:00:00+00:00",
+    "knownOutQb": "Aaron Rodgers",
+    "knownOutGsis": "00-0023459",
+    "reportUpdatedUtc": "2013-11-08T12:11:43Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 86,
+      "affectedSpread": 1.0,
+      "passingEpa": 0.20902245258715074
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_11_IND_TEN",
+    "season": 2013,
+    "week": 11,
+    "affectedTeam": "TEN",
+    "opponent": "IND",
+    "affectedHome": true,
+    "kickoffUtc": "2013-11-15T01:25:00+00:00",
+    "knownOutQb": "Jake Locker",
+    "knownOutGsis": "00-0027946",
+    "reportUpdatedUtc": "2013-11-13T10:29:54Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 18,
+      "affectedSpread": 2.5,
+      "passingEpa": 0.033119993221327
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_11_BAL_CHI",
+    "season": 2013,
+    "week": 11,
+    "affectedTeam": "CHI",
+    "opponent": "BAL",
+    "affectedHome": true,
+    "kickoffUtc": "2013-11-17T18:00:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2013-11-15T11:40:19Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 101,
+      "affectedSpread": -4.0,
+      "passingEpa": 0.08897761484371955
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_11_GB_NYG",
+    "season": 2013,
+    "week": 11,
+    "affectedTeam": "GB",
+    "opponent": "NYG",
+    "affectedHome": false,
+    "kickoffUtc": "2013-11-17T21:25:00+00:00",
+    "knownOutQb": "Aaron Rodgers",
+    "knownOutGsis": "00-0023459",
+    "reportUpdatedUtc": "2013-11-15T11:40:48Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 23,
+      "affectedSpread": 3.5,
+      "passingEpa": 0.1706354169188884
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_12_CHI_STL",
+    "season": 2013,
+    "week": 12,
+    "affectedTeam": "CHI",
+    "opponent": "STL",
+    "affectedHome": false,
+    "kickoffUtc": "2013-11-24T18:00:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2013-11-22T12:03:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 19,
+      "affectedSpread": 1.0,
+      "passingEpa": 0.09831924795826597
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_12_MIN_GB",
+    "season": 2013,
+    "week": 12,
+    "affectedTeam": "GB",
+    "opponent": "MIN",
+    "affectedHome": true,
+    "kickoffUtc": "2013-11-24T18:00:00+00:00",
+    "knownOutQb": "Aaron Rodgers",
+    "knownOutGsis": "00-0023459",
+    "reportUpdatedUtc": "2013-11-22T11:32:01Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": -6.0,
+      "passingEpa": 0.14857637914647084
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_13_GB_DET",
+    "season": 2013,
+    "week": 13,
+    "affectedTeam": "GB",
+    "opponent": "DET",
+    "affectedHome": false,
+    "kickoffUtc": "2013-11-28T17:30:00+00:00",
+    "knownOutQb": "Aaron Rodgers",
+    "knownOutGsis": "00-0023459",
+    "reportUpdatedUtc": "2013-11-27T10:40:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 7.0,
+      "passingEpa": 0.13330705871915025
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_13_CHI_MIN",
+    "season": 2013,
+    "week": 13,
+    "affectedTeam": "CHI",
+    "opponent": "MIN",
+    "affectedHome": false,
+    "kickoffUtc": "2013-12-01T18:00:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2013-11-29T11:03:10Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 20,
+      "affectedSpread": 2.5,
+      "passingEpa": 0.10370376091958544
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_13_JAX_CLE",
+    "season": 2013,
+    "week": 13,
+    "affectedTeam": "CLE",
+    "opponent": "JAX",
+    "affectedHome": true,
+    "kickoffUtc": "2013-12-01T18:00:00+00:00",
+    "knownOutQb": "Jason Campbell",
+    "knownOutGsis": "00-0023460",
+    "reportUpdatedUtc": "2013-11-29T10:12:41Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 75,
+      "affectedSpread": -7.5,
+      "passingEpa": -0.07921482504621494
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_14_ATL_GB",
+    "season": 2013,
+    "week": 14,
+    "affectedTeam": "GB",
+    "opponent": "ATL",
+    "affectedHome": true,
+    "kickoffUtc": "2013-12-08T18:00:00+00:00",
+    "knownOutQb": "Aaron Rodgers",
+    "knownOutGsis": "00-0023459",
+    "reportUpdatedUtc": "2013-12-06T12:51:45Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 4,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.09029166482522383
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2013_14_CLE_NE",
+    "season": 2013,
+    "week": 14,
+    "affectedTeam": "CLE",
+    "opponent": "NE",
+    "affectedHome": false,
+    "kickoffUtc": "2013-12-08T18:00:00+00:00",
+    "knownOutQb": "Brandon Weeden",
+    "knownOutGsis": "00-0029677",
+    "reportUpdatedUtc": "2013-12-06T10:11:25Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 20,
+      "affectedSpread": 9.5,
+      "passingEpa": -0.0679945803880148
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_14_MIN_BAL",
+    "season": 2013,
+    "week": 14,
+    "affectedTeam": "MIN",
+    "opponent": "BAL",
+    "affectedHome": false,
+    "kickoffUtc": "2013-12-08T18:00:00+00:00",
+    "knownOutQb": "Christian Ponder",
+    "knownOutGsis": "00-0027950",
+    "reportUpdatedUtc": "2013-12-06T10:48:57Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 34,
+      "affectedSpread": 6.0,
+      "passingEpa": -0.03555241503986995
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2013_14_DAL_CHI",
+    "season": 2013,
+    "week": 14,
+    "affectedTeam": "CHI",
+    "opponent": "DAL",
+    "affectedHome": true,
+    "kickoffUtc": "2013-12-10T01:30:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2013-12-07T10:52:00Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2013.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 21,
+      "affectedSpread": -2.0,
+      "passingEpa": 0.11646450198866708
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2014_04_NYG_WAS",
+    "season": 2014,
+    "week": 4,
+    "affectedTeam": "WAS",
+    "opponent": "NYG",
+    "affectedHome": true,
+    "kickoffUtc": "2014-09-26T00:25:00+00:00",
+    "knownOutQb": "Robert Griffin",
+    "knownOutGsis": "00-0029665",
+    "reportUpdatedUtc": "2014-09-24T10:14:12Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2014.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 5,
+      "affectedSpread": -3.0,
+      "passingEpa": 0.24304259286285168
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2014_10_CAR_PHI",
+    "season": 2014,
+    "week": 10,
+    "affectedTeam": "PHI",
+    "opponent": "CAR",
+    "affectedHome": true,
+    "kickoffUtc": "2014-11-11T01:30:00+00:00",
+    "knownOutQb": "Nick Foles",
+    "knownOutGsis": "00-0029567",
+    "reportUpdatedUtc": "2014-11-08T10:47:30Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2014.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 24,
+      "affectedSpread": -7.0,
+      "passingEpa": 0.04816247929271179
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2014_11_PHI_GB",
+    "season": 2014,
+    "week": 11,
+    "affectedTeam": "PHI",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2014-11-16T21:25:00+00:00",
+    "knownOutQb": "Nick Foles",
+    "knownOutGsis": "00-0029567",
+    "reportUpdatedUtc": "2014-11-14T09:23:18Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2014.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 62,
+      "affectedSpread": 4.5,
+      "passingEpa": 0.06044850656387413
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2014_12_TEN_PHI",
+    "season": 2014,
+    "week": 12,
+    "affectedTeam": "PHI",
+    "opponent": "TEN",
+    "affectedHome": true,
+    "kickoffUtc": "2014-11-23T18:00:00+00:00",
+    "knownOutQb": "Nick Foles",
+    "knownOutGsis": "00-0029567",
+    "reportUpdatedUtc": "2014-11-21T10:06:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2014.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 63,
+      "affectedSpread": -11.0,
+      "passingEpa": 0.05371160649241672
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2014_13_PHI_DAL",
+    "season": 2014,
+    "week": 13,
+    "affectedTeam": "PHI",
+    "opponent": "DAL",
+    "affectedHome": false,
+    "kickoffUtc": "2014-11-27T21:30:00+00:00",
+    "knownOutQb": "Nick Foles",
+    "knownOutGsis": "00-0029567",
+    "reportUpdatedUtc": "2014-11-26T08:34:34Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2014.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 64,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.06179983877334813
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2014_14_SEA_PHI",
+    "season": 2014,
+    "week": 14,
+    "affectedTeam": "PHI",
+    "opponent": "SEA",
+    "affectedHome": true,
+    "kickoffUtc": "2014-12-07T21:25:00+00:00",
+    "knownOutQb": "Nick Foles",
+    "knownOutGsis": "00-0029567",
+    "reportUpdatedUtc": "2014-12-05T09:45:05Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2014.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 65,
+      "affectedSpread": 1.5,
+      "passingEpa": 0.08183037980343565
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_04_BAL_PIT",
+    "season": 2015,
+    "week": 4,
+    "affectedTeam": "PIT",
+    "opponent": "BAL",
+    "affectedHome": true,
+    "kickoffUtc": "2015-10-02T00:25:00+00:00",
+    "knownOutQb": "Ben Roethlisberger",
+    "knownOutGsis": "00-0022924",
+    "reportUpdatedUtc": "2015-09-30T11:00:46Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 148,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.46987331366297264
+    },
+    "affectedCover": null
+  },
+  {
+    "gameId": "2015_05_PIT_SD",
+    "season": 2015,
+    "week": 5,
+    "affectedTeam": "PIT",
+    "opponent": "SD",
+    "affectedHome": false,
+    "kickoffUtc": "2015-10-13T00:30:00+00:00",
+    "knownOutQb": "Ben Roethlisberger",
+    "knownOutGsis": "00-0022924",
+    "reportUpdatedUtc": "2015-10-10T10:23:33Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 74,
+      "affectedSpread": 4.0,
+      "passingEpa": 0.22035260579782362
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_06_ARI_PIT",
+    "season": 2015,
+    "week": 6,
+    "affectedTeam": "PIT",
+    "opponent": "ARI",
+    "affectedHome": true,
+    "kickoffUtc": "2015-10-18T17:00:00+00:00",
+    "knownOutQb": "Ben Roethlisberger",
+    "knownOutGsis": "00-0022924",
+    "reportUpdatedUtc": "2015-10-16T12:01:46Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 75,
+      "affectedSpread": 5.5,
+      "passingEpa": 0.15983617233045594
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_07_BUF_JAX",
+    "season": 2015,
+    "week": 7,
+    "affectedTeam": "BUF",
+    "opponent": "JAX",
+    "affectedHome": false,
+    "kickoffUtc": "2015-10-25T13:30:00+00:00",
+    "knownOutQb": "Tyrod Taylor",
+    "knownOutGsis": "00-0028118",
+    "reportUpdatedUtc": "2015-10-23T07:02:18Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 15,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.1501926280144892
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_07_ATL_TEN",
+    "season": 2015,
+    "week": 7,
+    "affectedTeam": "TEN",
+    "opponent": "ATL",
+    "affectedHome": true,
+    "kickoffUtc": "2015-10-25T17:00:00+00:00",
+    "knownOutQb": "Marcus Mariota",
+    "knownOutGsis": "00-0032268",
+    "reportUpdatedUtc": "2015-10-23T10:29:09Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 5,
+      "affectedSpread": 5.5,
+      "passingEpa": 0.10861211332300083
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_07_PIT_KC",
+    "season": 2015,
+    "week": 7,
+    "affectedTeam": "PIT",
+    "opponent": "KC",
+    "affectedHome": false,
+    "kickoffUtc": "2015-10-25T17:00:00+00:00",
+    "knownOutQb": "Michael Vick",
+    "knownOutGsis": "00-0020245",
+    "reportUpdatedUtc": "2015-10-23T10:28:20Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 76,
+      "affectedSpread": 4.0,
+      "passingEpa": 0.16675398529858573
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_08_TEN_HOU",
+    "season": 2015,
+    "week": 8,
+    "affectedTeam": "TEN",
+    "opponent": "HOU",
+    "affectedHome": false,
+    "kickoffUtc": "2015-11-01T18:00:00+00:00",
+    "knownOutQb": "Marcus Mariota",
+    "knownOutGsis": "00-0032268",
+    "reportUpdatedUtc": "2015-10-30T10:40:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 7,
+      "affectedSpread": 3.5,
+      "passingEpa": 0.027161996493008555
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_09_CLE_CIN",
+    "season": 2015,
+    "week": 9,
+    "affectedTeam": "CLE",
+    "opponent": "CIN",
+    "affectedHome": false,
+    "kickoffUtc": "2015-11-06T01:25:00+00:00",
+    "knownOutQb": "Josh McCown",
+    "knownOutGsis": "00-0021206",
+    "reportUpdatedUtc": "2015-11-04T12:11:24Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 40,
+      "affectedSpread": 13.0,
+      "passingEpa": 0.023648641905125434
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_11_DEN_CHI",
+    "season": 2015,
+    "week": 11,
+    "affectedTeam": "DEN",
+    "opponent": "CHI",
+    "affectedHome": false,
+    "kickoffUtc": "2015-11-22T18:00:00+00:00",
+    "knownOutQb": "Peyton Manning",
+    "knownOutGsis": "00-0010346",
+    "reportUpdatedUtc": "2015-11-20T11:40:19Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 150,
+      "affectedSpread": -2.5,
+      "passingEpa": -0.04563223573730548
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_11_IND_ATL",
+    "season": 2015,
+    "week": 11,
+    "affectedTeam": "IND",
+    "opponent": "ATL",
+    "affectedHome": false,
+    "kickoffUtc": "2015-11-22T18:00:00+00:00",
+    "knownOutQb": "Andrew Luck",
+    "knownOutGsis": "00-0029668",
+    "reportUpdatedUtc": "2015-11-20T10:41:51Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 55,
+      "affectedSpread": 3.5,
+      "passingEpa": 0.030920862935182567
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_11_NYJ_HOU",
+    "season": 2015,
+    "week": 11,
+    "affectedTeam": "HOU",
+    "opponent": "NYJ",
+    "affectedHome": true,
+    "kickoffUtc": "2015-11-22T18:00:00+00:00",
+    "knownOutQb": "Brian Hoyer",
+    "knownOutGsis": "00-0026625",
+    "reportUpdatedUtc": "2015-11-20T12:27:00Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 22,
+      "affectedSpread": 4.0,
+      "passingEpa": 0.051817917588445846
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_11_TB_PHI",
+    "season": 2015,
+    "week": 11,
+    "affectedTeam": "PHI",
+    "opponent": "TB",
+    "affectedHome": true,
+    "kickoffUtc": "2015-11-22T18:00:00+00:00",
+    "knownOutQb": "Sam Bradford",
+    "knownOutGsis": "00-0027854",
+    "reportUpdatedUtc": "2015-11-20T09:23:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 58,
+      "affectedSpread": -7.0,
+      "passingEpa": -0.028536101146781685
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_12_TB_IND",
+    "season": 2015,
+    "week": 12,
+    "affectedTeam": "IND",
+    "opponent": "TB",
+    "affectedHome": true,
+    "kickoffUtc": "2015-11-29T18:00:00+00:00",
+    "knownOutQb": "Andrew Luck",
+    "knownOutGsis": "00-0029668",
+    "reportUpdatedUtc": "2015-11-27T11:24:36Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 102,
+      "affectedSpread": -3.0,
+      "passingEpa": 0.026102441083390975
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_12_NE_DEN",
+    "season": 2015,
+    "week": 12,
+    "affectedTeam": "DEN",
+    "opponent": "NE",
+    "affectedHome": true,
+    "kickoffUtc": "2015-11-30T01:30:00+00:00",
+    "knownOutQb": "Peyton Manning",
+    "knownOutGsis": "00-0010346",
+    "reportUpdatedUtc": "2015-11-27T12:27:51Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 2.5,
+      "passingEpa": -0.018256932423612492
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_13_DEN_SD",
+    "season": 2015,
+    "week": 13,
+    "affectedTeam": "DEN",
+    "opponent": "SD",
+    "affectedHome": false,
+    "kickoffUtc": "2015-12-06T21:05:00+00:00",
+    "knownOutQb": "Peyton Manning",
+    "knownOutGsis": "00-0010346",
+    "reportUpdatedUtc": "2015-12-04T11:52:24Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": -6.0,
+      "passingEpa": -0.027161153993399943
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_13_IND_PIT",
+    "season": 2015,
+    "week": 13,
+    "affectedTeam": "IND",
+    "opponent": "PIT",
+    "affectedHome": false,
+    "kickoffUtc": "2015-12-07T01:30:00+00:00",
+    "knownOutQb": "Andrew Luck",
+    "knownOutGsis": "00-0029668",
+    "reportUpdatedUtc": "2015-12-04T10:10:36Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 103,
+      "affectedSpread": 10.0,
+      "passingEpa": 0.04403817677092594
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2015_13_DAL_WAS",
+    "season": 2015,
+    "week": 13,
+    "affectedTeam": "DAL",
+    "opponent": "WAS",
+    "affectedHome": false,
+    "kickoffUtc": "2015-12-08T01:30:00+00:00",
+    "knownOutQb": "Tony Romo",
+    "knownOutGsis": "00-0021678",
+    "reportUpdatedUtc": "2015-12-05T13:28:47Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 127,
+      "affectedSpread": 2.0,
+      "passingEpa": -0.04734588661189901
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2015_14_OAK_DEN",
+    "season": 2015,
+    "week": 14,
+    "affectedTeam": "DEN",
+    "opponent": "OAK",
+    "affectedHome": true,
+    "kickoffUtc": "2015-12-13T21:05:00+00:00",
+    "knownOutQb": "Peyton Manning",
+    "knownOutGsis": "00-0010346",
+    "reportUpdatedUtc": "2015-12-11T11:44:48Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2015.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 3,
+      "affectedSpread": -6.0,
+      "passingEpa": -0.029934181027988
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_05_ARI_SF",
+    "season": 2016,
+    "week": 5,
+    "affectedTeam": "ARI",
+    "opponent": "SF",
+    "affectedHome": false,
+    "kickoffUtc": "2016-10-07T00:25:00+00:00",
+    "knownOutQb": "Carson Palmer",
+    "knownOutGsis": "00-0021429",
+    "reportUpdatedUtc": "2016-10-05T12:07:02Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 149,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.07033440715254721
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2016_05_NE_CLE",
+    "season": 2016,
+    "week": 5,
+    "affectedTeam": "NE",
+    "opponent": "CLE",
+    "affectedHome": false,
+    "kickoffUtc": "2016-10-09T17:00:00+00:00",
+    "knownOutQb": "Jacoby Brissett",
+    "knownOutGsis": "00-0033119",
+    "reportUpdatedUtc": "2016-10-07T12:42:30Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 2,
+      "affectedSpread": -10.0,
+      "passingEpa": 0.11168775138884185
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2016_05_TB_CAR",
+    "season": 2016,
+    "week": 5,
+    "affectedTeam": "CAR",
+    "opponent": "TB",
+    "affectedHome": true,
+    "kickoffUtc": "2016-10-11T00:30:00+00:00",
+    "knownOutQb": "Cam Newton",
+    "knownOutGsis": "00-0027939",
+    "reportUpdatedUtc": "2016-10-08T10:38:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 82,
+      "affectedSpread": -6.0,
+      "passingEpa": 0.014244559999724182
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_07_NE_PIT",
+    "season": 2016,
+    "week": 7,
+    "affectedTeam": "PIT",
+    "opponent": "NE",
+    "affectedHome": true,
+    "kickoffUtc": "2016-10-23T20:25:00+00:00",
+    "knownOutQb": "Ben Roethlisberger",
+    "knownOutGsis": "00-0022924",
+    "reportUpdatedUtc": "2016-10-21T10:25:18Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 162,
+      "affectedSpread": 7.5,
+      "passingEpa": 0.1868506134495597
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_08_NYJ_CLE",
+    "season": 2016,
+    "week": 8,
+    "affectedTeam": "CLE",
+    "opponent": "NYJ",
+    "affectedHome": true,
+    "kickoffUtc": "2016-10-30T17:00:00+00:00",
+    "knownOutQb": "Cody Kessler",
+    "knownOutGsis": "00-0033104",
+    "reportUpdatedUtc": "2016-10-28T10:39:12Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 5,
+      "affectedSpread": 2.5,
+      "passingEpa": 0.03506508394201858
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_09_JAX_KC",
+    "season": 2016,
+    "week": 9,
+    "affectedTeam": "KC",
+    "opponent": "JAX",
+    "affectedHome": true,
+    "kickoffUtc": "2016-11-06T18:00:00+00:00",
+    "knownOutQb": "Alex Smith",
+    "knownOutGsis": "00-0023436",
+    "reportUpdatedUtc": "2016-11-04T12:22:16Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 128,
+      "affectedSpread": -7.0,
+      "passingEpa": 0.18879806010258657
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_12_PIT_IND",
+    "season": 2016,
+    "week": 12,
+    "affectedTeam": "IND",
+    "opponent": "PIT",
+    "affectedHome": true,
+    "kickoffUtc": "2016-11-25T01:30:00+00:00",
+    "knownOutQb": "Andrew Luck",
+    "knownOutGsis": "00-0029668",
+    "reportUpdatedUtc": "2016-11-23T12:14:40Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 65,
+      "affectedSpread": 8.0,
+      "passingEpa": 0.0384744664960375
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_12_NYG_CLE",
+    "season": 2016,
+    "week": 12,
+    "affectedTeam": "CLE",
+    "opponent": "NYG",
+    "affectedHome": true,
+    "kickoffUtc": "2016-11-27T18:00:00+00:00",
+    "knownOutQb": "Cody Kessler",
+    "knownOutGsis": "00-0033104",
+    "reportUpdatedUtc": "2016-11-25T10:43:43Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 8,
+      "affectedSpread": 6.5,
+      "passingEpa": -0.028758808378666446
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2016_13_DEN_JAX",
+    "season": 2016,
+    "week": 13,
+    "affectedTeam": "DEN",
+    "opponent": "JAX",
+    "affectedHome": false,
+    "kickoffUtc": "2016-12-04T18:00:00+00:00",
+    "knownOutQb": "Trevor Siemian",
+    "knownOutGsis": "00-0032156",
+    "reportUpdatedUtc": "2016-12-02T11:26:30Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2016.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 10,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.09360622618145097
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2017_06_GB_MIN",
+    "season": 2017,
+    "week": 6,
+    "affectedTeam": "MIN",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2017-10-15T17:00:00+00:00",
+    "knownOutQb": "Sam Bradford",
+    "knownOutGsis": "00-0027854",
+    "reportUpdatedUtc": "2017-10-13T10:55:16Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 80,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.14379892272142847
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2017_07_NO_GB",
+    "season": 2017,
+    "week": 7,
+    "affectedTeam": "GB",
+    "opponent": "NO",
+    "affectedHome": true,
+    "kickoffUtc": "2017-10-22T17:00:00+00:00",
+    "knownOutQb": "Aaron Rodgers",
+    "knownOutGsis": "00-0023459",
+    "reportUpdatedUtc": "2017-10-20T12:55:52Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 141,
+      "affectedSpread": 3.5,
+      "passingEpa": 0.05532820281181889
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2017_08_MIA_BAL",
+    "season": 2017,
+    "week": 8,
+    "affectedTeam": "MIA",
+    "opponent": "BAL",
+    "affectedHome": false,
+    "kickoffUtc": "2017-10-27T00:25:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2017-10-25T08:57:40Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 145,
+      "affectedSpread": 3.0,
+      "passingEpa": -0.11045408958364829
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2017_10_NYJ_TB",
+    "season": 2017,
+    "week": 10,
+    "affectedTeam": "TB",
+    "opponent": "NYJ",
+    "affectedHome": true,
+    "kickoffUtc": "2017-11-12T18:00:00+00:00",
+    "knownOutQb": "Jameis Winston",
+    "knownOutGsis": "00-0031503",
+    "reportUpdatedUtc": "2017-11-10T12:01:08Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 40,
+      "affectedSpread": -1.0,
+      "passingEpa": 0.0282564276953908
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2017_11_TB_MIA",
+    "season": 2017,
+    "week": 11,
+    "affectedTeam": "TB",
+    "opponent": "MIA",
+    "affectedHome": false,
+    "kickoffUtc": "2017-11-19T18:00:00+00:00",
+    "knownOutQb": "Jameis Winston",
+    "knownOutGsis": "00-0031503",
+    "reportUpdatedUtc": "2017-11-17T12:25:33Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 117,
+      "affectedSpread": -1.0,
+      "passingEpa": 0.02224247743687603
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2017_12_MIA_NE",
+    "season": 2017,
+    "week": 12,
+    "affectedTeam": "MIA",
+    "opponent": "NE",
+    "affectedHome": false,
+    "kickoffUtc": "2017-11-26T18:00:00+00:00",
+    "knownOutQb": "Jay Cutler",
+    "knownOutGsis": "00-0024226",
+    "reportUpdatedUtc": "2017-11-24T12:53:26Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 148,
+      "affectedSpread": 17.0,
+      "passingEpa": -0.07267599922705921
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2017_12_TB_ATL",
+    "season": 2017,
+    "week": 12,
+    "affectedTeam": "TB",
+    "opponent": "ATL",
+    "affectedHome": false,
+    "kickoffUtc": "2017-11-26T18:00:00+00:00",
+    "knownOutQb": "Jameis Winston",
+    "knownOutGsis": "00-0031503",
+    "reportUpdatedUtc": "2017-11-24T10:45:58Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2017.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 118,
+      "affectedSpread": 10.5,
+      "passingEpa": 0.03670065035462258
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_07_BUF_IND",
+    "season": 2018,
+    "week": 7,
+    "affectedTeam": "BUF",
+    "opponent": "IND",
+    "affectedHome": false,
+    "kickoffUtc": "2018-10-21T17:00:00+00:00",
+    "knownOutQb": "Josh Allen",
+    "knownOutGsis": "00-0034857",
+    "reportUpdatedUtc": "2018-10-19T10:22:19Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 5,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.3314434849405697
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_07_DET_MIA",
+    "season": 2018,
+    "week": 7,
+    "affectedTeam": "MIA",
+    "opponent": "DET",
+    "affectedHome": true,
+    "kickoffUtc": "2018-10-21T17:00:00+00:00",
+    "knownOutQb": "Ryan Tannehill",
+    "knownOutGsis": "00-0029701",
+    "reportUpdatedUtc": "2018-10-19T11:27:37Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 27,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.022906493525999813
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_08_MIA_HOU",
+    "season": 2018,
+    "week": 8,
+    "affectedTeam": "MIA",
+    "opponent": "HOU",
+    "affectedHome": false,
+    "kickoffUtc": "2018-10-26T00:20:00+00:00",
+    "knownOutQb": "Ryan Tannehill",
+    "knownOutGsis": "00-0029701",
+    "reportUpdatedUtc": "2018-10-24T12:21:25Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 28,
+      "affectedSpread": 7.5,
+      "passingEpa": 0.04519417933726021
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_08_NE_BUF",
+    "season": 2018,
+    "week": 8,
+    "affectedTeam": "BUF",
+    "opponent": "NE",
+    "affectedHome": true,
+    "kickoffUtc": "2018-10-30T00:15:00+00:00",
+    "knownOutQb": "Josh Allen",
+    "knownOutGsis": "00-0034857",
+    "reportUpdatedUtc": "2018-10-27T10:39:40Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 47,
+      "affectedSpread": 13.5,
+      "passingEpa": -0.38270955451038097
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_09_CHI_BUF",
+    "season": 2018,
+    "week": 9,
+    "affectedTeam": "BUF",
+    "opponent": "CHI",
+    "affectedHome": true,
+    "kickoffUtc": "2018-11-04T18:00:00+00:00",
+    "knownOutQb": "Josh Allen",
+    "knownOutGsis": "00-0034857",
+    "reportUpdatedUtc": "2018-11-02T12:21:33Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 48,
+      "affectedSpread": 10.5,
+      "passingEpa": -0.38142418435937087
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_09_NYJ_MIA",
+    "season": 2018,
+    "week": 9,
+    "affectedTeam": "MIA",
+    "opponent": "NYJ",
+    "affectedHome": true,
+    "kickoffUtc": "2018-11-04T18:00:00+00:00",
+    "knownOutQb": "Ryan Tannehill",
+    "knownOutGsis": "00-0029701",
+    "reportUpdatedUtc": "2018-11-02T10:22:35Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 29,
+      "affectedSpread": -3.0,
+      "passingEpa": 0.020441358161864744
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2018_12_NE_NYJ",
+    "season": 2018,
+    "week": 12,
+    "affectedTeam": "NYJ",
+    "opponent": "NE",
+    "affectedHome": true,
+    "kickoffUtc": "2018-11-25T18:00:00+00:00",
+    "knownOutQb": "Sam Darnold",
+    "knownOutGsis": "00-0034869",
+    "reportUpdatedUtc": "2018-11-23T11:35:11Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 58,
+      "affectedSpread": 13.0,
+      "passingEpa": -0.10723018897434104
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2018_12_OAK_BAL",
+    "season": 2018,
+    "week": 12,
+    "affectedTeam": "BAL",
+    "opponent": "OAK",
+    "affectedHome": true,
+    "kickoffUtc": "2018-11-25T18:00:00+00:00",
+    "knownOutQb": "Joe Flacco",
+    "knownOutGsis": "00-0026158",
+    "reportUpdatedUtc": "2018-11-23T12:13:50Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": -13.0,
+      "passingEpa": 0.0409579514807598
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2018_14_NYG_WAS",
+    "season": 2018,
+    "week": 14,
+    "affectedTeam": "WAS",
+    "opponent": "NYG",
+    "affectedHome": true,
+    "kickoffUtc": "2018-12-09T18:00:00+00:00",
+    "knownOutQb": "Colt McCoy",
+    "knownOutGsis": "00-0027688",
+    "reportUpdatedUtc": "2018-12-07T11:40:06Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2018.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 27,
+      "affectedSpread": 3.0,
+      "passingEpa": -0.017774766343469722
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_04_CAR_HOU",
+    "season": 2019,
+    "week": 4,
+    "affectedTeam": "CAR",
+    "opponent": "HOU",
+    "affectedHome": false,
+    "kickoffUtc": "2019-09-29T17:00:00+00:00",
+    "knownOutQb": "Cam Newton",
+    "knownOutGsis": "00-0027939",
+    "reportUpdatedUtc": "2019-09-27T11:32:26Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 2,
+      "affectedSpread": 5.5,
+      "passingEpa": 0.11604734428263537
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2019_04_DAL_NO",
+    "season": 2019,
+    "week": 4,
+    "affectedTeam": "NO",
+    "opponent": "DAL",
+    "affectedHome": true,
+    "kickoffUtc": "2019-09-30T00:20:00+00:00",
+    "knownOutQb": "Drew Brees",
+    "knownOutGsis": "00-0020531",
+    "reportUpdatedUtc": "2019-09-27T12:07:41Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 30,
+      "affectedSpread": 2.5,
+      "passingEpa": 0.17889159038408034
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2019_05_CHI_OAK",
+    "season": 2019,
+    "week": 5,
+    "affectedTeam": "CHI",
+    "opponent": "OAK",
+    "affectedHome": false,
+    "kickoffUtc": "2019-10-06T17:00:00+00:00",
+    "knownOutQb": "Mitchell Trubisky",
+    "knownOutGsis": "00-0033869",
+    "reportUpdatedUtc": "2019-10-04T12:43:19Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 30,
+      "affectedSpread": -6.5,
+      "passingEpa": 0.04206316769733141
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_06_PIT_LAC",
+    "season": 2019,
+    "week": 6,
+    "affectedTeam": "PIT",
+    "opponent": "LAC",
+    "affectedHome": false,
+    "kickoffUtc": "2019-10-14T00:20:00+00:00",
+    "knownOutQb": "Mason Rudolph",
+    "knownOutGsis": "00-0034771",
+    "reportUpdatedUtc": "2019-10-11T12:53:59Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 3,
+      "affectedSpread": 6.0,
+      "passingEpa": -0.009644851665029066
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2019_08_GB_KC",
+    "season": 2019,
+    "week": 8,
+    "affectedTeam": "KC",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2019-10-28T00:20:00+00:00",
+    "knownOutQb": "Patrick Mahomes",
+    "knownOutGsis": "00-0033873",
+    "reportUpdatedUtc": "2019-10-25T12:43:23Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 24,
+      "affectedSpread": 5.0,
+      "passingEpa": 0.29622492452483057
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_09_WAS_BUF",
+    "season": 2019,
+    "week": 9,
+    "affectedTeam": "WAS",
+    "opponent": "BUF",
+    "affectedHome": false,
+    "kickoffUtc": "2019-11-03T18:00:00+00:00",
+    "knownOutQb": "Case Keenum",
+    "knownOutGsis": "00-0028986",
+    "reportUpdatedUtc": "2019-11-01T11:17:37Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 61,
+      "affectedSpread": 10.5,
+      "passingEpa": -0.16303010962286596
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_11_DAL_DET",
+    "season": 2019,
+    "week": 11,
+    "affectedTeam": "DET",
+    "opponent": "DAL",
+    "affectedHome": true,
+    "kickoffUtc": "2019-11-17T18:00:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2019-11-15T12:58:19Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 6,
+      "affectedSpread": 7.5,
+      "passingEpa": 0.16708227589113628
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_12_DET_WAS",
+    "season": 2019,
+    "week": 12,
+    "affectedTeam": "DET",
+    "opponent": "WAS",
+    "affectedHome": false,
+    "kickoffUtc": "2019-11-24T18:00:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2019-11-22T12:57:17Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 7,
+      "affectedSpread": -4.0,
+      "passingEpa": 0.16600475001051604
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_13_CHI_DET",
+    "season": 2019,
+    "week": 13,
+    "affectedTeam": "DET",
+    "opponent": "CHI",
+    "affectedHome": true,
+    "kickoffUtc": "2019-11-28T17:30:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2019-11-27T11:56:45Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 8,
+      "affectedSpread": 5.5,
+      "passingEpa": 0.14377823652520177
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2019_14_DET_MIN",
+    "season": 2019,
+    "week": 14,
+    "affectedTeam": "DET",
+    "opponent": "MIN",
+    "affectedHome": false,
+    "kickoffUtc": "2019-12-08T18:00:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2019-12-06T12:01:36Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 12.0,
+      "passingEpa": 0.14086827695124418
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2019_14_NYG_PHI",
+    "season": 2019,
+    "week": 14,
+    "affectedTeam": "NYG",
+    "opponent": "PHI",
+    "affectedHome": false,
+    "kickoffUtc": "2019-12-10T01:15:00+00:00",
+    "knownOutQb": "Daniel Jones",
+    "knownOutGsis": "00-0035710",
+    "reportUpdatedUtc": "2019-12-07T09:11:39Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2019.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 10,
+      "affectedSpread": 9.5,
+      "passingEpa": -0.13668697941070826
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2020_04_DEN_NYJ",
+    "season": 2020,
+    "week": 4,
+    "affectedTeam": "DEN",
+    "opponent": "NYJ",
+    "affectedHome": false,
+    "kickoffUtc": "2020-10-02T00:20:00+00:00",
+    "knownOutQb": "Drew Lock",
+    "knownOutGsis": "00-0035704",
+    "reportUpdatedUtc": "2020-09-30T11:15:56Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 9,
+      "affectedSpread": 1.0,
+      "passingEpa": -0.20214267158921895
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2020_04_PHI_SF",
+    "season": 2020,
+    "week": 4,
+    "affectedTeam": "SF",
+    "opponent": "PHI",
+    "affectedHome": true,
+    "kickoffUtc": "2020-10-05T00:20:00+00:00",
+    "knownOutQb": "Jimmy Garoppolo",
+    "knownOutGsis": "00-0031345",
+    "reportUpdatedUtc": "2020-10-02T13:37:38Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 9,
+      "affectedSpread": -8.5,
+      "passingEpa": 0.2979443421439202
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2020_05_ARI_NYJ",
+    "season": 2020,
+    "week": 5,
+    "affectedTeam": "NYJ",
+    "opponent": "ARI",
+    "affectedHome": true,
+    "kickoffUtc": "2020-10-11T17:00:00+00:00",
+    "knownOutQb": "Sam Darnold",
+    "knownOutGsis": "00-0034869",
+    "reportUpdatedUtc": "2020-10-09T13:24:53Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 30,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.307513596065803
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2020_08_DAL_PHI",
+    "season": 2020,
+    "week": 8,
+    "affectedTeam": "DAL",
+    "opponent": "PHI",
+    "affectedHome": false,
+    "kickoffUtc": "2020-11-02T01:20:00+00:00",
+    "knownOutQb": "Andy Dalton",
+    "knownOutGsis": "00-0027973",
+    "reportUpdatedUtc": "2020-10-31T14:40:47Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 135,
+      "affectedSpread": 10.0,
+      "passingEpa": 0.011690196062403338
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2020_09_GB_SF",
+    "season": 2020,
+    "week": 9,
+    "affectedTeam": "SF",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2020-11-06T01:20:00+00:00",
+    "knownOutQb": "Jimmy Garoppolo",
+    "knownOutGsis": "00-0031345",
+    "reportUpdatedUtc": "2020-11-04T12:53:31Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 33,
+      "affectedSpread": 6.0,
+      "passingEpa": 0.1806561533323827
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2020_09_HOU_JAX",
+    "season": 2020,
+    "week": 9,
+    "affectedTeam": "JAX",
+    "opponent": "HOU",
+    "affectedHome": true,
+    "kickoffUtc": "2020-11-08T18:00:00+00:00",
+    "knownOutQb": "Gardner Minshew",
+    "knownOutGsis": "00-0035289",
+    "reportUpdatedUtc": "2020-11-06T10:12:21Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 19,
+      "affectedSpread": 7.0,
+      "passingEpa": 0.0560829796669482
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2020_10_JAX_GB",
+    "season": 2020,
+    "week": 10,
+    "affectedTeam": "JAX",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2020-11-15T18:00:00+00:00",
+    "knownOutQb": "Gardner Minshew",
+    "knownOutGsis": "00-0035289",
+    "reportUpdatedUtc": "2020-11-13T10:51:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 13.5,
+      "passingEpa": 0.05619183881105071
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2020_10_WAS_DET",
+    "season": 2020,
+    "week": 10,
+    "affectedTeam": "WAS",
+    "opponent": "DET",
+    "affectedHome": false,
+    "kickoffUtc": "2020-11-15T18:00:00+00:00",
+    "knownOutQb": "Kyle Allen",
+    "knownOutGsis": "00-0034577",
+    "reportUpdatedUtc": "2020-11-13T10:39:52Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2020.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 17,
+      "affectedSpread": 2.5,
+      "passingEpa": -0.09579693388085832
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2021_05_SF_ARI",
+    "season": 2021,
+    "week": 5,
+    "affectedTeam": "SF",
+    "opponent": "ARI",
+    "affectedHome": false,
+    "kickoffUtc": "2021-10-10T20:25:00+00:00",
+    "knownOutQb": "Jimmy Garoppolo",
+    "knownOutGsis": "00-0031345",
+    "reportUpdatedUtc": "2021-10-08T20:05:16Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 37,
+      "affectedSpread": 6.0,
+      "passingEpa": 0.29537206968278756
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2021_06_SEA_PIT",
+    "season": 2021,
+    "week": 6,
+    "affectedTeam": "SEA",
+    "opponent": "PIT",
+    "affectedHome": false,
+    "kickoffUtc": "2021-10-18T00:20:00+00:00",
+    "knownOutQb": "Russell Wilson",
+    "knownOutGsis": "00-0029263",
+    "reportUpdatedUtc": "2021-10-15T19:49:29Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 149,
+      "affectedSpread": 5.5,
+      "passingEpa": 0.12355976120102082
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2021_07_DEN_CLE",
+    "season": 2021,
+    "week": 7,
+    "affectedTeam": "CLE",
+    "opponent": "DEN",
+    "affectedHome": true,
+    "kickoffUtc": "2021-10-22T00:20:00+00:00",
+    "knownOutQb": "Baker Mayfield",
+    "knownOutGsis": "00-0034855",
+    "reportUpdatedUtc": "2021-10-20T17:36:54Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 51,
+      "affectedSpread": -2.0,
+      "passingEpa": 0.08789211293959469
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2021_07_IND_SF",
+    "season": 2021,
+    "week": 7,
+    "affectedTeam": "SF",
+    "opponent": "IND",
+    "affectedHome": true,
+    "kickoffUtc": "2021-10-25T00:20:00+00:00",
+    "knownOutQb": "Trey Lance",
+    "knownOutGsis": "00-0037012",
+    "reportUpdatedUtc": "2021-10-22T20:28:22Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 1,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.19241350739490987
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2021_08_CIN_NYJ",
+    "season": 2021,
+    "week": 8,
+    "affectedTeam": "NYJ",
+    "opponent": "CIN",
+    "affectedHome": true,
+    "kickoffUtc": "2021-10-31T17:00:00+00:00",
+    "knownOutQb": "Zach Wilson",
+    "knownOutGsis": "00-0037013",
+    "reportUpdatedUtc": "2021-10-29T19:03:58Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 6,
+      "affectedSpread": 11.5,
+      "passingEpa": -0.21690662734379085
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2021_09_NYJ_IND",
+    "season": 2021,
+    "week": 9,
+    "affectedTeam": "NYJ",
+    "opponent": "IND",
+    "affectedHome": false,
+    "kickoffUtc": "2021-11-05T00:20:00+00:00",
+    "knownOutQb": "Zach Wilson",
+    "knownOutGsis": "00-0037013",
+    "reportUpdatedUtc": "2021-11-03T18:54:27Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 10.5,
+      "passingEpa": -0.16420030631586177
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2021_09_ATL_NO",
+    "season": 2021,
+    "week": 9,
+    "affectedTeam": "NO",
+    "opponent": "ATL",
+    "affectedHome": true,
+    "kickoffUtc": "2021-11-07T18:00:00+00:00",
+    "knownOutQb": "Jameis Winston",
+    "knownOutGsis": "00-0031503",
+    "reportUpdatedUtc": "2021-11-05T19:22:16Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 77,
+      "affectedSpread": -7.0,
+      "passingEpa": 0.12247393070144877
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2021_12_CHI_DET",
+    "season": 2021,
+    "week": 12,
+    "affectedTeam": "CHI",
+    "opponent": "DET",
+    "affectedHome": false,
+    "kickoffUtc": "2021-11-25T17:30:00+00:00",
+    "knownOutQb": "Justin Fields",
+    "knownOutGsis": "00-0036945",
+    "reportUpdatedUtc": "2021-11-24T22:25:30Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 8,
+      "affectedSpread": -2.0,
+      "passingEpa": -0.13985225724306255
+    },
+    "affectedCover": null
+  },
+  {
+    "gameId": "2021_13_NYG_MIA",
+    "season": 2021,
+    "week": 13,
+    "affectedTeam": "NYG",
+    "opponent": "MIA",
+    "affectedHome": false,
+    "kickoffUtc": "2021-12-05T18:00:00+00:00",
+    "knownOutQb": "Daniel Jones",
+    "knownOutGsis": "00-0035710",
+    "reportUpdatedUtc": "2021-12-03T19:11:20Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 37,
+      "affectedSpread": 6.5,
+      "passingEpa": -0.021347517335612173
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2021_14_NYG_LAC",
+    "season": 2021,
+    "week": 14,
+    "affectedTeam": "NYG",
+    "opponent": "LAC",
+    "affectedHome": false,
+    "kickoffUtc": "2021-12-12T21:05:00+00:00",
+    "knownOutQb": "Daniel Jones",
+    "knownOutGsis": "00-0035710",
+    "reportUpdatedUtc": "2021-12-10T21:43:06Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2021.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 28,
+      "affectedSpread": 9.5,
+      "passingEpa": -0.04209658510566949
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2022_04_NE_GB",
+    "season": 2022,
+    "week": 4,
+    "affectedTeam": "NE",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2022-10-02T20:25:00+00:00",
+    "knownOutQb": "Mac Jones",
+    "knownOutGsis": "00-0036972",
+    "reportUpdatedUtc": "2022-09-30T19:50:23Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 20,
+      "affectedSpread": 10.0,
+      "passingEpa": 0.0018344794482818558
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2022_05_MIA_NYJ",
+    "season": 2022,
+    "week": 5,
+    "affectedTeam": "MIA",
+    "opponent": "NYJ",
+    "affectedHome": false,
+    "kickoffUtc": "2022-10-09T17:00:00+00:00",
+    "knownOutQb": "Tua Tagovailoa",
+    "knownOutGsis": "00-0036212",
+    "reportUpdatedUtc": "2022-10-07T19:35:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 25,
+      "affectedSpread": -3.0,
+      "passingEpa": 0.24145812235585268
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2022_06_MIN_MIA",
+    "season": 2022,
+    "week": 6,
+    "affectedTeam": "MIA",
+    "opponent": "MIN",
+    "affectedHome": true,
+    "kickoffUtc": "2022-10-16T17:00:00+00:00",
+    "knownOutQb": "Tua Tagovailoa",
+    "knownOutGsis": "00-0036212",
+    "reportUpdatedUtc": "2022-10-14T19:38:31Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 64,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.09371457355964381
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2022_07_GB_WAS",
+    "season": 2022,
+    "week": 7,
+    "affectedTeam": "WAS",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2022-10-23T17:00:00+00:00",
+    "knownOutQb": "Carson Wentz",
+    "knownOutGsis": "00-0032950",
+    "reportUpdatedUtc": "2022-10-21T18:25:16Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 91,
+      "affectedSpread": 4.0,
+      "passingEpa": -0.14973797337244618
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2022_08_WAS_IND",
+    "season": 2022,
+    "week": 8,
+    "affectedTeam": "IND",
+    "opponent": "WAS",
+    "affectedHome": true,
+    "kickoffUtc": "2022-10-30T20:25:00+00:00",
+    "knownOutQb": "Matt Ryan",
+    "knownOutGsis": "00-0026143",
+    "reportUpdatedUtc": "2022-10-28T18:59:08Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 229,
+      "affectedSpread": -3.0,
+      "passingEpa": -0.07822063465179327
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2022_09_IND_NE",
+    "season": 2022,
+    "week": 9,
+    "affectedTeam": "IND",
+    "opponent": "NE",
+    "affectedHome": false,
+    "kickoffUtc": "2022-11-06T18:00:00+00:00",
+    "knownOutQb": "Matt Ryan",
+    "knownOutGsis": "00-0026143",
+    "reportUpdatedUtc": "2022-11-04T19:43:46Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 5.0,
+      "passingEpa": -0.06243251831074931
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2022_11_CAR_BAL",
+    "season": 2022,
+    "week": 11,
+    "affectedTeam": "CAR",
+    "opponent": "BAL",
+    "affectedHome": false,
+    "kickoffUtc": "2022-11-20T18:00:00+00:00",
+    "knownOutQb": "Phillip Walker",
+    "knownOutGsis": "00-0033275",
+    "reportUpdatedUtc": "2022-11-18T17:40:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 7,
+      "affectedSpread": 13.0,
+      "passingEpa": -0.15027285355653414
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2022_12_LA_KC",
+    "season": 2022,
+    "week": 12,
+    "affectedTeam": "LA",
+    "opponent": "KC",
+    "affectedHome": false,
+    "kickoffUtc": "2022-11-27T21:25:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2022-11-25T20:36:13Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 191,
+      "affectedSpread": 16.5,
+      "passingEpa": -0.06361479644054374
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2022_13_GB_CHI",
+    "season": 2022,
+    "week": 13,
+    "affectedTeam": "CHI",
+    "opponent": "GB",
+    "affectedHome": true,
+    "kickoffUtc": "2022-12-04T18:00:00+00:00",
+    "knownOutQb": "Trevor Siemian",
+    "knownOutGsis": "00-0032156",
+    "reportUpdatedUtc": "2022-12-02T19:50:10Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 30,
+      "affectedSpread": 4.0,
+      "passingEpa": -0.13825124449493673
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2022_13_SEA_LA",
+    "season": 2022,
+    "week": 13,
+    "affectedTeam": "LA",
+    "opponent": "SEA",
+    "affectedHome": true,
+    "kickoffUtc": "2022-12-04T21:05:00+00:00",
+    "knownOutQb": "Matthew Stafford",
+    "knownOutGsis": "00-0026498",
+    "reportUpdatedUtc": "2022-12-02T20:51:28Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 7.0,
+      "passingEpa": -0.09261056208501316
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2022_14_TB_SF",
+    "season": 2022,
+    "week": 14,
+    "affectedTeam": "SF",
+    "opponent": "TB",
+    "affectedHome": true,
+    "kickoffUtc": "2022-12-11T21:25:00+00:00",
+    "knownOutQb": "Jimmy Garoppolo",
+    "knownOutGsis": "00-0031345",
+    "reportUpdatedUtc": "2022-12-09T22:02:45Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 58,
+      "affectedSpread": -3.5,
+      "passingEpa": 0.19345857731072566
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2023_06_SF_CLE",
+    "season": 2023,
+    "week": 6,
+    "affectedTeam": "CLE",
+    "opponent": "SF",
+    "affectedHome": true,
+    "kickoffUtc": "2023-10-15T17:00:00+00:00",
+    "knownOutQb": "Deshaun Watson",
+    "knownOutGsis": "00-0033537",
+    "reportUpdatedUtc": "2023-10-13T19:24:26Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 9.5,
+      "passingEpa": -0.2557829487967347
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2023_06_NYG_BUF",
+    "season": 2023,
+    "week": 6,
+    "affectedTeam": "NYG",
+    "opponent": "BUF",
+    "affectedHome": false,
+    "kickoffUtc": "2023-10-16T00:20:00+00:00",
+    "knownOutQb": "Daniel Jones",
+    "knownOutGsis": "00-0035710",
+    "reportUpdatedUtc": "2023-10-13T18:11:24Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 58,
+      "affectedSpread": 15.5,
+      "passingEpa": -0.28741862675008945
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2023_08_ATL_TEN",
+    "season": 2023,
+    "week": 8,
+    "affectedTeam": "TEN",
+    "opponent": "ATL",
+    "affectedHome": true,
+    "kickoffUtc": "2023-10-29T17:00:00+00:00",
+    "knownOutQb": "Ryan Tannehill",
+    "knownOutGsis": "00-0029701",
+    "reportUpdatedUtc": "2023-10-27T19:44:30Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 149,
+      "affectedSpread": 2.5,
+      "passingEpa": -0.08908212893791877
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2023_08_NYJ_NYG",
+    "season": 2023,
+    "week": 8,
+    "affectedTeam": "NYG",
+    "opponent": "NYJ",
+    "affectedHome": true,
+    "kickoffUtc": "2023-10-29T17:00:00+00:00",
+    "knownOutQb": "Daniel Jones",
+    "knownOutGsis": "00-0035710",
+    "reportUpdatedUtc": "2023-10-27T18:06:57Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 56,
+      "affectedSpread": 3.0,
+      "passingEpa": -0.1917578004622686
+    },
+    "affectedCover": null
+  },
+  {
+    "gameId": "2023_08_CLE_SEA",
+    "season": 2023,
+    "week": 8,
+    "affectedTeam": "CLE",
+    "opponent": "SEA",
+    "affectedHome": false,
+    "kickoffUtc": "2023-10-29T20:05:00+00:00",
+    "knownOutQb": "Deshaun Watson",
+    "knownOutGsis": "00-0033537",
+    "reportUpdatedUtc": "2023-10-27T18:50:41Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 63,
+      "affectedSpread": 4.0,
+      "passingEpa": -0.2759018977584308
+    },
+    "affectedCover": null
+  },
+  {
+    "gameId": "2023_08_CHI_LAC",
+    "season": 2023,
+    "week": 8,
+    "affectedTeam": "CHI",
+    "opponent": "LAC",
+    "affectedHome": false,
+    "kickoffUtc": "2023-10-30T00:20:00+00:00",
+    "knownOutQb": "Justin Fields",
+    "knownOutGsis": "00-0036945",
+    "reportUpdatedUtc": "2023-10-27T19:06:51Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 9.5,
+      "passingEpa": -0.1741417496561692
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2023_09_TEN_PIT",
+    "season": 2023,
+    "week": 9,
+    "affectedTeam": "TEN",
+    "opponent": "PIT",
+    "affectedHome": false,
+    "kickoffUtc": "2023-11-03T00:15:00+00:00",
+    "knownOutQb": "Ryan Tannehill",
+    "knownOutGsis": "00-0029701",
+    "reportUpdatedUtc": "2023-11-01T19:22:04Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 1,
+      "affectedSpread": 3.5,
+      "passingEpa": -0.04899806525504954
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2023_09_NYG_LV",
+    "season": 2023,
+    "week": 9,
+    "affectedTeam": "NYG",
+    "opponent": "LV",
+    "affectedHome": false,
+    "kickoffUtc": "2023-11-05T21:25:00+00:00",
+    "knownOutQb": "Tyrod Taylor",
+    "knownOutGsis": "00-0028118",
+    "reportUpdatedUtc": "2023-11-03T18:23:39Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 57,
+      "affectedSpread": 1.0,
+      "passingEpa": -0.2879026638809301
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2023_10_NO_MIN",
+    "season": 2023,
+    "week": 10,
+    "affectedTeam": "MIN",
+    "opponent": "NO",
+    "affectedHome": true,
+    "kickoffUtc": "2023-11-12T18:00:00+00:00",
+    "knownOutQb": "Jaren Hall",
+    "knownOutGsis": "00-0038598",
+    "reportUpdatedUtc": "2023-11-10T19:54:30Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 1,
+      "affectedSpread": 3.0,
+      "passingEpa": 0.05302831957110012
+    },
+    "affectedCover": true
+  },
+  {
+    "gameId": "2023_12_PIT_CIN",
+    "season": 2023,
+    "week": 12,
+    "affectedTeam": "CIN",
+    "opponent": "PIT",
+    "affectedHome": true,
+    "kickoffUtc": "2023-11-26T18:00:00+00:00",
+    "knownOutQb": "Joe Burrow",
+    "knownOutGsis": "00-0036442",
+    "reportUpdatedUtc": "2023-11-24T19:13:27Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 52,
+      "affectedSpread": 2.0,
+      "passingEpa": -0.01644270983678547
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2023_13_CLE_LA",
+    "season": 2023,
+    "week": 13,
+    "affectedTeam": "CLE",
+    "opponent": "LA",
+    "affectedHome": false,
+    "kickoffUtc": "2023-12-03T21:25:00+00:00",
+    "knownOutQb": "Dorian Thompson-Robinson",
+    "knownOutGsis": "00-0038583",
+    "reportUpdatedUtc": "2023-12-01T21:33:42Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": false,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": false,
+      "recentCareerStarts": 3,
+      "affectedSpread": 3.5,
+      "passingEpa": -0.20476979476190127
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2023_14_NE_PIT",
+    "season": 2023,
+    "week": 14,
+    "affectedTeam": "PIT",
+    "opponent": "NE",
+    "affectedHome": true,
+    "kickoffUtc": "2023-12-08T01:15:00+00:00",
+    "knownOutQb": "Kenny Pickett",
+    "knownOutGsis": "00-0038102",
+    "reportUpdatedUtc": "2023-12-06T21:05:48Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 25,
+      "affectedSpread": -6.0,
+      "passingEpa": -0.08290781326824455
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2024_06_TB_NO",
+    "season": 2024,
+    "week": 6,
+    "affectedTeam": "NO",
+    "opponent": "TB",
+    "affectedHome": true,
+    "kickoffUtc": "2024-10-13T17:00:00+00:00",
+    "knownOutQb": "Derek Carr",
+    "knownOutGsis": "00-0031280",
+    "reportUpdatedUtc": "2024-10-11T18:53:02Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 164,
+      "affectedSpread": 3.5,
+      "passingEpa": 0.21810941045951665
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2024_10_PHI_DAL",
+    "season": 2024,
+    "week": 10,
+    "affectedTeam": "DAL",
+    "opponent": "PHI",
+    "affectedHome": true,
+    "kickoffUtc": "2024-11-10T21:25:00+00:00",
+    "knownOutQb": "Dak Prescott",
+    "knownOutGsis": "00-0033077",
+    "reportUpdatedUtc": "2024-11-08T19:19:07Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": true,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": true,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 121,
+      "affectedSpread": 7.5,
+      "passingEpa": -0.027854938098130656
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2024_11_JAX_DET",
+    "season": 2024,
+    "week": 11,
+    "affectedTeam": "JAX",
+    "opponent": "DET",
+    "affectedHome": false,
+    "kickoffUtc": "2024-11-17T18:00:00+00:00",
+    "knownOutQb": "Trevor Lawrence",
+    "knownOutGsis": "00-0036971",
+    "reportUpdatedUtc": "2024-11-15T20:18:34Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 43,
+      "affectedSpread": 14.0,
+      "passingEpa": 0.01018627772857007
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2024_11_HOU_DAL",
+    "season": 2024,
+    "week": 11,
+    "affectedTeam": "DAL",
+    "opponent": "HOU",
+    "affectedHome": true,
+    "kickoffUtc": "2024-11-19T01:15:00+00:00",
+    "knownOutQb": "Dak Prescott",
+    "knownOutGsis": "00-0033077",
+    "reportUpdatedUtc": "2024-11-16T20:44:22Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+    "cohorts": {
+      "recent_out": false,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": false,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": false
+    },
+    "facts": {
+      "recentOut": false,
+      "dominantOut": true,
+      "recentCareerStarts": 7,
+      "affectedSpread": 7.5,
+      "passingEpa": -0.10218040112621579
+    },
+    "affectedCover": false
+  },
+  {
+    "gameId": "2024_12_SF_GB",
+    "season": 2024,
+    "week": 12,
+    "affectedTeam": "SF",
+    "opponent": "GB",
+    "affectedHome": false,
+    "kickoffUtc": "2024-11-24T21:25:00+00:00",
+    "knownOutQb": "Brock Purdy",
+    "knownOutGsis": "00-0037834",
+    "reportUpdatedUtc": "2024-11-22T20:31:34Z",
+    "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+    "cohorts": {
+      "recent_out": true,
+      "dominant_out": true,
+      "experienced_recent_out": false,
+      "underdog_recent_out": true,
+      "large_underdog_recent_out": false,
+      "good_passing_recent_out": true
+    },
+    "facts": {
+      "recentOut": true,
+      "dominantOut": true,
+      "recentCareerStarts": 31,
+      "affectedSpread": 6.5,
+      "passingEpa": 0.16557608356970568
+    },
+    "affectedCover": false
+  }
+]

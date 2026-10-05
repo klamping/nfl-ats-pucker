@@ -181,6 +181,9 @@ Do not treat the final score as a complete description of the previous game.
 
 - Final margin
 - Margin before the game became effectively decided
+- First point after the first quarter at which either team reached a 99% in-game win probability
+- Score and largest lead when that 99% win-probability threshold was reached
+- Scoring by each team before and after the 99% win-probability threshold
 - Garbage-time points
 - Whether late touchdowns made a blowout appear close
 - Turnovers and defensive scores
@@ -193,6 +196,8 @@ Do not treat the final score as a complete description of the previous game.
 Questions:
 
 - Did the previous result reveal genuine strength or merely late-game scoring?
+- Did either team reach a 99% win probability after the first quarter, and did later scoring occur after that point?
+- How would the final margin and each team’s scoring look if points after the 99% win-probability threshold were treated as garbage time?
 - Could the market overreact to the final score?
 - Did the team play better or worse than the score suggests?
 

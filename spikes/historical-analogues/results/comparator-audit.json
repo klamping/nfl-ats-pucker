@@ -1,0 +1,134 @@
+[
+  {
+    "season": 2024,
+    "labels": "stale_wrong_sign",
+    "history": "full_archive_leaky",
+    "win": 130,
+    "loss": 27,
+    "push": 0,
+    "abstain": 3,
+    "games": 160,
+    "accuracy": 0.8280254777070064
+  },
+  {
+    "season": 2024,
+    "labels": "stale_wrong_sign",
+    "history": "before_kickoff",
+    "win": 121,
+    "loss": 29,
+    "push": 0,
+    "abstain": 10,
+    "games": 160,
+    "accuracy": 0.8066666666666666
+  },
+  {
+    "season": 2024,
+    "labels": "stale_wrong_sign",
+    "history": "prior_seasons_only",
+    "win": 122,
+    "loss": 30,
+    "push": 0,
+    "abstain": 8,
+    "games": 160,
+    "accuracy": 0.8026315789473685
+  },
+  {
+    "season": 2024,
+    "labels": "correct_sign",
+    "history": "full_archive_leaky",
+    "win": 86,
+    "loss": 53,
+    "push": 3,
+    "abstain": 18,
+    "games": 160,
+    "accuracy": 0.6187050359712231
+  },
+  {
+    "season": 2024,
+    "labels": "correct_sign",
+    "history": "before_kickoff",
+    "win": 67,
+    "loss": 72,
+    "push": 3,
+    "abstain": 18,
+    "games": 160,
+    "accuracy": 0.48201438848920863
+  },
+  {
+    "season": 2024,
+    "labels": "correct_sign",
+    "history": "prior_seasons_only",
+    "win": 64,
+    "loss": 73,
+    "push": 3,
+    "abstain": 20,
+    "games": 160,
+    "accuracy": 0.46715328467153283
+  },
+  {
+    "season": 2025,
+    "labels": "stale_wrong_sign",
+    "history": "full_archive_leaky",
+    "win": 122,
+    "loss": 30,
+    "push": 3,
+    "abstain": 5,
+    "games": 160,
+    "accuracy": 0.8026315789473685
+  },
+  {
+    "season": 2025,
+    "labels": "stale_wrong_sign",
+    "history": "before_kickoff",
+    "win": 106,
+    "loss": 34,
+    "push": 3,
+    "abstain": 17,
+    "games": 160,
+    "accuracy": 0.7571428571428571
+  },
+  {
+    "season": 2025,
+    "labels": "stale_wrong_sign",
+    "history": "prior_seasons_only",
+    "win": 104,
+    "loss": 35,
+    "push": 3,
+    "abstain": 18,
+    "games": 160,
+    "accuracy": 0.7482014388489209
+  },
+  {
+    "season": 2025,
+    "labels": "correct_sign",
+    "history": "full_archive_leaky",
+    "win": 83,
+    "loss": 61,
+    "push": 1,
+    "abstain": 15,
+    "games": 160,
+    "accuracy": 0.5763888888888888
+  },
+  {
+    "season": 2025,
+    "labels": "correct_sign",
+    "history": "before_kickoff",
+    "win": 60,
+    "loss": 73,
+    "push": 1,
+    "abstain": 26,
+    "games": 160,
+    "accuracy": 0.45112781954887216
+  },
+  {
+    "season": 2025,
+    "labels": "correct_sign",
+    "history": "prior_seasons_only",
+    "win": 59,
+    "loss": 71,
+    "push": 1,
+    "abstain": 29,
+    "games": 160,
+    "accuracy": 0.45384615384615384
+  }
+]

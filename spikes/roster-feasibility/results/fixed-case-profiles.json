@@ -1,0 +1,1280 @@
+[
+  {
+    "gameId": "2024_04_NO_ATL",
+    "season": 2024,
+    "week": 4,
+    "kickoffUtc": "2024-09-29T17:00:00+00:00",
+    "window": "season",
+    "teams": {
+      "home": "ATL",
+      "away": "NO"
+    },
+    "profiles": {
+      "home": {
+        "total": 0.75,
+        "offense": 0.75,
+        "defense": 0.0,
+        "units": {
+          "receivers": 0.0,
+          "OL": 0.75,
+          "DL": 0.0,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.0
+        },
+        "majorCount": 1,
+        "majorUnits": [
+          "OL"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0035235",
+            "pfr": "McGaKa00",
+            "name": "Kaleb McGary",
+            "position": "T",
+            "unit": "OL",
+            "shares": [
+              1.0,
+              1.0,
+              0.25
+            ],
+            "meanShare": 0.75,
+            "reportUpdated": "2024-09-27T20:10:20Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_PIT_ATL",
+          "2024_02_ATL_PHI",
+          "2024_03_KC_ATL"
+        ]
+      },
+      "away": {
+        "total": 1.8066666666666666,
+        "offense": 0.9633333333333334,
+        "defense": 0.8433333333333334,
+        "units": {
+          "receivers": 0.0,
+          "OL": 0.9633333333333334,
+          "DL": 0.0,
+          "LB": 0.8433333333333334,
+          "backs": 0.0,
+          "secondary": 0.0
+        },
+        "majorCount": 2,
+        "majorUnits": [
+          "LB",
+          "OL"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0029607",
+            "pfr": "DaviDe00",
+            "name": "Demario Davis",
+            "position": "LB",
+            "unit": "LB",
+            "shares": [
+              0.68,
+              0.96,
+              0.89
+            ],
+            "meanShare": 0.8433333333333334,
+            "reportUpdated": "2024-09-27T18:59:44Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036408",
+            "pfr": "RuizCe00",
+            "name": "Cesar Ruiz",
+            "position": "C",
+            "unit": "OL",
+            "shares": [
+              0.91,
+              1.0,
+              0.98
+            ],
+            "meanShare": 0.9633333333333334,
+            "reportUpdated": "2024-09-27T19:00:52Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0038612",
+            "pfr": "PerrAT00",
+            "name": "A.T. Perry",
+            "position": "WR",
+            "unit": "receivers",
+            "shares": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-09-27T19:00:20Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_CAR_NO",
+          "2024_02_NO_DAL",
+          "2024_03_PHI_NO"
+        ]
+      }
+    },
+    "metrics": {
+      "home": {
+        "defensiveSackRate": 0.03741935483870968,
+        "passingEpaPerDropback": -0.0009668240333425374,
+        "pointsFor": 16.333333333333332,
+        "pointsAgainst": 20.333333333333332,
+        "offensiveEpaPerPlay": -0.09827863676168448,
+        "defensiveEpaPerPlay": 0.03828899441307415,
+        "netPoints": -4.0,
+        "netEpa": -0.13656763117475862
+      },
+      "away": {
+        "defensiveSackRate": 0.09206349206349207,
+        "passingEpaPerDropback": 0.3890903727529838,
+        "pointsFor": 34.333333333333336,
+        "pointsAgainst": 14.666666666666666,
+        "offensiveEpaPerPlay": 0.14663172272003375,
+        "defensiveEpaPerPlay": -0.20643474532400694,
+        "netPoints": 19.66666666666667,
+        "netEpa": 0.3530664680440407
+      }
+    },
+    "reportIssues": {
+      "home": [],
+      "away": []
+    }
+  },
+  {
+    "gameId": "2024_04_NO_ATL",
+    "season": 2024,
+    "week": 4,
+    "kickoffUtc": "2024-09-29T17:00:00+00:00",
+    "window": "last3",
+    "teams": {
+      "home": "ATL",
+      "away": "NO"
+    },
+    "profiles": {
+      "home": {
+        "total": 0.75,
+        "offense": 0.75,
+        "defense": 0.0,
+        "units": {
+          "receivers": 0.0,
+          "OL": 0.75,
+          "DL": 0.0,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.0
+        },
+        "majorCount": 1,
+        "majorUnits": [
+          "OL"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0035235",
+            "pfr": "McGaKa00",
+            "name": "Kaleb McGary",
+            "position": "T",
+            "unit": "OL",
+            "shares": [
+              1.0,
+              1.0,
+              0.25
+            ],
+            "meanShare": 0.75,
+            "reportUpdated": "2024-09-27T20:10:20Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_PIT_ATL",
+          "2024_02_ATL_PHI",
+          "2024_03_KC_ATL"
+        ]
+      },
+      "away": {
+        "total": 1.8066666666666666,
+        "offense": 0.9633333333333334,
+        "defense": 0.8433333333333334,
+        "units": {
+          "receivers": 0.0,
+          "OL": 0.9633333333333334,
+          "DL": 0.0,
+          "LB": 0.8433333333333334,
+          "backs": 0.0,
+          "secondary": 0.0
+        },
+        "majorCount": 2,
+        "majorUnits": [
+          "LB",
+          "OL"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0029607",
+            "pfr": "DaviDe00",
+            "name": "Demario Davis",
+            "position": "LB",
+            "unit": "LB",
+            "shares": [
+              0.68,
+              0.96,
+              0.89
+            ],
+            "meanShare": 0.8433333333333334,
+            "reportUpdated": "2024-09-27T18:59:44Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036408",
+            "pfr": "RuizCe00",
+            "name": "Cesar Ruiz",
+            "position": "C",
+            "unit": "OL",
+            "shares": [
+              0.91,
+              1.0,
+              0.98
+            ],
+            "meanShare": 0.9633333333333334,
+            "reportUpdated": "2024-09-27T19:00:52Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0038612",
+            "pfr": "PerrAT00",
+            "name": "A.T. Perry",
+            "position": "WR",
+            "unit": "receivers",
+            "shares": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-09-27T19:00:20Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_CAR_NO",
+          "2024_02_NO_DAL",
+          "2024_03_PHI_NO"
+        ]
+      }
+    },
+    "metrics": {
+      "home": {
+        "defensiveSackRate": 0.03741935483870968,
+        "passingEpaPerDropback": -0.0009668240333425374,
+        "pointsFor": 16.333333333333332,
+        "pointsAgainst": 20.333333333333332,
+        "offensiveEpaPerPlay": -0.09827863676168448,
+        "defensiveEpaPerPlay": 0.03828899441307415,
+        "netPoints": -4.0,
+        "netEpa": -0.13656763117475862
+      },
+      "away": {
+        "defensiveSackRate": 0.09206349206349207,
+        "passingEpaPerDropback": 0.3890903727529838,
+        "pointsFor": 34.333333333333336,
+        "pointsAgainst": 14.666666666666666,
+        "offensiveEpaPerPlay": 0.14663172272003375,
+        "defensiveEpaPerPlay": -0.20643474532400694,
+        "netPoints": 19.66666666666667,
+        "netEpa": 0.3530664680440407
+      }
+    },
+    "reportIssues": {
+      "home": [],
+      "away": []
+    }
+  },
+  {
+    "gameId": "2024_06_TB_NO",
+    "season": 2024,
+    "week": 6,
+    "kickoffUtc": "2024-10-13T17:00:00+00:00",
+    "window": "season",
+    "teams": {
+      "home": "NO",
+      "away": "TB"
+    },
+    "profiles": {
+      "home": {
+        "total": 2.322,
+        "offense": 0.776,
+        "defense": 1.5459999999999998,
+        "units": {
+          "receivers": 0.198,
+          "OL": 0.5780000000000001,
+          "DL": 0.0,
+          "LB": 0.6799999999999999,
+          "backs": 0.0,
+          "secondary": 0.866
+        },
+        "majorCount": 3,
+        "majorUnits": [
+          "LB",
+          "OL",
+          "secondary"
+        ],
+        "qbOut": true,
+        "players": [
+          {
+            "gsis": "00-0033357",
+            "pfr": "HillTa00",
+            "name": "Taysom Hill",
+            "position": "TE",
+            "unit": "receivers",
+            "shares": [
+              0.32,
+              0.47,
+              0.0,
+              0.2,
+              0.0
+            ],
+            "meanShare": 0.198,
+            "reportUpdated": "2024-10-11T18:53:25Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0035655",
+            "pfr": "HarrWi02",
+            "name": "Will Harris",
+            "position": "S",
+            "unit": "secondary",
+            "shares": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              0.33
+            ],
+            "meanShare": 0.866,
+            "reportUpdated": "2024-10-11T18:53:19Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036408",
+            "pfr": "RuizCe00",
+            "name": "Cesar Ruiz",
+            "position": "G",
+            "unit": "OL",
+            "shares": [
+              0.91,
+              1.0,
+              0.98,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.5780000000000001,
+            "reportUpdated": "2024-10-11T18:53:49Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036927",
+            "pfr": "WernPe00",
+            "name": "Pete Werner",
+            "position": "LB",
+            "unit": "LB",
+            "shares": [
+              0.69,
+              0.73,
+              0.98,
+              1.0,
+              0.0
+            ],
+            "meanShare": 0.6799999999999999,
+            "reportUpdated": "2024-10-11T18:54:03Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_CAR_NO",
+          "2024_02_NO_DAL",
+          "2024_03_PHI_NO",
+          "2024_04_NO_ATL",
+          "2024_05_NO_KC"
+        ]
+      },
+      "away": {
+        "total": 2.164,
+        "offense": 1.288,
+        "defense": 0.876,
+        "units": {
+          "receivers": 0.288,
+          "OL": 1.0,
+          "DL": 0.0,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.876
+        },
+        "majorCount": 2,
+        "majorUnits": [
+          "OL",
+          "secondary"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0036855",
+            "pfr": "BrowEa00",
+            "name": "Earnest Brown",
+            "position": "DE",
+            "unit": "DL",
+            "shares": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-10-11T19:50:20Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0038820",
+            "pfr": "IzieCh00",
+            "name": "Christian Izien",
+            "position": "S",
+            "unit": "secondary",
+            "shares": [
+              0.53,
+              1.0,
+              0.93,
+              0.93,
+              0.99
+            ],
+            "meanShare": 0.876,
+            "reportUpdated": "2024-10-11T19:50:55Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039052",
+            "pfr": "PalmTr00",
+            "name": "Trey Palmer",
+            "position": "WR",
+            "unit": "receivers",
+            "shares": [
+              0.31,
+              0.21,
+              0.21,
+              0.14,
+              0.0
+            ],
+            "meanShare": 0.174,
+            "reportUpdated": "2024-10-11T19:51:15Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039589",
+            "pfr": "JohnKa01",
+            "name": "Kameron Johnson",
+            "position": "WR",
+            "unit": "receivers",
+            "shares": [
+              0.17,
+              0.0,
+              0.0,
+              0.32,
+              0.08
+            ],
+            "meanShare": 0.11399999999999999,
+            "reportUpdated": "2024-10-11T19:51:04Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039905",
+            "pfr": "BartGr00",
+            "name": "Graham Barton",
+            "position": "C",
+            "unit": "OL",
+            "shares": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "meanShare": 1.0,
+            "reportUpdated": "2024-10-11T19:50:13Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_WAS_TB",
+          "2024_02_TB_DET",
+          "2024_03_DEN_TB",
+          "2024_04_PHI_TB",
+          "2024_05_TB_ATL"
+        ]
+      }
+    },
+    "metrics": {
+      "home": {
+        "defensiveSackRate": 0.07054974835462641,
+        "passingEpaPerDropback": 0.21810941045951665,
+        "pointsFor": 28.0,
+        "pointsAgainst": 19.2,
+        "offensiveEpaPerPlay": 0.08006806264454297,
+        "defensiveEpaPerPlay": -0.09443933340803103,
+        "netPoints": 8.8,
+        "netEpa": 0.17450739605257398
+      },
+      "away": {
+        "defensiveSackRate": 0.06141636141636142,
+        "passingEpaPerDropback": 0.12608203526180325,
+        "pointsFor": 25.4,
+        "pointsAgainst": 22.8,
+        "offensiveEpaPerPlay": 0.031274312493244305,
+        "defensiveEpaPerPlay": 0.05335927914931073,
+        "netPoints": 2.599999999999998,
+        "netEpa": -0.022084966656066428
+      }
+    },
+    "reportIssues": {
+      "home": [],
+      "away": []
+    }
+  },
+  {
+    "gameId": "2024_06_TB_NO",
+    "season": 2024,
+    "week": 6,
+    "kickoffUtc": "2024-10-13T17:00:00+00:00",
+    "window": "last3",
+    "teams": {
+      "home": "NO",
+      "away": "TB"
+    },
+    "profiles": {
+      "home": {
+        "total": 1.83,
+        "offense": 0.3933333333333333,
+        "defense": 1.4366666666666668,
+        "units": {
+          "receivers": 0.06666666666666667,
+          "OL": 0.32666666666666666,
+          "DL": 0.0,
+          "LB": 0.66,
+          "backs": 0.0,
+          "secondary": 0.7766666666666667
+        },
+        "majorCount": 3,
+        "majorUnits": [
+          "LB",
+          "OL",
+          "secondary"
+        ],
+        "qbOut": true,
+        "players": [
+          {
+            "gsis": "00-0033357",
+            "pfr": "HillTa00",
+            "name": "Taysom Hill",
+            "position": "TE",
+            "unit": "receivers",
+            "shares": [
+              0.0,
+              0.2,
+              0.0
+            ],
+            "meanShare": 0.06666666666666667,
+            "reportUpdated": "2024-10-11T18:53:25Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0035655",
+            "pfr": "HarrWi02",
+            "name": "Will Harris",
+            "position": "S",
+            "unit": "secondary",
+            "shares": [
+              1.0,
+              1.0,
+              0.33
+            ],
+            "meanShare": 0.7766666666666667,
+            "reportUpdated": "2024-10-11T18:53:19Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036408",
+            "pfr": "RuizCe00",
+            "name": "Cesar Ruiz",
+            "position": "G",
+            "unit": "OL",
+            "shares": [
+              0.98,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.32666666666666666,
+            "reportUpdated": "2024-10-11T18:53:49Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036927",
+            "pfr": "WernPe00",
+            "name": "Pete Werner",
+            "position": "LB",
+            "unit": "LB",
+            "shares": [
+              0.98,
+              1.0,
+              0.0
+            ],
+            "meanShare": 0.66,
+            "reportUpdated": "2024-10-11T18:54:03Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_03_PHI_NO",
+          "2024_04_NO_ATL",
+          "2024_05_NO_KC"
+        ]
+      },
+      "away": {
+        "total": 2.2,
+        "offense": 1.25,
+        "defense": 0.9500000000000001,
+        "units": {
+          "receivers": 0.25,
+          "OL": 1.0,
+          "DL": 0.0,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.9500000000000001
+        },
+        "majorCount": 2,
+        "majorUnits": [
+          "OL",
+          "secondary"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0036855",
+            "pfr": "BrowEa00",
+            "name": "Earnest Brown",
+            "position": "DE",
+            "unit": "DL",
+            "shares": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-10-11T19:50:20Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0038820",
+            "pfr": "IzieCh00",
+            "name": "Christian Izien",
+            "position": "S",
+            "unit": "secondary",
+            "shares": [
+              0.93,
+              0.93,
+              0.99
+            ],
+            "meanShare": 0.9500000000000001,
+            "reportUpdated": "2024-10-11T19:50:55Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039052",
+            "pfr": "PalmTr00",
+            "name": "Trey Palmer",
+            "position": "WR",
+            "unit": "receivers",
+            "shares": [
+              0.21,
+              0.14,
+              0.0
+            ],
+            "meanShare": 0.11666666666666665,
+            "reportUpdated": "2024-10-11T19:51:15Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039589",
+            "pfr": "JohnKa01",
+            "name": "Kameron Johnson",
+            "position": "WR",
+            "unit": "receivers",
+            "shares": [
+              0.0,
+              0.32,
+              0.08
+            ],
+            "meanShare": 0.13333333333333333,
+            "reportUpdated": "2024-10-11T19:51:04Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039905",
+            "pfr": "BartGr00",
+            "name": "Graham Barton",
+            "position": "C",
+            "unit": "OL",
+            "shares": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "meanShare": 1.0,
+            "reportUpdated": "2024-10-11T19:50:13Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_03_DEN_TB",
+          "2024_04_PHI_TB",
+          "2024_05_TB_ATL"
+        ]
+      }
+    },
+    "metrics": {
+      "home": {
+        "defensiveSackRate": 0.05726545360691702,
+        "passingEpaPerDropback": -0.018080462059539643,
+        "pointsFor": 16.333333333333332,
+        "pointsAgainst": 22.333333333333332,
+        "offensiveEpaPerPlay": -0.08067406148466104,
+        "defensiveEpaPerPlay": 0.05951625165030073,
+        "netPoints": -6.0,
+        "netEpa": -0.14019031313496177
+      },
+      "away": {
+        "defensiveSackRate": 0.07671957671957672,
+        "passingEpaPerDropback": 0.036444618325262655,
+        "pointsFor": 23.333333333333332,
+        "pointsAgainst": 26.0,
+        "offensiveEpaPerPlay": 0.009515317055555916,
+        "defensiveEpaPerPlay": 0.07167016931276865,
+        "netPoints": -2.666666666666668,
+        "netEpa": -0.062154852257212734
+      }
+    },
+    "reportIssues": {
+      "home": [],
+      "away": []
+    }
+  },
+  {
+    "gameId": "2024_13_SF_BUF",
+    "season": 2024,
+    "week": 13,
+    "kickoffUtc": "2024-12-02T01:20:00+00:00",
+    "window": "season",
+    "teams": {
+      "home": "BUF",
+      "away": "SF"
+    },
+    "profiles": {
+      "home": {
+        "total": 0.5709090909090909,
+        "offense": 0.5709090909090909,
+        "defense": 0.0,
+        "units": {
+          "receivers": 0.5581818181818182,
+          "OL": 0.012727272727272728,
+          "DL": 0.0,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.0
+        },
+        "majorCount": 1,
+        "majorUnits": [
+          "receivers"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0038933",
+            "pfr": "KincDa00",
+            "name": "Dalton Kincaid",
+            "position": "TE",
+            "unit": "receivers",
+            "shares": [
+              0.84,
+              0.42,
+              0.53,
+              0.63,
+              0.62,
+              0.8,
+              0.73,
+              0.54,
+              0.79,
+              0.24,
+              0.0
+            ],
+            "meanShare": 0.5581818181818182,
+            "reportUpdated": "2024-11-29T20:10:45Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039882",
+            "pfr": "GrabTy00",
+            "name": "Tylan Grable",
+            "position": "T",
+            "unit": "OL",
+            "shares": [
+              0.0,
+              0.09,
+              0.05,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.012727272727272728,
+            "reportUpdated": "2024-11-29T20:10:26Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_ARI_BUF",
+          "2024_02_BUF_MIA",
+          "2024_03_JAX_BUF",
+          "2024_04_BUF_BAL",
+          "2024_05_BUF_HOU",
+          "2024_06_BUF_NYJ",
+          "2024_07_TEN_BUF",
+          "2024_08_BUF_SEA",
+          "2024_09_MIA_BUF",
+          "2024_10_BUF_IND",
+          "2024_11_KC_BUF"
+        ]
+      },
+      "away": {
+        "total": 3.9536363636363636,
+        "offense": 1.8363636363636364,
+        "defense": 2.117272727272727,
+        "units": {
+          "receivers": 0.0,
+          "OL": 1.8363636363636364,
+          "DL": 1.1354545454545455,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.9818181818181819
+        },
+        "majorCount": 5,
+        "majorUnits": [
+          "DL",
+          "OL",
+          "secondary"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0027857",
+            "pfr": "WillTr21",
+            "name": "Trent Williams",
+            "position": "T",
+            "unit": "OL",
+            "shares": [
+              0.97,
+              1.0,
+              0.97,
+              1.0,
+              1.0,
+              0.98,
+              0.86,
+              1.0,
+              1.0,
+              1.0,
+              0.0
+            ],
+            "meanShare": 0.8890909090909092,
+            "reportUpdated": "2024-11-29T20:22:02Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0034982",
+            "pfr": "GreeDr00",
+            "name": "Dre Greenlaw",
+            "position": "LB",
+            "unit": "LB",
+            "shares": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-11-29T20:21:29Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0035717",
+            "pfr": "BosaNi00",
+            "name": "Nick Bosa",
+            "position": "DE",
+            "unit": "DL",
+            "shares": [
+              0.94,
+              0.85,
+              1.0,
+              0.7,
+              0.78,
+              0.87,
+              0.8,
+              0.97,
+              0.85,
+              0.43,
+              0.0
+            ],
+            "meanShare": 0.7445454545454545,
+            "reportUpdated": "2024-11-29T20:21:00Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036266",
+            "pfr": "ElliJo02",
+            "name": "Jordan Elliott",
+            "position": "DT",
+            "unit": "DL",
+            "shares": [
+              0.29,
+              0.37,
+              0.38,
+              0.22,
+              0.48,
+              0.0,
+              0.63,
+              0.53,
+              0.52,
+              0.52,
+              0.36
+            ],
+            "meanShare": 0.390909090909091,
+            "reportUpdated": "2024-11-29T20:21:16Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036551",
+            "pfr": "BankAa00",
+            "name": "Aaron Banks",
+            "position": "G",
+            "unit": "OL",
+            "shares": [
+              0.78,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              0.78,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              0.86
+            ],
+            "meanShare": 0.9472727272727273,
+            "reportUpdated": "2024-11-29T20:20:55Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036563",
+            "pfr": "LenoDe00",
+            "name": "Deommodore Lenoir",
+            "position": "CB",
+            "unit": "secondary",
+            "shares": [
+              1.0,
+              1.0,
+              0.98,
+              1.0,
+              0.97,
+              0.96,
+              1.0,
+              0.98,
+              1.0,
+              0.98,
+              0.93
+            ],
+            "meanShare": 0.9818181818181819,
+            "reportUpdated": "2024-11-29T20:21:35Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_01_NYJ_SF",
+          "2024_02_SF_MIN",
+          "2024_03_SF_LA",
+          "2024_04_NE_SF",
+          "2024_05_ARI_SF",
+          "2024_06_SF_SEA",
+          "2024_07_KC_SF",
+          "2024_08_DAL_SF",
+          "2024_10_SF_TB",
+          "2024_11_SEA_SF",
+          "2024_12_SF_GB"
+        ]
+      }
+    },
+    "metrics": {
+      "home": {
+        "defensiveSackRate": 0.06481675503276299,
+        "passingEpaPerDropback": 0.23419278667532464,
+        "pointsFor": 29.09090909090909,
+        "pointsAgainst": 19.454545454545453,
+        "offensiveEpaPerPlay": 0.15831526436625995,
+        "defensiveEpaPerPlay": -0.02567207634038488,
+        "netPoints": 9.636363636363637,
+        "netEpa": 0.18398734070664483
+      },
+      "away": {
+        "defensiveSackRate": 0.07761167507272912,
+        "passingEpaPerDropback": 0.11924053038549286,
+        "pointsFor": 23.636363636363637,
+        "pointsAgainst": 23.636363636363637,
+        "offensiveEpaPerPlay": 0.059500608587635236,
+        "defensiveEpaPerPlay": -0.012451992599358901,
+        "netPoints": 0.0,
+        "netEpa": 0.07195260118699413
+      }
+    },
+    "reportIssues": {
+      "home": [],
+      "away": []
+    }
+  },
+  {
+    "gameId": "2024_13_SF_BUF",
+    "season": 2024,
+    "week": 13,
+    "kickoffUtc": "2024-12-02T01:20:00+00:00",
+    "window": "last3",
+    "teams": {
+      "home": "BUF",
+      "away": "SF"
+    },
+    "profiles": {
+      "home": {
+        "total": 0.3433333333333333,
+        "offense": 0.3433333333333333,
+        "defense": 0.0,
+        "units": {
+          "receivers": 0.3433333333333333,
+          "OL": 0.0,
+          "DL": 0.0,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.0
+        },
+        "majorCount": 1,
+        "majorUnits": [
+          "receivers"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0038933",
+            "pfr": "KincDa00",
+            "name": "Dalton Kincaid",
+            "position": "TE",
+            "unit": "receivers",
+            "shares": [
+              0.79,
+              0.24,
+              0.0
+            ],
+            "meanShare": 0.3433333333333333,
+            "reportUpdated": "2024-11-29T20:10:45Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0039882",
+            "pfr": "GrabTy00",
+            "name": "Tylan Grable",
+            "position": "T",
+            "unit": "OL",
+            "shares": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-11-29T20:10:26Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_09_MIA_BUF",
+          "2024_10_BUF_IND",
+          "2024_11_KC_BUF"
+        ]
+      },
+      "away": {
+        "total": 3.4833333333333334,
+        "offense": 1.6199999999999999,
+        "defense": 1.8633333333333333,
+        "units": {
+          "receivers": 0.0,
+          "OL": 1.6199999999999999,
+          "DL": 0.8933333333333333,
+          "LB": 0.0,
+          "backs": 0.0,
+          "secondary": 0.9700000000000001
+        },
+        "majorCount": 5,
+        "majorUnits": [
+          "DL",
+          "OL",
+          "secondary"
+        ],
+        "qbOut": false,
+        "players": [
+          {
+            "gsis": "00-0027857",
+            "pfr": "WillTr21",
+            "name": "Trent Williams",
+            "position": "T",
+            "unit": "OL",
+            "shares": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "meanShare": 0.6666666666666666,
+            "reportUpdated": "2024-11-29T20:22:02Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0034982",
+            "pfr": "GreeDr00",
+            "name": "Dre Greenlaw",
+            "position": "LB",
+            "unit": "LB",
+            "shares": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "meanShare": 0.0,
+            "reportUpdated": "2024-11-29T20:21:29Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0035717",
+            "pfr": "BosaNi00",
+            "name": "Nick Bosa",
+            "position": "DE",
+            "unit": "DL",
+            "shares": [
+              0.85,
+              0.43,
+              0.0
+            ],
+            "meanShare": 0.4266666666666667,
+            "reportUpdated": "2024-11-29T20:21:00Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036266",
+            "pfr": "ElliJo02",
+            "name": "Jordan Elliott",
+            "position": "DT",
+            "unit": "DL",
+            "shares": [
+              0.52,
+              0.52,
+              0.36
+            ],
+            "meanShare": 0.4666666666666666,
+            "reportUpdated": "2024-11-29T20:21:16Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036551",
+            "pfr": "BankAa00",
+            "name": "Aaron Banks",
+            "position": "G",
+            "unit": "OL",
+            "shares": [
+              1.0,
+              1.0,
+              0.86
+            ],
+            "meanShare": 0.9533333333333333,
+            "reportUpdated": "2024-11-29T20:20:55Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          },
+          {
+            "gsis": "00-0036563",
+            "pfr": "LenoDe00",
+            "name": "Deommodore Lenoir",
+            "position": "CB",
+            "unit": "secondary",
+            "shares": [
+              1.0,
+              0.98,
+              0.93
+            ],
+            "meanShare": 0.9700000000000001,
+            "reportUpdated": "2024-11-29T20:21:35Z",
+            "source": "spikes/historical-analogues/external/injuries_2024.csv"
+          }
+        ],
+        "historyGameIds": [
+          "2024_10_SF_TB",
+          "2024_11_SEA_SF",
+          "2024_12_SF_GB"
+        ]
+      }
+    },
+    "metrics": {
+      "home": {
+        "defensiveSackRate": 0.06472990610921645,
+        "passingEpaPerDropback": 0.06882442806774243,
+        "pointsFor": 30.0,
+        "pointsAgainst": 22.666666666666668,
+        "offensiveEpaPerPlay": 0.09509817996143465,
+        "defensiveEpaPerPlay": 0.055731008906579,
+        "netPoints": 7.333333333333332,
+        "netEpa": 0.03936717105485565
+      },
+      "away": {
+        "defensiveSackRate": 0.08520908004778972,
+        "passingEpaPerDropback": 0.04270963012228851,
+        "pointsFor": 16.666666666666668,
+        "pointsAgainst": 26.0,
+        "offensiveEpaPerPlay": 0.014047021113916647,
+        "defensiveEpaPerPlay": 0.02431158887976102,
+        "netPoints": -9.333333333333332,
+        "netEpa": -0.010264567765844373
+      }
+    },
+    "reportIssues": {
+      "home": [],
+      "away": []
+    }
+  }
+]

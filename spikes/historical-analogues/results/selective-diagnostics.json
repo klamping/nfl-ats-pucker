@@ -1,0 +1,121 @@
+{
+  "calibrationByModel": {
+    "logistic_c0.01": {
+      "raw55Count": 101,
+      "calibrated55Count": 14,
+      "maxRawProbability": 0.6274122140648186,
+      "maxCalibratedProbability": 0.5721044100814314
+    },
+    "logistic_c0.1": {
+      "raw55Count": 142,
+      "calibrated55Count": 15,
+      "maxRawProbability": 0.654688364762718,
+      "maxCalibratedProbability": 0.5724767458914908
+    },
+    "logistic_c1.0": {
+      "raw55Count": 144,
+      "calibrated55Count": 12,
+      "maxRawProbability": 0.6581569471883678,
+      "maxCalibratedProbability": 0.5684895970082018
+    },
+    "interaction_c0.01": {
+      "raw55Count": 154,
+      "calibrated55Count": 3,
+      "maxRawProbability": 0.6826736980626551,
+      "maxCalibratedProbability": 0.56048720439026
+    },
+    "interaction_c0.1": {
+      "raw55Count": 214,
+      "calibrated55Count": 4,
+      "maxRawProbability": 0.7748695129841332,
+      "maxCalibratedProbability": 0.5736114754773112
+    },
+    "boost_leaves3": {
+      "raw55Count": 28,
+      "calibrated55Count": 0,
+      "maxRawProbability": 0.5907274674097347,
+      "maxCalibratedProbability": 0.5320280148160819
+    },
+    "boost_leaves7": {
+      "raw55Count": 130,
+      "calibrated55Count": 0,
+      "maxRawProbability": 0.6306757280155015,
+      "maxCalibratedProbability": 0.5366096893666602
+    },
+    "tree_depth1": {
+      "raw55Count": 91,
+      "calibrated55Count": 0,
+      "maxRawProbability": 0.5694760820045558,
+      "maxCalibratedProbability": 0.5103405959150863
+    },
+    "tree_depth2": {
+      "raw55Count": 133,
+      "calibrated55Count": 0,
+      "maxRawProbability": 0.6906474820143884,
+      "maxCalibratedProbability": 0.5255796663790901
+    },
+    "neighbors_k50": {
+      "raw55Count": 150,
+      "calibrated55Count": 0,
+      "maxRawProbability": 0.6428571428571429,
+      "maxCalibratedProbability": 0.5456417363226036
+    },
+    "neighbors_k150": {
+      "raw55Count": 96,
+      "calibrated55Count": 1,
+      "maxRawProbability": 0.6176470588235294,
+      "maxCalibratedProbability": 0.5543296485627678
+    }
+  },
+  "fixedMaskCoinSearch": {
+    "validation": {
+      "eligibleOverlappingPolicies": 19,
+      "trials": 5000,
+      "medianWinningPolicyRate": 0.6060606060606061,
+      "winningPolicyRate95": [
+        0.5056179775280899,
+        0.7352941176470589
+      ],
+      "fractionWinnerRateAtLeast55": 0.8368,
+      "fractionBestLowerBoundAtLeastObserved": 0.0576,
+      "observedChosenPolicy": "logistic_c0.1|raw|p0.55|gap3.0",
+      "observedRate": 0.6956521739130435
+    },
+    "test": {
+      "eligibleOverlappingPolicies": 18,
+      "trials": 5000,
+      "medianWinningPolicyRate": 0.6,
+      "winningPolicyRate95": [
+        0.4946236559139785,
+        0.7272727272727273
+      ],
+      "fractionWinnerRateAtLeast55": 0.8036,
+      "fractionBestLowerBoundAtLeastObserved": 0.7252,
+      "observedChosenPolicy": "interaction_c0.01|raw|p0.575|gap0.0",
+      "observedRate": 0.5625
+    }
+  },
+  "warning": "Coin search conditions on already-fit forecast masks, freezes pushes and is not a full pipeline retraining/null significance test.",
+  "selectedCandidatePosterior_descriptiveOnly": {
+    "validation": {
+      "prior": "Beta(10,10)",
+      "mean": 0.6363636363636364,
+      "probabilityRateExceeds55": 0.9250774890768299,
+      "credible95": [
+        0.5176905435113226,
+        0.7472064848379922
+      ],
+      "warning": "Conditions on selected subgroup; does not adjust for discovery or correlated games."
+    },
+    "test": {
+      "prior": "Beta(10,10)",
+      "mean": 0.4339622641509434,
+      "probabilityRateExceeds55": 0.04487439949095019,
+      "credible95": [
+        0.30469562471174694,
+        0.567952795996458
+      ],
+      "warning": "Conditions on selected subgroup; does not adjust for discovery or correlated games."
+    }
+  }
+}

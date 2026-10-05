@@ -1,0 +1,2714 @@
+{
+  "protocol": {
+    "training": "prior seasons only; REG Weeks 4\u201314 only",
+    "selection": "minimum validation ATS Brier score; test not used to select",
+    "analogue_distance": "mean absolute train-standardized feature distance, clipped \u00b14",
+    "eligibility": "home spread \u00b13.5; week \u00b12; no distance ceiling",
+    "shrinkage": "20 pseudo-observations at market ATS probability 0.5",
+    "configurations": 33
+  },
+  "phases": {
+    "development_2010_2019": {
+      "spread_baseline": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 10.215490318550906,
+        "margin_rmse": 13.274312426393468,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.2114798189585364,
+        "roi_at_minus110": null
+      },
+      "historical_home_rate": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 804,
+        "ats_losses": 753,
+        "ats_accuracy": 0.5163776493256262,
+        "ats_wilson95": [
+          0.49154519355989884,
+          0.5411294865613896
+        ],
+        "brier": 0.2498778837669275,
+        "log_loss": 0.6929031390411253,
+        "margin_mae": 10.217180076540952,
+        "margin_rmse": 13.277985393005372,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.2114798189585364,
+        "roi_at_minus110": -0.01418812401471363
+      },
+      "knn_market_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1475,
+        "ats_wins": 763,
+        "ats_losses": 712,
+        "ats_accuracy": 0.5172881355932203,
+        "ats_wilson95": [
+          0.49177456212781967,
+          0.5427118899709039
+        ],
+        "brier": 0.25119338366757843,
+        "log_loss": 0.6955807687001357,
+        "margin_mae": 10.320520264773549,
+        "margin_rmse": 13.348294801937847,
+        "su_accuracy": 0.6654135338345865,
+        "su_brier": 0.21324537004170013,
+        "roi_at_minus110": -0.012449922958397542
+      },
+      "knn_market_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1486,
+        "ats_wins": 738,
+        "ats_losses": 748,
+        "ats_accuracy": 0.49663526244952894,
+        "ats_wilson95": [
+          0.47125490209054804,
+          0.5220329749562468
+        ],
+        "brier": 0.25188845200393717,
+        "log_loss": 0.69698176644442,
+        "margin_mae": 10.305981849924665,
+        "margin_rmse": 13.30795276677592,
+        "su_accuracy": 0.6691729323308271,
+        "su_brier": 0.2123846313561152,
+        "roi_at_minus110": -0.0518781353236266
+      },
+      "knn_market_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1525,
+        "ats_wins": 784,
+        "ats_losses": 741,
+        "ats_accuracy": 0.5140983606557377,
+        "ats_wilson95": [
+          0.4890091958170549,
+          0.5391166741226432
+        ],
+        "brier": 0.2508114892987753,
+        "log_loss": 0.6947936872828763,
+        "margin_mae": 10.272485299912494,
+        "margin_rmse": 13.293413536470881,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.2125474143262672,
+        "roi_at_minus110": -0.01853949329359164
+      },
+      "knn_core_levels_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1470,
+        "ats_wins": 739,
+        "ats_losses": 731,
+        "ats_accuracy": 0.5027210884353741,
+        "ats_wilson95": [
+          0.47718732046590934,
+          0.5282406712531466
+        ],
+        "brier": 0.25215485741726107,
+        "log_loss": 0.6975283133442537,
+        "margin_mae": 10.325919667924358,
+        "margin_rmse": 13.354466463107237,
+        "su_accuracy": 0.668546365914787,
+        "su_brier": 0.21377927672488625,
+        "roi_at_minus110": -0.0402597402597403
+      },
+      "knn_core_levels_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1470,
+        "ats_wins": 727,
+        "ats_losses": 743,
+        "ats_accuracy": 0.49455782312925173,
+        "ats_wilson95": [
+          0.46904646403627176,
+          0.5200975525256167
+        ],
+        "brier": 0.2508151582359185,
+        "log_loss": 0.6947671285154644,
+        "margin_mae": 10.268866888880579,
+        "margin_rmse": 13.296965699285634,
+        "su_accuracy": 0.6654135338345865,
+        "su_brier": 0.21340474655160374,
+        "roi_at_minus110": -0.05584415584415586
+      },
+      "knn_core_levels_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1515,
+        "ats_wins": 767,
+        "ats_losses": 748,
+        "ats_accuracy": 0.5062706270627063,
+        "ats_wilson95": [
+          0.4811106859681405,
+          0.5313988476132416
+        ],
+        "brier": 0.25105798129410234,
+        "log_loss": 0.6952714020774546,
+        "margin_mae": 10.272730885058142,
+        "margin_rmse": 13.293345112716768,
+        "su_accuracy": 0.6691729323308271,
+        "su_brier": 0.2129117534242173,
+        "roi_at_minus110": -0.0334833483348335
+      },
+      "knn_all_levels_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1452,
+        "ats_wins": 749,
+        "ats_losses": 703,
+        "ats_accuracy": 0.5158402203856749,
+        "ats_wilson95": [
+          0.4901269046449158,
+          0.5414699394073491
+        ],
+        "brier": 0.24935223238611748,
+        "log_loss": 0.6918021472900061,
+        "margin_mae": 10.252604378868906,
+        "margin_rmse": 13.322082120113445,
+        "su_accuracy": 0.6635338345864662,
+        "su_brier": 0.21240700817208832,
+        "roi_at_minus110": -0.01521412471825697
+      },
+      "knn_all_levels_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1489,
+        "ats_wins": 771,
+        "ats_losses": 718,
+        "ats_accuracy": 0.5177971793149765,
+        "ats_wilson95": [
+          0.49240332666425224,
+          0.5430994353166572
+        ],
+        "brier": 0.25091411092429505,
+        "log_loss": 0.6949791332403981,
+        "margin_mae": 10.290133202697602,
+        "margin_rmse": 13.310489369804062,
+        "su_accuracy": 0.6666666666666666,
+        "su_brier": 0.21342446077225088,
+        "roi_at_minus110": -0.011478112216863076
+      },
+      "knn_all_levels_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1511,
+        "ats_wins": 751,
+        "ats_losses": 760,
+        "ats_accuracy": 0.49702183984116477,
+        "ats_wilson95": [
+          0.47185060678633156,
+          0.5222081779737382
+        ],
+        "brier": 0.25088235428572303,
+        "log_loss": 0.694913455189949,
+        "margin_mae": 10.269917302638062,
+        "margin_rmse": 13.29001136489778,
+        "su_accuracy": 0.668546365914787,
+        "su_brier": 0.2125617450817207,
+        "roi_at_minus110": -0.051140123939594474
+      },
+      "knn_core_diff_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1461,
+        "ats_wins": 742,
+        "ats_losses": 719,
+        "ats_accuracy": 0.5078713210130048,
+        "ats_wilson95": [
+          0.4822484913921966,
+          0.533452864986541
+        ],
+        "brier": 0.25240051146142817,
+        "log_loss": 0.698060039345919,
+        "margin_mae": 10.31423946804928,
+        "margin_rmse": 13.321688622311019,
+        "su_accuracy": 0.6541353383458647,
+        "su_brier": 0.21524105960258377,
+        "roi_at_minus110": -0.03042747806608179
+      },
+      "knn_core_diff_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1482,
+        "ats_wins": 758,
+        "ats_losses": 724,
+        "ats_accuracy": 0.5114709851551957,
+        "ats_wilson95": [
+          0.4860242392569305,
+          0.5368584152602134
+        ],
+        "brier": 0.2509241619990172,
+        "log_loss": 0.6950536115859964,
+        "margin_mae": 10.289919520459527,
+        "margin_rmse": 13.312160929869918,
+        "su_accuracy": 0.6647869674185464,
+        "su_brier": 0.21394772558438546,
+        "roi_at_minus110": -0.023555391976444587
+      },
+      "knn_core_diff_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1520,
+        "ats_wins": 768,
+        "ats_losses": 752,
+        "ats_accuracy": 0.5052631578947369,
+        "ats_wilson95": [
+          0.4801465117172206,
+          0.5303532672624319
+        ],
+        "brier": 0.2512065411856926,
+        "log_loss": 0.6955712288259851,
+        "margin_mae": 10.273708966938784,
+        "margin_rmse": 13.300209333986695,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.21288257259454837,
+        "roi_at_minus110": -0.03540669856459334
+      },
+      "ridge_residual_core_diff_a0.1": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 769,
+        "ats_losses": 788,
+        "ats_accuracy": 0.4938985228002569,
+        "ats_wilson95": [
+          0.46910995812244805,
+          0.5187171218323661
+        ],
+        "brier": 0.2514588364566698,
+        "log_loss": 0.696084328062203,
+        "margin_mae": 10.282291424000482,
+        "margin_rmse": 13.343463467100591,
+        "su_accuracy": 0.6691729323308271,
+        "su_brier": 0.21251609353577885,
+        "roi_at_minus110": -0.05710282010860043
+      },
+      "ridge_residual_core_diff_a1.0": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 772,
+        "ats_losses": 785,
+        "ats_accuracy": 0.49582530507385997,
+        "ats_wilson95": [
+          0.47103101820166937,
+          0.5206401417674139
+        ],
+        "brier": 0.2507026975280135,
+        "log_loss": 0.6945543413625992,
+        "margin_mae": 10.244921548224147,
+        "margin_rmse": 13.300455258850054,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.2119743555954173,
+        "roi_at_minus110": -0.053424417586267335
+      },
+      "ridge_residual_core_diff_a10.0": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 775,
+        "ats_losses": 782,
+        "ats_accuracy": 0.49775208734746307,
+        "ats_wilson95": [
+          0.4729524457735167,
+          0.5225627942098359
+        ],
+        "brier": 0.2501288467654117,
+        "log_loss": 0.6934049015963323,
+        "margin_mae": 10.221650367629536,
+        "margin_rmse": 13.27807553205605,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.21186920575549545,
+        "roi_at_minus110": -0.04974601506393417
+      },
+      "knn_all_diff_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1460,
+        "ats_wins": 757,
+        "ats_losses": 703,
+        "ats_accuracy": 0.5184931506849315,
+        "ats_wilson95": [
+          0.49284800243417703,
+          0.5440412347619785
+        ],
+        "brier": 0.25155702057363155,
+        "log_loss": 0.6963088991498548,
+        "margin_mae": 10.274569817136657,
+        "margin_rmse": 13.319402596810292,
+        "su_accuracy": 0.6616541353383458,
+        "su_brier": 0.21347511970214497,
+        "roi_at_minus110": -0.010149439601494432
+      },
+      "knn_all_diff_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1487,
+        "ats_wins": 755,
+        "ats_losses": 732,
+        "ats_accuracy": 0.50773369199731,
+        "ats_wilson95": [
+          0.4823356990365786,
+          0.533091828609551
+        ],
+        "brier": 0.251411518960977,
+        "log_loss": 0.6959958500730506,
+        "margin_mae": 10.313243758600162,
+        "margin_rmse": 13.32861810580454,
+        "su_accuracy": 0.6660401002506265,
+        "su_brier": 0.21364609098501583,
+        "roi_at_minus110": -0.030690224368771772
+      },
+      "knn_all_diff_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1520,
+        "ats_wins": 757,
+        "ats_losses": 763,
+        "ats_accuracy": 0.4980263157894737,
+        "ats_wilson95": [
+          0.4729267213863376,
+          0.5231358614962927
+        ],
+        "brier": 0.2516597033993228,
+        "log_loss": 0.6964837469816386,
+        "margin_mae": 10.286918040813065,
+        "margin_rmse": 13.308619773154618,
+        "su_accuracy": 0.668546365914787,
+        "su_brier": 0.2132631911353827,
+        "roi_at_minus110": -0.04922248803827754
+      },
+      "knn_last3_diff_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1479,
+        "ats_wins": 740,
+        "ats_losses": 739,
+        "ats_accuracy": 0.5003380662609872,
+        "ats_wilson95": [
+          0.47488772900639314,
+          0.5257866518580229
+        ],
+        "brier": 0.25248174392522893,
+        "log_loss": 0.6981872400054636,
+        "margin_mae": 10.277422201063368,
+        "margin_rmse": 13.326533632006768,
+        "su_accuracy": 0.6716791979949874,
+        "su_brier": 0.21436290132202215,
+        "roi_at_minus110": -0.04480914622902451
+      },
+      "knn_last3_diff_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1504,
+        "ats_wins": 770,
+        "ats_losses": 734,
+        "ats_accuracy": 0.511968085106383,
+        "ats_wilson95": [
+          0.4867071964367335,
+          0.537167990452924
+        ],
+        "brier": 0.25094576241827665,
+        "log_loss": 0.6950842491819148,
+        "margin_mae": 10.267065383242654,
+        "margin_rmse": 13.28137634583724,
+        "su_accuracy": 0.6666666666666666,
+        "su_brier": 0.21319943225074772,
+        "roi_at_minus110": -0.022606382978723406
+      },
+      "knn_last3_diff_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1518,
+        "ats_wins": 772,
+        "ats_losses": 746,
+        "ats_accuracy": 0.5085638998682477,
+        "ats_wilson95": [
+          0.4834247016619747,
+          0.5336598621980223
+        ],
+        "brier": 0.2509451529596329,
+        "log_loss": 0.6950552176993626,
+        "margin_mae": 10.264413640154388,
+        "margin_rmse": 13.298029881230285,
+        "su_accuracy": 0.6704260651629073,
+        "su_brier": 0.2129338297137419,
+        "roi_at_minus110": -0.029105282069708988
+      },
+      "knn_mean_last3_diff_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1469,
+        "ats_wins": 750,
+        "ats_losses": 719,
+        "ats_accuracy": 0.5105513955071477,
+        "ats_wilson95": [
+          0.484993829194324,
+          0.5360539195927824
+        ],
+        "brier": 0.25138818065682456,
+        "log_loss": 0.6960055102193827,
+        "margin_mae": 10.268004476030404,
+        "margin_rmse": 13.309166769067598,
+        "su_accuracy": 0.6629072681704261,
+        "su_brier": 0.21417932401843612,
+        "roi_at_minus110": -0.025310972213627124
+      },
+      "knn_mean_last3_diff_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1496,
+        "ats_wins": 761,
+        "ats_losses": 735,
+        "ats_accuracy": 0.5086898395721925,
+        "ats_wilson95": [
+          0.4833665668390612,
+          0.5339685970875827
+        ],
+        "brier": 0.2507263157113132,
+        "log_loss": 0.6946334687608724,
+        "margin_mae": 10.27177954215649,
+        "margin_rmse": 13.277763907528938,
+        "su_accuracy": 0.6710526315789473,
+        "su_brier": 0.2134495504594999,
+        "roi_at_minus110": -0.028864851725814333
+      },
+      "knn_mean_last3_diff_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1514,
+        "ats_wins": 756,
+        "ats_losses": 758,
+        "ats_accuracy": 0.49933949801849403,
+        "ats_wilson95": [
+          0.47418685606745,
+          0.5244954833808825
+        ],
+        "brier": 0.2512817216812483,
+        "log_loss": 0.6957303155394353,
+        "margin_mae": 10.275966078971035,
+        "margin_rmse": 13.307037881779042,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.21316288430009214,
+        "roi_at_minus110": -0.046715503782875
+      },
+      "ridge_residual_mean_last3_diff_a0.1": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 807,
+        "ats_losses": 750,
+        "ats_accuracy": 0.5183044315992292,
+        "ats_wilson95": [
+          0.4934705426354053,
+          0.5430482175001521
+        ],
+        "brier": 0.25239841454935474,
+        "log_loss": 0.6980895020946283,
+        "margin_mae": 10.32672368902685,
+        "margin_rmse": 13.38885722985458,
+        "su_accuracy": 0.6697994987468672,
+        "su_brier": 0.21322599881818013,
+        "roi_at_minus110": -0.010509721492380459
+      },
+      "ridge_residual_mean_last3_diff_a1.0": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 795,
+        "ats_losses": 762,
+        "ats_accuracy": 0.5105973025048169,
+        "ats_wilson95": [
+          0.4857713540960291,
+          0.5353710859824516
+        ],
+        "brier": 0.2508888144632307,
+        "log_loss": 0.6949368926416462,
+        "margin_mae": 10.256441437134233,
+        "margin_rmse": 13.312835150549265,
+        "su_accuracy": 0.6741854636591479,
+        "su_brier": 0.2121913182262239,
+        "roi_at_minus110": -0.02522333158171307
+      },
+      "ridge_residual_mean_last3_diff_a10.0": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1557,
+        "ats_wins": 773,
+        "ats_losses": 784,
+        "ats_accuracy": 0.4964675658317277,
+        "ats_wilson95": [
+          0.4716714532281181,
+          0.5212810667457216
+        ],
+        "brier": 0.2501183744419999,
+        "log_loss": 0.6933840852979897,
+        "margin_mae": 10.222793799176827,
+        "margin_rmse": 13.27796952330114,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.21179849200486056,
+        "roi_at_minus110": -0.05219828341215623
+      },
+      "knn_mean_trend_diff_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1467,
+        "ats_wins": 715,
+        "ats_losses": 752,
+        "ats_accuracy": 0.48738922972051807,
+        "ats_wilson95": [
+          0.46187720227707024,
+          0.5129671317423103
+        ],
+        "brier": 0.2539381658817745,
+        "log_loss": 0.7011458573544925,
+        "margin_mae": 10.306563709842601,
+        "margin_rmse": 13.350910341245555,
+        "su_accuracy": 0.6591478696741855,
+        "su_brier": 0.21474399034942232,
+        "roi_at_minus110": -0.06952965235173825
+      },
+      "knn_mean_trend_diff_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1500,
+        "ats_wins": 765,
+        "ats_losses": 735,
+        "ats_accuracy": 0.51,
+        "ats_wilson95": [
+          0.4847083452420058,
+          0.5352405642708047
+        ],
+        "brier": 0.25169951708227434,
+        "log_loss": 0.6966377978058633,
+        "margin_mae": 10.278107823822555,
+        "margin_rmse": 13.294906528485921,
+        "su_accuracy": 0.6672932330827067,
+        "su_brier": 0.21255796024338752,
+        "roi_at_minus110": -0.026363636363636412
+      },
+      "knn_mean_trend_diff_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1519,
+        "ats_wins": 775,
+        "ats_losses": 744,
+        "ats_accuracy": 0.5102040816326531,
+        "ats_wilson95": [
+          0.48507055079381106,
+          0.5352861297696829
+        ],
+        "brier": 0.2513025753215912,
+        "log_loss": 0.6957676602549993,
+        "margin_mae": 10.280104117696832,
+        "margin_rmse": 13.294835844586851,
+        "su_accuracy": 0.6679197994987469,
+        "su_brier": 0.21290714463271387,
+        "roi_at_minus110": -0.025974025974026
+      },
+      "knn_market_form_diff_k25": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1462,
+        "ats_wins": 746,
+        "ats_losses": 716,
+        "ats_accuracy": 0.5102599179206566,
+        "ats_wilson95": [
+          0.48464178854699014,
+          0.535824269995761
+        ],
+        "brier": 0.2510699361388615,
+        "log_loss": 0.6953023726285673,
+        "margin_mae": 10.266866298502467,
+        "margin_rmse": 13.302290722379889,
+        "su_accuracy": 0.6616541353383458,
+        "su_brier": 0.21285394087597412,
+        "roi_at_minus110": -0.025867429424201005
+      },
+      "knn_market_form_diff_k75": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1497,
+        "ats_wins": 752,
+        "ats_losses": 745,
+        "ats_accuracy": 0.5023380093520374,
+        "ats_wilson95": [
+          0.47703590505213717,
+          0.5276281447716417
+        ],
+        "brier": 0.25288678114045315,
+        "log_loss": 0.6989871464636619,
+        "margin_mae": 10.322530717408803,
+        "margin_rmse": 13.337801070368535,
+        "su_accuracy": 0.6672932330827067,
+        "su_brier": 0.21363224969995936,
+        "roi_at_minus110": -0.04099107305520132
+      },
+      "knn_market_form_diff_k200": {
+        "games": 1601,
+        "ats_decisions": 1557,
+        "ats_calls": 1525,
+        "ats_wins": 761,
+        "ats_losses": 764,
+        "ats_accuracy": 0.49901639344262294,
+        "ats_wilson95": [
+          0.47395523378634274,
+          0.5240824962178643
+        ],
+        "brier": 0.25109951507311423,
+        "log_loss": 0.6953545512815898,
+        "margin_mae": 10.269961309224856,
+        "margin_rmse": 13.294918594516266,
+        "su_accuracy": 0.6704260651629073,
+        "su_brier": 0.21291388790962837,
+        "roi_at_minus110": -0.047332339791356225
+      }
+    },
+    "validation_2020_2022": {
+      "spread_baseline": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 10.0125,
+        "margin_rmse": 12.959512272201193,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.2133090549639794,
+        "roi_at_minus110": null
+      },
+      "historical_home_rate": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 249,
+        "ats_losses": 224,
+        "ats_accuracy": 0.5264270613107822,
+        "ats_wilson95": [
+          0.48139780967102064,
+          0.5710305019527974
+        ],
+        "brier": 0.24947828517116272,
+        "log_loss": 0.6921035662384418,
+        "margin_mae": 10.008385129627477,
+        "margin_rmse": 12.954638009657344,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.2133090549639794,
+        "roi_at_minus110": 0.004997117047856967
+      },
+      "knn_market_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 448,
+        "ats_wins": 227,
+        "ats_losses": 221,
+        "ats_accuracy": 0.5066964285714286,
+        "ats_wilson95": [
+          0.4605401931288849,
+          0.552738796676392
+        ],
+        "brier": 0.2549280638103952,
+        "log_loss": 0.7032170330364681,
+        "margin_mae": 10.175815149640808,
+        "margin_rmse": 13.110197274219427,
+        "su_accuracy": 0.6464435146443515,
+        "su_brier": 0.2169957727056496,
+        "roi_at_minus110": -0.032670454545454586
+      },
+      "knn_market_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 452,
+        "ats_wins": 237,
+        "ats_losses": 215,
+        "ats_accuracy": 0.5243362831858407,
+        "ats_wilson95": [
+          0.4782844550268909,
+          0.569977923834538
+        ],
+        "brier": 0.2500333940333941,
+        "log_loss": 0.6932353093019843,
+        "margin_mae": 10.085401897524527,
+        "margin_rmse": 13.036707540489559,
+        "su_accuracy": 0.6548117154811716,
+        "su_brier": 0.21330699628661137,
+        "roi_at_minus110": 0.0010056315366049537
+      },
+      "knn_market_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 458,
+        "ats_wins": 239,
+        "ats_losses": 219,
+        "ats_accuracy": 0.5218340611353712,
+        "ats_wilson95": [
+          0.476094038603302,
+          0.567210852077832
+        ],
+        "brier": 0.24943329129120156,
+        "log_loss": 0.6920091046916167,
+        "margin_mae": 10.045442645475662,
+        "margin_rmse": 13.00067843092732,
+        "su_accuracy": 0.6548117154811716,
+        "su_brier": 0.21194509574925458,
+        "roi_at_minus110": -0.003771337832473249
+      },
+      "knn_core_levels_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 428,
+        "ats_wins": 210,
+        "ats_losses": 218,
+        "ats_accuracy": 0.49065420560747663,
+        "ats_wilson95": [
+          0.44358659136275513,
+          0.5378880975046444
+        ],
+        "brier": 0.25434569017513947,
+        "log_loss": 0.7020116012135073,
+        "margin_mae": 10.118315149640807,
+        "margin_rmse": 13.12010119971493,
+        "su_accuracy": 0.6464435146443515,
+        "su_brier": 0.21581293566690357,
+        "roi_at_minus110": -0.0632965165675446
+      },
+      "knn_core_levels_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 433,
+        "ats_wins": 211,
+        "ats_losses": 222,
+        "ats_accuracy": 0.48729792147806006,
+        "ats_wilson95": [
+          0.44053636732773993,
+          0.5342828806559687
+        ],
+        "brier": 0.2523794577904762,
+        "log_loss": 0.6979491214703359,
+        "margin_mae": 10.131980844892947,
+        "margin_rmse": 13.05386129629064,
+        "su_accuracy": 0.6527196652719666,
+        "su_brier": 0.21425033033896185,
+        "roi_at_minus110": -0.06970396808733992
+      },
+      "knn_core_levels_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 459,
+        "ats_wins": 239,
+        "ats_losses": 220,
+        "ats_accuracy": 0.5206971677559913,
+        "ats_wilson95": [
+          0.47501184466017654,
+          0.5660389165505704
+        ],
+        "brier": 0.24963137430121143,
+        "log_loss": 0.6924254056049541,
+        "margin_mae": 10.043454009112025,
+        "margin_rmse": 12.980952624289225,
+        "su_accuracy": 0.6464435146443515,
+        "su_brier": 0.21214209241996546,
+        "roi_at_minus110": -0.005941770647653046
+      },
+      "knn_all_levels_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 446,
+        "ats_wins": 228,
+        "ats_losses": 218,
+        "ats_accuracy": 0.5112107623318386,
+        "ats_wilson95": [
+          0.4649207642731123,
+          0.557309282925724
+        ],
+        "brier": 0.25186335024115847,
+        "log_loss": 0.6969116021043021,
+        "margin_mae": 10.126254964455622,
+        "margin_rmse": 13.025606752177271,
+        "su_accuracy": 0.6548117154811716,
+        "su_brier": 0.21480112671606974,
+        "roi_at_minus110": -0.024052181002853695
+      },
+      "knn_all_levels_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 451,
+        "ats_wins": 233,
+        "ats_losses": 218,
+        "ats_accuracy": 0.516629711751663,
+        "ats_wilson95": [
+          0.47056335663534926,
+          0.5624151572033145
+        ],
+        "brier": 0.25001673702786,
+        "log_loss": 0.693218617704178,
+        "margin_mae": 10.086158476471894,
+        "margin_rmse": 13.039064199279533,
+        "su_accuracy": 0.6401673640167364,
+        "su_brier": 0.21274382321051652,
+        "roi_at_minus110": -0.01370691392864343
+      },
+      "knn_all_levels_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 451,
+        "ats_wins": 240,
+        "ats_losses": 211,
+        "ats_accuracy": 0.532150776053215,
+        "ats_wilson95": [
+          0.48602241337502067,
+          0.5777360467130627
+        ],
+        "brier": 0.24982994630855915,
+        "log_loss": 0.6928240873666099,
+        "margin_mae": 10.05622389547566,
+        "margin_rmse": 12.974816512223322,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.21257354775747087,
+        "roi_at_minus110": 0.01592420882886516
+      },
+      "knn_core_diff_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 435,
+        "ats_wins": 218,
+        "ats_losses": 217,
+        "ats_accuracy": 0.5011494252873563,
+        "ats_wilson95": [
+          0.4543581971547104,
+          0.5479205293835212
+        ],
+        "brier": 0.25318578689440974,
+        "log_loss": 0.6996626063220558,
+        "margin_mae": 10.10831514964081,
+        "margin_rmse": 13.06874987082676,
+        "su_accuracy": 0.6569037656903766,
+        "su_brier": 0.21550402606015698,
+        "roi_at_minus110": -0.043260188087774286
+      },
+      "knn_core_diff_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 446,
+        "ats_wins": 220,
+        "ats_losses": 226,
+        "ats_accuracy": 0.49327354260089684,
+        "ats_wilson95": [
+          0.4471293555314634,
+          0.5395326161492348
+        ],
+        "brier": 0.25062868891103784,
+        "log_loss": 0.6944154144595446,
+        "margin_mae": 10.05013873962979,
+        "margin_rmse": 12.971991334036224,
+        "su_accuracy": 0.6422594142259415,
+        "su_brier": 0.2120639934265204,
+        "roi_at_minus110": -0.05829596412556054
+      },
+      "knn_core_diff_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 452,
+        "ats_wins": 229,
+        "ats_losses": 223,
+        "ats_accuracy": 0.5066371681415929,
+        "ats_wilson95": [
+          0.46068456592570967,
+          0.5524779010364983
+        ],
+        "brier": 0.24998538397149936,
+        "log_loss": 0.6931195573998686,
+        "margin_mae": 10.057663289415053,
+        "margin_rmse": 12.966810774613666,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.21217181992357198,
+        "roi_at_minus110": -0.032783588093322595
+      },
+      "ridge_residual_core_diff_a0.1": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 231,
+        "ats_losses": 242,
+        "ats_accuracy": 0.4883720930232558,
+        "ats_wilson95": [
+          0.44359924147844076,
+          0.5333323014070791
+        ],
+        "brier": 0.25120973418915676,
+        "log_loss": 0.6955761056782109,
+        "margin_mae": 10.054855167929935,
+        "margin_rmse": 12.987982622798295,
+        "su_accuracy": 0.6527196652719666,
+        "su_brier": 0.2132302164499108,
+        "roi_at_minus110": -0.06765327695560254
+      },
+      "ridge_residual_core_diff_a1.0": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 235,
+        "ats_losses": 238,
+        "ats_accuracy": 0.49682875264270615,
+        "ats_wilson95": [
+          0.4519766269983633,
+          0.5417319756067784
+        ],
+        "brier": 0.2509407893888061,
+        "log_loss": 0.6950309576145342,
+        "margin_mae": 10.046317920748232,
+        "margin_rmse": 12.978091648905457,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.2137981178304638,
+        "roi_at_minus110": -0.05150874495483377
+      },
+      "ridge_residual_core_diff_a10.0": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 246,
+        "ats_losses": 227,
+        "ats_accuracy": 0.5200845665961945,
+        "ats_wilson95": [
+          0.4750801185072773,
+          0.5647653983268244
+        ],
+        "brier": 0.2501764739519012,
+        "log_loss": 0.6935002875274723,
+        "margin_mae": 10.020200091963478,
+        "margin_rmse": 12.960750715836362,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.21398829871951916,
+        "roi_at_minus110": -0.007111281952719607
+      },
+      "knn_all_diff_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 447,
+        "ats_wins": 220,
+        "ats_losses": 227,
+        "ats_accuracy": 0.49217002237136465,
+        "ats_wilson95": [
+          0.44608784908182075,
+          0.5383856334007185
+        ],
+        "brier": 0.2535494185067922,
+        "log_loss": 0.7003376111090301,
+        "margin_mae": 10.090560520011177,
+        "margin_rmse": 13.006561504399075,
+        "su_accuracy": 0.6569037656903766,
+        "su_brier": 0.21305490102461458,
+        "roi_at_minus110": -0.06040268456375839
+      },
+      "knn_all_diff_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 452,
+        "ats_wins": 221,
+        "ats_losses": 231,
+        "ats_accuracy": 0.4889380530973451,
+        "ats_wilson95": [
+          0.44314173995695155,
+          0.5349208151060354
+        ],
+        "brier": 0.252985304479724,
+        "log_loss": 0.6991891522673566,
+        "margin_mae": 10.094744002787683,
+        "margin_rmse": 13.024713545142063,
+        "su_accuracy": 0.6569037656903766,
+        "su_brier": 0.21386091366865312,
+        "roi_at_minus110": -0.06657280772325021
+      },
+      "knn_all_diff_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 453,
+        "ats_wins": 215,
+        "ats_losses": 238,
+        "ats_accuracy": 0.4746136865342163,
+        "ats_wilson95": [
+          0.42903538641457845,
+          0.5206189357837503
+        ],
+        "brier": 0.2510422141806425,
+        "log_loss": 0.6952286980593604,
+        "margin_mae": 10.088690751536268,
+        "margin_rmse": 13.005413680568,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.213049914261494,
+        "roi_at_minus110": -0.09391932570740522
+      },
+      "knn_last3_diff_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 439,
+        "ats_wins": 233,
+        "ats_losses": 206,
+        "ats_accuracy": 0.530751708428246,
+        "ats_wilson95": [
+          0.48400280578709787,
+          0.5769670759945597
+        ],
+        "brier": 0.2513234166981629,
+        "log_loss": 0.6959027034756925,
+        "margin_mae": 10.085583668159327,
+        "margin_rmse": 13.024309355757214,
+        "su_accuracy": 0.6338912133891214,
+        "su_brier": 0.21467619892410064,
+        "roi_at_minus110": 0.013253261544833287
+      },
+      "knn_last3_diff_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 448,
+        "ats_wins": 225,
+        "ats_losses": 223,
+        "ats_accuracy": 0.5022321428571429,
+        "ats_wilson95": [
+          0.45611021892685477,
+          0.5483161110082376
+        ],
+        "brier": 0.2505801249970621,
+        "log_loss": 0.6942946606823447,
+        "margin_mae": 10.03141066945435,
+        "margin_rmse": 12.9542823130433,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.2132005567856396,
+        "roi_at_minus110": -0.041193181818181844
+      },
+      "knn_last3_diff_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 453,
+        "ats_wins": 236,
+        "ats_losses": 217,
+        "ats_accuracy": 0.5209713024282561,
+        "ats_wilson95": [
+          0.47498454862036354,
+          0.5666053591288432
+        ],
+        "brier": 0.25018269718582303,
+        "log_loss": 0.6935306965420579,
+        "margin_mae": 10.067000410627175,
+        "margin_rmse": 12.998024408904293,
+        "su_accuracy": 0.6464435146443515,
+        "su_brier": 0.21290007276170247,
+        "roi_at_minus110": -0.005418422636965712
+      },
+      "knn_mean_last3_diff_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 438,
+        "ats_wins": 226,
+        "ats_losses": 212,
+        "ats_accuracy": 0.5159817351598174,
+        "ats_wilson95": [
+          0.4692441954777488,
+          0.5624413678553554
+        ],
+        "brier": 0.25440172354511514,
+        "log_loss": 0.7020823820979926,
+        "margin_mae": 10.14368552001118,
+        "margin_rmse": 13.085936142647355,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.21579109723547757,
+        "roi_at_minus110": -0.014943960149439637
+      },
+      "knn_mean_last3_diff_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 445,
+        "ats_wins": 220,
+        "ats_losses": 225,
+        "ats_accuracy": 0.4943820224719101,
+        "ats_wilson95": [
+          0.4481757817256137,
+          0.540684430875001
+        ],
+        "brier": 0.25134529432765645,
+        "log_loss": 0.6958588329738605,
+        "margin_mae": 10.055654090506984,
+        "margin_rmse": 13.010560284580176,
+        "su_accuracy": 0.6548117154811716,
+        "su_brier": 0.21295428864606814,
+        "roi_at_minus110": -0.056179775280898875
+      },
+      "knn_mean_last3_diff_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 459,
+        "ats_wins": 234,
+        "ats_losses": 225,
+        "ats_accuracy": 0.5098039215686274,
+        "ats_wilson95": [
+          0.46417897836817135,
+          0.5552661190474455
+        ],
+        "brier": 0.2508048687408095,
+        "log_loss": 0.6947706292512653,
+        "margin_mae": 10.055016509112026,
+        "margin_rmse": 12.977374348138127,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.2122257333027282,
+        "roi_at_minus110": -0.02673796791443852
+      },
+      "ridge_residual_mean_last3_diff_a0.1": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 225,
+        "ats_losses": 248,
+        "ats_accuracy": 0.47568710359408034,
+        "ats_wilson95": [
+          0.4310570673571405,
+          0.5207088859489468
+        ],
+        "brier": 0.25280029319467506,
+        "log_loss": 0.6987858621222608,
+        "margin_mae": 10.103186842355196,
+        "margin_rmse": 13.038570210777488,
+        "su_accuracy": 0.6464435146443515,
+        "su_brier": 0.21382023667260722,
+        "roi_at_minus110": -0.09187007495675574
+      },
+      "ridge_residual_mean_last3_diff_a1.0": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 229,
+        "ats_losses": 244,
+        "ats_accuracy": 0.48414376321353064,
+        "ats_wilson95": [
+          0.43941532734332256,
+          0.5291276856823864
+        ],
+        "brier": 0.2514762241208762,
+        "log_loss": 0.6961065439454234,
+        "margin_mae": 10.05997954987672,
+        "margin_rmse": 12.992052866220078,
+        "su_accuracy": 0.6485355648535565,
+        "su_brier": 0.21385589744374828,
+        "roi_at_minus110": -0.07572554295598692
+      },
+      "ridge_residual_mean_last3_diff_a10.0": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 473,
+        "ats_wins": 234,
+        "ats_losses": 239,
+        "ats_accuracy": 0.49471458773784355,
+        "ats_wilson95": [
+          0.44988108641252483,
+          0.5396332512627114
+        ],
+        "brier": 0.25050005745994136,
+        "log_loss": 0.6941476997974758,
+        "margin_mae": 10.029920848870454,
+        "margin_rmse": 12.96818893275955,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.21394962703724027,
+        "roi_at_minus110": -0.05554487795502596
+      },
+      "knn_mean_trend_diff_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 447,
+        "ats_wins": 218,
+        "ats_losses": 229,
+        "ats_accuracy": 0.48769574944071586,
+        "ats_wilson95": [
+          0.44165994785310464,
+          0.5339412389051713
+        ],
+        "brier": 0.25221407185083794,
+        "log_loss": 0.6976455753355174,
+        "margin_mae": 10.061671631122287,
+        "margin_rmse": 12.952106982853715,
+        "su_accuracy": 0.6506276150627615,
+        "su_brier": 0.21485862091758853,
+        "roi_at_minus110": -0.06894447834045149
+      },
+      "knn_mean_trend_diff_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 445,
+        "ats_wins": 221,
+        "ats_losses": 224,
+        "ats_accuracy": 0.4966292134831461,
+        "ats_wilson95": [
+          0.4504018863784435,
+          0.5429142411819254
+        ],
+        "brier": 0.25266280142750425,
+        "log_loss": 0.6985171384068672,
+        "margin_mae": 10.07234268699821,
+        "margin_rmse": 12.994818801797438,
+        "su_accuracy": 0.6464435146443515,
+        "su_brier": 0.2130455909812582,
+        "roi_at_minus110": -0.05188968335035751
+      },
+      "knn_mean_trend_diff_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 456,
+        "ats_wins": 228,
+        "ats_losses": 228,
+        "ats_accuracy": 0.5,
+        "ats_wilson95": [
+          0.45429939526679153,
+          0.5457006047332085
+        ],
+        "brier": 0.2502177180863467,
+        "log_loss": 0.6935808719663547,
+        "margin_mae": 10.053117834869601,
+        "margin_rmse": 12.999314379887268,
+        "su_accuracy": 0.6527196652719666,
+        "su_brier": 0.2126399643753139,
+        "roi_at_minus110": -0.0454545454545455
+      },
+      "knn_market_form_diff_k25": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 441,
+        "ats_wins": 225,
+        "ats_losses": 216,
+        "ats_accuracy": 0.5102040816326531,
+        "ats_wilson95": [
+          0.46366082812505177,
+          0.5565710926305609
+        ],
+        "brier": 0.2504369939664656,
+        "log_loss": 0.6941230863802099,
+        "margin_mae": 10.069981816307477,
+        "margin_rmse": 12.975449711000207,
+        "su_accuracy": 0.6631799163179917,
+        "su_brier": 0.21391958986582357,
+        "roi_at_minus110": -0.025974025974026003
+      },
+      "knn_market_form_diff_k75": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 452,
+        "ats_wins": 244,
+        "ats_losses": 208,
+        "ats_accuracy": 0.5398230088495575,
+        "ats_wilson95": [
+          0.4937313092093657,
+          0.5852434925638818
+        ],
+        "brier": 0.24891720832052375,
+        "log_loss": 0.6910189017849,
+        "margin_mae": 10.02735365191049,
+        "margin_rmse": 12.946443308892457,
+        "su_accuracy": 0.6589958158995816,
+        "su_brier": 0.21483825706767998,
+        "roi_at_minus110": 0.03057119871279162
+      },
+      "knn_market_form_diff_k200": {
+        "games": 480,
+        "ats_decisions": 473,
+        "ats_calls": 458,
+        "ats_wins": 246,
+        "ats_losses": 212,
+        "ats_accuracy": 0.537117903930131,
+        "ats_wilson95": [
+          0.49133239225157316,
+          0.5822859219063546
+        ],
+        "brier": 0.24840278306544195,
+        "log_loss": 0.6899387444833006,
+        "margin_mae": 10.02049946365748,
+        "margin_rmse": 12.953354427876167,
+        "su_accuracy": 0.6527196652719666,
+        "su_brier": 0.21244976138731891,
+        "roi_at_minus110": 0.02540690750297735
+      }
+    },
+    "test_2023_2025": {
+      "spread_baseline": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 9.480208333333334,
+        "margin_rmse": 12.262132597282307,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.2084598307102372,
+        "roi_at_minus110": null
+      },
+      "historical_home_rate": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 234,
+        "ats_losses": 235,
+        "ats_accuracy": 0.4989339019189765,
+        "ats_wilson95": [
+          0.4538746701342661,
+          0.5440104567242845
+        ],
+        "brier": 0.250263048336956,
+        "log_loss": 0.6936735112186033,
+        "margin_mae": 9.484077698854056,
+        "margin_rmse": 12.269543849253454,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.2084598307102372,
+        "roi_at_minus110": -0.047489823609226614
+      },
+      "knn_market_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 443,
+        "ats_wins": 212,
+        "ats_losses": 231,
+        "ats_accuracy": 0.4785553047404063,
+        "ats_wilson95": [
+          0.43242133819747536,
+          0.525058001237349
+        ],
+        "brier": 0.2553164545656164,
+        "log_loss": 0.7039068696960096,
+        "margin_mae": 9.651458333333334,
+        "margin_rmse": 12.441455070430761,
+        "su_accuracy": 0.6722338204592901,
+        "su_brier": 0.2144587345331704,
+        "roi_at_minus110": -0.08639441822286067
+      },
+      "knn_market_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 448,
+        "ats_wins": 216,
+        "ats_losses": 232,
+        "ats_accuracy": 0.48214285714285715,
+        "ats_wilson95": [
+          0.4362204406239638,
+          0.5283689198952978
+        ],
+        "brier": 0.2553990588091,
+        "log_loss": 0.7040777603272721,
+        "margin_mae": 9.697604351765083,
+        "margin_rmse": 12.39720633591104,
+        "su_accuracy": 0.6743215031315241,
+        "su_brier": 0.21313376509343435,
+        "roi_at_minus110": -0.07954545454545459
+      },
+      "knn_market_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 462,
+        "ats_wins": 214,
+        "ats_losses": 248,
+        "ats_accuracy": 0.46320346320346323,
+        "ats_wilson95": [
+          0.41822367434987795,
+          0.508790143222447
+        ],
+        "brier": 0.2533566970156759,
+        "log_loss": 0.6998977296079812,
+        "margin_mae": 9.61904256559598,
+        "margin_rmse": 12.381429236109831,
+        "su_accuracy": 0.6826722338204593,
+        "su_brier": 0.21055233497087505,
+        "roi_at_minus110": -0.115702479338843
+      },
+      "knn_core_levels_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 435,
+        "ats_wins": 204,
+        "ats_losses": 231,
+        "ats_accuracy": 0.4689655172413793,
+        "ats_wilson95": [
+          0.4225453134573023,
+          0.5159290700104455
+        ],
+        "brier": 0.2550667555594428,
+        "log_loss": 0.7034617543996367,
+        "margin_mae": 9.655694444444444,
+        "margin_rmse": 12.38546302906938,
+        "su_accuracy": 0.6701461377870563,
+        "su_brier": 0.21016916109599992,
+        "roi_at_minus110": -0.1047021943573668
+      },
+      "knn_core_levels_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 446,
+        "ats_wins": 212,
+        "ats_losses": 234,
+        "ats_accuracy": 0.47533632286995514,
+        "ats_wilson95": [
+          0.42939693937328194,
+          0.5216969567892783
+        ],
+        "brier": 0.2548510472275028,
+        "log_loss": 0.7029549624581611,
+        "margin_mae": 9.65413943948438,
+        "margin_rmse": 12.393351762844828,
+        "su_accuracy": 0.6826722338204593,
+        "su_brier": 0.20910821292257684,
+        "roi_at_minus110": -0.09253974724826744
+      },
+      "knn_core_levels_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 458,
+        "ats_wins": 226,
+        "ats_losses": 232,
+        "ats_accuracy": 0.49344978165938863,
+        "ats_wilson95": [
+          0.4479066027278374,
+          0.5391019300678224
+        ],
+        "brier": 0.25365429481936913,
+        "log_loss": 0.7005014225587116,
+        "margin_mae": 9.622659989838402,
+        "margin_rmse": 12.36311460300598,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20880580428032502,
+        "roi_at_minus110": -0.05795950774116716
+      },
+      "knn_all_levels_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 446,
+        "ats_wins": 214,
+        "ats_losses": 232,
+        "ats_accuracy": 0.4798206278026906,
+        "ats_wilson95": [
+          0.4338245059011297,
+          0.526161409140965
+        ],
+        "brier": 0.2582583138761862,
+        "log_loss": 0.7100409149435161,
+        "margin_mae": 9.69800925925926,
+        "margin_rmse": 12.404717218028765,
+        "su_accuracy": 0.6722338204592901,
+        "su_brier": 0.2089616262570344,
+        "roi_at_minus110": -0.08397880146759074
+      },
+      "knn_all_levels_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 449,
+        "ats_wins": 214,
+        "ats_losses": 235,
+        "ats_accuracy": 0.4766146993318486,
+        "ats_wilson95": [
+          0.4308105848928388,
+          0.522815583727712
+        ],
+        "brier": 0.25511471458344015,
+        "log_loss": 0.7035105582501446,
+        "margin_mae": 9.612132860537011,
+        "margin_rmse": 12.351554229746549,
+        "su_accuracy": 0.6847599164926931,
+        "su_brier": 0.2078287103816069,
+        "roi_at_minus110": -0.09009921036647098
+      },
+      "knn_all_levels_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 459,
+        "ats_wins": 212,
+        "ats_losses": 247,
+        "ats_accuracy": 0.46187363834422657,
+        "ats_wilson95": [
+          0.4167693551653564,
+          0.507610821551689
+        ],
+        "brier": 0.25311596245336887,
+        "log_loss": 0.6994161012884652,
+        "margin_mae": 9.616400520141434,
+        "margin_rmse": 12.339373422307078,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.2087372024607126,
+        "roi_at_minus110": -0.11824123588829473
+      },
+      "knn_core_diff_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 439,
+        "ats_wins": 216,
+        "ats_losses": 223,
+        "ats_accuracy": 0.4920273348519362,
+        "ats_wilson95": [
+          0.4455328344212801,
+          0.5386601591908828
+        ],
+        "brier": 0.2564612027441936,
+        "log_loss": 0.7063319467103102,
+        "margin_mae": 9.691921296296297,
+        "margin_rmse": 12.37631224077148,
+        "su_accuracy": 0.6805845511482255,
+        "su_brier": 0.20969169919705183,
+        "roi_at_minus110": -0.06067508800993999
+      },
+      "knn_core_diff_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 442,
+        "ats_wins": 219,
+        "ats_losses": 223,
+        "ats_accuracy": 0.49547511312217196,
+        "ats_wilson95": [
+          0.4491033985480011,
+          0.5419248051907259
+        ],
+        "brier": 0.2539944952930198,
+        "log_loss": 0.7012197840558936,
+        "margin_mae": 9.599523211414205,
+        "margin_rmse": 12.296200440937909,
+        "su_accuracy": 0.6826722338204593,
+        "su_brier": 0.20771774993635983,
+        "roi_at_minus110": -0.05409296585767173
+      },
+      "knn_core_diff_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 452,
+        "ats_wins": 212,
+        "ats_losses": 240,
+        "ats_accuracy": 0.4690265486725664,
+        "ats_wilson95": [
+          0.42347431048713713,
+          0.515100843689226
+        ],
+        "brier": 0.2537193209633805,
+        "log_loss": 0.700626699070275,
+        "margin_mae": 9.599085179232342,
+        "margin_rmse": 12.339275241815272,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20910614316364576,
+        "roi_at_minus110": -0.10458567980691877
+      },
+      "ridge_residual_core_diff_a0.1": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 217,
+        "ats_losses": 252,
+        "ats_accuracy": 0.4626865671641791,
+        "ats_wilson95": [
+          0.41804637354479,
+          0.5079330665044782
+        ],
+        "brier": 0.25087968730632315,
+        "log_loss": 0.6949072900919729,
+        "margin_mae": 9.516633360862814,
+        "margin_rmse": 12.25885030033177,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20923307948965617,
+        "roi_at_minus110": -0.11668928086838538
+      },
+      "ridge_residual_core_diff_a1.0": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 225,
+        "ats_losses": 244,
+        "ats_accuracy": 0.47974413646055436,
+        "ats_wilson95": [
+          0.43487740751935067,
+          0.5249400027931093
+        ],
+        "brier": 0.2504913166495457,
+        "log_loss": 0.69413044759929,
+        "margin_mae": 9.500810434822467,
+        "margin_rmse": 12.257361865421819,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20911049363874828,
+        "roi_at_minus110": -0.08412483039348714
+      },
+      "ridge_residual_core_diff_a10.0": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 237,
+        "ats_losses": 232,
+        "ats_accuracy": 0.5053304904051172,
+        "ats_wilson95": [
+          0.46022172834460545,
+          0.550352637362642
+        ],
+        "brier": 0.2501290963811197,
+        "log_loss": 0.6934054435874376,
+        "margin_mae": 9.487833942663126,
+        "margin_rmse": 12.264524760176913,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20913753017258616,
+        "roi_at_minus110": -0.03527815468113979
+      },
+      "knn_all_diff_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 451,
+        "ats_wins": 218,
+        "ats_losses": 233,
+        "ats_accuracy": 0.48337028824833705,
+        "ats_wilson95": [
+          0.43758484279668547,
+          0.5294366433646507
+        ],
+        "brier": 0.2551816767302776,
+        "log_loss": 0.7036197828848847,
+        "margin_mae": 9.579421296296296,
+        "margin_rmse": 12.283020677545919,
+        "su_accuracy": 0.6805845511482255,
+        "su_brier": 0.2064369443538499,
+        "roi_at_minus110": -0.07720217698044748
+      },
+      "knn_all_diff_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 447,
+        "ats_wins": 212,
+        "ats_losses": 235,
+        "ats_accuracy": 0.4742729306487696,
+        "ats_wilson95": [
+          0.42839826305807344,
+          0.5205860365274129
+        ],
+        "brier": 0.25558057272234297,
+        "log_loss": 0.7044693623662294,
+        "margin_mae": 9.613152597379118,
+        "margin_rmse": 12.348090550358869,
+        "su_accuracy": 0.697286012526096,
+        "su_brier": 0.20800351844321693,
+        "roi_at_minus110": -0.09456985967053083
+      },
+      "knn_all_diff_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 456,
+        "ats_wins": 221,
+        "ats_losses": 235,
+        "ats_accuracy": 0.48464912280701755,
+        "ats_wilson95": [
+          0.43909812578049445,
+          0.5304566078495208
+        ],
+        "brier": 0.2530268437209422,
+        "log_loss": 0.6992468448794293,
+        "margin_mae": 9.591997111050524,
+        "margin_rmse": 12.34893227709885,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20733390754888728,
+        "roi_at_minus110": -0.07476076555023924
+      },
+      "knn_last3_diff_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 442,
+        "ats_wins": 224,
+        "ats_losses": 218,
+        "ats_accuracy": 0.5067873303167421,
+        "ats_wilson95": [
+          0.4603204992578053,
+          0.5531371951341042
+        ],
+        "brier": 0.25187150400215247,
+        "log_loss": 0.6969925831671528,
+        "margin_mae": 9.51287037037037,
+        "margin_rmse": 12.249666368178653,
+        "su_accuracy": 0.6743215031315241,
+        "su_brier": 0.20666387272569564,
+        "roi_at_minus110": -0.03249691484985605
+      },
+      "knn_last3_diff_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 447,
+        "ats_wins": 204,
+        "ats_losses": 243,
+        "ats_accuracy": 0.4563758389261745,
+        "ats_wilson95": [
+          0.41076755800760933,
+          0.5027275586808241
+        ],
+        "brier": 0.25690886264866947,
+        "log_loss": 0.7070777038939184,
+        "margin_mae": 9.675104351765082,
+        "margin_rmse": 12.432261110707547,
+        "su_accuracy": 0.6889352818371608,
+        "su_brier": 0.21131601374877856,
+        "roi_at_minus110": -0.12873703477730328
+      },
+      "knn_last3_diff_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 456,
+        "ats_wins": 219,
+        "ats_losses": 237,
+        "ats_accuracy": 0.48026315789473684,
+        "ats_wilson95": [
+          0.4347627592114354,
+          0.5260933268842983
+        ],
+        "brier": 0.25342872664975136,
+        "log_loss": 0.7000497842054283,
+        "margin_mae": 9.59802930802022,
+        "margin_rmse": 12.342046524585022,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.20960515731995488,
+        "roi_at_minus110": -0.08313397129186602
+      },
+      "knn_mean_last3_diff_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 448,
+        "ats_wins": 211,
+        "ats_losses": 237,
+        "ats_accuracy": 0.47098214285714285,
+        "ats_wilson95": [
+          0.4252024995813444,
+          0.5172552112624558
+        ],
+        "brier": 0.2526111745622559,
+        "log_loss": 0.6984082007531258,
+        "margin_mae": 9.540625,
+        "margin_rmse": 12.279442833719466,
+        "su_accuracy": 0.6743215031315241,
+        "su_brier": 0.2060554598152107,
+        "roi_at_minus110": -0.10085227272727273
+      },
+      "knn_mean_last3_diff_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 448,
+        "ats_wins": 205,
+        "ats_losses": 243,
+        "ats_accuracy": 0.4575892857142857,
+        "ats_wilson95": [
+          0.4120111977922066,
+          0.5038885334410397
+        ],
+        "brier": 0.2550395576540266,
+        "log_loss": 0.7033155171229141,
+        "margin_mae": 9.61020303597561,
+        "margin_rmse": 12.370874678884112,
+        "su_accuracy": 0.6910229645093946,
+        "su_brier": 0.20862560098636115,
+        "roi_at_minus110": -0.12642045454545459
+      },
+      "knn_mean_last3_diff_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 457,
+        "ats_wins": 207,
+        "ats_losses": 250,
+        "ats_accuracy": 0.45295404814004375,
+        "ats_wilson95": [
+          0.40789606962669467,
+          0.4987963817492227
+        ],
+        "brier": 0.2543850594559004,
+        "log_loss": 0.7019778574355346,
+        "margin_mae": 9.615770785292947,
+        "margin_rmse": 12.361951909010118,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.2084866220816433,
+        "roi_at_minus110": -0.13526954445991643
+      },
+      "ridge_residual_mean_last3_diff_a0.1": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 232,
+        "ats_losses": 237,
+        "ats_accuracy": 0.4946695095948827,
+        "ats_wilson95": [
+          0.44964736263735805,
+          0.5397782716553946
+        ],
+        "brier": 0.2511467308215699,
+        "log_loss": 0.6954534350314181,
+        "margin_mae": 9.527039852352939,
+        "margin_rmse": 12.24878851677818,
+        "su_accuracy": 0.6826722338204593,
+        "su_brier": 0.2086401903014358,
+        "roi_at_minus110": -0.05563093622795116
+      },
+      "ridge_residual_mean_last3_diff_a1.0": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 233,
+        "ats_losses": 236,
+        "ats_accuracy": 0.4968017057569296,
+        "ats_wilson95": [
+          0.45176060990681643,
+          0.5418947706688351
+        ],
+        "brier": 0.25014692640853614,
+        "log_loss": 0.6934410043414082,
+        "margin_mae": 9.488687738107075,
+        "margin_rmse": 12.246848260855463,
+        "su_accuracy": 0.6847599164926931,
+        "su_brier": 0.20846197176940529,
+        "roi_at_minus110": -0.05156037991858888
+      },
+      "ridge_residual_mean_last3_diff_a10.0": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 469,
+        "ats_wins": 240,
+        "ats_losses": 229,
+        "ats_accuracy": 0.511727078891258,
+        "ats_wilson95": [
+          0.46657610423298984,
+          0.5566875003229546
+        ],
+        "brier": 0.24997553698077662,
+        "log_loss": 0.6930983230145957,
+        "margin_mae": 9.482453225570024,
+        "margin_rmse": 12.259606168584245,
+        "su_accuracy": 0.6868475991649269,
+        "su_brier": 0.2088927989876581,
+        "roi_at_minus110": -0.023066485753052906
+      },
+      "knn_mean_trend_diff_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 437,
+        "ats_wins": 213,
+        "ats_losses": 224,
+        "ats_accuracy": 0.4874141876430206,
+        "ats_wilson95": [
+          0.4408634739201964,
+          0.5341842529730912
+        ],
+        "brier": 0.25379730897692626,
+        "log_loss": 0.7008405550958628,
+        "margin_mae": 9.58488425925926,
+        "margin_rmse": 12.33359497762175,
+        "su_accuracy": 0.6847599164926931,
+        "su_brier": 0.2099969278478678,
+        "roi_at_minus110": -0.06948200540877889
+      },
+      "knn_mean_trend_diff_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 440,
+        "ats_wins": 198,
+        "ats_losses": 242,
+        "ats_accuracy": 0.45,
+        "ats_wilson95": [
+          0.40414687322691517,
+          0.4967186607834165
+        ],
+        "brier": 0.254755653821801,
+        "log_loss": 0.7027567139729399,
+        "margin_mae": 9.637187685098416,
+        "margin_rmse": 12.383042919390332,
+        "su_accuracy": 0.6847599164926931,
+        "su_brier": 0.20859491981792538,
+        "roi_at_minus110": -0.1409090909090909
+      },
+      "knn_mean_trend_diff_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 454,
+        "ats_wins": 218,
+        "ats_losses": 236,
+        "ats_accuracy": 0.4801762114537445,
+        "ats_wilson95": [
+          0.4345779422838566,
+          0.5261071505517442
+        ],
+        "brier": 0.25346135677274356,
+        "log_loss": 0.7001138420213389,
+        "margin_mae": 9.61699237620204,
+        "margin_rmse": 12.351904108156672,
+        "su_accuracy": 0.6826722338204593,
+        "su_brier": 0.20912830315899575,
+        "roi_at_minus110": -0.08329995995194232
+      },
+      "knn_market_form_diff_k25": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 447,
+        "ats_wins": 197,
+        "ats_losses": 250,
+        "ats_accuracy": 0.4407158836689038,
+        "ats_wilson95": [
+          0.3953893313731677,
+          0.48705275028034434
+        ],
+        "brier": 0.25910686715810166,
+        "log_loss": 0.7115607459816026,
+        "margin_mae": 9.668587962962963,
+        "margin_rmse": 12.397819557646038,
+        "su_accuracy": 0.6701461377870563,
+        "su_brier": 0.2130308936984415,
+        "roi_at_minus110": -0.1586333129957291
+      },
+      "knn_market_form_diff_k75": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 435,
+        "ats_wins": 204,
+        "ats_losses": 231,
+        "ats_accuracy": 0.4689655172413793,
+        "ats_wilson95": [
+          0.4225453134573023,
+          0.5159290700104455
+        ],
+        "brier": 0.25695380732685824,
+        "log_loss": 0.7072550875990109,
+        "margin_mae": 9.596244702642277,
+        "margin_rmse": 12.267314543068819,
+        "su_accuracy": 0.6847599164926931,
+        "su_brier": 0.2099414837648036,
+        "roi_at_minus110": -0.1047021943573668
+      },
+      "knn_market_form_diff_k200": {
+        "games": 480,
+        "ats_decisions": 469,
+        "ats_calls": 456,
+        "ats_wins": 208,
+        "ats_losses": 248,
+        "ats_accuracy": 0.45614035087719296,
+        "ats_wilson95": [
+          0.41098084825056846,
+          0.5020326764066178
+        ],
+        "brier": 0.25334902461948716,
+        "log_loss": 0.6998930712941013,
+        "margin_mae": 9.550126845899008,
+        "margin_rmse": 12.294428689202894,
+        "su_accuracy": 0.6847599164926931,
+        "su_brier": 0.20983097810565368,
+        "roi_at_minus110": -0.1291866028708134
+      }
+    }
+  },
+  "selected_model": "knn_market_form_diff_k200",
+  "by_season": {
+    "spread_baseline": {
+      "2010": {
+        "games": 160,
+        "ats_decisions": 156,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 10.828125,
+        "margin_rmse": 14.253015031915178,
+        "su_accuracy": 0.6875,
+        "su_brier": 0.2155850733960881,
+        "roi_at_minus110": null
+      },
+      "2011": {
+        "games": 160,
+        "ats_decisions": 154,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 10.496875,
+        "margin_rmse": 13.75539666821717,
+        "su_accuracy": 0.66875,
+        "su_brier": 0.20605219267631347,
+        "roi_at_minus110": null
+      },
+      "2012": {
+        "games": 160,
+        "ats_decisions": 156,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 10.2125,
+        "margin_rmse": 13.400443089689237,
+        "su_accuracy": 0.6666666666666666,
+        "su_brier": 0.19939508595387842,
+        "roi_at_minus110": null
+      },
+      "2013": {
+        "games": 160,
+        "ats_decisions": 160,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 9.996875,
+        "margin_rmse": 12.63631918321154,
+        "su_accuracy": 0.7044025157232704,
+        "su_brier": 0.20736427815026978,
+        "roi_at_minus110": null
+      },
+      "2014": {
+        "games": 160,
+        "ats_decisions": 158,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 11.790625,
+        "margin_rmse": 14.99223757482518,
+        "su_accuracy": 0.6729559748427673,
+        "su_brier": 0.20843737412780383,
+        "roi_at_minus110": null
+      },
+      "2015": {
+        "games": 160,
+        "ats_decisions": 153,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 9.9625,
+        "margin_rmse": 12.805516389431547,
+        "su_accuracy": 0.64375,
+        "su_brier": 0.22717078153356432,
+        "roi_at_minus110": null
+      },
+      "2016": {
+        "games": 160,
+        "ats_decisions": 155,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 8.4625,
+        "margin_rmse": 11.024971655292362,
+        "su_accuracy": 0.6455696202531646,
+        "su_brier": 0.21822586671361183,
+        "roi_at_minus110": null
+      },
+      "2017": {
+        "games": 161,
+        "ats_decisions": 155,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 10.08695652173913,
+        "margin_rmse": 13.122570760107841,
+        "su_accuracy": 0.6832298136645962,
+        "su_brier": 0.2062565572525402,
+        "roi_at_minus110": null
+      },
+      "2018": {
+        "games": 160,
+        "ats_decisions": 154,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 10.05,
+        "margin_rmse": 13.19351166293493,
+        "su_accuracy": 0.6625,
+        "su_brier": 0.2077045242348662,
+        "roi_at_minus110": null
+      },
+      "2019": {
+        "games": 160,
+        "ats_decisions": 156,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 10.26875,
+        "margin_rmse": 13.187944305311575,
+        "su_accuracy": 0.64375,
+        "su_brier": 0.21860315953750567,
+        "roi_at_minus110": null
+      },
+      "2020": {
+        "games": 160,
+        "ats_decisions": 160,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 10.159375,
+        "margin_rmse": 13.221372375816362,
+        "su_accuracy": 0.65,
+        "su_brier": 0.20636656785362373,
+        "roi_at_minus110": null
+      },
+      "2021": {
+        "games": 160,
+        "ats_decisions": 158,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 11.165625,
+        "margin_rmse": 14.102249377315662,
+        "su_accuracy": 0.6289308176100629,
+        "su_brier": 0.22025288559807996,
+        "roi_at_minus110": null
+      },
+      "2022": {
+        "games": 160,
+        "ats_decisions": 155,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 8.7125,
+        "margin_rmse": 11.409152028086925,
+        "su_accuracy": 0.6729559748427673,
+        "su_brier": 0.2133513748811802,
+        "roi_at_minus110": null
+      },
+      "2023": {
+        "games": 160,
+        "ats_decisions": 153,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599453,
+        "margin_mae": 9.471875,
+        "margin_rmse": 12.38566459662137,
+        "su_accuracy": 0.6875,
+        "su_brier": 0.21686039893793924,
+        "roi_at_minus110": null
+      },
+      "2024": {
+        "games": 160,
+        "ats_decisions": 157,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 8.98125,
+        "margin_rmse": 11.970014619874112,
+        "su_accuracy": 0.73125,
+        "su_brier": 0.1918358305783739,
+        "roi_at_minus110": null
+      },
+      "2025": {
+        "games": 160,
+        "ats_decisions": 159,
+        "ats_calls": 0,
+        "ats_wins": 0,
+        "ats_losses": 0,
+        "ats_accuracy": null,
+        "ats_wilson95": [
+          null,
+          null
+        ],
+        "brier": 0.25,
+        "log_loss": 0.6931471805599454,
+        "margin_mae": 9.9875,
+        "margin_rmse": 12.425528157788706,
+        "su_accuracy": 0.6415094339622641,
+        "su_brier": 0.21673498231190894,
+        "roi_at_minus110": null
+      }
+    },
+    "knn_market_form_diff_k200": {
+      "2010": {
+        "games": 160,
+        "ats_decisions": 156,
+        "ats_calls": 149,
+        "ats_wins": 72,
+        "ats_losses": 77,
+        "ats_accuracy": 0.48322147651006714,
+        "ats_wilson95": [
+          0.4044173700517357,
+          0.5628690231815202
+        ],
+        "brier": 0.2527051662806081,
+        "log_loss": 0.6985762502167605,
+        "margin_mae": 10.930365664105924,
+        "margin_rmse": 14.30553392257752,
+        "su_accuracy": 0.68125,
+        "su_brier": 0.21491433930229217,
+        "roi_at_minus110": -0.07748627211714461
+      },
+      "2011": {
+        "games": 160,
+        "ats_decisions": 154,
+        "ats_calls": 152,
+        "ats_wins": 84,
+        "ats_losses": 68,
+        "ats_accuracy": 0.5526315789473685,
+        "ats_wilson95": [
+          0.4732568636320432,
+          0.6294114867955706
+        ],
+        "brier": 0.24515934532250924,
+        "log_loss": 0.6832907421833949,
+        "margin_mae": 10.355492758632312,
+        "margin_rmse": 13.604457457110723,
+        "su_accuracy": 0.6625,
+        "su_brier": 0.20406959271787656,
+        "roi_at_minus110": 0.05502392344497605
+      },
+      "2012": {
+        "games": 160,
+        "ats_decisions": 156,
+        "ats_calls": 155,
+        "ats_wins": 79,
+        "ats_losses": 76,
+        "ats_accuracy": 0.5096774193548387,
+        "ats_wilson95": [
+          0.4316997862342198,
+          0.5871869537633627
+        ],
+        "brier": 0.24907530023640798,
+        "log_loss": 0.6913230074195386,
+        "margin_mae": 10.223951545012449,
+        "margin_rmse": 13.280924795477757,
+        "su_accuracy": 0.6918238993710691,
+        "su_brier": 0.20035683351830935,
+        "roi_at_minus110": -0.026979472140762496
+      },
+      "2013": {
+        "games": 160,
+        "ats_decisions": 160,
+        "ats_calls": 158,
+        "ats_wins": 81,
+        "ats_losses": 77,
+        "ats_accuracy": 0.5126582278481012,
+        "ats_wilson95": [
+          0.4353481244196621,
+          0.5893673998954706
+        ],
+        "brier": 0.2498763082611998,
+        "log_loss": 0.6928635000335317,
+        "margin_mae": 9.996752109156704,
+        "margin_rmse": 12.683176636705262,
+        "su_accuracy": 0.6981132075471698,
+        "su_brier": 0.21237116558925417,
+        "roi_at_minus110": -0.021288837744533922
+      },
+      "2014": {
+        "games": 160,
+        "ats_decisions": 158,
+        "ats_calls": 152,
+        "ats_wins": 72,
+        "ats_losses": 80,
+        "ats_accuracy": 0.47368421052631576,
+        "ats_wilson95": [
+          0.3959363726303488,
+          0.5527294521558442
+        ],
+        "brier": 0.25315652005845535,
+        "log_loss": 0.6995228162511643,
+        "margin_mae": 11.863985793217442,
+        "margin_rmse": 15.045942474043548,
+        "su_accuracy": 0.6729559748427673,
+        "su_brier": 0.20813743560129416,
+        "roi_at_minus110": -0.09569377990430623
+      },
+      "2015": {
+        "games": 160,
+        "ats_decisions": 153,
+        "ats_calls": 150,
+        "ats_wins": 71,
+        "ats_losses": 79,
+        "ats_accuracy": 0.47333333333333333,
+        "ats_wilson95": [
+          0.39509757671394596,
+          0.5529008840404923
+        ],
+        "brier": 0.25220921660989787,
+        "log_loss": 0.6976084544783985,
+        "margin_mae": 10.075233453684953,
+        "margin_rmse": 12.785114358373551,
+        "su_accuracy": 0.64375,
+        "su_brier": 0.22651417983335137,
+        "roi_at_minus110": -0.09636363636363636
+      },
+      "2016": {
+        "games": 160,
+        "ats_decisions": 155,
+        "ats_calls": 152,
+        "ats_wins": 72,
+        "ats_losses": 80,
+        "ats_accuracy": 0.47368421052631576,
+        "ats_wilson95": [
+          0.3959363726303488,
+          0.5527294521558442
+        ],
+        "brier": 0.25184366234015476,
+        "log_loss": 0.696855491127756,
+        "margin_mae": 8.479713189916897,
+        "margin_rmse": 11.09113842513881,
+        "su_accuracy": 0.6455696202531646,
+        "su_brier": 0.216114915469428,
+        "roi_at_minus110": -0.09569377990430623
+      },
+      "2017": {
+        "games": 161,
+        "ats_decisions": 155,
+        "ats_calls": 154,
+        "ats_wins": 77,
+        "ats_losses": 77,
+        "ats_accuracy": 0.5,
+        "ats_wilson95": [
+          0.4219962757449466,
+          0.5780037242550534
+        ],
+        "brier": 0.2525406940018925,
+        "log_loss": 0.6982717142037731,
+        "margin_mae": 10.146675455667014,
+        "margin_rmse": 13.237662587109396,
+        "su_accuracy": 0.6894409937888198,
+        "su_brier": 0.21089207474014446,
+        "roi_at_minus110": -0.045454545454545456
+      },
+      "2018": {
+        "games": 160,
+        "ats_decisions": 154,
+        "ats_calls": 150,
+        "ats_wins": 80,
+        "ats_losses": 70,
+        "ats_accuracy": 0.5333333333333333,
+        "ats_wilson95": [
+          0.45366104879756924,
+          0.611340875259383
+        ],
+        "brier": 0.2526524536250577,
+        "log_loss": 0.698533570687991,
+        "margin_mae": 10.197000135115356,
+        "margin_rmse": 13.261445265019006,
+        "su_accuracy": 0.66875,
+        "su_brier": 0.2113838233809683,
+        "roi_at_minus110": 0.01818181818181813
+      },
+      "2019": {
+        "games": 160,
+        "ats_decisions": 156,
+        "ats_calls": 153,
+        "ats_wins": 73,
+        "ats_losses": 80,
+        "ats_accuracy": 0.477124183006536,
+        "ats_wilson95": [
+          0.39951242618091587,
+          0.5558565575580923
+        ],
+        "brier": 0.2517605787749963,
+        "log_loss": 0.6966681579317217,
+        "margin_mae": 10.431213524324226,
+        "margin_rmse": 13.290149568700702,
+        "su_accuracy": 0.65,
+        "su_brier": 0.2243254416887967,
+        "roi_at_minus110": -0.08912655971479504
+      },
+      "2020": {
+        "games": 160,
+        "ats_decisions": 160,
+        "ats_calls": 153,
+        "ats_wins": 77,
+        "ats_losses": 76,
+        "ats_accuracy": 0.5032679738562091,
+        "ats_wilson95": [
+          0.42493756068608235,
+          0.5814382987797737
+        ],
+        "brier": 0.25071578891792734,
+        "log_loss": 0.6945949350464484,
+        "margin_mae": 10.260640907405824,
+        "margin_rmse": 13.274459898736517,
+        "su_accuracy": 0.65,
+        "su_brier": 0.20450409277073986,
+        "roi_at_minus110": -0.0392156862745098
+      },
+      "2021": {
+        "games": 160,
+        "ats_decisions": 158,
+        "ats_calls": 154,
+        "ats_wins": 85,
+        "ats_losses": 69,
+        "ats_accuracy": 0.551948051948052,
+        "ats_wilson95": [
+          0.4730918416328401,
+          0.6282756052252759
+        ],
+        "brier": 0.24693311636387,
+        "log_loss": 0.6869971012645525,
+        "margin_mae": 11.077758079938347,
+        "margin_rmse": 14.059006627116613,
+        "su_accuracy": 0.6289308176100629,
+        "su_brier": 0.22127255451418998,
+        "roi_at_minus110": 0.05371900826446277
+      },
+      "2022": {
+        "games": 160,
+        "ats_decisions": 155,
+        "ats_calls": 151,
+        "ats_wins": 84,
+        "ats_losses": 67,
+        "ats_accuracy": 0.5562913907284768,
+        "ats_wilson95": [
+          0.47662730294033073,
+          0.633162314320147
+        ],
+        "brier": 0.24751327598447884,
+        "log_loss": 0.6881309324733558,
+        "margin_mae": 8.723099403628268,
+        "margin_rmse": 11.379860274101105,
+        "su_accuracy": 0.6792452830188679,
+        "su_brier": 0.2116226096356218,
+        "roi_at_minus110": 0.062010836845273906
+      },
+      "2023": {
+        "games": 160,
+        "ats_decisions": 153,
+        "ats_calls": 151,
+        "ats_wins": 72,
+        "ats_losses": 79,
+        "ats_accuracy": 0.4768211920529801,
+        "ats_wilson95": [
+          0.39872307704644333,
+          0.5560694334933599
+        ],
+        "brier": 0.25227193194892966,
+        "log_loss": 0.6977058541192163,
+        "margin_mae": 9.566967055526256,
+        "margin_rmse": 12.43216085366205,
+        "su_accuracy": 0.6875,
+        "su_brier": 0.2192216472649708,
+        "roi_at_minus110": -0.08970499698976521
+      },
+      "2024": {
+        "games": 160,
+        "ats_decisions": 157,
+        "ats_calls": 153,
+        "ats_wins": 67,
+        "ats_losses": 86,
+        "ats_accuracy": 0.43790849673202614,
+        "ats_wilson95": [
+          0.3617681656177596,
+          0.5170905045309765
+        ],
+        "brier": 0.25440287332596717,
+        "log_loss": 0.7020098986832333,
+        "margin_mae": 9.07990823036605,
+        "margin_rmse": 12.036128712910077,
+        "su_accuracy": 0.725,
+        "su_brier": 0.19282459610073205,
+        "roi_at_minus110": -0.16399286987522282
+      },
+      "2025": {
+        "games": 160,
+        "ats_decisions": 159,
+        "ats_calls": 152,
+        "ats_wins": 69,
+        "ats_losses": 83,
+        "ats_accuracy": 0.45394736842105265,
+        "ats_wilson95": [
+          0.3769053862714339,
+          0.5332598071044042
+        ],
+        "brier": 0.2533448795357007,
+        "log_loss": 0.6999075513423003,
+        "margin_mae": 10.003505251804722,
+        "margin_rmse": 12.41095937051685,
+        "su_accuracy": 0.6415094339622641,
+        "su_brier": 0.21749458851632486,
+        "roi_at_minus110": -0.1333732057416268
+      }
+    }
+  },
+  "confidence_subsets_test": {
+    "0.5": {
+      "games": 480,
+      "ats_decisions": 469,
+      "ats_calls": 456,
+      "ats_wins": 208,
+      "ats_losses": 248,
+      "ats_accuracy": 0.45614035087719296,
+      "ats_wilson95": [
+        0.41098084825056846,
+        0.5020326764066178
+      ],
+      "brier": 0.25334902461948716,
+      "log_loss": 0.6998930712941013,
+      "margin_mae": 9.550126845899008,
+      "margin_rmse": 12.294428689202894,
+      "su_accuracy": 0.6847599164926931,
+      "su_brier": 0.20983097810565368,
+      "roi_at_minus110": -0.1291866028708134
+    },
+    "0.55": {
+      "games": 95,
+      "ats_decisions": 92,
+      "ats_calls": 92,
+      "ats_wins": 41,
+      "ats_losses": 51,
+      "ats_accuracy": 0.44565217391304346,
+      "ats_wilson95": [
+        0.34829640062529765,
+        0.5473647736455826
+      ],
+      "brier": 0.2623472875748464,
+      "log_loss": 0.7180725204258714,
+      "margin_mae": 10.403908709378275,
+      "margin_rmse": 13.475511602125467,
+      "su_accuracy": 0.6526315789473685,
+      "su_brier": 0.2246241867919597,
+      "roi_at_minus110": -0.1492094861660079
+    }
+  },
+  "calibration_test": [
+    {
+      "range": [
+        0.4,
+        0.45
+      ],
+      "n": 74,
+      "mean_probability": 0.43273946349286163,
+      "actual_home_cover_rate": 0.527027027027027
+    },
+    {
+      "range": [
+        0.45,
+        0.5
+      ],
+      "n": 220,
+      "mean_probability": 0.47748165032659157,
+      "actual_home_cover_rate": 0.5363636363636364
+    },
+    {
+      "range": [
+        0.5,
+        0.55
+      ],
+      "n": 157,
+      "mean_probability": 0.5153245339761033,
+      "actual_home_cover_rate": 0.4585987261146497
+    },
+    {
+      "range": [
+        0.55,
+        0.6
+      ],
+      "n": 18,
+      "mean_probability": 0.5603970947066469,
+      "actual_home_cover_rate": 0.3333333333333333
+    }
+  ],
+  "paired_test_brier_minus_spread": {
+    "difference": 0.003349024619487172,
+    "season_bootstrap95": [
+      0.002271931948929683,
+      0.00440287332596713
+    ],
+    "warning": "Only three season clusters; interval is unstable."
+  }
+}

@@ -5,7 +5,8 @@ const FEATURE_FIELDS = [
   'pointsScoredPerGame', 'pointsAllowedPerGame',
   'netYardsPerPlay', 'netEpaPerPlay', 'turnoverMarginPerGame', 'offensiveSackRate',
   'defensiveSackRate', 'restDays', 'passingEpaPerDropback', 'rushingEpaPerCarry',
-  'explosivePlayRate',
+  'explosivePlayRate', 'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry',
+  'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame',
 ];
 // Spread is an eligibility filter; each of 22 team-feature deltas contributes
 // at most 1/22 of the score once a historical line is within the spread band.

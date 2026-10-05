@@ -1,0 +1,35 @@
+{
+  "retrievedAt": "2026-10-01T22:09:15.010465+00:00",
+  "warning": "Retrospective HTML, historical publication metadata, not immutable pregame captures. SF chosen by prior exposure, McCoy to demonstrate IR-report omission.",
+  "assets": [
+    {
+      "path": "spikes/roster-feasibility/external/sf-week13-2024.html",
+      "url": "https://abcnews.com/Sports/49ers-purdy-ward-expected-play-williams-bosa-ruled/story?id=116328547",
+      "sha256": "78aee5d7baf671e56e9d1b171940e6a0a926a6f7820ead7e4af3e673406b7e2e",
+      "bytes": 159238,
+      "dates": {
+        "datePublished": [
+          "2024-11-29T22:49:18.000Z"
+        ],
+        "dateModified": [
+          "2024-11-30T01:29:18.000Z",
+          "2024-11-30T01:29:18Z"
+        ]
+      }
+    },
+    {
+      "path": "spikes/roster-feasibility/external/mccoy-ir-2024.html",
+      "url": "https://www.neworleanssaints.com/news/erik-mccoy-injury-new-orleans-saints-roster-moves-announced-september-25-2024",
+      "sha256": "04c4547c438b18e833980de0bf1093c9b0bc8d76ccc01b9cbbeb279bc8070329",
+      "bytes": 330686,
+      "dates": {
+        "datePublished": [
+          "2024-09-25T20:28:35.328Z"
+        ],
+        "dateModified": [
+          "2024-09-25T20:28:36.126Z"
+        ]
+      }
+    }
+  ]
+}

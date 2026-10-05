@@ -1,0 +1,78 @@
+{
+  "retrievedAt": "2026-10-01T21:43:37.372686+00:00",
+  "selection": "First chronological selected-policy case in each evaluation year; additional CAR/BAL records diagnose schedule metadata error. Not selected by outcomes.",
+  "records": [
+    {
+      "case": "2022_04_NE_GB",
+      "url": "https://www.packers.com/news/packers-patriots-injury-report-week-4-sept-30-2022",
+      "path": "spikes/historical-analogues/external/2022_04_NE_GB.html",
+      "sha256": "cc2dd29bbb1e76bcc7f3d8c2eb27b407a0dcd21d7d14ee6b3350547b603fc8c9",
+      "bytes": 333471,
+      "dates": {
+        "datePublished": [
+          "2022-09-30T20:17:17.82Z"
+        ],
+        "dateModified": [
+          "2023-02-28T08:49:13.572Z"
+        ]
+      }
+    },
+    {
+      "case": "2023_06_NYG_BUF",
+      "url": "https://www.nfl.com/news/giants-qb-daniel-jones-neck-ruled-out-vs-bills",
+      "path": "spikes/historical-analogues/external/2023_06_NYG_BUF.html",
+      "sha256": "a73f8a3af75c100ac069cbe0395f94bc49f4b688798fa01ce3f076241ee48233",
+      "bytes": 696749,
+      "dates": {
+        "datePublished": [
+          "2023-10-13T15:42:33.248Z"
+        ],
+        "dateModified": [
+          "2023-10-13T16:49:10.097Z"
+        ]
+      }
+    },
+    {
+      "case": "2024_06_TB_NO",
+      "url": "https://www.neworleanssaints.com/news/buccaneers-saints-friday-injury-report-2024-nfl-week-6-tampa-bay-new-orleans",
+      "path": "spikes/historical-analogues/external/2024_06_TB_NO.html",
+      "sha256": "575200f081ab727c92fe569e1a55272627f3f321ae01f17220eb7b9e7206e50c",
+      "bytes": 345587,
+      "dates": {
+        "datePublished": [
+          "2024-10-11T19:56:27.225Z"
+        ],
+        "dateModified": [
+          "2024-10-11T19:56:27.225Z"
+        ]
+      }
+    },
+    {
+      "case": "2022_11_CAR_BAL_injury",
+      "url": "https://www.panthers.com/gameday/2022/week-11/injury-report",
+      "path": "spikes/historical-analogues/external/2022_11_CAR_BAL_injury.html",
+      "sha256": "505d69cbbe0fd09a9a9db9a35b20e62c78a7c7f3d8cf7bd4f63731bd78259d7c",
+      "bytes": 205698,
+      "dates": {
+        "datePublished": [
+          "2022-11-18T17:00:57.191Z"
+        ],
+        "dateModified": [
+          "2023-02-28T08:45:32.848Z"
+        ]
+      }
+    },
+    {
+      "case": "2022_11_CAR_BAL_box",
+      "url": "https://www.panthers.com/gameday/2022/week-11/game-hub-web",
+      "path": "spikes/historical-analogues/external/2022_11_CAR_BAL_box.html",
+      "sha256": "cfccdf63432fcdd4db002f9e17e98268a583529c8fd83b46ab6ca463f568e1e3",
+      "bytes": 338379,
+      "dates": {
+        "datePublished": [],
+        "dateModified": []
+      }
+    }
+  ],
+  "warning": "Current HTML with historical publication metadata, not immutable archived pregame snapshots."
+}

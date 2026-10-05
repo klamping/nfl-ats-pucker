@@ -1,0 +1,1565 @@
+{
+  "protocol": {
+    "source": "nflverse public injury reports, row date_modified before kickoff within seven days",
+    "periods": {
+      "development_2009_2018": [
+        2009,
+        2018
+      ],
+      "validation_2019_2021": [
+        2019,
+        2021
+      ],
+      "evaluation_2022_2024": [
+        2022,
+        2024
+      ]
+    },
+    "fixedPolicies": 12,
+    "selection": "max validation Wilson lower; >=15 decisions, 3 seasons, <=20% coverage",
+    "targetStarterUsed": false,
+    "quote": "corrected nflverse closing spread; no announcement-time price reconstruction"
+  },
+  "policies": {
+    "recent_out|affected": {
+      "development_2009_2018": {
+        "picks": 63,
+        "decisions": 60,
+        "wins": 23,
+        "losses": 37,
+        "pushes": 3,
+        "accuracy": 0.38333333333333336,
+        "coverage": 0.03935040599625234,
+        "seasonsWithPicks": 9,
+        "lower95": 0.2708808958488824,
+        "upper95": 0.5098263545959686,
+        "pValue55": 0.9967490669201027,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 18,
+        "decisions": 17,
+        "wins": 6,
+        "losses": 11,
+        "pushes": 1,
+        "accuracy": 0.35294117647058826,
+        "coverage": 0.0375,
+        "seasonsWithPicks": 3,
+        "lower95": 0.17309486143904904,
+        "upper95": 0.5870003327878818,
+        "pValue55": 0.96990248919406,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 19,
+        "decisions": 18,
+        "wins": 8,
+        "losses": 10,
+        "pushes": 1,
+        "accuracy": 0.4444444444444444,
+        "coverage": 0.03958333333333333,
+        "seasonsWithPicks": 3,
+        "lower95": 0.24559231101389126,
+        "upper95": 0.6628393057174837,
+        "pValue55": 0.8720421851270823,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "recent_out|opponent": {
+      "development_2009_2018": {
+        "picks": 63,
+        "decisions": 60,
+        "wins": 37,
+        "losses": 23,
+        "pushes": 3,
+        "accuracy": 0.6166666666666667,
+        "coverage": 0.03935040599625234,
+        "seasonsWithPicks": 9,
+        "lower95": 0.4901736454040315,
+        "upper95": 0.7291191041511176,
+        "pValue55": 0.18214139834828574,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 18,
+        "decisions": 17,
+        "wins": 11,
+        "losses": 6,
+        "pushes": 1,
+        "accuracy": 0.6470588235294118,
+        "coverage": 0.0375,
+        "seasonsWithPicks": 3,
+        "lower95": 0.4129996672121182,
+        "upper95": 0.826905138560951,
+        "pValue55": 0.2902354664575117,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 19,
+        "decisions": 18,
+        "wins": 10,
+        "losses": 8,
+        "pushes": 1,
+        "accuracy": 0.5555555555555556,
+        "coverage": 0.03958333333333333,
+        "seasonsWithPicks": 3,
+        "lower95": 0.3371606942825164,
+        "upper95": 0.7544076889861088,
+        "pValue55": 0.5778490963397597,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "dominant_out|affected": {
+      "development_2009_2018": {
+        "picks": 106,
+        "decisions": 103,
+        "wins": 45,
+        "losses": 58,
+        "pushes": 3,
+        "accuracy": 0.4368932038834951,
+        "coverage": 0.06620861961274203,
+        "seasonsWithPicks": 9,
+        "lower95": 0.3450827172797554,
+        "upper95": 0.5332418304619483,
+        "pValue55": 0.9918016058662306,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 26,
+        "decisions": 25,
+        "wins": 11,
+        "losses": 14,
+        "pushes": 1,
+        "accuracy": 0.44,
+        "coverage": 0.05416666666666667,
+        "seasonsWithPicks": 3,
+        "lower95": 0.2666537494700256,
+        "upper95": 0.6293298298043557,
+        "pValue55": 0.9040170280467842,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 23,
+        "decisions": 21,
+        "wins": 8,
+        "losses": 13,
+        "pushes": 2,
+        "accuracy": 0.38095238095238093,
+        "coverage": 0.04791666666666667,
+        "seasonsWithPicks": 3,
+        "lower95": 0.20750767797982506,
+        "upper95": 0.5912170418449848,
+        "pValue55": 0.9621067608601304,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "dominant_out|opponent": {
+      "development_2009_2018": {
+        "picks": 106,
+        "decisions": 103,
+        "wins": 58,
+        "losses": 45,
+        "pushes": 3,
+        "accuracy": 0.5631067961165048,
+        "coverage": 0.06620861961274203,
+        "seasonsWithPicks": 9,
+        "lower95": 0.46675816953805177,
+        "upper95": 0.6549172827202446,
+        "pValue55": 0.4344752671277673,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 26,
+        "decisions": 25,
+        "wins": 14,
+        "losses": 11,
+        "pushes": 1,
+        "accuracy": 0.56,
+        "coverage": 0.05416666666666667,
+        "seasonsWithPicks": 3,
+        "lower95": 0.37067017019564436,
+        "upper95": 0.7333462505299744,
+        "pValue55": 0.5425659222064235,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 23,
+        "decisions": 21,
+        "wins": 13,
+        "losses": 8,
+        "pushes": 2,
+        "accuracy": 0.6190476190476191,
+        "coverage": 0.04791666666666667,
+        "seasonsWithPicks": 3,
+        "lower95": 0.40878295815501514,
+        "upper95": 0.7924923220201749,
+        "pValue55": 0.3412710670119673,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "experienced_recent_out|affected": {
+      "development_2009_2018": {
+        "picks": 37,
+        "decisions": 35,
+        "wins": 12,
+        "losses": 23,
+        "pushes": 2,
+        "accuracy": 0.34285714285714286,
+        "coverage": 0.0231105559025609,
+        "seasonsWithPicks": 7,
+        "lower95": 0.20831495282688925,
+        "upper95": 0.5084835312726328,
+        "pValue55": 0.995818532772249,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 8,
+        "decisions": 8,
+        "wins": 2,
+        "losses": 6,
+        "pushes": 0,
+        "accuracy": 0.25,
+        "coverage": 0.016666666666666666,
+        "seasonsWithPicks": 3,
+        "lower95": 0.07147768885802763,
+        "upper95": 0.5907301208974108,
+        "pValue55": 0.9818770315234375,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 11,
+        "decisions": 10,
+        "wins": 5,
+        "losses": 5,
+        "pushes": 1,
+        "accuracy": 0.5,
+        "coverage": 0.022916666666666665,
+        "seasonsWithPicks": 3,
+        "lower95": 0.23658959361548731,
+        "upper95": 0.7634104063845126,
+        "pValue55": 0.7384372992455079,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "experienced_recent_out|opponent": {
+      "development_2009_2018": {
+        "picks": 37,
+        "decisions": 35,
+        "wins": 23,
+        "losses": 12,
+        "pushes": 2,
+        "accuracy": 0.6571428571428571,
+        "coverage": 0.0231105559025609,
+        "seasonsWithPicks": 7,
+        "lower95": 0.4915164687273671,
+        "upper95": 0.7916850471731106,
+        "pValue55": 0.13435712770650762,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 8,
+        "decisions": 8,
+        "wins": 6,
+        "losses": 2,
+        "pushes": 0,
+        "accuracy": 0.75,
+        "coverage": 0.016666666666666666,
+        "seasonsWithPicks": 3,
+        "lower95": 0.40926987910258916,
+        "upper95": 0.9285223111419724,
+        "pValue55": 0.22013029457031255,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 11,
+        "decisions": 10,
+        "wins": 5,
+        "losses": 5,
+        "pushes": 1,
+        "accuracy": 0.5,
+        "coverage": 0.022916666666666665,
+        "seasonsWithPicks": 3,
+        "lower95": 0.23658959361548731,
+        "upper95": 0.7634104063845126,
+        "pValue55": 0.7384372992455079,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "underdog_recent_out|affected": {
+      "development_2009_2018": {
+        "picks": 45,
+        "decisions": 42,
+        "wins": 15,
+        "losses": 27,
+        "pushes": 3,
+        "accuracy": 0.35714285714285715,
+        "coverage": 0.028107432854465958,
+        "seasonsWithPicks": 8,
+        "lower95": 0.22988992501626865,
+        "upper95": 0.5083391071292063,
+        "pValue55": 0.9961882430113548,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 13,
+        "decisions": 13,
+        "wins": 5,
+        "losses": 8,
+        "pushes": 0,
+        "accuracy": 0.38461538461538464,
+        "coverage": 0.027083333333333334,
+        "seasonsWithPicks": 3,
+        "lower95": 0.17709446581236818,
+        "upper95": 0.6447751902773146,
+        "pValue55": 0.9301508335298834,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 15,
+        "decisions": 14,
+        "wins": 7,
+        "losses": 7,
+        "pushes": 1,
+        "accuracy": 0.5,
+        "coverage": 0.03125,
+        "seasonsWithPicks": 3,
+        "lower95": 0.2679886791947528,
+        "upper95": 0.7320113208052472,
+        "pValue55": 0.7413629170481899,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "underdog_recent_out|opponent": {
+      "development_2009_2018": {
+        "picks": 45,
+        "decisions": 42,
+        "wins": 27,
+        "losses": 15,
+        "pushes": 3,
+        "accuracy": 0.6428571428571429,
+        "coverage": 0.028107432854465958,
+        "seasonsWithPicks": 8,
+        "lower95": 0.4916608928707938,
+        "upper95": 0.7701100749837315,
+        "pValue55": 0.14563676197287473,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 13,
+        "decisions": 13,
+        "wins": 8,
+        "losses": 5,
+        "pushes": 0,
+        "accuracy": 0.6153846153846154,
+        "coverage": 0.027083333333333334,
+        "seasonsWithPicks": 3,
+        "lower95": 0.35522480972268555,
+        "upper95": 0.8229055341876319,
+        "pValue55": 0.42680603246401944,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 15,
+        "decisions": 14,
+        "wins": 7,
+        "losses": 7,
+        "pushes": 1,
+        "accuracy": 0.5,
+        "coverage": 0.03125,
+        "seasonsWithPicks": 3,
+        "lower95": 0.2679886791947528,
+        "upper95": 0.7320113208052472,
+        "pValue55": 0.7413629170481899,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "large_underdog_recent_out|affected": {
+      "development_2009_2018": {
+        "picks": 17,
+        "decisions": 16,
+        "wins": 4,
+        "losses": 12,
+        "pushes": 1,
+        "accuracy": 0.25,
+        "coverage": 0.010618363522798251,
+        "seasonsWithPicks": 8,
+        "lower95": 0.10181901984237346,
+        "upper95": 0.49498768929398645,
+        "pValue55": 0.996544088745595,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 6,
+        "decisions": 6,
+        "wins": 3,
+        "losses": 3,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.0125,
+        "seasonsWithPicks": 3,
+        "lower95": 0.18761280689940868,
+        "upper95": 0.8123871931005913,
+        "pValue55": 0.74473609375,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 5,
+        "decisions": 5,
+        "wins": 4,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.8,
+        "coverage": 0.010416666666666666,
+        "seasonsWithPicks": 3,
+        "lower95": 0.3755282641185388,
+        "upper95": 0.9637768390302125,
+        "pValue55": 0.2562175000000001,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "large_underdog_recent_out|opponent": {
+      "development_2009_2018": {
+        "picks": 17,
+        "decisions": 16,
+        "wins": 12,
+        "losses": 4,
+        "pushes": 1,
+        "accuracy": 0.75,
+        "coverage": 0.010618363522798251,
+        "seasonsWithPicks": 8,
+        "lower95": 0.5050123107060135,
+        "upper95": 0.8981809801576265,
+        "pValue55": 0.0853091886433715,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 6,
+        "decisions": 6,
+        "wins": 3,
+        "losses": 3,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.0125,
+        "seasonsWithPicks": 3,
+        "lower95": 0.18761280689940868,
+        "upper95": 0.8123871931005913,
+        "pValue55": 0.74473609375,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 5,
+        "decisions": 5,
+        "wins": 1,
+        "losses": 4,
+        "pushes": 0,
+        "accuracy": 0.2,
+        "coverage": 0.010416666666666666,
+        "seasonsWithPicks": 3,
+        "lower95": 0.03622316096978745,
+        "upper95": 0.6244717358814613,
+        "pValue55": 0.9815471875,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "good_passing_recent_out|affected": {
+      "development_2009_2018": {
+        "picks": 34,
+        "decisions": 32,
+        "wins": 14,
+        "losses": 18,
+        "pushes": 2,
+        "accuracy": 0.4375,
+        "coverage": 0.021236727045596503,
+        "seasonsWithPicks": 8,
+        "lower95": 0.2816508596944317,
+        "upper95": 0.6067469796877387,
+        "pValue55": 0.9270854461975886,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 10,
+        "decisions": 10,
+        "wins": 3,
+        "losses": 7,
+        "pushes": 0,
+        "accuracy": 0.3,
+        "coverage": 0.020833333333333332,
+        "seasonsWithPicks": 3,
+        "lower95": 0.10778928748621183,
+        "upper95": 0.6032267800204347,
+        "pValue55": 0.9726081607386718,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 6,
+        "decisions": 6,
+        "wins": 3,
+        "losses": 3,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.0125,
+        "seasonsWithPicks": 3,
+        "lower95": 0.18761280689940868,
+        "upper95": 0.8123871931005913,
+        "pValue55": 0.74473609375,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    },
+    "good_passing_recent_out|opponent": {
+      "development_2009_2018": {
+        "picks": 34,
+        "decisions": 32,
+        "wins": 18,
+        "losses": 14,
+        "pushes": 2,
+        "accuracy": 0.5625,
+        "coverage": 0.021236727045596503,
+        "seasonsWithPicks": 8,
+        "lower95": 0.3932530203122613,
+        "upper95": 0.7183491403055682,
+        "pValue55": 0.5165245614737075,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "validation_2019_2021": {
+        "picks": 10,
+        "decisions": 10,
+        "wins": 7,
+        "losses": 3,
+        "pushes": 0,
+        "accuracy": 0.7,
+        "coverage": 0.020833333333333332,
+        "seasonsWithPicks": 3,
+        "lower95": 0.39677321997956516,
+        "upper95": 0.892210712513788,
+        "pValue55": 0.26603794503085954,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation_2022_2024": {
+        "picks": 6,
+        "decisions": 6,
+        "wins": 3,
+        "losses": 3,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.0125,
+        "seasonsWithPicks": 3,
+        "lower95": 0.18761280689940868,
+        "upper95": 0.8123871931005913,
+        "pValue55": 0.74473609375,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      }
+    }
+  },
+  "selectedCandidate": "recent_out|opponent",
+  "selectionEligibleCount": 4,
+  "validationStrong55Policies": [],
+  "priorOnly55ForecastsEvaluation": {
+    "recent_out": {
+      "cohortCases": 19,
+      "picks": 19,
+      "wins": 10,
+      "losses": 8,
+      "pushes": 1,
+      "accuracy": 0.5555555555555556,
+      "coverageAllGames": 0.03958333333333333,
+      "meanChosenProbability": 0.5884024027709593,
+      "lower95": 0.3371606942825164,
+      "upper95": 0.7544076889861088,
+      "pValue55": 0.5778490963397597,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "dominant_out": {
+      "cohortCases": 23,
+      "picks": 9,
+      "wins": 4,
+      "losses": 5,
+      "pushes": 0,
+      "accuracy": 0.4444444444444444,
+      "coverageAllGames": 0.01875,
+      "meanChosenProbability": 0.5540540540540541,
+      "lower95": 0.188775429471914,
+      "upper95": 0.7333526542559703,
+      "pValue55": 0.8341779523515626,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "experienced_recent_out": {
+      "cohortCases": 11,
+      "picks": 11,
+      "wins": 5,
+      "losses": 5,
+      "pushes": 1,
+      "accuracy": 0.5,
+      "coverageAllGames": 0.022916666666666665,
+      "meanChosenProbability": 0.6047348769232309,
+      "lower95": 0.23658959361548731,
+      "upper95": 0.7634104063845126,
+      "pValue55": 0.7384372992455079,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "underdog_recent_out": {
+      "cohortCases": 15,
+      "picks": 15,
+      "wins": 7,
+      "losses": 7,
+      "pushes": 1,
+      "accuracy": 0.5,
+      "coverageAllGames": 0.03125,
+      "meanChosenProbability": 0.5828073089700997,
+      "lower95": 0.2679886791947528,
+      "upper95": 0.7320113208052472,
+      "pValue55": 0.7413629170481899,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "large_underdog_recent_out": {
+      "cohortCases": 5,
+      "picks": 4,
+      "wins": 0,
+      "losses": 4,
+      "pushes": 0,
+      "accuracy": 0.0,
+      "coverageAllGames": 0.008333333333333333,
+      "meanChosenProbability": 0.5853174603174602,
+      "lower95": 0.0,
+      "upper95": 0.48990002040399916,
+      "pValue55": 1.0,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "good_passing_recent_out": {
+      "cohortCases": 6,
+      "picks": 4,
+      "wins": 1,
+      "losses": 3,
+      "pushes": 0,
+      "accuracy": 0.25,
+      "coverageAllGames": 0.008333333333333333,
+      "meanChosenProbability": 0.5618486352357319,
+      "lower95": 0.045586062644636216,
+      "upper95": 0.6993639475573634,
+      "pValue55": 0.95899375,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    }
+  },
+  "warnings": [
+    "Missing records do not mean healthy; 2009 row timestamps are empty and 2025 has no timestamp column; both are excluded.",
+    "Development 2009\u20132018 is effectively 2010\u20132018 because 2009 lacks usable timestamps.",
+    "Unqueried injury keys may be backup QBs; missing role records may mean no report, not necessarily failed joins.",
+    "date_modified is a retrospective source update timestamp, not an immutable pregame snapshot.",
+    "Starter roles inferred from earlier starts, not confirmed depth charts; IR/benched/long-term absences may be missed.",
+    "Repeated QB injuries and team-season outcomes are dependent; binomial/Wilson/search corrections are nominal.",
+    "All archived years have already been seen: retrospective corroboration only."
+  ],
+  "selectedEvaluationCases": [
+    {
+      "gameId": "2022_04_NE_GB",
+      "season": 2022,
+      "week": 4,
+      "affectedTeam": "NE",
+      "opponent": "GB",
+      "affectedHome": false,
+      "kickoffUtc": "2022-10-02T20:25:00+00:00",
+      "knownOutQb": "Mac Jones",
+      "knownOutGsis": "00-0036972",
+      "reportUpdatedUtc": "2022-09-30T19:50:23Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": false,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": true,
+        "good_passing_recent_out": true
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 20,
+        "affectedSpread": 10.0,
+        "passingEpa": 0.0018344794482818558
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2022_05_MIA_NYJ",
+      "season": 2022,
+      "week": 5,
+      "affectedTeam": "MIA",
+      "opponent": "NYJ",
+      "affectedHome": false,
+      "kickoffUtc": "2022-10-09T17:00:00+00:00",
+      "knownOutQb": "Tua Tagovailoa",
+      "knownOutGsis": "00-0036212",
+      "reportUpdatedUtc": "2022-10-07T19:35:07Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": false,
+        "underdog_recent_out": false,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": true
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 25,
+        "affectedSpread": -3.0,
+        "passingEpa": 0.24145812235585268
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2022_07_GB_WAS",
+      "season": 2022,
+      "week": 7,
+      "affectedTeam": "WAS",
+      "opponent": "GB",
+      "affectedHome": true,
+      "kickoffUtc": "2022-10-23T17:00:00+00:00",
+      "knownOutQb": "Carson Wentz",
+      "knownOutGsis": "00-0032950",
+      "reportUpdatedUtc": "2022-10-21T18:25:16Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 91,
+        "affectedSpread": 4.0,
+        "passingEpa": -0.14973797337244618
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2022_08_WAS_IND",
+      "season": 2022,
+      "week": 8,
+      "affectedTeam": "IND",
+      "opponent": "WAS",
+      "affectedHome": true,
+      "kickoffUtc": "2022-10-30T20:25:00+00:00",
+      "knownOutQb": "Matt Ryan",
+      "knownOutGsis": "00-0026143",
+      "reportUpdatedUtc": "2022-10-28T18:59:08Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": false,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 229,
+        "affectedSpread": -3.0,
+        "passingEpa": -0.07822063465179327
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2022_11_CAR_BAL",
+      "season": 2022,
+      "week": 11,
+      "affectedTeam": "CAR",
+      "opponent": "BAL",
+      "affectedHome": false,
+      "kickoffUtc": "2022-11-20T18:00:00+00:00",
+      "knownOutQb": "Phillip Walker",
+      "knownOutGsis": "00-0033275",
+      "reportUpdatedUtc": "2022-11-18T17:40:28Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": false,
+        "experienced_recent_out": false,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": true,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": false,
+        "recentCareerStarts": 7,
+        "affectedSpread": 13.0,
+        "passingEpa": -0.15027285355653414
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2022_12_LA_KC",
+      "season": 2022,
+      "week": 12,
+      "affectedTeam": "LA",
+      "opponent": "KC",
+      "affectedHome": false,
+      "kickoffUtc": "2022-11-27T21:25:00+00:00",
+      "knownOutQb": "Matthew Stafford",
+      "knownOutGsis": "00-0026498",
+      "reportUpdatedUtc": "2022-11-25T20:36:13Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": true,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 191,
+        "affectedSpread": 16.5,
+        "passingEpa": -0.06361479644054374
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2022_13_GB_CHI",
+      "season": 2022,
+      "week": 13,
+      "affectedTeam": "CHI",
+      "opponent": "GB",
+      "affectedHome": true,
+      "kickoffUtc": "2022-12-04T18:00:00+00:00",
+      "knownOutQb": "Trevor Siemian",
+      "knownOutGsis": "00-0032156",
+      "reportUpdatedUtc": "2022-12-02T19:50:10Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": false,
+        "experienced_recent_out": false,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": false,
+        "recentCareerStarts": 30,
+        "affectedSpread": 4.0,
+        "passingEpa": -0.13825124449493673
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2022_14_TB_SF",
+      "season": 2022,
+      "week": 14,
+      "affectedTeam": "SF",
+      "opponent": "TB",
+      "affectedHome": true,
+      "kickoffUtc": "2022-12-11T21:25:00+00:00",
+      "knownOutQb": "Jimmy Garoppolo",
+      "knownOutGsis": "00-0031345",
+      "reportUpdatedUtc": "2022-12-09T22:02:45Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2022.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": false,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": true
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 58,
+        "affectedSpread": -3.5,
+        "passingEpa": 0.19345857731072566
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2023_06_NYG_BUF",
+      "season": 2023,
+      "week": 6,
+      "affectedTeam": "NYG",
+      "opponent": "BUF",
+      "affectedHome": false,
+      "kickoffUtc": "2023-10-16T00:20:00+00:00",
+      "knownOutQb": "Daniel Jones",
+      "knownOutGsis": "00-0035710",
+      "reportUpdatedUtc": "2023-10-13T18:11:24Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": true,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 58,
+        "affectedSpread": 15.5,
+        "passingEpa": -0.28741862675008945
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2023_08_ATL_TEN",
+      "season": 2023,
+      "week": 8,
+      "affectedTeam": "TEN",
+      "opponent": "ATL",
+      "affectedHome": true,
+      "kickoffUtc": "2023-10-29T17:00:00+00:00",
+      "knownOutQb": "Ryan Tannehill",
+      "knownOutGsis": "00-0029701",
+      "reportUpdatedUtc": "2023-10-27T19:44:30Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 149,
+        "affectedSpread": 2.5,
+        "passingEpa": -0.08908212893791877
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2023_08_CLE_SEA",
+      "season": 2023,
+      "week": 8,
+      "affectedTeam": "CLE",
+      "opponent": "SEA",
+      "affectedHome": false,
+      "kickoffUtc": "2023-10-29T20:05:00+00:00",
+      "knownOutQb": "Deshaun Watson",
+      "knownOutGsis": "00-0033537",
+      "reportUpdatedUtc": "2023-10-27T18:50:41Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 63,
+        "affectedSpread": 4.0,
+        "passingEpa": -0.2759018977584308
+      },
+      "affectedCover": null
+    },
+    {
+      "gameId": "2023_09_NYG_LV",
+      "season": 2023,
+      "week": 9,
+      "affectedTeam": "NYG",
+      "opponent": "LV",
+      "affectedHome": false,
+      "kickoffUtc": "2023-11-05T21:25:00+00:00",
+      "knownOutQb": "Tyrod Taylor",
+      "knownOutGsis": "00-0028118",
+      "reportUpdatedUtc": "2023-11-03T18:23:39Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": false,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": false,
+        "recentCareerStarts": 57,
+        "affectedSpread": 1.0,
+        "passingEpa": -0.2879026638809301
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2023_10_NO_MIN",
+      "season": 2023,
+      "week": 10,
+      "affectedTeam": "MIN",
+      "opponent": "NO",
+      "affectedHome": true,
+      "kickoffUtc": "2023-11-12T18:00:00+00:00",
+      "knownOutQb": "Jaren Hall",
+      "knownOutGsis": "00-0038598",
+      "reportUpdatedUtc": "2023-11-10T19:54:30Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": false,
+        "experienced_recent_out": false,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": true
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": false,
+        "recentCareerStarts": 1,
+        "affectedSpread": 3.0,
+        "passingEpa": 0.05302831957110012
+      },
+      "affectedCover": true
+    },
+    {
+      "gameId": "2023_12_PIT_CIN",
+      "season": 2023,
+      "week": 12,
+      "affectedTeam": "CIN",
+      "opponent": "PIT",
+      "affectedHome": true,
+      "kickoffUtc": "2023-11-26T18:00:00+00:00",
+      "knownOutQb": "Joe Burrow",
+      "knownOutGsis": "00-0036442",
+      "reportUpdatedUtc": "2023-11-24T19:13:27Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 52,
+        "affectedSpread": 2.0,
+        "passingEpa": -0.01644270983678547
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2023_13_CLE_LA",
+      "season": 2023,
+      "week": 13,
+      "affectedTeam": "CLE",
+      "opponent": "LA",
+      "affectedHome": false,
+      "kickoffUtc": "2023-12-03T21:25:00+00:00",
+      "knownOutQb": "Dorian Thompson-Robinson",
+      "knownOutGsis": "00-0038583",
+      "reportUpdatedUtc": "2023-12-01T21:33:42Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": false,
+        "experienced_recent_out": false,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": false,
+        "recentCareerStarts": 3,
+        "affectedSpread": 3.5,
+        "passingEpa": -0.20476979476190127
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2023_14_NE_PIT",
+      "season": 2023,
+      "week": 14,
+      "affectedTeam": "PIT",
+      "opponent": "NE",
+      "affectedHome": true,
+      "kickoffUtc": "2023-12-08T01:15:00+00:00",
+      "knownOutQb": "Kenny Pickett",
+      "knownOutGsis": "00-0038102",
+      "reportUpdatedUtc": "2023-12-06T21:05:48Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2023.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": false,
+        "underdog_recent_out": false,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 25,
+        "affectedSpread": -6.0,
+        "passingEpa": -0.08290781326824455
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2024_06_TB_NO",
+      "season": 2024,
+      "week": 6,
+      "affectedTeam": "NO",
+      "opponent": "TB",
+      "affectedHome": true,
+      "kickoffUtc": "2024-10-13T17:00:00+00:00",
+      "knownOutQb": "Derek Carr",
+      "knownOutGsis": "00-0031280",
+      "reportUpdatedUtc": "2024-10-11T18:53:02Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": true
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 164,
+        "affectedSpread": 3.5,
+        "passingEpa": 0.21810941045951665
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2024_10_PHI_DAL",
+      "season": 2024,
+      "week": 10,
+      "affectedTeam": "DAL",
+      "opponent": "PHI",
+      "affectedHome": true,
+      "kickoffUtc": "2024-11-10T21:25:00+00:00",
+      "knownOutQb": "Dak Prescott",
+      "knownOutGsis": "00-0033077",
+      "reportUpdatedUtc": "2024-11-08T19:19:07Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": true,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": true,
+        "good_passing_recent_out": false
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 121,
+        "affectedSpread": 7.5,
+        "passingEpa": -0.027854938098130656
+      },
+      "affectedCover": false
+    },
+    {
+      "gameId": "2024_12_SF_GB",
+      "season": 2024,
+      "week": 12,
+      "affectedTeam": "SF",
+      "opponent": "GB",
+      "affectedHome": false,
+      "kickoffUtc": "2024-11-24T21:25:00+00:00",
+      "knownOutQb": "Brock Purdy",
+      "knownOutGsis": "00-0037834",
+      "reportUpdatedUtc": "2024-11-22T20:31:34Z",
+      "sourceFile": "spikes/historical-analogues/external/injuries_2024.csv",
+      "cohorts": {
+        "recent_out": true,
+        "dominant_out": true,
+        "experienced_recent_out": false,
+        "underdog_recent_out": true,
+        "large_underdog_recent_out": false,
+        "good_passing_recent_out": true
+      },
+      "facts": {
+        "recentOut": true,
+        "dominantOut": true,
+        "recentCareerStarts": 31,
+        "affectedSpread": 6.5,
+        "passingEpa": 0.16557608356970568
+      },
+      "affectedCover": false
+    }
+  ],
+  "selectedByEvaluationYear": {
+    "2022": {
+      "picks": 8,
+      "decisions": 8,
+      "wins": 3,
+      "losses": 5,
+      "pushes": 0,
+      "accuracy": 0.375,
+      "coverage": 0.05,
+      "seasonsWithPicks": 1,
+      "lower95": 0.13684175946152105,
+      "upper95": 0.6942621454161981,
+      "pValue55": 0.9115441366796875,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "2023": {
+      "picks": 8,
+      "decisions": 7,
+      "wins": 4,
+      "losses": 3,
+      "pushes": 1,
+      "accuracy": 0.5714285714285714,
+      "coverage": 0.05,
+      "seasonsWithPicks": 1,
+      "lower95": 0.2504542304090258,
+      "upper95": 0.8417830777373732,
+      "pValue55": 0.6082877968750001,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    },
+    "2024": {
+      "picks": 3,
+      "decisions": 3,
+      "wins": 3,
+      "losses": 0,
+      "pushes": 0,
+      "accuracy": 1.0,
+      "coverage": 0.01875,
+      "seasonsWithPicks": 1,
+      "lower95": 0.43849391955098227,
+      "upper95": 1.0,
+      "pValue55": 0.16637500000000013,
+      "pValue55Adjusted": 1.0,
+      "strong55Evidence": false
+    }
+  },
+  "sourceAudit": [
+    {
+      "season": 2009,
+      "rows": 4821,
+      "qbTargetWeekRows": 109,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 0,
+      "statusCounts": {
+        "Questionable": 20,
+        "Probable": 70,
+        "Doubtful": 3,
+        "blank": 4,
+        "Out": 12
+      }
+    },
+    {
+      "season": 2010,
+      "rows": 4491,
+      "qbTargetWeekRows": 134,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 134,
+      "statusCounts": {
+        "Questionable": 32,
+        "Out": 25,
+        "Probable": 60,
+        "blank": 5,
+        "Doubtful": 12
+      }
+    },
+    {
+      "season": 2011,
+      "rows": 4971,
+      "qbTargetWeekRows": 106,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 106,
+      "statusCounts": {
+        "Questionable": 20,
+        "blank": 4,
+        "Out": 27,
+        "Probable": 51,
+        "Doubtful": 4
+      }
+    },
+    {
+      "season": 2012,
+      "rows": 5533,
+      "qbTargetWeekRows": 107,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 107,
+      "statusCounts": {
+        "Questionable": 15,
+        "Probable": 66,
+        "blank": 4,
+        "Out": 21,
+        "Doubtful": 1
+      }
+    },
+    {
+      "season": 2013,
+      "rows": 5070,
+      "qbTargetWeekRows": 93,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 93,
+      "statusCounts": {
+        "Out": 30,
+        "Probable": 49,
+        "Questionable": 11,
+        "Doubtful": 3
+      }
+    },
+    {
+      "season": 2014,
+      "rows": 5078,
+      "qbTargetWeekRows": 78,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 78,
+      "statusCounts": {
+        "Probable": 50,
+        "Out": 11,
+        "Doubtful": 2,
+        "Questionable": 14,
+        "blank": 1
+      }
+    },
+    {
+      "season": 2015,
+      "rows": 5232,
+      "qbTargetWeekRows": 104,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 104,
+      "statusCounts": {
+        "Probable": 65,
+        "Questionable": 17,
+        "Out": 22
+      }
+    },
+    {
+      "season": 2016,
+      "rows": 5115,
+      "qbTargetWeekRows": 111,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 111,
+      "statusCounts": {
+        "blank": 64,
+        "Questionable": 20,
+        "Doubtful": 5,
+        "Out": 22
+      }
+    },
+    {
+      "season": 2017,
+      "rows": 5104,
+      "qbTargetWeekRows": 103,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 103,
+      "statusCounts": {
+        "blank": 64,
+        "Out": 22,
+        "Questionable": 17
+      }
+    },
+    {
+      "season": 2018,
+      "rows": 5133,
+      "qbTargetWeekRows": 110,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 110,
+      "statusCounts": {
+        "blank": 78,
+        "Questionable": 12,
+        "Out": 15,
+        "Doubtful": 5
+      }
+    },
+    {
+      "season": 2019,
+      "rows": 5392,
+      "qbTargetWeekRows": 105,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 105,
+      "statusCounts": {
+        "Out": 19,
+        "Questionable": 13,
+        "blank": 73
+      }
+    },
+    {
+      "season": 2020,
+      "rows": 5661,
+      "qbTargetWeekRows": 107,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 107,
+      "statusCounts": {
+        "blank": 62,
+        "Out": 14,
+        "Questionable": 26,
+        "Doubtful": 5
+      }
+    },
+    {
+      "season": 2021,
+      "rows": 5587,
+      "qbTargetWeekRows": 122,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 122,
+      "statusCounts": {
+        "Questionable": 20,
+        "blank": 74,
+        "Out": 23,
+        "Doubtful": 5
+      }
+    },
+    {
+      "season": 2022,
+      "rows": 5682,
+      "qbTargetWeekRows": 114,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 114,
+      "statusCounts": {
+        "Out": 14,
+        "blank": 65,
+        "Questionable": 28,
+        "Doubtful": 7
+      }
+    },
+    {
+      "season": 2023,
+      "rows": 5599,
+      "qbTargetWeekRows": 114,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 114,
+      "statusCounts": {
+        "blank": 65,
+        "Questionable": 26,
+        "Out": 20,
+        "Doubtful": 3
+      }
+    },
+    {
+      "season": 2024,
+      "rows": 6215,
+      "qbTargetWeekRows": 114,
+      "hasTimestampColumn": true,
+      "timestampedQbRows": 114,
+      "statusCounts": {
+        "blank": 84,
+        "Questionable": 22,
+        "Out": 5,
+        "Doubtful": 3
+      }
+    },
+    {
+      "season": 2025,
+      "rows": 6068,
+      "qbTargetWeekRows": 138,
+      "hasTimestampColumn": false,
+      "timestampedQbRows": 0,
+      "statusCounts": {
+        "blank": 85,
+        "Out": 29,
+        "Questionable": 23,
+        "Doubtful": 1
+      }
+    }
+  ],
+  "caseAudit": {
+    "injury_keys_total": 1869,
+    "injury_keys_without_target_team_week": 0,
+    "role_lookups_total": 10542,
+    "role_lookups_with_injury_record": 2436,
+    "role_report_timing_missing_or_invalid_timestamp": 317,
+    "role_lookups_without_injury_record": 8106,
+    "role_lookups_without_prior_qb": 342,
+    "role_report_timing_pregame_timestamp": 2119,
+    "role_report_status_Out": 264,
+    "out_report_actual_target_starter_conflict": 0,
+    "role_report_status_Probable": 512,
+    "role_report_status_Questionable": 331,
+    "role_report_status_Doubtful": 59,
+    "role_report_status_blank": 953,
+    "both_teams_affected_abstained": 3,
+    "single_affected_game_cases": 177,
+    "injury_keys_queried_as_role": 1432,
+    "injury_keys_on_target_team_week_not_queried_as_role": 437,
+    "cases_by_season": {
+      "2010": 17,
+      "2011": 10,
+      "2012": 16,
+      "2013": 28,
+      "2014": 6,
+      "2015": 18,
+      "2016": 9,
+      "2017": 7,
+      "2018": 9,
+      "2019": 11,
+      "2020": 8,
+      "2021": 10,
+      "2022": 11,
+      "2023": 12,
+      "2024": 5
+    }
+  },
+  "scheduleCorrection": {
+    "gameId": "2022_11_CAR_BAL",
+    "field": "away_qb_id/name",
+    "raw": "Phillip Walker / 00-0033275",
+    "researchOnly": "Baker Mayfield / 00-0034855",
+    "sources": [
+      "https://www.panthers.com/gameday/2022/week-11/injury-report",
+      "https://www.panthers.com/gameday/2022/week-11/game-hub-web"
+    ]
+  }
+}

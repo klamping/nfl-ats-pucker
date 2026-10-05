@@ -74,9 +74,17 @@
       ['Home cover margin', `${coverMargins.home.count} · median ${coverMargins.home.median ?? '—'} · middle 50% ${coverMargins.home.lowerQuartile ?? '—'}–${coverMargins.home.upperQuartile ?? '—'}`],
       ['Away cover margin', `${coverMargins.away.count} · median ${coverMargins.away.median ?? '—'} · middle 50% ${coverMargins.away.lowerQuartile ?? '—'}–${coverMargins.away.upperQuartile ?? '—'}`],
       ['Median margin gap', coverMargins.medianGap === null ? '—' : signed(coverMargins.medianGap)],
-      ...data.distanceGroups.filter((group) => group.candidateCount > 0).map((group) => [`≤ ${group.maximumDistance.toFixed(3)}`,
-        `${group.candidateCount} · H ${percent(group.homeCoverRate)} · A ${percent(group.awayCoverRate)} · P ${group.pushes}`]),
     ];
+    const distanceCards = data.distanceGroups.filter((group) => group.candidateCount > 0).map((group) => {
+      const card = element('div', undefined, 'summary-card');
+      const coverSplit = group.homeCoverRate === null ? '—' : `${signed(Math.round((group.homeCoverRate - 0.5) * 100))} pp`;
+      const list = element('dl', undefined, 'summary-data-list');
+      for (const [label, value] of [['Games', group.candidateCount], ['Cover split', coverSplit], ['Pushes', group.pushes]]) {
+        list.append(element('dt', label), element('dd', value));
+      }
+      card.append(element('h3', `≤ ${group.maximumDistance.toFixed(3)}`, 'overline'), list);
+      return card;
+    });
     const marginCards = cards.filter(([title]) => /Cover split|Weighted confidence|cover margin|Median margin gap/.test(title));
     const standardCards = cards.filter(([title]) => !/Cover split|Weighted confidence|cover margin|Median margin gap/.test(title));
     const table = element('table');
@@ -88,7 +96,7 @@
       const card = element('div', undefined, 'summary-card');
       card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));
       return card;
-    }), table);
+    }), ...distanceCards, table);
     byId('count-label').textContent = `${summary.candidateCount} qualifying game${summary.candidateCount === 1 ? '' : 's'}`;
     renderProfile(target);
   }

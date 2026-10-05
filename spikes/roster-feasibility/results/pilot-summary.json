@@ -1,0 +1,1047 @@
+{
+  "selectedPolicy": null,
+  "selectionEligiblePolicies": [],
+  "policies": {
+    "last3|multi_unit": {
+      "development": {
+        "games": 961,
+        "picks": 34,
+        "wins": 17,
+        "losses": 17,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.03537981269510926,
+        "seasons": [
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "featureEligibleGames": 953,
+        "qbOutAbstentionGames": 119,
+        "lower95": 0.34069062628048985,
+        "upper95": 0.6593093737195102,
+        "pValue55": 0.7763880548618985,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "selection": {
+        "games": 480,
+        "picks": 25,
+        "wins": 12,
+        "losses": 13,
+        "pushes": 0,
+        "accuracy": 0.48,
+        "coverage": 0.052083333333333336,
+        "seasons": [
+          2019,
+          2020,
+          2021
+        ],
+        "featureEligibleGames": 476,
+        "qbOutAbstentionGames": 56,
+        "lower95": 0.30031003928960015,
+        "upper95": 0.6650178204685269,
+        "pValue55": 0.8173115801502318,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation": {
+        "games": 480,
+        "picks": 37,
+        "wins": 19,
+        "losses": 18,
+        "pushes": 0,
+        "accuracy": 0.5135135135135135,
+        "coverage": 0.07708333333333334,
+        "seasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": 0.3589463722598092,
+        "upper95": 0.6655384667278896,
+        "pValue55": 0.7303733098727649,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluationByYear": {
+        "2022": {
+          "games": 160,
+          "picks": 16,
+          "wins": 6,
+          "losses": 10,
+          "pushes": 0,
+          "accuracy": 0.375,
+          "coverage": 0.1,
+          "seasons": [
+            2022
+          ],
+          "featureEligibleGames": 158,
+          "qbOutAbstentionGames": 14,
+          "lower95": 0.18480982554752806,
+          "upper95": 0.613593529020652,
+          "pValue55": 0.9513758596208661,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2023": {
+          "games": 160,
+          "picks": 9,
+          "wins": 6,
+          "losses": 3,
+          "pushes": 0,
+          "accuracy": 0.6666666666666666,
+          "coverage": 0.05625,
+          "seasons": [
+            2023
+          ],
+          "featureEligibleGames": 159,
+          "qbOutAbstentionGames": 19,
+          "lower95": 0.35419734749908977,
+          "upper95": 0.879418401317257,
+          "pValue55": 0.3613846036796876,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2024": {
+          "games": 160,
+          "picks": 12,
+          "wins": 7,
+          "losses": 5,
+          "pushes": 0,
+          "accuracy": 0.5833333333333334,
+          "coverage": 0.075,
+          "seasons": [
+            2024
+          ],
+          "featureEligibleGames": 160,
+          "qbOutAbstentionGames": 5,
+          "lower95": 0.3195073356553728,
+          "upper95": 0.8067425380947535,
+          "pValue55": 0.5269302397587156,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        }
+      },
+      "evaluationGoodStats": {
+        "games": 14,
+        "picks": 14,
+        "wins": 7,
+        "losses": 7,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": null,
+        "seasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "featureEligibleGames": 14,
+        "qbOutAbstentionGames": 0,
+        "lower95": 0.2679886791947528,
+        "upper95": 0.7320113208052472,
+        "pValue55": 0.7413629170481899,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false,
+        "denominatorNote": "Conditional performance among existing picks with positive prior net points; broader opportunity coverage not measured."
+      }
+    },
+    "last3|ol_pressure": {
+      "development": {
+        "games": 961,
+        "picks": 1,
+        "wins": 1,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": 0.001040582726326743,
+        "seasons": [
+          2013
+        ],
+        "featureEligibleGames": 953,
+        "qbOutAbstentionGames": 119,
+        "lower95": 0.20654329147389294,
+        "upper95": 1.0,
+        "pValue55": 0.55,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "selection": {
+        "games": 480,
+        "picks": 2,
+        "wins": 1,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.004166666666666667,
+        "seasons": [
+          2020,
+          2021
+        ],
+        "featureEligibleGames": 476,
+        "qbOutAbstentionGames": 56,
+        "lower95": 0.09452865480086614,
+        "upper95": 0.9054713451991339,
+        "pValue55": 0.7975000000000001,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation": {
+        "games": 480,
+        "picks": 3,
+        "wins": 2,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.6666666666666666,
+        "coverage": 0.00625,
+        "seasons": [
+          2022,
+          2024
+        ],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": 0.2076549551264879,
+        "upper95": 0.9385096847238394,
+        "pValue55": 0.5747500000000001,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluationByYear": {
+        "2022": {
+          "games": 160,
+          "picks": 1,
+          "wins": 0,
+          "losses": 1,
+          "pushes": 0,
+          "accuracy": 0.0,
+          "coverage": 0.00625,
+          "seasons": [
+            2022
+          ],
+          "featureEligibleGames": 158,
+          "qbOutAbstentionGames": 14,
+          "lower95": 0.0,
+          "upper95": 0.7934567085261071,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2023": {
+          "games": 160,
+          "picks": 0,
+          "wins": 0,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": null,
+          "coverage": 0.0,
+          "seasons": [],
+          "featureEligibleGames": 159,
+          "qbOutAbstentionGames": 19,
+          "lower95": null,
+          "upper95": null,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2024": {
+          "games": 160,
+          "picks": 2,
+          "wins": 2,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": 1.0,
+          "coverage": 0.0125,
+          "seasons": [
+            2024
+          ],
+          "featureEligibleGames": 160,
+          "qbOutAbstentionGames": 5,
+          "lower95": 0.34237195288961925,
+          "upper95": 1.0,
+          "pValue55": 0.30250000000000016,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        }
+      },
+      "evaluationGoodStats": {
+        "games": 1,
+        "picks": 1,
+        "wins": 1,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": null,
+        "seasons": [
+          2024
+        ],
+        "featureEligibleGames": 1,
+        "qbOutAbstentionGames": 0,
+        "lower95": 0.20654329147389294,
+        "upper95": 1.0,
+        "pValue55": 0.55,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false,
+        "denominatorNote": "Conditional performance among existing picks with positive prior net points; broader opportunity coverage not measured."
+      }
+    },
+    "last3|secondary_passing": {
+      "development": {
+        "games": 961,
+        "picks": 1,
+        "wins": 1,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": 0.001040582726326743,
+        "seasons": [
+          2017
+        ],
+        "featureEligibleGames": 953,
+        "qbOutAbstentionGames": 119,
+        "lower95": 0.20654329147389294,
+        "upper95": 1.0,
+        "pValue55": 0.55,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "selection": {
+        "games": 480,
+        "picks": 1,
+        "wins": 1,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": 0.0020833333333333333,
+        "seasons": [
+          2020
+        ],
+        "featureEligibleGames": 476,
+        "qbOutAbstentionGames": 56,
+        "lower95": 0.20654329147389294,
+        "upper95": 1.0,
+        "pValue55": 0.55,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation": {
+        "games": 480,
+        "picks": 1,
+        "wins": 0,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.0,
+        "coverage": 0.0020833333333333333,
+        "seasons": [
+          2022
+        ],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": 0.0,
+        "upper95": 0.7934567085261071,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluationByYear": {
+        "2022": {
+          "games": 160,
+          "picks": 1,
+          "wins": 0,
+          "losses": 1,
+          "pushes": 0,
+          "accuracy": 0.0,
+          "coverage": 0.00625,
+          "seasons": [
+            2022
+          ],
+          "featureEligibleGames": 158,
+          "qbOutAbstentionGames": 14,
+          "lower95": 0.0,
+          "upper95": 0.7934567085261071,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2023": {
+          "games": 160,
+          "picks": 0,
+          "wins": 0,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": null,
+          "coverage": 0.0,
+          "seasons": [],
+          "featureEligibleGames": 159,
+          "qbOutAbstentionGames": 19,
+          "lower95": null,
+          "upper95": null,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2024": {
+          "games": 160,
+          "picks": 0,
+          "wins": 0,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": null,
+          "coverage": 0.0,
+          "seasons": [],
+          "featureEligibleGames": 160,
+          "qbOutAbstentionGames": 5,
+          "lower95": null,
+          "upper95": null,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        }
+      },
+      "evaluationGoodStats": {
+        "games": 0,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": null,
+        "seasons": [],
+        "featureEligibleGames": 0,
+        "qbOutAbstentionGames": 0,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false,
+        "denominatorNote": "Conditional performance among existing picks with positive prior net points; broader opportunity coverage not measured."
+      }
+    },
+    "season|multi_unit": {
+      "development": {
+        "games": 961,
+        "picks": 63,
+        "wins": 33,
+        "losses": 26,
+        "pushes": 4,
+        "accuracy": 0.559322033898305,
+        "coverage": 0.06555671175858481,
+        "seasons": [
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "featureEligibleGames": 953,
+        "qbOutAbstentionGames": 119,
+        "lower95": 0.4328913027042265,
+        "upper95": 0.6784998776603726,
+        "pValue55": 0.4965406955665528,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "selection": {
+        "games": 480,
+        "picks": 37,
+        "wins": 20,
+        "losses": 17,
+        "pushes": 0,
+        "accuracy": 0.5405405405405406,
+        "coverage": 0.07708333333333334,
+        "seasons": [
+          2019,
+          2020,
+          2021
+        ],
+        "featureEligibleGames": 476,
+        "qbOutAbstentionGames": 56,
+        "lower95": 0.38383779524767364,
+        "upper95": 0.6896167217154228,
+        "pValue55": 0.61233646832292,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation": {
+        "games": 480,
+        "picks": 54,
+        "wins": 27,
+        "losses": 26,
+        "pushes": 1,
+        "accuracy": 0.5094339622641509,
+        "coverage": 0.1125,
+        "seasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": 0.3788330425329779,
+        "upper95": 0.6387597064396054,
+        "pValue55": 0.7683105502222782,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluationByYear": {
+        "2022": {
+          "games": 160,
+          "picks": 26,
+          "wins": 11,
+          "losses": 14,
+          "pushes": 1,
+          "accuracy": 0.44,
+          "coverage": 0.1625,
+          "seasons": [
+            2022
+          ],
+          "featureEligibleGames": 158,
+          "qbOutAbstentionGames": 14,
+          "lower95": 0.2666537494700256,
+          "upper95": 0.6293298298043557,
+          "pValue55": 0.9040170280467842,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2023": {
+          "games": 160,
+          "picks": 10,
+          "wins": 5,
+          "losses": 5,
+          "pushes": 0,
+          "accuracy": 0.5,
+          "coverage": 0.0625,
+          "seasons": [
+            2023
+          ],
+          "featureEligibleGames": 159,
+          "qbOutAbstentionGames": 19,
+          "lower95": 0.23658959361548731,
+          "upper95": 0.7634104063845126,
+          "pValue55": 0.7384372992455079,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2024": {
+          "games": 160,
+          "picks": 18,
+          "wins": 11,
+          "losses": 7,
+          "pushes": 0,
+          "accuracy": 0.6111111111111112,
+          "coverage": 0.1125,
+          "seasons": [
+            2024
+          ],
+          "featureEligibleGames": 160,
+          "qbOutAbstentionGames": 5,
+          "lower95": 0.3861866858065617,
+          "upper95": 0.7969500807306884,
+          "pValue55": 0.391475464176063,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        }
+      },
+      "evaluationGoodStats": {
+        "games": 17,
+        "picks": 17,
+        "wins": 8,
+        "losses": 9,
+        "pushes": 0,
+        "accuracy": 0.47058823529411764,
+        "coverage": null,
+        "seasons": [
+          2022,
+          2023,
+          2024
+        ],
+        "featureEligibleGames": 17,
+        "qbOutAbstentionGames": 0,
+        "lower95": 0.26164801196088106,
+        "upper95": 0.6903710268845051,
+        "pValue55": 0.8165921788635031,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false,
+        "denominatorNote": "Conditional performance among existing picks with positive prior net points; broader opportunity coverage not measured."
+      }
+    },
+    "season|ol_pressure": {
+      "development": {
+        "games": 961,
+        "picks": 3,
+        "wins": 3,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": 0.003121748178980229,
+        "seasons": [
+          2013,
+          2016,
+          2018
+        ],
+        "featureEligibleGames": 953,
+        "qbOutAbstentionGames": 119,
+        "lower95": 0.43849391955098227,
+        "upper95": 1.0,
+        "pValue55": 0.16637500000000013,
+        "pValue55Adjusted": 0.9982500000000007,
+        "strong55Evidence": false
+      },
+      "selection": {
+        "games": 480,
+        "picks": 1,
+        "wins": 1,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": 0.0020833333333333333,
+        "seasons": [
+          2020
+        ],
+        "featureEligibleGames": 476,
+        "qbOutAbstentionGames": 56,
+        "lower95": 0.20654329147389294,
+        "upper95": 1.0,
+        "pValue55": 0.55,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation": {
+        "games": 480,
+        "picks": 2,
+        "wins": 0,
+        "losses": 2,
+        "pushes": 0,
+        "accuracy": 0.0,
+        "coverage": 0.004166666666666667,
+        "seasons": [
+          2022,
+          2023
+        ],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": 0.0,
+        "upper95": 0.6576280471103807,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluationByYear": {
+        "2022": {
+          "games": 160,
+          "picks": 1,
+          "wins": 0,
+          "losses": 1,
+          "pushes": 0,
+          "accuracy": 0.0,
+          "coverage": 0.00625,
+          "seasons": [
+            2022
+          ],
+          "featureEligibleGames": 158,
+          "qbOutAbstentionGames": 14,
+          "lower95": 0.0,
+          "upper95": 0.7934567085261071,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2023": {
+          "games": 160,
+          "picks": 1,
+          "wins": 0,
+          "losses": 1,
+          "pushes": 0,
+          "accuracy": 0.0,
+          "coverage": 0.00625,
+          "seasons": [
+            2023
+          ],
+          "featureEligibleGames": 159,
+          "qbOutAbstentionGames": 19,
+          "lower95": 0.0,
+          "upper95": 0.7934567085261071,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2024": {
+          "games": 160,
+          "picks": 0,
+          "wins": 0,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": null,
+          "coverage": 0.0,
+          "seasons": [],
+          "featureEligibleGames": 160,
+          "qbOutAbstentionGames": 5,
+          "lower95": null,
+          "upper95": null,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        }
+      },
+      "evaluationGoodStats": {
+        "games": 1,
+        "picks": 1,
+        "wins": 0,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.0,
+        "coverage": null,
+        "seasons": [
+          2022
+        ],
+        "featureEligibleGames": 1,
+        "qbOutAbstentionGames": 0,
+        "lower95": 0.0,
+        "upper95": 0.7934567085261071,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false,
+        "denominatorNote": "Conditional performance among existing picks with positive prior net points; broader opportunity coverage not measured."
+      }
+    },
+    "season|secondary_passing": {
+      "development": {
+        "games": 961,
+        "picks": 5,
+        "wins": 4,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.8,
+        "coverage": 0.005202913631633715,
+        "seasons": [
+          2013,
+          2016,
+          2017,
+          2018
+        ],
+        "featureEligibleGames": 953,
+        "qbOutAbstentionGames": 119,
+        "lower95": 0.3755282641185388,
+        "upper95": 0.9637768390302125,
+        "pValue55": 0.2562175000000001,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "selection": {
+        "games": 480,
+        "picks": 1,
+        "wins": 0,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.0,
+        "coverage": 0.0020833333333333333,
+        "seasons": [
+          2019
+        ],
+        "featureEligibleGames": 476,
+        "qbOutAbstentionGames": 56,
+        "lower95": 0.0,
+        "upper95": 0.7934567085261071,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluation": {
+        "games": 480,
+        "picks": 2,
+        "wins": 1,
+        "losses": 1,
+        "pushes": 0,
+        "accuracy": 0.5,
+        "coverage": 0.004166666666666667,
+        "seasons": [
+          2022,
+          2024
+        ],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": 0.09452865480086614,
+        "upper95": 0.9054713451991339,
+        "pValue55": 0.7975000000000001,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "evaluationByYear": {
+        "2022": {
+          "games": 160,
+          "picks": 1,
+          "wins": 0,
+          "losses": 1,
+          "pushes": 0,
+          "accuracy": 0.0,
+          "coverage": 0.00625,
+          "seasons": [
+            2022
+          ],
+          "featureEligibleGames": 158,
+          "qbOutAbstentionGames": 14,
+          "lower95": 0.0,
+          "upper95": 0.7934567085261071,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2023": {
+          "games": 160,
+          "picks": 0,
+          "wins": 0,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": null,
+          "coverage": 0.0,
+          "seasons": [],
+          "featureEligibleGames": 159,
+          "qbOutAbstentionGames": 19,
+          "lower95": null,
+          "upper95": null,
+          "pValue55": 1.0,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        },
+        "2024": {
+          "games": 160,
+          "picks": 1,
+          "wins": 1,
+          "losses": 0,
+          "pushes": 0,
+          "accuracy": 1.0,
+          "coverage": 0.00625,
+          "seasons": [
+            2024
+          ],
+          "featureEligibleGames": 160,
+          "qbOutAbstentionGames": 5,
+          "lower95": 0.20654329147389294,
+          "upper95": 1.0,
+          "pValue55": 0.55,
+          "pValue55Adjusted": 1.0,
+          "strong55Evidence": false
+        }
+      },
+      "evaluationGoodStats": {
+        "games": 1,
+        "picks": 1,
+        "wins": 1,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": 1.0,
+        "coverage": null,
+        "seasons": [
+          2024
+        ],
+        "featureEligibleGames": 1,
+        "qbOutAbstentionGames": 0,
+        "lower95": 0.20654329147389294,
+        "upper95": 1.0,
+        "pValue55": 0.55,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false,
+        "denominatorNote": "Conditional performance among existing picks with positive prior net points; broader opportunity coverage not measured."
+      }
+    }
+  },
+  "priorOnly55Forecasts": {
+    "last3|multi_unit": {
+      "summary": {
+        "games": 480,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": 0.0,
+        "seasons": [],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "probabilitiesByYear": {
+        "2022": 0.4936708860759494,
+        "2023": 0.47368421052631576,
+        "2024": 0.49038461538461536
+      },
+      "priorDecisionsByYear": {
+        "2022": 59,
+        "2023": 75,
+        "2024": 84
+      }
+    },
+    "last3|ol_pressure": {
+      "summary": {
+        "games": 480,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": 0.0,
+        "seasons": [],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "probabilitiesByYear": {
+        "2022": 0.5217391304347826,
+        "2023": 0.5,
+        "2024": 0.5
+      },
+      "priorDecisionsByYear": {
+        "2022": 3,
+        "2023": 4,
+        "2024": 4
+      }
+    },
+    "last3|secondary_passing": {
+      "summary": {
+        "games": 480,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": 0.0,
+        "seasons": [],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "probabilitiesByYear": {
+        "2022": 0.5454545454545454,
+        "2023": 0.5217391304347826,
+        "2024": 0.5217391304347826
+      },
+      "priorDecisionsByYear": {
+        "2022": 2,
+        "2023": 3,
+        "2024": 3
+      }
+    },
+    "season|multi_unit": {
+      "summary": {
+        "games": 480,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": 0.0,
+        "seasons": [],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "probabilitiesByYear": {
+        "2022": 0.5431034482758621,
+        "2023": 0.524822695035461,
+        "2024": 0.5231788079470199
+      },
+      "priorDecisionsByYear": {
+        "2022": 96,
+        "2023": 121,
+        "2024": 131
+      }
+    },
+    "season|ol_pressure": {
+      "summary": {
+        "games": 480,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": 0.0,
+        "seasons": [],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "probabilitiesByYear": {
+        "2022": 0.5833333333333334,
+        "2023": 0.56,
+        "2024": 0.5384615384615384
+      },
+      "priorDecisionsByYear": {
+        "2022": 4,
+        "2023": 5,
+        "2024": 6
+      }
+    },
+    "season|secondary_passing": {
+      "summary": {
+        "games": 480,
+        "picks": 0,
+        "wins": 0,
+        "losses": 0,
+        "pushes": 0,
+        "accuracy": null,
+        "coverage": 0.0,
+        "seasons": [],
+        "featureEligibleGames": 477,
+        "qbOutAbstentionGames": 38,
+        "lower95": null,
+        "upper95": null,
+        "pValue55": 1.0,
+        "pValue55Adjusted": 1.0,
+        "strong55Evidence": false
+      },
+      "probabilitiesByYear": {
+        "2022": 0.5384615384615384,
+        "2023": 0.5185185185185185,
+        "2024": 0.5185185185185185
+      },
+      "priorDecisionsByYear": {
+        "2022": 6,
+        "2023": 7,
+        "2024": 7
+      }
+    }
+  },
+  "interpretation": "Incomplete unavailable-exposure probes, NOT net roster deterioration or calibrated probabilities.",
+  "searchCaveat": "Six fixed against-affected policies; wider research search and team/QB dependence are not captured by nominal intervals/tests.",
+  "periods": {
+    "development": "2013\u20132018",
+    "selection": "2019\u20132021",
+    "evaluation": "2022\u20132024 (retrospective, previously seen years)"
+  },
+  "sourceAudit": {
+    "malformed_or_incomplete_snap_tables": 2,
+    "snap_team_game_tables": 6270,
+    "crosswalk_pairs": 22669
+  },
+  "caseAudit": {
+    "report_issues": 30,
+    "missing_or_unavailable_prior_history": 4,
+    "unique_target_games": 1921
+  },
+  "selectedEvaluationCalls": []
+}

@@ -1,0 +1,418 @@
+[
+  {
+    "season": 2009,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2009.csv",
+    "sha256": "75ded84697ed0b9c629d09e5d54c7cb3f80ebb97deb84df23b9004148276f448",
+    "counts": {
+      "rows": 2983,
+      "missingTimestamp": 2983
+    },
+    "qualifiedOutPositions": {}
+  },
+  {
+    "season": 2010,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2010.csv",
+    "sha256": "6e86b7aba42b9adf76c083686b9bc6fbd7943293b411893ffe952f3b71997519",
+    "counts": {
+      "rows": 2809,
+      "qualifiedTimestamp": 2809,
+      "qualifiedOut": 504
+    },
+    "qualifiedOutPositions": {
+      "WR": 58,
+      "T": 39,
+      "LB": 74,
+      "CB": 58,
+      "DE": 48,
+      "S": 50,
+      "RB": 57,
+      "QB": 25,
+      "G": 18,
+      "C": 15,
+      "DT": 26,
+      "TE": 27,
+      "K": 9
+    }
+  },
+  {
+    "season": 2011,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2011.csv",
+    "sha256": "acf44d2952fec7d0806eed122e36d53f174ab742b25a4c6e9f3f1676da255a10",
+    "counts": {
+      "rows": 3090,
+      "qualifiedTimestamp": 3090,
+      "qualifiedOut": 564
+    },
+    "qualifiedOutPositions": {
+      "TE": 27,
+      "DT": 22,
+      "DE": 55,
+      "LB": 91,
+      "RB": 66,
+      "WR": 73,
+      "S": 38,
+      "CB": 57,
+      "T": 63,
+      "K": 7,
+      "G": 30,
+      "QB": 27,
+      "C": 6,
+      "P": 2
+    }
+  },
+  {
+    "season": 2012,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2012.csv",
+    "sha256": "8b8ce2ed5bd45bbb709e5402efa4fe930d63fedfce111df9b1fea08ffa51f237",
+    "counts": {
+      "rows": 3370,
+      "qualifiedTimestamp": 3370,
+      "qualifiedOut": 552
+    },
+    "qualifiedOutPositions": {
+      "CB": 79,
+      "TE": 28,
+      "RB": 62,
+      "WR": 62,
+      "G": 25,
+      "LB": 71,
+      "DT": 39,
+      "C": 10,
+      "S": 73,
+      "DE": 43,
+      "T": 37,
+      "K": 1,
+      "QB": 21,
+      "P": 1
+    }
+  },
+  {
+    "season": 2013,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2013.csv",
+    "sha256": "b84c71cf23be81375bbca62f7d2c51d53fa75330fbcf9f598ec4ac17fea7d8be",
+    "counts": {
+      "rows": 3197,
+      "qualifiedTimestamp": 3197,
+      "qualifiedOut": 516
+    },
+    "qualifiedOutPositions": {
+      "LB": 65,
+      "DT": 36,
+      "RB": 54,
+      "WR": 64,
+      "CB": 75,
+      "DE": 26,
+      "K": 3,
+      "QB": 30,
+      "S": 51,
+      "TE": 37,
+      "C": 7,
+      "G": 33,
+      "T": 34,
+      "LS": 1
+    }
+  },
+  {
+    "season": 2014,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2014.csv",
+    "sha256": "e675fd5d86c3451d76e7c5d530095db1641347eb3f9796c9a30dd7a75e3ba634",
+    "counts": {
+      "rows": 3166,
+      "qualifiedTimestamp": 3166,
+      "qualifiedOut": 592
+    },
+    "qualifiedOutPositions": {
+      "DT": 41,
+      "T": 31,
+      "WR": 53,
+      "LB": 116,
+      "C": 15,
+      "CB": 94,
+      "G": 28,
+      "TE": 54,
+      "S": 40,
+      "RB": 64,
+      "QB": 11,
+      "DE": 45
+    }
+  },
+  {
+    "season": 2015,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2015.csv",
+    "sha256": "fbca54ef42594cc52facc0d8c8dd74802b812771b9e33032e44ae8c7e21b0360",
+    "counts": {
+      "rows": 3282,
+      "qualifiedTimestamp": 3281,
+      "qualifiedOut": 638,
+      "lateTimestamp": 1
+    },
+    "qualifiedOutPositions": {
+      "WR": 103,
+      "RB": 47,
+      "TE": 39,
+      "S": 55,
+      "DE": 55,
+      "T": 40,
+      "G": 30,
+      "LB": 119,
+      "CB": 70,
+      "DT": 44,
+      "QB": 22,
+      "P": 2,
+      "C": 9,
+      "K": 3
+    }
+  },
+  {
+    "season": 2016,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2016.csv",
+    "sha256": "504e05968cb9c54ddc730fd9b6e7d1dd16a62db8029cc784d3d7bafcea7ff7cb",
+    "counts": {
+      "rows": 3254,
+      "qualifiedTimestamp": 3254,
+      "qualifiedOut": 704
+    },
+    "qualifiedOutPositions": {
+      "P": 1,
+      "DT": 46,
+      "LB": 106,
+      "T": 53,
+      "C": 32,
+      "WR": 74,
+      "RB": 72,
+      "TE": 65,
+      "QB": 22,
+      "DE": 46,
+      "G": 26,
+      "CB": 89,
+      "S": 68,
+      "LS": 4
+    }
+  },
+  {
+    "season": 2017,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2017.csv",
+    "sha256": "0d5139fbf41b0866517bd2bd5fd85bb20dbd4dd9bc36a706fed030a88731de6f",
+    "counts": {
+      "rows": 3209,
+      "qualifiedTimestamp": 3209,
+      "qualifiedOut": 586
+    },
+    "qualifiedOutPositions": {
+      "G": 48,
+      "DT": 26,
+      "S": 52,
+      "LB": 102,
+      "T": 50,
+      "DE": 39,
+      "RB": 49,
+      "CB": 63,
+      "TE": 34,
+      "C": 32,
+      "WR": 65,
+      "QB": 22,
+      "K": 4
+    }
+  },
+  {
+    "season": 2018,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2018.csv",
+    "sha256": "4724e1f37cc3076f564e997fbf269190e7dbe795a39315b903788e0a9c40065e",
+    "counts": {
+      "rows": 3305,
+      "qualifiedTimestamp": 3304,
+      "qualifiedOut": 608,
+      "lateTimestamp": 1
+    },
+    "qualifiedOutPositions": {
+      "CB": 85,
+      "DE": 58,
+      "RB": 56,
+      "DT": 21,
+      "WR": 86,
+      "C": 17,
+      "LB": 91,
+      "TE": 55,
+      "T": 34,
+      "K": 7,
+      "S": 51,
+      "G": 31,
+      "QB": 15,
+      "LS": 1
+    }
+  },
+  {
+    "season": 2019,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2019.csv",
+    "sha256": "daddfe8e04ddc3a29bce14f362e774fbadfb274c807f1f0fde7b5bf32aaf6cdf",
+    "counts": {
+      "rows": 3382,
+      "qualifiedTimestamp": 3377,
+      "qualifiedOut": 677,
+      "lateTimestamp": 5
+    },
+    "qualifiedOutPositions": {
+      "WR": 87,
+      "S": 56,
+      "RB": 61,
+      "LB": 94,
+      "CB": 88,
+      "TE": 66,
+      "QB": 19,
+      "G": 39,
+      "DT": 42,
+      "T": 64,
+      "DE": 41,
+      "K": 2,
+      "C": 15,
+      "P": 2,
+      "LS": 1
+    }
+  },
+  {
+    "season": 2020,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2020.csv",
+    "sha256": "706cca82824214f6b73ba0c6e537d3ee39766a50c644b8974b9fc28d7518de90",
+    "counts": {
+      "rows": 3514,
+      "qualifiedTimestamp": 3494,
+      "qualifiedOut": 537,
+      "lateTimestamp": 13,
+      "staleTimestamp": 7
+    },
+    "qualifiedOutPositions": {
+      "S": 56,
+      "K": 1,
+      "DE": 33,
+      "LB": 59,
+      "DT": 27,
+      "CB": 87,
+      "QB": 14,
+      "WR": 76,
+      "C": 13,
+      "RB": 60,
+      "T": 39,
+      "G": 38,
+      "TE": 30,
+      "P": 4
+    }
+  },
+  {
+    "season": 2021,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2021.csv",
+    "sha256": "1049fb9ff0fe7cfcf3ba8bfe1f5a35d3aba985c461c8fb7bf5201735b6d34254",
+    "counts": {
+      "rows": 3305,
+      "qualifiedTimestamp": 3305,
+      "qualifiedOut": 589
+    },
+    "qualifiedOutPositions": {
+      "RB": 63,
+      "DT": 43,
+      "WR": 81,
+      "T": 61,
+      "DE": 39,
+      "G": 31,
+      "S": 43,
+      "LB": 73,
+      "CB": 72,
+      "QB": 23,
+      "K": 3,
+      "C": 12,
+      "P": 2,
+      "TE": 38,
+      "FB": 5
+    }
+  },
+  {
+    "season": 2022,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2022.csv",
+    "sha256": "5f0d60324e597edd1a2ced8540b04e40b51dd440591dd1df11b8d96343387c9e",
+    "counts": {
+      "rows": 3419,
+      "qualifiedTimestamp": 3419,
+      "qualifiedOut": 682
+    },
+    "qualifiedOutPositions": {
+      "WR": 115,
+      "DT": 50,
+      "LB": 93,
+      "CB": 117,
+      "S": 55,
+      "RB": 34,
+      "TE": 50,
+      "T": 45,
+      "QB": 14,
+      "G": 38,
+      "K": 9,
+      "DE": 40,
+      "C": 17,
+      "FB": 5
+    }
+  },
+  {
+    "season": 2023,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2023.csv",
+    "sha256": "16b04e21da5aa3944cfa9c22cafcc84ed7e6d9866eaddf0344e9b8cbf2f63afe",
+    "counts": {
+      "rows": 3266,
+      "qualifiedTimestamp": 3266,
+      "qualifiedOut": 582
+    },
+    "qualifiedOutPositions": {
+      "DE": 20,
+      "LB": 76,
+      "WR": 70,
+      "CB": 92,
+      "S": 67,
+      "TE": 44,
+      "T": 58,
+      "DT": 27,
+      "FB": 9,
+      "G": 47,
+      "C": 12,
+      "P": 2,
+      "RB": 36,
+      "QB": 20,
+      "K": 2
+    }
+  },
+  {
+    "season": 2024,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2024.csv",
+    "sha256": "498bce8e13cb64b2ab9bb0ad6cb81d0a63c2ddb24016c9fc90c2de2126fae449",
+    "counts": {
+      "rows": 3703,
+      "qualifiedTimestamp": 3703,
+      "qualifiedOut": 691
+    },
+    "qualifiedOutPositions": {
+      "TE": 45,
+      "DT": 71,
+      "T": 79,
+      "CB": 99,
+      "LB": 101,
+      "S": 64,
+      "G": 32,
+      "RB": 49,
+      "C": 17,
+      "WR": 72,
+      "DE": 43,
+      "QB": 5,
+      "K": 7,
+      "P": 5,
+      "FB": 1,
+      "LS": 1
+    }
+  },
+  {
+    "season": 2025,
+    "sourcePath": "spikes/historical-analogues/external/injuries_2025.csv",
+    "sha256": "873ca1606dd575bd01152508a243ef6b3a0f8f97b90b707217e62ee8c7ceb735",
+    "counts": {
+      "rows": 3522,
+      "missingTimestamp": 3522
+    },
+    "qualifiedOutPositions": {}
+  }
+]

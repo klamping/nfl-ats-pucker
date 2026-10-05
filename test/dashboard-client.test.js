@@ -104,8 +104,8 @@ const sample = {
   coverMargins: { home: { count: 1, median: 3, lowerQuartile: 3, upperQuartile: 3 }, away: { count: 1, median: 1, lowerQuartile: 1, upperQuartile: 1 }, medianGap: 2 },
   confidence: { coverSplit: 0, weightedConfidence: 0, weightedSplit: 0 },
   distanceGroups: [{ maximumDistance: 0.025, candidateCount: 0, homeCovers: 0, awayCovers: 0,
-    pushes: 0, homeCoverRate: null, awayCoverRate: null }, { maximumDistance: 0.05, candidateCount: 2,
-    homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5, awayCoverRate: 0.5 }],
+  pushes: 0, homeCoverRate: null, awayCoverRate: null }, { maximumDistance: 0.05, candidateCount: 1,
+    homeCovers: 1, awayCovers: 0, pushes: 0, homeCoverRate: 1, awayCoverRate: 0 }],
   candidates: [
     { gameId: 'one', season: 2020, week: 2, gameType: 'REG', homeTeam: 'GB', awayTeam: 'MIN',
       homeScore: 24, awayScore: 20, closingSpreadHome: 3, similarityScore: 0.1,
@@ -128,7 +128,10 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.match(elements.scope.textContent, /85% similarity/);
   assert.match(elements.summary.textContent, /Games.*Pushes.*Cover split/);
   assert.doesNotMatch(elements.summary.textContent, /≤ 0\.025/);
-  assert.match(elements.summary.textContent, /≤ 0\.050.*H 50%.*A 50%/);
+  const distanceGroup = elements.summary.find((node) => node.tagName === 'dl' && /Cover split/.test(node.textContent));
+  assert.ok(distanceGroup, 'populated distance groups render as data lists');
+  assert.match(distanceGroup.textContent, /Games.*1.*Cover split.*\+50 pp.*Pushes.*0/);
+  assert.doesNotMatch(distanceGroup.textContent, /H 100%|A 0%/);
   assert.match(elements['profile-body'].textContent, /Passing EPA.*0\.050.*PHI \+0\.070.*0\.120/);
   assert.match(elements['profile-body'].textContent, /Rushing EPA.*—.*—.*0\.080/);
   assert.match(elements['profile-body'].textContent, /Penalty yards.*45.*PHI \+15.*30/);
