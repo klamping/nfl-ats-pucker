@@ -36,7 +36,7 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
   ] });
   const assets = {};
   for (const [route, name, type] of [
-    ['/app.js', 'app.js', 'text/javascript; charset=utf-8'], ['/styles.css', 'styles.css', 'text/css; charset=utf-8'],
+    ['/app.js', 'app.js', 'text/javascript; charset=utf-8'], ['/chart.js', '../../node_modules/chart.js/dist/chart.umd.js', 'text/javascript; charset=utf-8'], ['/styles.css', 'styles.css', 'text/css; charset=utf-8'],
   ]) assets[route] = { body: await defaultFileSystem.readFile(path.join(__dirname, '../public/dashboard', name)), type };
   assets['/week-app.js'] = { body: await defaultFileSystem.readFile(path.join(__dirname, '../public/week-dashboard/app.js')), type: 'text/javascript; charset=utf-8' };
   const slateHtml = await defaultFileSystem.readFile(path.join(__dirname, '../public/week-dashboard/index.html'));
