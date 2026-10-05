@@ -8,7 +8,7 @@ Extend the weekly NFL dashboard with build-time lineup context for both teams in
 
 Two public HTML sources serve distinct purposes:
 
-- **NFL.com** supplies official injury-report and league-transaction entries. Only entries dated in the 14 calendar days before the dashboard build are shown.
+- **NFL.com** supplies official injury-report and league-transaction entries. Its current injury-report rows have no individual publication date, so they are presented as an official status observed at build time. Only dated transaction entries in the 14 calendar days before the dashboard build are shown.
 - **Ourlads** supplies the timestamped projected team depth chart, including starter order and reserve/IR designations. Its first- and second-string entries are a projection, not an official lineup.
 
 The UI and API retain these labels. Neither source is treated as a complete roster-health reconstruction or as input to picks, rankings, or confidence.
@@ -33,11 +33,11 @@ Lineup collection is isolated by team and source. A failed source request, unpar
 
 ## API and User Interface
 
-The weekly slate API adds a safe precomputed lineup-context projection for the home and away teams. It includes only source label, source/retrieval time, status, 14-day official entries, baseline status, and normalized first-/second-string changes. It excludes raw HTML, raw source payloads, filesystem paths, request details, and arbitrary provider URLs.
+The weekly slate API adds a safe precomputed lineup-context projection for the home and away teams. It includes only source label, source/retrieval time, status, current official injury statuses, 14-day dated transactions, baseline status, and normalized first-/second-string changes. It excludes raw HTML, raw source payloads, filesystem paths, request details, and arbitrary provider URLs.
 
 Each ready game row gains a compact, accessible lineup-changes area. For each team it shows:
 
-- **Official — NFL.com:** the recent dated injury and transaction entries;
+- **Official — NFL.com:** current injury statuses labeled as observed at build time and dated transactions from the preceding 14 days;
 - **Projected depth chart — Ourlads:** first- and second-string changes against the prior local capture;
 - an explicit unavailable or no-prior-baseline message where applicable.
 
@@ -45,6 +45,6 @@ This context is informational only. It adds no betting recommendation, score, co
 
 ## Testing and Documentation
 
-Tests use static NFL.com and Ourlads HTML fixtures to verify strict parsing, team mapping, 14-day date filtering, raw/snapshot persistence, previous-snapshot selection, first-/second-string diffing, no-baseline behavior, and per-source failure isolation. Weekly orchestration tests verify one lineup gather per unique slate team and ensure lineup errors cannot make an otherwise gathered game unavailable. Server and client tests verify the safe projection and labeled rendering states.
+Tests use static NFL.com and Ourlads HTML fixtures to verify strict parsing, team mapping, build-time labeling for undated current injury statuses, 14-day transaction filtering, raw/snapshot persistence, previous-snapshot selection, first-/second-string diffing, no-baseline behavior, and per-source failure isolation. Weekly orchestration tests verify one lineup gather per unique slate team and ensure lineup errors cannot make an otherwise gathered game unavailable. Server and client tests verify the safe projection and labeled rendering states.
 
-The README documents the two sources, build-time behavior, local snapshot baseline semantics, 14-day window, projection caveat, and source-failure behavior.
+The README documents the two sources, build-time behavior, the distinction between current undated injury statuses and 14-day transactions, local snapshot baseline semantics, projection caveat, and source-failure behavior.
