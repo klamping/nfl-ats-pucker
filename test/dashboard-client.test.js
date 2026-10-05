@@ -64,7 +64,7 @@ class Element {
 
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
-  'sort-coverage', 'count-label'];
+  'sort-coverage', 'count-label', 'trend-chart'];
 
 function runClient(reply, pathname = '/') {
   const elements = Object.fromEntries(IDS.map((id) => [id, new Element()]));
@@ -74,6 +74,7 @@ function runClient(reply, pathname = '/') {
   const document = {
     getElementById: (id) => elements[id],
     createElement: (tag) => new Element(tag),
+    createElementNS: (_namespace, tag) => new Element(tag),
   };
   let requested;
   const fetch = async (url) => { requested = url; return reply; };
@@ -156,6 +157,19 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.equal(elements['candidate-body'].children[0], selectedRow, 'selection keeps the focused row mounted');
   assert.match(elements.detail.textContent, /SF 20.*LAR 17/);
   assert.equal(elements['candidate-body'].children[0].find((node) => node.tagName === 'button').attributes['aria-pressed'], 'true');
+});
+
+test('renders a chronological running cover-split line and final-margin bars', async () => {
+  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
+  await settled;
+
+  assert.match(elements['trend-chart'].textContent,
+    /2018 W5 LAR vs SF: -100 pp, -3 points.*2020 W2 GB vs MIN: 0 pp, \+4 points/);
+  const line = elements['trend-chart'].find((node) => node.tagName === 'polyline');
+  assert.equal(line.attributes.stroke, '#c83f49');
+  const bars = elements['trend-chart'].children[0].children.filter((node) => node.tagName === 'rect');
+  assert.equal(bars.length, 2);
+  assert.ok(bars.every((bar) => bar.attributes.fill === '#9acb78'));
 });
 
 test('labels a negative home spread as home favored', async () => {
