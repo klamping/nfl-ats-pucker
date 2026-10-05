@@ -55,6 +55,7 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   assert.equal((await response(server, '/api/comparison/game-1')).status, 200);
   assert.equal((await response(server, '/api/comparison/broken')).status, 404);
   assert.equal((await response(server, '/games/game-1/')).status, 200);
+  assert.match((await response(server, '/chart.js')).headers.get('content-type'), /^text\/javascript\b/);
   assert.equal((await response(server, '/games/broken/')).status, 404);
   assert.equal((await response(server, '/api/slate?x=1')).status, 404);
   assert.equal((await response(server, '/api/slate', { method: 'POST' })).status, 405);
