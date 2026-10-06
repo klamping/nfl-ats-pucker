@@ -3,7 +3,8 @@ const PRIOR_SEASON_WEIGHT = 1;
 
 function summarizeComparison({ unavailablePlayer, replacementPlayer, position, team, kickoff, targetSeason, seasons } = {}) {
   const direct = { QB: ['passing_epa', 'attempts', 'sacks', 'passingEpaPerDropback', 'Passing EPA / dropback'], RB: ['rushing_epa', 'carries', null, 'rushingEpaPerCarry', 'Rushing EPA / carry'], WR: ['receiving_epa', 'targets', null, 'receivingEpaPerTarget', 'Receiving EPA / target'], TE: ['receiving_epa', 'targets', null, 'receivingEpaPerTarget', 'Receiving EPA / target'] }[position];
-  if (!direct || !Array.isArray(seasons) || !Number.isFinite(Date.parse(kickoff))) return null;
+  if (!Array.isArray(seasons) || !Number.isFinite(Date.parse(kickoff))) return null;
+  if (!direct) return summarizeProxy({ unavailablePlayer, replacementPlayer, position, team, kickoff, targetSeason, seasons });
   const [epaKey, attemptsKey, extraKey, key, label] = direct;
   const value = (player) => {
     let epa = 0; let weightedAttempts = 0; let attempts = 0; let games = 0;
@@ -20,5 +21,23 @@ function summarizeComparison({ unavailablePlayer, replacementPlayer, position, t
   if (!unavailable || !replacement) return null;
   const metric = { key, label, unavailableValue: unavailable.value, replacementValue: replacement.value, delta: unavailable.value - replacement.value, direction: 'higher', unavailableSample: unavailable.sample, replacementSample: replacement.sample };
   return { evidenceType: 'direct', metrics: [metric], teamContext: null, sample: { unavailable, replacement }, confidence: unavailable.games >= 3 && replacement.games >= 3 ? 'medium' : 'low' };
+}
+function summarizeProxy({ unavailablePlayer, replacementPlayer, position, team, kickoff, targetSeason, seasons }) {
+  if (!/^(C|G|T|OT|OG|OC|LT|RT|LG|RG|OL)$/.test(position)) return null;
+  const summary = (player) => {
+    let epa = 0; let plays = 0; let games = 0;
+    for (const season of seasons) for (const snap of season.snapCounts || []) {
+      const time = season.kickoffsByTeamWeek?.[`${team}:${season.season}:${snap.week}`];
+      if (snap.player !== player.player || snap.team !== team || !time || Date.parse(time) >= Date.parse(kickoff)) continue;
+      const stats = (season.teamStats || []).find((row) => row.team === team && String(row.week) === String(snap.week));
+      if (!stats) continue; const denominator = Number(stats.attempts) + Number(stats.carries) + Number(stats.sacks_suffered);
+      if (!Number.isFinite(denominator) || denominator <= 0) continue;
+      epa += Number(stats.passing_epa) + Number(stats.rushing_epa); plays += denominator; games++;
+    }
+    return games >= 3 ? { value: epa / plays, sample: games, games } : null;
+  };
+  const unavailable = summary(unavailablePlayer); const replacement = summary(replacementPlayer); if (!unavailable || !replacement) return null;
+  const metric = { key: 'offensiveEpaPerPlay', label: 'Team offensive EPA / play (proxy)', unavailableValue: unavailable.value, replacementValue: replacement.value, delta: unavailable.value - replacement.value, direction: 'higher', unavailableSample: unavailable.sample, replacementSample: replacement.sample };
+  return { evidenceType: 'unit-proxy', metrics: [metric], teamContext: null, sample: { unavailable, replacement }, confidence: 'medium' };
 }
 module.exports = { summarizeComparison, CURRENT_SEASON_WEIGHT, PRIOR_SEASON_WEIGHT };
