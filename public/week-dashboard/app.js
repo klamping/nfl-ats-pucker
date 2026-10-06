@@ -39,6 +39,44 @@
     const down = element('button', '↓'); down.type = 'button'; down.setAttribute('aria-label', `Move ${game.matchup} down`); down.addEventListener('click', () => { if (index < orderedGames.length - 1) move(game.gameId, index + 1); });
     cell.append(input, up, down); return cell;
   }
+  function lineupTeam(context) {
+    const section = element('section'); section.setAttribute('class', 'lineup-team');
+    section.setAttribute('aria-label', `Lineup context ${context?.team || 'Team'}`);
+    section.append(element('h3', context?.team || 'Team'), element('h4', 'Official — NFL.com'));
+    const official = context?.official;
+    if (official?.status === 'ready') {
+      section.append(element('p', `Current status as of build · ${official.retrievedAt}`));
+      const injuries = element('ul');
+      for (const entry of official.injuries) injuries.append(element('li', `${entry.player} (${entry.position}): ${entry.status}`));
+      if (!official.injuries.length) injuries.append(element('li', 'No injury entries reported'));
+      section.append(injuries, element('h5', 'Transactions (14 days)'));
+      const transactions = element('ul');
+      for (const entry of official.transactions) transactions.append(element('li', `${entry.date} · ${entry.player}${entry.position ? ` (${entry.position})` : ''}: ${entry.detail}`));
+      if (!official.transactions.length) transactions.append(element('li', 'No transactions reported in this window'));
+      section.append(transactions);
+    } else section.append(element('p', 'Official source unavailable'));
+    section.append(element('h4', 'Projected depth chart — Ourlads'));
+    const depth = context?.depthChart;
+    if (depth?.status === 'ready') {
+      section.append(element('p', `Source updated · ${depth.sourceUpdatedAt}`), element('p', `Captured at build · ${depth.retrievedAt}`));
+      if (depth.baseline !== 'available') section.append(element('p', 'No prior depth chart baseline'));
+      else if (!depth.changes.length) section.append(element('p', 'No first- or second-string changes'));
+      else {
+        const changes = element('ul');
+        for (const entry of depth.changes) changes.append(element('li', `${entry.position} ${entry.rank === 1 ? 'starter' : 'second string'}: ${entry.outgoingPlayer || '—'} → ${entry.incomingPlayer || '—'}`));
+        section.append(changes);
+      }
+    } else section.append(element('p', 'Projected depth chart unavailable'));
+    return section;
+  }
+  function lineupCell(game) {
+    const cell = element('td'); cell.setAttribute('class', 'lineup-cell');
+    const details = element('details');
+    const summary = element('summary', 'View team context');
+    summary.setAttribute('aria-label', `Lineup changes for ${game.matchup}`);
+    details.append(summary, lineupTeam(game.lineup?.home), lineupTeam(game.lineup?.away));
+    cell.append(details); return cell;
+  }
   function renderRows() {
     const rows = orderedGames.map((game, index) => {
       const row = element('tr'); row.setAttribute('draggable', 'true');
@@ -50,10 +88,10 @@
       row.append(pointsCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
         element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`),
         element('td', interval(game.coverSplitInterval)), element('td', game.decidedGameCount),
-        element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`));
+        element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`), lineupCell(game));
       return row;
     });
-    for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '10'); row.append(cell); rows.push(row); }
+    for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '11'); row.append(cell); rows.push(row); }
     byId('slate-body').replaceChildren(...rows);
   }
   function render(data) {

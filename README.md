@@ -17,6 +17,19 @@ npm run week:dashboard -- --season 2026 --week 3
 
 Open the printed loopback URL. Upcoming games use current live odds. Completed games in the current NFL season use nflverse closing lines and strictly pre-kickoff features. If one game cannot be gathered, it remains visible as unavailable while the rest of the weekly slate continues.
 
+### Recent player / lineup changes
+
+Expand **View team context** in a game's **Lineup changes** column for both teams. The weekly build gathers this context once per participating team before starting the server or printing its URL; the browser only reads the local `/api/slate` endpoint.
+
+- **Official — NFL.com:** the latest injury-report rows available from NFL.com, labeled **Current status as of build**. These rows have no individual publication dates; their observation time is not a claimed injury date. When game status is blank, an explicitly labeled practice status is shown, or “Not reported”—never an inference that a player is healthy. Transactions include all six league categories for the current and preceding month, filtered to inclusive UTC calendar dates from build date minus 14 days through build date. Blank published transaction positions remain unknown.
+- **Projected depth chart — Ourlads:** changes in the player at each position's first- and second-string slots, compared with that team's latest valid local capture strictly earlier than this build. Entrants and removals are included; third-string changes are excluded. The source's Eastern update timestamp is displayed in UTC, separately from retrieval time. The first successful capture establishes a baseline and shows **No prior depth chart baseline**; later unchanged captures show **No first- or second-string changes**.
+
+This is **current build-time context**, even when viewing a completed game: it is not a historical reconstruction of availability at kickoff. Neither source establishes a complete roster-health picture. Lineup context does not affect picks, confidence, rankings, or recommendations.
+
+Public source pages are fetched with a 15-second timeout per request. League documents are shared across teams within a build. A request, parsing, or persistence failure marks only that team/source unavailable; valid games and other sources remain usable. Changed or ambiguous markup fails closed. Failed collection never overwrites a prior valid snapshot.
+
+Raw HTML is retained locally under `data/raw/lineups/<team>/`; immutable normalized source snapshots are under `data/current/lineups/<team>/`. The baseline is local to the output directory, so separate checkouts/worktrees have separate histories. `/api/slate` exposes only validated source labels, timestamps, official entries, baseline status, and depth-slot changes—not raw HTML, source URLs, capture paths, or private error details.
+
 Both dashboards show the unweighted historical home-cover split in percentage points (PP), its 95% Wilson confidence interval, and the decided-game count (home covers + away covers; pushes excluded). The interval is expressed relative to 50%: an interval containing 0 pp is compatible with a 50/50 split. Empty or push-only samples have no interval. These are descriptive intervals, not predictions or significance badges; they assume independent observations, and shared teams/seasons and analogue selection can overstate precision. Picks, rankings, and the separate weighted-confidence score are unchanged. Comparison JSON exposes `confidence.coverSplitInterval` (`lower`/`upper` in PP, or `null`) and `confidence.decidedGameCount`.
 
 ## Validate samples before bulk ingestion

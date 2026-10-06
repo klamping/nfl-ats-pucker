@@ -73,6 +73,18 @@ tbody tr:last-child td { border-bottom: 0; }
 tbody tr[data-selected="true"] { background: #e8f1ee; box-shadow: inset 3px 0 var(--teal); }
 .game-select { border: 0; background: none; color: var(--teal); font-weight: 750; padding: 4px; text-decoration: underline; text-underline-offset: 3px; }
 .tabular { font-variant-numeric: tabular-nums; }
+.lineup-cell { min-width: 220px; vertical-align: top; }
+.lineup-cell summary { cursor: pointer; color: var(--teal); font-weight: 650; }
+.lineup-cell summary:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.lineup-cell details[open] { min-width: 320px; max-width: 420px; }
+.lineup-team { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.lineup-team h3 { margin: 0 0 10px; font-size: 16px; }
+.lineup-team h4 { margin: 12px 0 6px; font-size: 13px; }
+.lineup-team h5 { margin: 10px 0 6px; font-size: 12px; }
+.lineup-team p { margin: 5px 0; color: var(--muted); font-size: 12px; }
+.lineup-team ul { margin: 6px 0; padding-left: 18px; }
+.lineup-team li { margin: 5px 0; }
+.lineup-note { color: var(--muted); font-size: 13px; line-height: 1.5; }
 .outcome-home_cover { color: #006b59; font-weight: 700; }
 .outcome-away_cover { color: #935026; font-weight: 700; }
 .outcome-push { color: #465f78; font-weight: 700; }

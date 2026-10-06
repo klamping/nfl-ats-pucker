@@ -12,7 +12,38 @@ function projectSlateGame(input, comparison) {
     kickoff: { date: input.kickoff.date, time: input.kickoff.time }, currentOdds,
     candidateCount: comparison.summary.candidateCount, coverSplit: comparison.confidence.coverSplit,
     coverSplitInterval: comparison.confidence.coverSplitInterval, decidedGameCount: comparison.confidence.decidedGameCount,
-    weightedConfidence: comparison.confidence.weightedConfidence };
+    weightedConfidence: comparison.confidence.weightedConfidence,
+    lineup: { home: projectLineupContext(input.lineup?.home, input.homeTeam),
+      away: projectLineupContext(input.lineup?.away, input.awayTeam) } };
+}
+
+function projectLineupContext(context, team) {
+  const unavailable = (source) => ({ status: 'unavailable', source });
+  const result = { team, official: unavailable('nfl.com'), depthChart: unavailable('ourlads') };
+  if (context?.team !== team) return result;
+  const text = (value) => typeof value === 'string' && value.trim().length > 0;
+  const timestamp = (value) => text(value) && Number.isFinite(Date.parse(value));
+  const official = context.official;
+  if (official?.status === 'ready' && official.source === 'nfl.com' && timestamp(official.retrievedAt) &&
+    Array.isArray(official.injuries) && Array.isArray(official.transactions) &&
+    official.injuries.every((row) => row && text(row.player) && text(row.position) && text(row.status) && timestamp(row.observedAt)) &&
+    official.transactions.every((row) => row && text(row.player) && (row.position === null || text(row.position)) &&
+      /^\d{4}-\d{2}-\d{2}$/.test(row.date) && timestamp(row.date) && text(row.detail))) {
+    result.official = { status: 'ready', source: 'nfl.com', retrievedAt: official.retrievedAt,
+      injuries: official.injuries.map(({ player, position, status, observedAt }) => ({ player, position, status, observedAt })),
+      transactions: official.transactions.map(({ date, player, position, detail }) => ({ date, player, position, detail })) };
+  }
+  const depth = context.depthChart;
+  if (depth?.status === 'ready' && depth.source === 'ourlads' && timestamp(depth.retrievedAt) && timestamp(depth.sourceUpdatedAt) &&
+    ['available', 'unavailable'].includes(depth.baseline) && Array.isArray(depth.changes) &&
+    (depth.baseline === 'available' || depth.changes.length === 0) && depth.changes.every((row) => row && text(row.position) &&
+      [1, 2].includes(row.rank) && (row.outgoingPlayer === null || text(row.outgoingPlayer)) &&
+      (row.incomingPlayer === null || text(row.incomingPlayer)) && row.incomingPlayer !== row.outgoingPlayer)) {
+    result.depthChart = { status: 'ready', source: 'ourlads', retrievedAt: depth.retrievedAt,
+      sourceUpdatedAt: depth.sourceUpdatedAt, baseline: depth.baseline,
+      changes: depth.changes.map(({ position, rank, outgoingPlayer, incomingPlayer }) => ({ position, rank, outgoingPlayer, incomingPlayer })) };
+  }
+  return result;
 }
 
 async function createWeekDashboardServer({ season, week, games = [], failures = [], outputRoot = process.cwd(),
