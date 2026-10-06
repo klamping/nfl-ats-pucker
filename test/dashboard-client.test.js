@@ -66,7 +66,7 @@ class Element {
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label', 'trend-chart', 'outside-spread-count', 'outside-spread-body',
-  'outside-spread-detail'];
+  'outside-spread-detail', 'margin-distribution'];
 
 function runClient(reply, pathname = '/') {
   const elements = Object.fromEntries(IDS.map((id) => [id, new Element()]));
@@ -160,6 +160,36 @@ test('renders every summary metric as a labeled card without embedding a minimum
   assert.match(elements.summary.textContent, /Away cover margin1 · median 1 · middle 50% 1–1/);
 });
 
+test('matchup profile includes all 17 comparison stats with correctly formatted new rows', async () => {
+  const target = { ...sample.target,
+    homePregame: { ...sample.target.homePregame, pointsScoredPerGame: 24.5, pointsAllowedPerGame: 18.5,
+      netYardsPerPlay: 1.25, netEpaPerPlay: 0.125, turnoverMarginPerGame: -0.5, restDays: 10 },
+    awayPregame: { ...sample.target.awayPregame, pointsScoredPerGame: 21.25, pointsAllowedPerGame: 20.75,
+      netYardsPerPlay: -0.5, netEpaPerPlay: null, turnoverMarginPerGame: -1.25, restDays: 7 } };
+  const client = runClient({ ok: true, json: async () => ({ ...sample, target }) });
+  await client.settled;
+  const rows = client.elements['profile-body'].children;
+  assert.equal(rows.length, 17);
+  for (const [label, away, edge, home] of [
+    ['Points scored per game', '21.250', 'PHI +3.250', '24.500'],
+    ['Points allowed per game', '20.750', 'PHI +2.250', '18.500'],
+    ['Net yards per play', '-0.500', 'PHI +1.750', '1.250'],
+    ['Net EPA per play', '—', '—', '0.125'],
+    ['Turnover margin per game', '-1.250', 'PHI +0.750', '-0.500'],
+    ['Rest days', '7', 'PHI +3', '10'],
+  ]) {
+    const row = rows.find(row => row.children[0].textContent === label);
+    assert.ok(row, `${label} is visible`);
+    assert.deepEqual(row.children.map(cell => cell.textContent), [label, away, edge, home]);
+  }
+  assert.deepEqual(rows.map(row => row.children[0].textContent).sort(), [
+    'Points scored per game', 'Points allowed per game', 'Net yards per play', 'Net EPA per play',
+    'Turnover margin per game', 'Rest days', 'Passing EPA per dropback', 'Passing CPOE',
+    'Interception rate', 'Rushing EPA per carry', 'Yards per carry', 'Explosive-play rate',
+    'Pass 20+ rate', 'Rush 10+ rate', 'Offensive sack rate', 'Defensive sack rate', 'Penalty yards per game',
+  ].sort());
+});
+
 test('renders target, summary, ATS text, details and keyboard-usable sort and selection', async () => {
   const { elements, requested, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
   await settled;
@@ -216,8 +246,10 @@ test('renders similar-stat games outside the spread range in a separate selectab
 });
 
 test('renders distance-ordered running cover-split and final-margin charts with tooltips', async () => {
-  const { charts, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
+  const client = runClient(Promise.resolve({ ok: true, json: async () => sample }));
+  const { settled } = client;
   await settled;
+  const charts = client.charts.filter(({ config }) => config.type !== 'pie');
 
   assert.equal(charts.length, 2);
   assert.deepEqual(Array.from(charts[0].config.data.labels), ['0.100', '0.300']);
@@ -225,6 +257,45 @@ test('renders distance-ordered running cover-split and final-margin charts with 
   assert.equal(charts[0].config.data.datasets[0].borderColor, '#c83f49');
   assert.equal(charts[1].config.data.datasets[0].backgroundColor, '#9acb78');
   assert.equal(charts[0].config.options.plugins.tooltip.enabled, true);
+});
+
+test('groups raw home final margins into disjoint pies at exact distance and margin boundaries', async () => {
+  const fixtures = [
+    ...[-8, -7, -6, -3, -2, -1, 0, 2, 3, 6, 7, 8].map(margin => [0.149999, margin]),
+    ...[-7, -3, 0, 7].map(margin => [0.150, margin]),
+    ...[-2, 3, 7].map(margin => [0.175, margin]),
+    [0.200, 7], [0.200001, -7],
+  ];
+  const candidates = fixtures.map(([similarityScore, margin], index) => ({ ...sample.candidates[0],
+    gameId: `margin-${index}`, similarityScore, homeScore: 20 + margin, awayScore: 20,
+    homeAtsMargin: margin + 10 }));
+  const client = runClient({ ok: true, json: async () => ({ ...sample, candidates }) });
+  await client.settled;
+  const pies = client.charts.filter(({ config }) => config.type === 'pie');
+  assert.equal(pies.length, 3);
+  assert.deepEqual(Array.from(pies[0].config.data.datasets[0].data), [2, 2, 2, 2, 2, 2]);
+  assert.deepEqual(Array.from(pies[1].config.data.datasets[0].data), [1, 1, 0, 1, 0, 1]);
+  assert.deepEqual(Array.from(pies[2].config.data.datasets[0].data), [0, 0, 1, 0, 1, 2]);
+  const panels = client.elements['margin-distribution'].children;
+  assert.match(panels[0].textContent, /Distance <0\.150.*12 games/);
+  assert.match(panels[1].textContent, /0\.150 ≤ distance <0\.175.*4 games/);
+  assert.match(panels[2].textContent, /0\.175 ≤ distance ≤0\.200.*4 games/);
+  assert.match(panels[0].textContent, /≤−7: 16\.7% · 2 games/);
+  assert.match(panels[2].textContent, /≥\+7: 50\.0% · 2 games/);
+  assert.equal(pies[1].config.options.plugins.tooltip.callbacks.label({ dataIndex: 0 }), '≤−7: 25.0% · 1 game');
+  assert.equal(pies[0].canvas.attributes.role, 'img');
+  assert.match(pies[0].canvas.attributes['aria-label'], /Final margin/);
+});
+
+test('empty distance bands show no games instead of misleading empty pies', async () => {
+  const client = runClient({ ok: true, json: async () => ({ ...sample, candidates: [] }) });
+  await client.settled;
+  assert.equal(client.charts.filter(({ config }) => config.type === 'pie').length, 0);
+  assert.equal(client.elements['margin-distribution'].children.length, 3);
+  for (const panel of client.elements['margin-distribution'].children) {
+    assert.match(panel.textContent, /No games/);
+    assert.doesNotMatch(panel.textContent, /NaN|Infinity|0\.0%/);
+  }
 });
 
 test('labels a negative home spread as home favored', async () => {

@@ -46,7 +46,13 @@ test('summary cards and their contents stay within an adaptive grid at narrow an
             const rect = node.getBoundingClientRect();
             return rect.right > bounds.right + 1 || rect.left < bounds.left - 1 || node.scrollWidth > node.clientWidth + 1;
           }).map(node => node.tagName + ':' + node.textContent);
-          return { width, display: getComputedStyle(summary).display, clientWidth: summary.clientWidth,
+          const distribution = document.getElementById('margin-distribution');
+          const panels = Array.from(distribution.children).map(node => {
+            const rect = node.getBoundingClientRect();
+            return { left: rect.left, top: rect.top, right: rect.right };
+          });
+          return { width, panels, distributionWidth: distribution.clientWidth, distributionScrollWidth: distribution.scrollWidth,
+            display: getComputedStyle(summary).display, clientWidth: summary.clientWidth,
             scrollWidth: summary.scrollWidth, columns: getComputedStyle(summary).gridTemplateColumns.split(' ').length, escaping };
         });
         const output = document.createElement('pre'); output.id = 'layout-result';
@@ -71,4 +77,13 @@ test('summary cards and their contents stay within an adaptive grid at narrow an
   }
   assert.equal(results[0].columns, 1, 'narrow summary stacks into one column');
   assert.ok(results.at(-1).columns > 1, 'wide summary uses multiple columns');
+  assert.equal(results[0].panels.length, 3);
+  assert.ok(results[0].panels[1].top > results[0].panels[0].top, 'narrow pies stack');
+  const wide = results.at(-1).panels;
+  assert.equal(wide[0].top, wide[1].top, 'wide pies sit side-by-side');
+  assert.equal(wide[1].top, wide[2].top);
+  assert.ok(wide[0].right <= wide[1].left && wide[1].right <= wide[2].left, 'pie panels do not overlap');
+  for (const result of results) {
+    assert.equal(result.distributionScrollWidth, result.distributionWidth, `${result.width}px pies do not overflow`);
+  }
 });

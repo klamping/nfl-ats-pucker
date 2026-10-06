@@ -55,6 +55,25 @@ h2 { margin: 0; font-size: 24px; letter-spacing: -.035em; }
 .trend-chart { display: grid; gap: 24px; width: 100%; background: white; border: 1px solid var(--line); padding: clamp(12px, 2vw, 28px); }
 .trend-chart-panel { height: 300px; }
 .trend-chart canvas { display: block; width: 100%; }
+.margin-distribution-section { container-type: inline-size; }
+.margin-distribution-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.margin-distribution-panel { min-width: 0; padding: 20px; background: white; border: 1px solid var(--line); }
+.margin-distribution-panel h3 { margin: 0 0 8px; font-size: 16px; }
+.margin-distribution-panel p { color: var(--muted); font-size: 13px; }
+.margin-pie { position: relative; height: 240px; }
+.margin-pie canvas { display: block; width: 100%; }
+.margin-distribution-key { list-style: none; padding: 0; margin: 16px 0 0; font-size: 12px; line-height: 1.8; }
+.margin-distribution-key li { display: flex; align-items: baseline; gap: 8px; }
+.margin-swatch { flex: 0 0 10px; height: 10px; border: 1px solid #596973; }
+.margin-bucket-0 { background-color: #993044; }
+.margin-bucket-1 { background-color: #c65b66; }
+.margin-bucket-2 { background-color: #ebadb2; }
+.margin-bucket-3 { background-color: #aad6ce; }
+.margin-bucket-4 { background-color: #509e94; }
+.margin-bucket-5 { background-color: #006b68; }
+@container (max-width: 800px) {
+  .margin-distribution-grid { grid-template-columns: 1fr; }
+}
 .results-section { padding-bottom: 76px; }
 .board-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); gap: 18px; align-items: start; }
 .table-wrap { overflow-x: auto; background: white; border: 1px solid var(--line); }

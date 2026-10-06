@@ -22,6 +22,12 @@
     closingSpreadHome: 'Home spread',
   };
   const profileMetrics = [
+    ['pointsScoredPerGame', 'Points scored per game', 'decimal', 'higher'],
+    ['pointsAllowedPerGame', 'Points allowed per game', 'decimal', 'lower'],
+    ['netYardsPerPlay', 'Net yards per play', 'decimal', 'higher'],
+    ['netEpaPerPlay', 'Net EPA per play', 'decimal', 'higher'],
+    ['turnoverMarginPerGame', 'Turnover margin per game', 'decimal', 'higher'],
+    ['restDays', 'Rest days', 'number', 'higher'],
     ['passingEpaPerDropback', 'Passing EPA per dropback', 'decimal', 'higher'],
     ['passingCpoe', 'Passing CPOE', 'decimal', 'higher'],
     ['interceptionRate', 'Interception rate', 'percent', 'lower'],
@@ -168,6 +174,58 @@
     options: chartOptions(marginBound, 'Final point difference', 'points') });
   }
 
+  function renderMarginDistribution() {
+    const labels = ['≤−7', '>−7 to ≤−3', '>−3 to <0', '0 to <+3', '+3 to <+7', '≥+7'];
+    const colors = ['#993044', '#c65b66', '#ebadb2', '#aad6ce', '#509e94', '#006b68'];
+    const bands = [
+      { title: 'Distance <0.150', minimum: 0, maximum: 0.150 },
+      { title: '0.150 ≤ distance <0.175', minimum: 0.150, maximum: 0.175 },
+      { title: '0.175 ≤ distance ≤0.200', minimum: 0.175, maximum: 0.200 },
+    ];
+    const container = byId('margin-distribution');
+    container.replaceChildren();
+    bands.forEach((band, index) => {
+      const games = data.candidates.filter(game => game.similarityScore >= band.minimum &&
+        (index === 2 ? game.similarityScore <= band.maximum : game.similarityScore < band.maximum));
+      const panel = element('div', undefined, 'margin-distribution-panel');
+      panel.append(element('h3', band.title));
+      container.append(panel);
+      if (!games.length) {
+        panel.append(element('p', 'No games'));
+        return;
+      }
+      const counts = labels.map(() => 0);
+      for (const game of games) {
+        const margin = game.homeScore - game.awayScore;
+        const bucket = margin <= -7 ? 0 : margin <= -3 ? 1 : margin < 0 ? 2 :
+          margin < 3 ? 3 : margin < 7 ? 4 : 5;
+        counts[bucket] += 1;
+      }
+      const describe = bucket => `${labels[bucket]}: ${(counts[bucket] / games.length * 100).toFixed(1)}% · ${counts[bucket]} ${counts[bucket] === 1 ? 'game' : 'games'}`;
+      panel.append(element('p', `${games.length} ${games.length === 1 ? 'game' : 'games'}`));
+      const canvas = element('canvas');
+      canvas.setAttribute('role', 'img');
+      canvas.setAttribute('aria-label', `Final margin distribution — ${band.title}`);
+      canvas.setAttribute('aria-describedby', `margin-key-${index}`);
+      const chartPanel = element('div', undefined, 'margin-pie');
+      chartPanel.append(canvas);
+      const key = element('ul', undefined, 'margin-distribution-key');
+      key.setAttribute('id', `margin-key-${index}`);
+      labels.forEach((_label, bucket) => {
+        const row = element('li');
+        const swatch = element('span', undefined, `margin-swatch margin-bucket-${bucket}`);
+        swatch.setAttribute('aria-hidden', 'true');
+        row.append(swatch, element('span', describe(bucket)));
+        key.append(row);
+      });
+      panel.append(chartPanel, key);
+      new Chart(canvas, { type: 'pie', data: { labels, datasets: [{ data: counts, backgroundColor: colors }] },
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: true,
+            callbacks: { label: context => describe(context.dataIndex) } } } } });
+    });
+  }
+
   function renderDetail(game, panel = byId('detail'), extraFacts = []) {
     if (!game) { panel.replaceChildren(); return; }
     const title = element('h3', `${game.awayTeam} at ${game.homeTeam}`);
@@ -309,6 +367,7 @@
       data = await response.json();
       renderHeader();
       renderTrend();
+      renderMarginDistribution();
       if (!data.candidates.length) {
         byId('status').textContent = 'No in-range games.';
         byId('candidate-body').replaceChildren();

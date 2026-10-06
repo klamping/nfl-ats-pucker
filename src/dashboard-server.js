@@ -11,6 +11,8 @@ const STATIC_ASSETS = {
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
 };
 const PROFILE_FIELDS = [
+  'pointsScoredPerGame', 'pointsAllowedPerGame', 'netYardsPerPlay', 'netEpaPerPlay',
+  'turnoverMarginPerGame', 'restDays',
   'passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate',
   'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry',
   'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame',

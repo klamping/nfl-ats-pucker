@@ -109,6 +109,8 @@ Candidates are ranked by a normalized distance: for each selected home/away team
 
 ### Open the local analysis board
 
+The game dashboard includes three final-margin distribution pies for non-overlapping distance bands: `<0.150`, `0.150–<0.175`, and `0.175–0.200` (inclusive at 0.200). Each uses in-range historical games only and raw home score minus away score, not ATS margin. The buckets are `≤−7`, `>−7 to ≤−3`, `>−3 to <0`, `0 to <+3`, `+3 to <+7`, and `≥+7`; percentages and counts are shown per band, with “No games” for empty bands. Charts sit side-by-side on wide screens and stack on narrow screens.
+
 First rebuild the historical matchup data with `npm run ingest:market-data -- --start-season 2005 --end-season 2025` and `npm run ingest:team-data -- --start-season 2005 --end-season 2025` if the published `nflverse-team-matchups-2005-2025.current.json` manifest and accepted records are not already present. Rebuild once after updates that add matchup-profile fields or normalized market fields, so historical analogues use the same feature schema and `closingSpreadHome` convention as newly gathered snapshots. If previously published historical comparisons used raw nflverse `spread_line` signs, rerun market ingestion first and then team-data ingestion to publish corrected normalized matchup records. Gather a current snapshot as above, then start:
 
 ```bash

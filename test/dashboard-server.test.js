@@ -14,7 +14,9 @@ const FEATURES = ['gamesPlayed', 'winPercentage', 'pointsScoredPerGame', 'points
   'passingExplosiveRate', 'rushingExplosiveRate', 'penaltyYardsPerGame'];
 const PROFILE_FIELDS = ['passingEpaPerDropback', 'rushingEpaPerCarry', 'explosivePlayRate',
   'passingCpoe', 'interceptionRate', 'rushingYardsPerCarry', 'passingExplosiveRate',
-  'rushingExplosiveRate', 'penaltyYardsPerGame', 'offensiveSackRate', 'defensiveSackRate'];
+  'rushingExplosiveRate', 'penaltyYardsPerGame', 'offensiveSackRate', 'defensiveSackRate',
+  'pointsScoredPerGame', 'pointsAllowedPerGame', 'netYardsPerPlay', 'netEpaPerPlay',
+  'turnoverMarginPerGame', 'restDays'];
 const ROOT = '/repo';
 const INPUT = '/private/input.json';
 const MANIFEST = path.join(ROOT, 'data/normalized/nfl/nflverse-team-matchups-2005-2025.current.json');
@@ -126,6 +128,9 @@ test('GET returns a strictly projected target and comparator result without rere
     awayPregame: Object.fromEntries(PROFILE_FIELDS.map((field) => [field, 1])),
   });
   const expected = compareHistorical({ input: snapshot(), historicalMatchups: [historical()] });
+  const comparisonFields = [...new Set(Object.keys(payload.filters.featureWeights).map(key => key.split('.')[1]))].sort();
+  assert.deepEqual(Object.keys(payload.target.homePregame).sort(), comparisonFields);
+  assert.deepEqual(Object.keys(payload.target.awayPregame).sort(), comparisonFields);
   assert.deepEqual(payload.filters, expected.filters);
   assert.deepEqual(payload.summary, expected.summary);
   assert.deepEqual(payload.coverMargins, expected.coverMargins);
