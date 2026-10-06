@@ -168,3 +168,10 @@ test('renders labeled build-time sources, changes, initial baselines and unavail
   assert.equal(firstControl.attributes['aria-expanded'], 'false');
   for (const cell of cells) assert.doesNotMatch(cell.textContent, /pick|confidence|recommend/i);
 });
+
+test('renders missing-player impact evidence in team context', async () => {
+  const elements = { status: new Element(), 'slate-body': new Element() };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/week-dashboard/app.js'), 'utf8'), { document: { getElementById: id => elements[id], createElement: tag => new Element(tag) }, fetch: async () => ({ ok: true, json: async () => ({ season: 2026, week: 3, games: [{ status: 'ready', gameId: 'g', matchup: 'A at H', kickoff: { date: '2026-09-01', time: '13:00' }, currentOdds: { consensusSpreadHome: 0 }, candidateCount: 0, coverSplit: null, coverSplitInterval: null, decidedGameCount: 0, weightedConfidence: null, lineup: { home: { team: 'H', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' }, playerImpacts: [{ player: 'Starter', position: 'QB', replacement: 'Backup', verdict: 'material downgrade', evidenceType: 'direct' }] }, away: { team: 'A', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' } } } }] }) }), localStorage: { getItem: () => null, setItem() {} } });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(elements['slate-body'].textContent, /Missing-player impact.*Starter \(QB\) → Backup: material downgrade · Direct EPA evidence/);
+});
