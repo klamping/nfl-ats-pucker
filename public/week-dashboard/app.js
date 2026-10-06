@@ -69,13 +69,29 @@
     } else section.append(element('p', 'Projected depth chart unavailable'));
     return section;
   }
-  function lineupCell(game) {
+  function lineupContextRow(game) {
+    const row = element('tr'); row.setAttribute('class', 'lineup-context-row'); row.setAttribute('hidden', '');
+    const cell = element('td'); cell.setAttribute('class', 'lineup-context-cell'); cell.setAttribute('colspan', '11');
+    cell.setAttribute('id', `lineup-${game.gameId}`);
+    const content = element('div'); content.setAttribute('class', 'lineup-context');
+    content.append(lineupTeam(game.lineup?.home), lineupTeam(game.lineup?.away));
+    cell.append(content); row.append(cell);
+    return row;
+  }
+  function lineupCell(game, contextRow) {
     const cell = element('td'); cell.setAttribute('class', 'lineup-cell');
-    const details = element('details');
-    const summary = element('summary', 'View team context');
-    summary.setAttribute('aria-label', `Lineup changes for ${game.matchup}`);
-    details.append(summary, lineupTeam(game.lineup?.home), lineupTeam(game.lineup?.away));
-    cell.append(details); return cell;
+    const button = element('button', 'View team context'); button.type = 'button';
+    button.setAttribute('aria-label', `View team context for ${game.matchup}`);
+    button.setAttribute('aria-controls', `lineup-${game.gameId}`);
+    button.setAttribute('aria-expanded', 'false');
+    let expanded = false;
+    button.addEventListener('click', () => {
+      expanded = !expanded;
+      button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (expanded) contextRow.removeAttribute('hidden');
+      else contextRow.setAttribute('hidden', '');
+    });
+    cell.append(button); return cell;
   }
   function renderRows() {
     const rows = orderedGames.map((game, index) => {
@@ -85,14 +101,15 @@
       row.addEventListener('drop', (event) => { event.preventDefault(); const id = event.dataTransfer?.getData('text/plain'); if (id && id !== game.gameId) move(id, index); });
       const matchup = element('td'); const link = element('a', game.matchup);
       link.setAttribute('href', `/games/${encodeURIComponent(game.gameId)}/`); matchup.append(link);
+      const contextRow = lineupContextRow(game);
       row.append(pointsCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
         element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`),
         element('td', interval(game.coverSplitInterval)), element('td', game.decidedGameCount),
-        element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`), lineupCell(game));
-      return row;
+        element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`), lineupCell(game, contextRow));
+      return [row, contextRow];
     });
-    for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '11'); row.append(cell); rows.push(row); }
-    byId('slate-body').replaceChildren(...rows);
+    for (const game of unavailableGames) { const row = element('tr'); const cell = element('td', `${game.gameId} · ${game.message}`); cell.setAttribute('colspan', '11'); row.append(cell); rows.push([row]); }
+    byId('slate-body').replaceChildren(...rows.flat());
   }
   function render(data) {
     byId('status').textContent = `${data.season} · Week ${data.week}`;

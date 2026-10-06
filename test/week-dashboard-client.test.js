@@ -12,6 +12,7 @@ class Element {
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.value = ''; this.children = children; }
   setAttribute(key, value) { this.attributes[key] = String(value); }
+  removeAttribute(key) { delete this.attributes[key]; }
   addEventListener(event, callback) { this.listeners[event] = callback; }
   find(predicate) { if (predicate(this)) return this; for (const child of this.children) { const found = child.find(predicate); if (found) return found; } return null; }
 }
@@ -39,9 +40,9 @@ test('renders compact successful and unavailable weekly rows', async () => {
   const rows = elements['slate-body'].children;
   assert.equal(rows[0].children[7].textContent, '-40.5 to +40.5 pp');
   assert.equal(rows[0].children[8].textContent, '2');
-  assert.equal(rows[1].children[7].textContent, '—');
-  assert.equal(rows[1].children[8].textContent, '0');
-  assert.equal(rows[2].children[0].attributes.colspan, '11');
+  assert.equal(rows[2].children[7].textContent, '—');
+  assert.equal(rows[2].children[8].textContent, '0');
+  assert.equal(rows[4].children[0].attributes.colspan, '11');
   assert.match(elements['slate-body'].textContent, /Unable to gather game/);
   const link = elements['slate-body'].children[0].children[0].find?.(() => false);
   assert.equal(elements['slate-body'].children[0].children.some((cell) => cell.children.some((node) => node.tagName === 'a' && node.attributes.href === '/games/2026_03_LA_DEN/')), true);
@@ -53,6 +54,35 @@ test('renders compact successful and unavailable weekly rows', async () => {
   points.value = '1';
   points.listeners.change({ target: points });
   assert.equal(stored.get('nfl-ats-pucker:week-ranks:2026:3'), JSON.stringify(['2026_03_DAL_PHI', '2026_03_LA_DEN']));
+});
+
+test('expands team context in a row beneath its game', async () => {
+  const elements = { status: new Element(), 'slate-body': new Element() };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/week-dashboard/app.js'), 'utf8'), {
+    document: { getElementById: (id) => elements[id], createElement: (tag) => new Element(tag) },
+    fetch: async () => ({ ok: true, json: async () => ({ season: 2026, week: 3, games: [
+      { status: 'ready', gameId: 'game', matchup: 'AWY at HME', kickoff: { date: '2026-09-27', time: '17:00' },
+        currentOdds: { provider: 'nflverse', consensusSpreadHome: -3 }, candidateCount: 1, coverSplit: 0,
+        decidedGameCount: 1, coverSplitInterval: null, weightedConfidence: 5, recommendedPick: null,
+        lineup: { home: { team: 'HME', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' } },
+          away: { team: 'AWY', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' } } } },
+    ] }) }),
+    localStorage: { getItem: () => null, setItem() {} },
+  });
+  await new Promise((resolve) => setImmediate(resolve));
+
+  const [gameRow, contextRow] = elements['slate-body'].children;
+  assert.equal(gameRow.children.length, 11);
+  assert.equal(contextRow.children.length, 1);
+  assert.equal(contextRow.children[0].attributes.colspan, '11');
+  assert.equal(Object.hasOwn(contextRow.attributes, 'hidden'), true);
+  const control = gameRow.children[10].find((node) => node.tagName === 'button');
+  assert.equal(control.attributes['aria-label'], 'View team context for AWY at HME');
+  assert.equal(control.attributes['aria-expanded'], 'false');
+  control.listeners.click();
+  assert.equal(Object.hasOwn(contextRow.attributes, 'hidden'), false);
+  assert.equal(control.attributes['aria-expanded'], 'true');
+  assert.match(contextRow.textContent, /HME.*AWY.*Official source unavailable/);
 });
 
 test('renders labeled build-time sources, changes, initial baselines and unavailable states as text only', async () => {
@@ -87,7 +117,7 @@ test('renders labeled build-time sources, changes, initial baselines and unavail
   });
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(requested, ['/api/slate']);
-  const cells = elements['slate-body'].children.map(row => row.children[10]);
+  const cells = [elements['slate-body'].children[1].children[0], elements['slate-body'].children[3].children[0]];
   assert.match(cells[0].textContent, /Official — NFL\.com.*Current status as of build.*Questionable.*Transactions \(14 days\).*Projected depth chart — Ourlads.*QB starter: Old Starter → New Starter/);
   assert.match(cells[0].textContent, /WR second string: — → New Reserve/);
   assert.match(cells[0].textContent, /RB second string: Old Reserve → —/);
@@ -99,7 +129,8 @@ test('renders labeled build-time sources, changes, initial baselines and unavail
   assert.equal(cells[0].find(node => node.tagName === 'img'), null);
   assert.match(cells[1].textContent, /No first- or second-string changes/);
   assert.match(cells[1].textContent, /Projected depth chart unavailable/);
-  assert.ok(cells[0].find(node => node.tagName === 'details'));
-  assert.equal(cells[0].find(node => node.tagName === 'summary').attributes['aria-label'], 'Lineup changes for AWY at HME');
+  const firstControl = elements['slate-body'].children[0].children[10].find(node => node.tagName === 'button');
+  assert.equal(firstControl.attributes['aria-label'], 'View team context for AWY at HME');
+  assert.equal(firstControl.attributes['aria-expanded'], 'false');
   for (const cell of cells) assert.doesNotMatch(cell.textContent, /pick|confidence|recommend/i);
 });
