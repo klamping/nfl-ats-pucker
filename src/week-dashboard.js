@@ -5,6 +5,8 @@ const { normalizeNflverseGame } = require('./normalize-nflverse-game');
 const { gatherLineupContext } = require('./lineup-context');
 const { createNflLineupClient } = require('./nfl-lineup-client');
 const { createOurladsDepthChartClient } = require('./ourlads-depth-chart-client');
+const { createNflverseRosterDataClient } = require('./nflverse-roster-data-client');
+const { gatherRosterImpacts } = require('./roster-impact-service');
 
 function parseCli(argv) {
   if (argv.length !== 4) throw new Error('A valid season and week are required');
@@ -54,7 +56,12 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
       return [team, { team, official: { status: 'unavailable', source: 'nfl.com' },
         depthChart: { status: 'unavailable', source: 'ourlads' } }];
     }
-  })));
+  }))); 
+  let rosterData = null;
+  try {
+    const client = dependencies.rosterDataClient || createNflverseRosterDataClient({ fetchImpl: dependencies.fetchImpl });
+    rosterData = (await client.loadSeasons({ seasons: [season - 1, season], scheduleRows: scheduleDownload.rows, outputRoot: dependencies.outputRoot })).seasons;
+  } catch {}
   let oddsClient = dependencies.oddsClient;
   const games = [];
   const failures = [];
@@ -66,7 +73,13 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
       });
       const result = await gather({ season, gameId: target.gameId, retrospective, oddsClient: retrospective ? undefined : oddsClient,
         scheduleDownload, outputRoot: dependencies.outputRoot });
-      games.push({ ...result.snapshot, lineup: { home: lineups.get(target.homeTeam), away: lineups.get(target.awayTeam) } });
+       const enrich = async (team) => {
+         const context = lineups.get(team);
+         if (!rosterData) return context;
+         try { return { ...context, impacts: await (dependencies.gatherRosterImpacts || gatherRosterImpacts)({ team,
+           kickoff: nflverseKickoffToUtc(target.kickoff), targetSeason: season, lineup: context, rosterData }) }; } catch { return context; }
+       };
+       games.push({ ...result.snapshot, lineup: { home: await enrich(target.homeTeam), away: await enrich(target.awayTeam) } });
     } catch {
       failures.push({ gameId: target.gameId, message: 'Unable to gather game' });
     }

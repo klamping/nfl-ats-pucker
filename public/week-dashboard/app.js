@@ -75,6 +75,18 @@
         section.append(changes);
       }
     } else section.append(element('p', 'Projected depth chart unavailable'));
+    section.append(element('h4', 'Missing-player impact'));
+    const impacts = context?.playerImpacts || [];
+    if (!impacts.length) section.append(element('p', 'No evaluated missing-player impact'));
+    else {
+      const list = element('ul');
+      for (const impact of impacts) {
+        const replacement = impact.replacement ? ` → ${impact.replacement}` : '';
+        const evidence = impact.evidenceType === 'direct' ? 'Direct EPA evidence' : impact.evidenceType === 'unit-proxy' ? 'Unit-proxy evidence' : impact.reason || 'Insufficient evidence';
+        list.append(element('li', `${impact.player} (${impact.position})${replacement}: ${impact.verdict} · ${evidence}`));
+      }
+      section.append(list);
+    }
     return section;
   }
   function lineupContextRow(game) {

@@ -44,6 +44,8 @@ function projectLineupContext(context, team) {
       sourceUpdatedAt: depth.sourceUpdatedAt, baseline: depth.baseline,
       changes: depth.changes.map(({ position, rank, outgoingPlayer, incomingPlayer }) => ({ position, rank, outgoingPlayer, incomingPlayer })) };
   }
+  const impacts = context.impacts;
+  if (impacts?.status === 'ready' && Array.isArray(impacts.playerImpacts)) result.playerImpacts = impacts.playerImpacts.map((impact) => ({ ...impact }));
   return result;
 }
 
