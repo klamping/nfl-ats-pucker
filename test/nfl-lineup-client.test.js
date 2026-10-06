@@ -41,6 +41,15 @@ test('maps NFL.com AZ transaction logos to nflverse ARI', async () => {
   assert.equal(result.transactions[0].player, 'Example Player');
 });
 
+test('skips explicitly unassigned transactions without guessing a team or rejecting assigned rows', async () => {
+  const unassigned = '<tr><td>--</td><td>--</td><td>09/29</td><td><a>Free Agent</a></td><td></td><td>Suspension Lifted by Commissioner</td></tr>';
+  const body = transactions.replace('<tbody>', `<tbody>${unassigned}`);
+  const result = await createNflLineupClient({ now, fetchImpl: fixtureFetch(injuries, body) }).fetchOfficial({ team: 'ARI' });
+  assert.equal(result.transactions.length, 1);
+  assert.equal(result.transactions[0].player, 'Example Player');
+  await assert.rejects(createNflLineupClient({ now, fetchImpl: fixtureFetch(injuries, body.replace('<td>--</td><td>--</td>', '<td>--</td><td></td>')) }).fetchOfficial({ team: 'ARI' }), /team/);
+});
+
 test('fails closed for missing player, position, team, headers, or ambiguous injury tables', async () => {
   for (const body of [injuries.replace('Example Player', ''), injuries.replace('<td>QB</td>', ''), injuries + injuries, '<html>Changed markup</html>']) {
     await assert.rejects(createNflLineupClient({ now, fetchImpl: fixtureFetch(body) }).fetchOfficial({ team: 'ARI' }), /parse|markup|team/i);
@@ -56,6 +65,15 @@ test('rejects unmapped teams, missing team reports, empty responses and HTTP fai
   for (const response of [{ ok: false, status: 503 }, { ok: true, text: async () => '' }]) {
     await assert.rejects(createNflLineupClient({ now, fetchImpl: async () => response }).fetchOfficial({ team: 'ARI' }));
   }
+});
+
+test('accepts the explicit NFL.com empty-category state but not arbitrary missing tables', async () => {
+  const empty = fs.readFileSync(`${__dirname}/fixtures/nfl-lineup-no-transactions.html`, 'utf8');
+  const result = await createNflLineupClient({ now, fetchImpl: async url => ({ ok: true,
+    text: async () => url.includes('/injuries/') ? injuries : empty }) }).fetchOfficial({ team: 'ARI' });
+  assert.deepEqual(result.transactions, []);
+  assert.equal(result.rawCaptures.length, 13);
+  await assert.rejects(createNflLineupClient({ now, fetchImpl: fixtureFetch(injuries, empty.replace('No Transactions Available', 'No Results')) }).fetchOfficial({ team: 'ARI' }), /markup/);
 });
 
 test('handles year rollover and excludes future and invalid source dates', async () => {

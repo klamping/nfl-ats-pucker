@@ -87,6 +87,8 @@ function parseInjuries(body, team, observedAt) {
 function parseTransactions(body, team, year, month, time) {
   const $ = load(body);
   const table = $('.d3-o-team-stats--detailed');
+  if (table.length === 0 && $('main .nfl-o-no-results').length === 1 &&
+    text($('main .nfl-o-no-results .d3-o-section-title')) === 'No Transactions Available') return [];
   if (table.length !== 1) throw sourceError('Cannot parse transaction table markup');
   checkHeaders($, table, ['From', 'To', 'Date', 'Name', 'Position', 'Transaction']);
   const end = Date.UTC(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate());
@@ -96,7 +98,10 @@ function parseTransactions(body, team, year, month, time) {
     const cells = $(row).children('td');
     const clubs = [0, 1].map((index) => {
       const img = cells.eq(index).find('.d3-o-club-info img');
-      if (!img.length) return null;
+      if (!img.length) {
+        if (text(cells.eq(index)) !== '--') throw sourceError('Cannot parse transaction team');
+        return null;
+      }
       const code = (img.attr('data-src') || img.attr('src') || '').match(/\/logos\/([A-Z]+)(?:$|[/?])/)?.[1];
       const alias = ({ AZ: 'ARI', LAR: 'LA', WSH: 'WAS' })[code] || code;
       if (!Object.hasOwn(TEAM_NAMES, alias)) throw sourceError('Cannot parse transaction team');
@@ -105,7 +110,7 @@ function parseTransactions(body, team, year, month, time) {
     const player = text(cells.eq(3).find('a'));
     const detail = text(cells.eq(5));
     const dateParts = text(cells.eq(2)).match(/^(\d{2})\/(\d{2})$/);
-    if (cells.length !== 6 || !clubs.some(Boolean) || !player || !detail || !dateParts) throw sourceError('Cannot parse transaction row markup');
+    if (cells.length !== 6 || !player || !detail || !dateParts) throw sourceError('Cannot parse transaction row markup');
     const date = new Date(Date.UTC(year, Number(dateParts[1]) - 1, Number(dateParts[2])));
     if (date.getUTCMonth() !== Number(dateParts[1]) - 1 || date.getUTCDate() !== Number(dateParts[2])) throw sourceError('Cannot parse transaction date');
     if (date.getUTCMonth() !== month || !clubs.includes(team) || date.getTime() < start || date.getTime() > end) return;

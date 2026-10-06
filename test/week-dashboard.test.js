@@ -96,3 +96,25 @@ test('gathers once per unique supported slate team before game work and shares c
   assert.deepEqual(serverOptions.games[0].lineup.away, { team: 'AWY',
     official: { source: 'nfl.com', status: 'unavailable' }, depthChart: { source: 'ourlads', status: 'unavailable' } });
 });
+
+test('waits for lineup completion before gathering games, creating the server or printing its URL', async () => {
+  let release;
+  let reached;
+  const held = new Promise(resolve => { release = resolve; });
+  const started = new Promise(resolve => { reached = resolve; });
+  const events = [];
+  const pending = runWeekDashboardCli(['--season', '2026', '--week', '3'], { log: line => events.push(line) }, {
+    now: () => new Date('2026-09-27T18:00:00Z'), oddsClient: {},
+    nflverseClient: { downloadNflverseGames: async () => scheduleDownload([game('held', 'REG', '2026-09-27', '17:00')]) },
+    gatherLineupContext: async ({ team }) => { reached(); await held; return { team,
+      official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } }; },
+    gatherPregame: async () => { events.push('game'); return { snapshot: { gameId: 'held' } }; },
+    createWeekDashboardServer: async () => { events.push('server'); return { address: () => ({ port: 41234 }) }; },
+  });
+  await started;
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(events, []);
+  release();
+  await pending;
+  assert.deepEqual(events, ['game', 'server', 'http://127.0.0.1:41234/']);
+});
