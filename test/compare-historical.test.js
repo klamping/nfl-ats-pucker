@@ -145,6 +145,30 @@ test('filters same game type and fixed home spread band before ranking', () => {
   assert.equal(result.candidates[0].week, 2);
 });
 
+test('returns similar games outside the spread band separately from primary candidates', () => {
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [
+    historical({ gameId: 'in-band', week: 2, closingSpreadHome: -4 }),
+    historical({ gameId: 'outside-band', week: 3, closingSpreadHome: 1 }),
+    historical({ gameId: 'different-week', week: 6, closingSpreadHome: 1 }),
+  ] });
+
+  assert.deepEqual(result.candidates.map((candidate) => candidate.gameId), ['in-band']);
+  assert.deepEqual(result.outsideSpreadCandidates.map((candidate) => candidate.gameId), ['outside-band']);
+  assert.equal(result.outsideSpreadCandidates[0].spreadDifference, 4);
+});
+
+test('scores outside-spread games against the complete comparable population', () => {
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [
+    historical({ gameId: 'in-band-reference', week: 2, closingSpreadHome: -3,
+      homePregame: { ...snapshot().homePregame, passingEpaPerDropback: 10 } }),
+    historical({ gameId: 'outside-band', week: 3, closingSpreadHome: 1,
+      homePregame: { ...snapshot().homePregame, passingEpaPerDropback: 2 } }),
+  ] });
+
+  assert.equal(result.candidates[0].similarityScore, 1 / 34);
+  assert.equal(result.outsideSpreadCandidates[0].similarityScore, 1 / 9 / 34);
+});
+
 test('uses a ±3.5 spread eligibility band without scoring eligible line differences', () => {
   const eligible = historical({ week: 2, closingSpreadHome: 0.5 });
   const outside = historical({ week: 3, closingSpreadHome: 0.6 });

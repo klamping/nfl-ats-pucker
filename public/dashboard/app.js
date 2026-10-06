@@ -174,8 +174,7 @@
     options: chartOptions(marginBound, 'Final point difference', 'points') });
   }
 
-  function renderDetail(game) {
-    const panel = byId('detail');
+  function renderDetail(game, panel = byId('detail'), extraFacts = []) {
     if (!game) { panel.replaceChildren(); return; }
     const title = element('h3', `${game.awayTeam} at ${game.homeTeam}`);
     const heading = element('div', undefined, 'detail-heading');
@@ -186,6 +185,7 @@
     const facts = element('dl', undefined, 'facts');
     for (const [name, value] of [
       ['Home closing line', spread(game.closingSpreadHome)],
+      ...extraFacts,
       ['ATS margin', signed(game.homeAtsMargin)],
       ['Similarity distance', game.similarityScore.toFixed(3)],
       ['Feature coverage', percent(game.featureCoverage)],
@@ -250,6 +250,55 @@
     }));
   }
 
+  function renderOutsideSpread() {
+    const games = data.outsideSpreadCandidates || [];
+    byId('outside-spread-count').textContent = `${games.length} game${games.length === 1 ? '' : 's'}`;
+    if (!games.length) {
+      byId('outside-spread-body').replaceChildren();
+      renderDetail(null, byId('outside-spread-detail'));
+      return;
+    }
+    const sorted = [...games].sort((left, right) => left.similarityScore - right.similarityScore ||
+      left.season - right.season || left.week - right.week || left.gameId.localeCompare(right.gameId));
+    let selectedOutsideId = sorted[0].gameId;
+    const renderRows = () => {
+      byId('outside-spread-body').replaceChildren(...sorted.map((game) => {
+        const row = element('tr');
+        row.setAttribute('tabindex', '0');
+        row.setAttribute('data-selected', game.gameId === selectedOutsideId ? 'true' : 'false');
+        const select = () => {
+          selectedOutsideId = game.gameId;
+          for (const candidateRow of byId('outside-spread-body').children) {
+            const active = candidateRow === row;
+            candidateRow.setAttribute('data-selected', active ? 'true' : 'false');
+            candidateRow.children[0].children[0].setAttribute('aria-pressed', active ? 'true' : 'false');
+          }
+          renderDetail(game, byId('outside-spread-detail'), [['Outside band by', signed(game.spreadBandExcess)]]);
+        };
+        row.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(); }
+        });
+        const distance = element('td');
+        const button = element('button', game.similarityScore.toFixed(3), 'game-select tabular');
+        button.type = 'button';
+        button.setAttribute('aria-label', `Select ${game.awayTeam} at ${game.homeTeam}, ${game.season} Week ${game.week}`);
+        button.setAttribute('aria-pressed', game.gameId === selectedOutsideId ? 'true' : 'false');
+        button.addEventListener('click', select);
+        distance.append(button);
+        row.append(distance, element('td', `${game.season} · W${game.week}`),
+          element('td', `${game.awayTeam} at ${game.homeTeam}`),
+          element('td', `${game.awayTeam} ${game.awayScore} – ${game.homeTeam} ${game.homeScore}`, 'tabular'),
+          element('td', signed(game.closingSpreadHome), 'tabular'),
+          element('td', signed(game.spreadBandExcess), 'tabular'),
+          element('td', labels[game.outcome], `outcome-${game.outcome}`),
+          element('td', percent(game.featureCoverage), 'tabular'));
+        return row;
+      }));
+    };
+    renderRows();
+    renderDetail(sorted[0], byId('outside-spread-detail'), [['Outside band by', signed(sorted[0].spreadBandExcess)]]);
+  }
+
   for (const [key, { id, direction }] of Object.entries(sorts)) {
     byId(id).addEventListener('click', () => {
       sortDirection = sortKey === key ? -sortDirection : direction;
@@ -267,14 +316,16 @@
       renderHeader();
       renderTrend();
       if (!data.candidates.length) {
-        byId('status').textContent = 'No games.';
+        byId('status').textContent = 'No in-range games.';
         byId('candidate-body').replaceChildren();
         renderDetail(null);
+        renderOutsideSpread();
         return;
       }
       selectedId = data.candidates[0].gameId;
       renderTable();
       renderDetail(data.candidates[0]);
+      renderOutsideSpread();
       byId('status').textContent = `${data.summary.candidateCount} games`;
     } catch {
       byId('status').textContent = 'Unable to load.';

@@ -27,7 +27,7 @@ test('local analysis board contains accessible controls and no remote resources 
   assert.match(js, /Home cover/);
   assert.match(js, /Away cover/);
   assert.match(js, /Push/);
-  assert.match(js, /No games/);
+  assert.match(js, /No in-range games/);
   assert.match(js, /Unable to load/);
   assert.match(js, /distanceContributions/);
   assert.match(css, /focus-visible/);
@@ -65,7 +65,8 @@ class Element {
 
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
-  'sort-coverage', 'count-label', 'trend-chart'];
+  'sort-coverage', 'count-label', 'trend-chart', 'outside-spread-count', 'outside-spread-body',
+  'outside-spread-detail'];
 
 function runClient(reply, pathname = '/') {
   const elements = Object.fromEntries(IDS.map((id) => [id, new Element()]));
@@ -121,7 +122,14 @@ const sample = {
     { gameId: 'two', season: 2018, week: 5, gameType: 'REG', homeTeam: 'LAR', awayTeam: 'SF',
       homeScore: 17, awayScore: 20, closingSpreadHome: 1, similarityScore: 0.3,
       distanceContributions: { 'home.restDays': 0.1 }, featureCoverage: 0.8,
-      omittedFeatures: [], homeAtsMargin: -4, outcome: 'away_cover' },
+       omittedFeatures: [], homeAtsMargin: -4, outcome: 'away_cover' },
+  ],
+  outsideSpreadCandidates: [
+    { gameId: 'outside', season: 2019, week: 4, gameType: 'REG', homeTeam: 'KC', awayTeam: 'OAK',
+      homeScore: 30, awayScore: 24, closingSpreadHome: -7, similarityScore: 0.1,
+      distanceContributions: { 'home.restDays': 0.04 }, featureCoverage: 0.9,
+      omittedFeatures: [], homeAtsMargin: -1, outcome: 'away_cover', spreadDifference: 10,
+      spreadBandExcess: 7 },
   ],
 };
 
@@ -180,6 +188,19 @@ test('renders target, summary, ATS text, details and keyboard-usable sort and se
   assert.equal(elements['candidate-body'].children[0].find((node) => node.tagName === 'button').attributes['aria-pressed'], 'true');
 });
 
+test('renders similar-stat games outside the spread range in a separate selectable section', async () => {
+  const { elements, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
+  await settled;
+
+  assert.match(elements['outside-spread-count'].textContent, /^1 game$/);
+  assert.match(elements['outside-spread-body'].textContent, /OAK at KC.*-7.*7.*Away cover/);
+  const row = elements['outside-spread-body'].children[0];
+  row.keydown('Enter');
+  assert.equal(elements['outside-spread-body'].children[0], row, 'selection keeps the focused outside row mounted');
+  assert.match(elements['outside-spread-detail'].textContent, /OAK 24.*KC 30/);
+  assert.match(elements['outside-spread-detail'].textContent, /Outside band by.*7/);
+});
+
 test('renders distance-ordered running cover-split and final-margin charts with tooltips', async () => {
   const { charts, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
   await settled;
@@ -232,13 +253,15 @@ test('labels a zero home spread as even', async () => {
   assert.match(elements['target-line'].textContent, /0.*even/);
 });
 
-test('empty candidates and failed fetch have explicit states without stale details', async () => {
+test('empty primary candidates retain outside-spread context and failed fetch clears details', async () => {
   const empty = runClient(Promise.resolve({ ok: true, json: async () => ({ ...sample,
     summary: { candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0, homeCoverRate: null },
     candidates: [] }) }));
   await empty.settled;
-  assert.match(empty.elements.status.textContent, /No games/);
+  assert.match(empty.elements.status.textContent, /No in-range games/);
   assert.equal(empty.elements.detail.textContent, '');
+  assert.match(empty.elements['outside-spread-count'].textContent, /^1 game$/);
+  assert.match(empty.elements['outside-spread-body'].textContent, /OAK at KC/);
   const failed = runClient(Promise.resolve({ ok: false, status: 500 }));
   await failed.settled;
   assert.match(failed.elements.status.textContent, /Unable to load/);

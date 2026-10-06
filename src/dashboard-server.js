@@ -70,6 +70,25 @@ function buildDashboardPayload(input, comparison) {
       homeAtsMargin: candidate.homeAtsMargin,
       outcome: candidate.outcome,
     })),
+    outsideSpreadCandidates: comparison.outsideSpreadCandidates.map((candidate) => ({
+      gameId: candidate.gameId,
+      season: candidate.season,
+      week: candidate.week,
+      gameType: candidate.gameType,
+      homeTeam: candidate.homeTeam,
+      awayTeam: candidate.awayTeam,
+      homeScore: candidate.homeScore,
+      awayScore: candidate.awayScore,
+      closingSpreadHome: candidate.closingSpreadHome,
+      similarityScore: candidate.similarityScore,
+      distanceContributions: { ...candidate.distanceContributions },
+      featureCoverage: candidate.featureCoverage,
+      omittedFeatures: [...candidate.omittedFeatures],
+      homeAtsMargin: candidate.homeAtsMargin,
+      outcome: candidate.outcome,
+      spreadDifference: candidate.spreadDifference,
+      spreadBandExcess: candidate.spreadBandExcess,
+    })),
   };
 }
 

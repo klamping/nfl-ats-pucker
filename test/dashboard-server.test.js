@@ -94,7 +94,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.equal(first.status, 200);
   assert.match(first.headers.get('content-type'), /^application\/json\b/);
   const payload = await first.json();
-  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'summary', 'target']);
+  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'outsideSpreadCandidates', 'summary', 'target']);
   assert.deepEqual(payload.target, {
     gameId: 'target-1', season: 2026, week: 3, gameType: 'REG',
     homeTeam: 'HME', awayTeam: 'AWY', kickoff: { date: '2026-09-20', time: '13:00' },
@@ -109,6 +109,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.deepEqual(payload.confidence, expected.confidence);
   assert.deepEqual(payload.distanceGroups, expected.distanceGroups);
   assert.deepEqual(payload.candidates, expected.candidates);
+  assert.deepEqual(payload.outsideSpreadCandidates, expected.outsideSpreadCandidates);
   assert.deepEqual(Object.keys(payload.candidates[0]).sort(), [
     'gameId', 'season', 'week', 'gameType', 'homeTeam', 'awayTeam', 'homeScore', 'awayScore',
     'closingSpreadHome', 'similarityScore', 'distanceContributions', 'featureCoverage',
@@ -139,6 +140,22 @@ test('GET projects retrospective market metadata without live odds details', asy
   for (const sensitiveField of ['retrievedAt', 'homeSpreads', 'sourceUrl', 'rawResponse', 'TOP_SECRET']) {
     assert.equal(serialized.includes(sensitiveField), false, `leaked ${sensitiveField}`);
   }
+});
+
+test('GET projects similar outside-spread games separately', async (t) => {
+  const server = await createDashboardServer({ inputPath: INPUT, outputRoot: ROOT,
+    fileSystem: fixture({ jsonl: `${JSON.stringify(historical({ gameId: 'outside', closingSpreadHome: 1 }))}\n` }).fileSystem,
+    port: 0 });
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+
+  const payload = await (await response(server)).json();
+  assert.deepEqual(payload.candidates, []);
+  assert.deepEqual(payload.outsideSpreadCandidates.map((candidate) => ({
+    gameId: candidate.gameId,
+    closingSpreadHome: candidate.closingSpreadHome,
+    spreadDifference: candidate.spreadDifference,
+    spreadBandExcess: candidate.spreadBandExcess,
+  })), [{ gameId: 'outside', closingSpreadHome: 1, spreadDifference: 4, spreadBandExcess: 0.5 }]);
 });
 
 test('empty comparison returns stable summary and empty candidates', async (t) => {

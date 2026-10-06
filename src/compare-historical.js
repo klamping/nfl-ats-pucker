@@ -39,13 +39,17 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     throw new Error('limit must be a non-negative integer');
   }
   const window = resolveWeekWindow(input.week, weekWindow);
-  const eligible = historicalMatchups.filter((record) => isCompleteHistorical(record) && featureKeysFor(input, record).length / Object.keys(FEATURE_WEIGHTS).length >= MINIMUM_FEATURE_COVERAGE &&
-    record.gameType === input.gameType && record.week >= window.startWeek && record.week <= window.endWeek &&
+  const comparable = historicalMatchups.filter((record) => isCompleteHistorical(record) &&
+    featureKeysFor(input, record).length / Object.keys(FEATURE_WEIGHTS).length >= MINIMUM_FEATURE_COVERAGE &&
+    record.gameType === input.gameType && record.week >= window.startWeek && record.week <= window.endWeek);
+  const eligible = comparable.filter((record) =>
     Math.abs(record.closingSpreadHome - input.closingSpreadHome) <= spreadBand);
-  const maximumDeltas = Object.fromEntries(Object.keys(FEATURE_WEIGHTS).map((key) => [key,
-    eligible.reduce((maximum, record) => featureKeysFor(input, record).includes(key) ? Math.max(maximum, Math.abs(deltaFor(input, record, key))) : maximum, 0)]));
-
-  const ranked = eligible.map((record) => {
+  const outsideSpread = comparable.filter((record) =>
+    Math.abs(record.closingSpreadHome - input.closingSpreadHome) > spreadBand);
+  const rank = (records, normalizationRecords = records) => {
+    const maximumDeltas = Object.fromEntries(Object.keys(FEATURE_WEIGHTS).map((key) => [key,
+      normalizationRecords.reduce((maximum, record) => featureKeysFor(input, record).includes(key) ? Math.max(maximum, Math.abs(deltaFor(input, record, key))) : maximum, 0)]));
+    return records.map((record) => {
     const featureKeys = featureKeysFor(input, record);
     const weightTotal = featureKeys.length === Object.keys(FEATURE_WEIGHTS).length ? 1 :
       featureKeys.reduce((sum, key) => sum + FEATURE_WEIGHTS[key], 0);
@@ -76,9 +80,18 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     };
   }).sort((left, right) => left.similarityScore - right.similarityScore ||
     left.season - right.season || left.week - right.week || String(left.gameId).localeCompare(String(right.gameId)));
+  };
+  const ranked = rank(eligible);
+  const rankedOutsideSpread = rank(outsideSpread, comparable);
   const similarityEligible = ranked.filter((candidate) =>
     candidate.similarityScore <= MAXIMUM_SIMILARITY_DISTANCE + Number.EPSILON);
   const candidates = limit === undefined ? similarityEligible : similarityEligible.slice(0, limit);
+  const outsideSpreadCandidates = rankedOutsideSpread.filter((candidate) =>
+    candidate.similarityScore <= MAXIMUM_SIMILARITY_DISTANCE + Number.EPSILON).map((candidate) => ({
+    ...candidate,
+    spreadDifference: Math.abs(candidate.closingSpreadHome - input.closingSpreadHome),
+    spreadBandExcess: Math.abs(candidate.closingSpreadHome - input.closingSpreadHome) - spreadBand,
+  }));
   const homeCovers = candidates.filter((candidate) => candidate.outcome === 'home_cover').length;
   const awayCovers = candidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const pushes = candidates.filter((candidate) => candidate.outcome === 'push').length;
@@ -118,6 +131,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
        limit: limit ?? null,
     },
     candidates,
+    outsideSpreadCandidates,
     distanceGroups, coverMargins: { home: homeMargin, away: awayMargin,
       medianGap: homeMargin.median === null || awayMargin.median === null ? null : homeMargin.median - awayMargin.median },
     confidence: { coverSplit: decisions ? ((homeCovers / decisions) - 0.5) * 100 : null,
