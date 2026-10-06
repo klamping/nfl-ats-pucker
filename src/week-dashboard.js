@@ -2,6 +2,9 @@ const { downloadNflverseGames } = require('./nflverse-client');
 const { gatherPregame, nflverseKickoffToUtc } = require('./gather-pregame');
 const { createOddsApiClient, loadTheOddsApiKey } = require('./odds-api-client');
 const { normalizeNflverseGame } = require('./normalize-nflverse-game');
+const { gatherLineupContext } = require('./lineup-context');
+const { createNflLineupClient } = require('./nfl-lineup-client');
+const { createOurladsDepthChartClient } = require('./ourlads-depth-chart-client');
 
 function parseCli(argv) {
   if (argv.length !== 4) throw new Error('A valid season and week are required');
@@ -35,6 +38,23 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
   }).accepted).filter((game) => game && game.season === season && game.week === week &&
     ['REG', 'POST'].includes(game.gameType) && hasValidKickoff(game.kickoff));
   const gather = dependencies.gatherPregame || gatherPregame;
+  const gatherLineup = dependencies.gatherLineupContext || gatherLineupContext;
+  const buildClock = () => new Date(currentTime.getTime());
+  const lineupDependencies = {
+    nflClient: createNflLineupClient({ fetchImpl: dependencies.fetchImpl, now: buildClock }),
+    depthChartClient: createOurladsDepthChartClient({ fetchImpl: dependencies.fetchImpl, now: buildClock }),
+    ...dependencies.lineupDependencies,
+  };
+  const teams = [...new Set(targets.flatMap((game) => [game.awayTeam, game.homeTeam]))];
+  const lineups = new Map(await Promise.all(teams.map(async (team) => {
+    try {
+      const context = await gatherLineup({ ...lineupDependencies, team, outputRoot: dependencies.outputRoot, now: buildClock });
+      return [team, context];
+    } catch {
+      return [team, { team, official: { status: 'unavailable', source: 'nfl.com' },
+        depthChart: { status: 'unavailable', source: 'ourlads' } }];
+    }
+  })));
   let oddsClient = dependencies.oddsClient;
   const games = [];
   const failures = [];
@@ -46,7 +66,7 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
       });
       const result = await gather({ season, gameId: target.gameId, retrospective, oddsClient: retrospective ? undefined : oddsClient,
         scheduleDownload, outputRoot: dependencies.outputRoot });
-      games.push(result.snapshot);
+      games.push({ ...result.snapshot, lineup: { home: lineups.get(target.homeTeam), away: lineups.get(target.awayTeam) } });
     } catch {
       failures.push({ gameId: target.gameId, message: 'Unable to gather game' });
     }
