@@ -43,7 +43,11 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   const detail = await (await response(server, '/api/comparison/game-1')).json();
   assert.deepEqual(detail.confidence.coverSplitInterval, slate.games[0].coverSplitInterval);
   assert.equal(detail.confidence.decidedGameCount, 1);
-  const { coverSplitInterval, decidedGameCount, ...existingFields } = slate.games[0];
+  assert.deepEqual(slate.games[0].lineup, {
+    home: { team: 'HME', official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } },
+    away: { team: 'AWY', official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } },
+  });
+  const { coverSplitInterval, decidedGameCount, lineup, ...existingFields } = slate.games[0];
   slate.games[0] = existingFields;
   assert.deepEqual(slate, { season: 2026, week: 3, games: [
     { status: 'ready', gameId: 'game-1', matchup: 'AWY at HME', kickoff: { date: '2026-09-27', time: '17:00' },
@@ -60,6 +64,42 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   assert.equal((await response(server, '/api/slate?x=1')).status, 404);
   assert.equal((await response(server, '/api/slate', { method: 'POST' })).status, 405);
   assert.equal(await statusWithHost(server, 'attacker.example'), 403);
+});
+
+test('projects only validated lineup fields and never exposes captures, provider URLs or error internals', async (t) => {
+  const retrievedAt = '2026-10-04T12:00:00.000Z';
+  const safeHome = { team: 'HME',
+    official: { status: 'ready', source: 'nfl.com', retrievedAt,
+      injuries: [{ player: 'Example', position: 'QB', status: 'Questionable', observedAt: retrievedAt }],
+      transactions: [{ date: '2026-10-03', player: 'Reserve', position: null, detail: 'Signed' }] },
+    depthChart: { status: 'ready', source: 'ourlads', retrievedAt, sourceUpdatedAt: '2026-10-04T11:00:00.000Z',
+      baseline: 'available', changes: [{ position: 'QB', rank: 1, outgoingPlayer: 'Old Starter', incomingPlayer: 'New Starter' }] },
+  };
+  const secrets = { rawCapture: '<html>secret raw body</html>', sourceUrl: 'https://www.ourlads.com/secret',
+    capturePath: '/data/raw/lineups/private', error: 'caught-error-secret' };
+  const input = snapshot({ lineup: { home: { ...safeHome, ...secrets,
+    official: { ...safeHome.official, ...secrets, injuries: safeHome.official.injuries.map(value => ({ ...value, ...secrets })) },
+    depthChart: { ...safeHome.depthChart, ...secrets, changes: safeHome.depthChart.changes.map(value => ({ ...value, ...secrets })) } },
+    away: { team: 'AWY', official: { status: 'unavailable', ...secrets }, depthChart: { status: 'unavailable', ...secrets } } } });
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [input], outputRoot: ROOT, fileSystem: fileSystem() });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const body = await (await response(server, '/api/slate')).text();
+  const slate = JSON.parse(body);
+  assert.deepEqual(slate.games[0].lineup.home, safeHome);
+  assert.deepEqual(slate.games[0].lineup.away, { team: 'AWY', official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } });
+  for (const forbidden of ['<html>', 'ourlads.com/', 'nfl.com/', '/data/raw', 'caught-error-secret', 'capturePath', 'rawCapture']) assert.equal(body.includes(forbidden), false);
+});
+
+test('malformed source fields fail closed without changing a ready game status', async (t) => {
+  const context = { team: 'HME', official: { status: 'ready', source: 'nfl.com', retrievedAt: 'invalid', injuries: [], transactions: [] },
+    depthChart: { status: 'ready', source: 'ourlads', retrievedAt: '2026-10-04T12:00:00Z', sourceUpdatedAt: '2026-10-04T11:00:00Z',
+      baseline: 'available', changes: [{ position: 'QB', rank: 3, incomingPlayer: { private: 'secret' }, outgoingPlayer: null }] } };
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [snapshot({ lineup: { home: context } })], outputRoot: ROOT, fileSystem: fileSystem() });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const slate = await (await response(server, '/api/slate')).json();
+  assert.equal(slate.games[0].status, 'ready');
+  assert.equal(slate.games[0].lineup.home.official.status, 'unavailable');
+  assert.equal(slate.games[0].lineup.home.depthChart.status, 'unavailable');
 });
 
 test('keeps a valid game when another snapshot cannot be compared', async (t) => {
