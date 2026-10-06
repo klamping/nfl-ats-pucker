@@ -69,7 +69,7 @@
 - Produces `createOurladsDepthChartClient({ fetchImpl, now })`, with `fetchDepthChart({ team })` returning `{ source: 'ourlads', retrievedAt, sourceUpdatedAt, slots, rawCapture }`.
 - `injuries` contain `{ player, position, status, observedAt }`; `transactions` contain `{ date, player, position, detail }`; `slots` contain `{ position, rank: 1 | 2, player }`.
 
-- [ ] **Step 1: Add failing NFL.com client/parser tests and source fixtures**
+- [x] **Step 1: Add failing NFL.com client/parser tests and source fixtures**
 
 ```js
 test('returns current official injury statuses and only team transactions in the 14-day window', async () => {
@@ -82,23 +82,23 @@ test('returns current official injury statuses and only team transactions in the
 
 Include boundary, malformed-markup, non-OK response, and unmapped-team assertions. Use fixture HTML that mirrors the selectors/data attributes actually present in current NFL.com injury and transaction pages.
 
-- [ ] **Step 2: Run the NFL client tests to verify they fail**
+- [x] **Step 2: Run the NFL client tests to verify they fail**
 
 Run: `node --test test/nfl-lineup-client.test.js`
 
 Expected: FAIL because `src/nfl-lineup-client.js` does not exist.
 
-- [ ] **Step 3: Add `cheerio` and implement `createNflLineupClient`**
+- [x] **Step 3: Add `cheerio` and implement `createNflLineupClient`**
 
 Use exact NFL.com report URLs for the requested/current report and all transaction categories necessary to cover the current and preceding calendar month. Fetch with an HTML `Accept` header, reject non-OK/empty responses, retain each `{ sourceUrl, body }` as a raw capture, parse only expected structural selectors, map official abbreviations to nflverse aliases, and filter transactions with inclusive UTC calendar-date boundaries. Fail if a requested team cannot be uniquely parsed; do not synthesize dates for injury entries.
 
-- [ ] **Step 4: Run the NFL client tests to verify they pass**
+- [x] **Step 4: Run the NFL client tests to verify they pass**
 
 Run: `node --test test/nfl-lineup-client.test.js`
 
 Expected: PASS.
 
-- [ ] **Step 5: Add failing Ourlads client/parser tests and source fixture**
+- [x] **Step 5: Add failing Ourlads client/parser tests and source fixture**
 
 ```js
 test('maps nflverse aliases and retains only the first two players per depth position', async () => {
@@ -112,17 +112,17 @@ test('maps nflverse aliases and retains only the first two players per depth pos
 
 Cover the Rams `LA` → `RAM` URL mapping, no-third-string leakage, missing update/slot markup, and non-OK source responses.
 
-- [ ] **Step 6: Run the Ourlads client tests to verify they fail**
+- [x] **Step 6: Run the Ourlads client tests to verify they fail**
 
 Run: `node --test test/ourlads-depth-chart-client.test.js`
 
 Expected: FAIL because `src/ourlads-depth-chart-client.js` does not exist.
 
-- [ ] **Step 7: Implement `createOurladsDepthChartClient`**
+- [x] **Step 7: Implement `createOurladsDepthChartClient`**
 
 Define the complete current nflverse-alias-to-Ourlads-code map in `src/ourlads-depth-chart-client.js`. Request exactly `https://www.ourlads.com/nfldepthcharts/depthchart/<code>`, parse its reported update timestamp and offense/defense/special-team depth rows with Cheerio, normalize player display names, and retain only nonempty rank-one/rank-two cells. Require at least one valid slot and a valid source update timestamp.
 
-- [ ] **Step 8: Run focused and full tests, then commit**
+- [x] **Step 8: Run focused and full tests, then commit**
 
 Run: `node --test test/nfl-lineup-client.test.js test/ourlads-depth-chart-client.test.js && npm test`
 
@@ -144,7 +144,7 @@ git commit -m "feat: add lineup source clients"
 - Produces `gatherLineupContext({ team, outputRoot, fileSystem, now, nflClient, depthChartClient })` resolving to `{ team, official, depthChart }`.
 - `official` is `{ status, source: 'nfl.com', retrievedAt, injuries, transactions }`; `depthChart` is `{ status, source: 'ourlads', retrievedAt, sourceUpdatedAt, baseline, changes }`.
 
-- [ ] **Step 1: Write failing persistence, baseline, and diff tests**
+- [x] **Step 1: Write failing persistence, baseline, and diff tests**
 
 ```js
 test('writes successful source captures, compares rank one and two to the latest earlier snapshot, and reports entrants/removals', async () => {
@@ -158,23 +158,23 @@ test('writes successful source captures, compares rank one and two to the latest
 
 Add tests for initial baseline (`baseline: 'unavailable'`, no changes), same/future timestamp exclusion, unchanged slots, rank-three non-effect, a source failure leaving the other source usable, and a write failure preserving the preexisting latest snapshot.
 
-- [ ] **Step 2: Run the context tests to verify they fail**
+- [x] **Step 2: Run the context tests to verify they fail**
 
 Run: `node --test test/lineup-context.test.js`
 
 Expected: FAIL because `src/lineup-context.js` does not exist.
 
-- [ ] **Step 3: Implement `gatherLineupContext` and its pure helpers**
+- [x] **Step 3: Implement `gatherLineupContext` and its pure helpers**
 
 Write raw source bodies to `data/raw/lineups/<team>/<timestamp>-<source>-capture.html` and normalized snapshots to `data/current/lineups/<team>-<timestamp>.json`, using a unique timestamp suffix pattern consistent with `gather-pregame.js`. Read candidate snapshots only from that team’s directory, validate their normalized shape, and select the latest `retrievedAt` strictly before the new depth capture. Build changes from the union of `(position, rank)` keys, sorted position then rank. Write a source snapshot only after its raw captures and normalization have succeeded. Represent expected source errors as that source’s `{ status: 'unavailable' }`, without swallowing programmer/filesystem contract errors.
 
-- [ ] **Step 4: Run the context tests to verify they pass**
+- [x] **Step 4: Run the context tests to verify they pass**
 
 Run: `node --test test/lineup-context.test.js`
 
 Expected: PASS.
 
-- [ ] **Step 5: Run full tests and commit**
+- [x] **Step 5: Run full tests and commit**
 
 Run: `npm test`
 
@@ -196,7 +196,7 @@ git commit -m "feat: persist and diff lineup context"
 - Extends `runWeekDashboardCli(argv, output, dependencies)` with injectable `gatherLineupContext` and `lineupDependencies`.
 - Passes each successful game to `createWeekDashboardServer` as `{ ...snapshot, lineup: { home, away } }`.
 
-- [ ] **Step 1: Write failing weekly orchestration tests**
+- [x] **Step 1: Write failing weekly orchestration tests**
 
 ```js
 test('gathers lineup context once per unique slate team before serving and preserves a game when a lineup source is unavailable', async () => {
@@ -209,17 +209,17 @@ test('gathers lineup context once per unique slate team before serving and prese
 
 Use two scheduled games sharing a team to prove deduplication; verify lineup gathering runs after target filtering and before server creation. Verify a rejected/unsupported schedule row produces no lineup call.
 
-- [ ] **Step 2: Run the weekly tests to verify they fail**
+- [x] **Step 2: Run the weekly tests to verify they fail**
 
 Run: `node --test test/week-dashboard.test.js`
 
 Expected: FAIL because no lineup context is gathered or passed through.
 
-- [ ] **Step 3: Extend `runWeekDashboardCli`**
+- [x] **Step 3: Extend `runWeekDashboardCli`**
 
 After targets are resolved, create one promise/result per unique home/away alias with `gatherLineupContext`; await and memoize it before entering ordinary per-game gather work. Convert a thrown team-level lineup gather into a fully unavailable `{ official, depthChart }` context for that team, then attach the home/away contexts to every successful `snapshot`. Preserve existing schedule download counts, retrospective/live decisions, game failure isolation, and server options for callers that do not inject lineup dependencies.
 
-- [ ] **Step 4: Run focused and full tests, then commit**
+- [x] **Step 4: Run focused and full tests, then commit**
 
 Run: `node --test test/week-dashboard.test.js && npm test`
 
@@ -240,7 +240,7 @@ git commit -m "feat: gather weekly lineup context"
 - Consumes each snapshot’s `lineup: { home, away }` from Task 3.
 - Produces a `lineup` slate field with `{ home, away }`, each containing only `{ team, official, depthChart }` safe projections.
 
-- [ ] **Step 1: Write failing server projection tests**
+- [x] **Step 1: Write failing server projection tests**
 
 ```js
 assert.deepEqual(slate.games[0].lineup.home, {
@@ -252,17 +252,17 @@ assert.deepEqual(slate.games[0].lineup.home, {
 
 Include unavailable-source contexts and assert the serialized response excludes fixture raw HTML, source URLs, capture paths, and caught-error text.
 
-- [ ] **Step 2: Run the server tests to verify they fail**
+- [x] **Step 2: Run the server tests to verify they fail**
 
 Run: `node --test test/week-dashboard-server.test.js`
 
 Expected: FAIL because the slate row has no lineup projection.
 
-- [ ] **Step 3: Add `projectLineupContext` and integrate it into `projectSlateGame`**
+- [x] **Step 3: Add `projectLineupContext` and integrate it into `projectSlateGame`**
 
 Validate/clone only the Task 2 safe fields. If legacy tests/callers omit lineup data, return deterministic unavailable contexts for both teams rather than throwing or changing the game’s ready status. Never serialize raw capture objects, paths, source URLs, stack traces, or arbitrary extra keys.
 
-- [ ] **Step 4: Run focused and full tests, then commit**
+- [x] **Step 4: Run focused and full tests, then commit**
 
 Run: `node --test test/week-dashboard-server.test.js && npm test`
 
@@ -285,7 +285,7 @@ git commit -m "feat: expose safe weekly lineup context"
 - Consumes the `game.lineup.home` and `game.lineup.away` API projection from Task 4.
 - Produces text-only DOM content with source/status labels; no browser-side external request.
 
-- [ ] **Step 1: Write failing client rendering tests**
+- [x] **Step 1: Write failing client rendering tests**
 
 ```js
 assert.match(elements['slate-body'].textContent,
@@ -296,17 +296,17 @@ assert.match(elements['slate-body'].textContent, /Official source unavailable/);
 
 Use API fixture data with a ready team, initial-baseline team, and unavailable source. Assert that the only fetch remains `/api/slate`, that all dynamic text is assigned via `textContent`, and that no pick/confidence wording appears in lineup content.
 
-- [ ] **Step 2: Run the client test to verify it fails**
+- [x] **Step 2: Run the client test to verify it fails**
 
 Run: `node --test test/week-dashboard-client.test.js`
 
 Expected: FAIL because the markup and renderer do not consume lineup data.
 
-- [ ] **Step 3: Add the accessible lineup area and renderer helpers**
+- [x] **Step 3: Add the accessible lineup area and renderer helpers**
 
 Add a “Lineup changes” column or a linked semantically labeled detail row per game that keeps the slate table keyboard-usable. Render each team’s `Official — NFL.com` section with “Current status as of build” for injuries and “Transactions (14 days)” for transactions. Render `Projected depth chart — Ourlads` separately, formatting rank one as “starter” and rank two as “second string,” followed by outgoing/incoming names. Render explicit no-change, no-baseline, and unavailable states. Use existing `element()`/`textContent` construction only; do not use `innerHTML`.
 
-- [ ] **Step 4: Run focused and full tests, then commit**
+- [x] **Step 4: Run focused and full tests, then commit**
 
 Run: `node --test test/week-dashboard-client.test.js && npm test`
 
@@ -326,7 +326,7 @@ git commit -m "feat: render weekly lineup changes"
 **Interfaces:**
 - Documents the completed `npm run week:dashboard -- --season YYYY --week N` contract from Tasks 1–5.
 
-- [ ] **Step 1: Add a failing CLI-level workflow test**
+- [x] **Step 1: Add a failing CLI-level workflow test**
 
 ```js
 test('waits for lineup gathering before printing the local dashboard URL', async () => {
@@ -334,17 +334,17 @@ test('waits for lineup gathering before printing the local dashboard URL', async
 });
 ```
 
-- [ ] **Step 2: Run the weekly test to verify it fails or exposes a timing gap**
+- [x] **Step 2: Run the weekly test to verify it fails or exposes a timing gap**
 
 Run: `node --test test/week-dashboard.test.js`
 
 Expected: FAIL until the URL logging is demonstrably sequenced after lineup context completion.
 
-- [ ] **Step 3: Make any minimal sequencing correction and update the README**
+- [x] **Step 3: Make any minimal sequencing correction and update the README**
 
 Document the NFL.com/Ourlads source labels, current injury status “as of build” semantics, 14-day transaction filter, first-/second-string comparison baseline, local-only captures, first-run baseline state, and per-source failure isolation. Do not claim that either source proves a complete roster-health picture or affects recommendations.
 
-- [ ] **Step 4: Run the complete verification suite and commit**
+- [x] **Step 4: Run the complete verification suite and commit**
 
 Run: `npm test && git diff --check`
 
@@ -356,6 +356,20 @@ git commit -m "docs: explain weekly lineup context"
 ```
 
 ## Self-review
+
+### Implementation outcome (2026-10-06)
+
+All six tasks are implemented on `feature/lineup-changes`. Final verification: 178 tests pass, `git diff --check` passes; live source checks succeed for NFL.com and Ourlads, including the Rams redirect. Fresh whole-branch review found two important issues; regression tests reproduced both, and fixes accept the canonical Rams `LAR` identity and atomically publish completed snapshots from non-discoverable staging files.
+
+Implementation decisions:
+- Use inclusive UTC calendar-date windows, as the spec requires, rather than millisecond-age filtering for date-only transactions.
+- Store snapshots in `data/current/lineups/<team>/` for team-local baseline discovery.
+- Preserve blank transaction positions as `null`; label fallback practice statuses explicitly rather than inferring health. Missing structural fields still fail closed.
+- The Task 6 timing test characterized the already-correct Task 3 ordering; no artificial sequencing bug was introduced. Live checks instead produced regression tests for explicit table-less empty transaction categories and unassigned `--` club entries.
+- Skip explicitly unassigned transaction rows rather than guessing team affiliation.
+- Keep current build-time context, slot-only comparison, single-attempt request policy, local checkout history, and existing disclosure/reordering behavior. Historical availability, impact inference, retry/retention policies, shared histories, and expansion persistence remain out of scope.
+
+Deferred minor: raw successful downloads are retained only when the complete source fetch/parse succeeds. Failed parsing or a later NFL.com category request can leave earlier downloaded documents uncaptured; improve this diagnostic retention separately.
 
 - **Spec coverage:** Tasks 1–2 implement source capture, normalization, dated/undated semantics, persistence, baseline selection, and failure behavior. Task 3 implements build-time slate integration. Task 4 protects the API boundary. Task 5 implements labeled dashboard states. Task 6 documents and verifies the end-to-end sequencing. No gaps found.
 - **Step scan:** Every task has a focused failing test, a failing run, one named implementation unit, a passing run, and a commit. No implementation body is prescribed where fixtures/signatures determine it.

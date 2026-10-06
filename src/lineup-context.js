@@ -1,5 +1,6 @@
 const defaultFileSystem = require('node:fs/promises');
 const path = require('node:path');
+const { randomUUID } = require('node:crypto');
 const { createNflLineupClient } = require('./nfl-lineup-client');
 const { createOurladsDepthChartClient } = require('./ourlads-depth-chart-client');
 
@@ -12,7 +13,7 @@ async function gatherLineupContext({ team, outputRoot = process.cwd(), fileSyste
   now = () => new Date(), nflClient = createNflLineupClient({ now }),
   depthChartClient = createOurladsDepthChartClient({ now }) } = {}) {
   if (typeof team !== 'string' || !/^[A-Z]{2,3}$/.test(team)) throw new TypeError('Invalid lineup team');
-  if (!['mkdir', 'writeFile', 'readFile', 'readdir'].every((method) => typeof fileSystem[method] === 'function')) {
+  if (!['mkdir', 'writeFile', 'readFile', 'readdir', 'link', 'unlink'].every((method) => typeof fileSystem[method] === 'function')) {
     throw new TypeError('Invalid lineup filesystem contract');
   }
   if (typeof nflClient.fetchOfficial !== 'function' || typeof depthChartClient.fetchDepthChart !== 'function') {
@@ -38,7 +39,7 @@ async function gatherLineupContext({ team, outputRoot = process.cwd(), fileSyste
         projected = { source, retrievedAt: normalized.retrievedAt, sourceUpdatedAt: normalized.sourceUpdatedAt,
           baseline: previous ? 'available' : 'unavailable', changes: previous ? diffSlots(previous.slots, normalized.slots) : [] };
       }
-      await writeUnique(fileSystem, snapshotDirectory, stem, 'json', `${JSON.stringify({ team, ...normalized }, null, 2)}\n`);
+      await publishSnapshot(fileSystem, snapshotDirectory, stem, `${JSON.stringify({ team, ...normalized }, null, 2)}\n`);
       return { status: 'ready', ...projected };
     } catch (error) {
       if (!isExpectedFailure(error)) throw error;
@@ -118,6 +119,25 @@ async function writeUnique(fileSystem, directory, stem, extension, body) {
     try { await fileSystem.writeFile(filename, body, { flag: 'wx' }); return; } catch (error) {
       if (error.code !== 'EEXIST') throw error;
     }
+  }
+}
+
+async function publishSnapshot(fileSystem, directory, stem, body) {
+  await fileSystem.mkdir(directory, { recursive: true });
+  // Baseline discovery ignores staging files, even if a write/close fails after
+  // producing complete JSON. Hard-link publication is atomic and never replaces
+  // an existing capture (unlike rename on POSIX).
+  const staging = path.join(directory, `${stem}-${randomUUID()}.pending`);
+  try {
+    await fileSystem.writeFile(staging, body, { flag: 'wx' });
+    for (let index = 1; ; index += 1) {
+      const suffix = index === 1 ? '' : `-${String(index).padStart(3, '0')}`;
+      try { await fileSystem.link(staging, path.join(directory, `${stem}${suffix}.json`)); break; } catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+      }
+    }
+  } finally {
+    await fileSystem.unlink(staging).catch(() => {});
   }
 }
 

@@ -24,7 +24,9 @@ function createOurladsDepthChartClient({ fetchImpl = fetch, now = () => new Date
       } catch (error) { throw sourceError(`Ourlads request failed: ${error.message}`); }
       if (!body?.trim()) throw sourceError('Ourlads returned empty markup');
       const $ = load(body);
-      if ($('#ctl00_phContent_hteam').attr('value') !== TEAM_CODES[team]) throw sourceError('Cannot parse Ourlads team');
+      // The legacy RAM request redirects to the canonical LAR chart.
+      const documentTeam = team === 'LA' ? 'LAR' : TEAM_CODES[team];
+      if ($('#ctl00_phContent_hteam').attr('value') !== documentTeam) throw sourceError('Cannot parse Ourlads team');
       const sourceUpdatedAt = parseEasternTimestamp(text($('#ctl00_phContent_DateUpd')));
       const slots = [];
       const seen = new Set();

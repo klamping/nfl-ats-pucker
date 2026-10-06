@@ -6,7 +6,7 @@ const html = fs.readFileSync(`${__dirname}/fixtures/ourlads-depth-chart-ARI.html
 const now = () => new Date('2026-10-06T12:00:00Z');
 
 test('maps team aliases, normalizes names, and retains only first and second string across all three units', async () => {
-  for (const [team, code] of [['ARI', 'ARZ'], ['LA', 'RAM'], ['GB', 'GB'], ['NE', 'NE']]) {
+  for (const [team, code] of [['ARI', 'ARZ'], ['GB', 'GB'], ['NE', 'NE']]) {
     const result = await createOurladsDepthChartClient({ now, fetchImpl: async (url, options) => {
       assert.equal(url, `https://www.ourlads.com/nfldepthcharts/depthchart/${code}`);
       assert.equal(options.headers.Accept, 'text/html');
@@ -20,6 +20,21 @@ test('maps team aliases, normalizes names, and retains only first and second str
     assert.equal(result.retrievedAt, '2026-10-06T12:00:00.000Z');
     assert.equal(result.rawCapture.body.includes('Third, Hidden'), true);
   }
+});
+
+test('accepts the canonical LAR document returned by the RAM request without accepting unrelated teams', async () => {
+  const rams = fs.readFileSync(`${__dirname}/fixtures/ourlads-depth-chart-LA.html`, 'utf8');
+  const fetchImpl = async url => {
+    assert.equal(url, 'https://www.ourlads.com/nfldepthcharts/depthchart/RAM');
+    return { ok: true, text: async () => rams };
+  };
+  const result = await createOurladsDepthChartClient({ now, fetchImpl }).fetchDepthChart({ team: 'LA' });
+  assert.deepEqual(result.slots.slice(0, 2), [
+    { position: 'QB', rank: 1, player: 'Matthew Stafford' },
+    { position: 'QB', rank: 2, player: 'Stetson Bennett IV' },
+  ]);
+  assert.equal(result.sourceUpdatedAt, '2026-10-05T18:15:00.000Z');
+  await assert.rejects(createOurladsDepthChartClient({ now, fetchImpl: async () => ({ ok: true, text: async () => html }) }).fetchDepthChart({ team: 'LA' }), /team/);
 });
 
 test('interprets winter Eastern timestamps without assuming daylight saving time', async () => {

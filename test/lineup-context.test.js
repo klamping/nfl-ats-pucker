@@ -92,6 +92,20 @@ test('a snapshot write failure preserves the previous valid snapshot and the oth
   assert.equal(next.depthChart.changes[0].outgoingPlayer, 'Old Starter');
 });
 
+test('a write that saves complete snapshot content then fails cannot advance the next baseline', async (t) => {
+  const root = await setup(t);
+  await collect(root, depth([slot('QB', 1, 'Successful Starter')], oldTime));
+  const failingFs = { ...fs, writeFile: async (file, ...args) => {
+    await fs.writeFile(file, ...args);
+    if (file.includes('current/lineups') && file.includes('ourlads')) throw Object.assign(new Error('close failed'), { code: 'EIO' });
+  } };
+  const failed = await collect(root, depth([slot('QB', 1, 'Failed Starter')]), { fileSystem: failingFs });
+  assert.equal(failed.depthChart.status, 'unavailable');
+  const next = await collect(root, depth([slot('QB', 1, 'Next Starter')], '2026-10-07T12:00:00.000Z'));
+  assert.deepEqual(next.depthChart.changes, [{ position: 'QB', rank: 1,
+    outgoingPlayer: 'Successful Starter', incomingPlayer: 'Next Starter' }]);
+});
+
 test('does not swallow programmer errors or accept unsafe team paths', async (t) => {
   const root = await setup(t);
   await assert.rejects(collect(root, depth(), { nflClient: { fetchOfficial: async () => { throw new TypeError('bug'); } } }), /bug/);
