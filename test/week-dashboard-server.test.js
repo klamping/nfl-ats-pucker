@@ -50,7 +50,7 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   const { coverSplitInterval, decidedGameCount, lineup, ...existingFields } = slate.games[0];
   slate.games[0] = existingFields;
   assert.deepEqual(slate, { season: 2026, week: 3, games: [
-    { status: 'ready', gameId: 'game-1', matchup: 'AWY at HME', kickoff: { date: '2026-09-27', time: '17:00' },
+    { status: 'ready', gameId: 'game-1', matchup: 'AWY at HME', kickoff: { date: '2026-09-27', time: '17:00', utc: '2026-09-27T21:00:00.000Z' },
       currentOdds: { provider: 'the-odds-api', consensusSpreadHome: -3, contributingBooks: 2 }, candidateCount: 1,
       coverSplit: 50, weightedConfidence: 5, recommendedPick: 'HME' },
     { status: 'unavailable', gameId: 'broken', message: 'Unable to gather game' },
@@ -64,6 +64,24 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   assert.equal((await response(server, '/api/slate?x=1')).status, 404);
   assert.equal((await response(server, '/api/slate', { method: 'POST' })).status, 405);
   assert.equal(await statusWithHost(server, 'attacker.example'), 403);
+});
+
+test('projects an unambiguous UTC kickoff from Eastern schedule values in summer, winter and across date changes', async (t) => {
+  const cases = [
+    ['2026-10-08', '20:00', '2026-10-09T00:00:00.000Z'],
+    ['2026-12-17', '20:00', '2026-12-18T01:00:00.000Z'],
+    ['2026-10-11', '00:30', '2026-10-11T04:30:00.000Z'],
+    ['2026-03-08', '03:30', '2026-03-08T07:30:00.000Z'],
+  ];
+  const games = cases.map(([date, time], index) => snapshot({ gameId: `time-${index}`, kickoff: { date, time } }));
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games, outputRoot: ROOT, fileSystem: fileSystem() });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const slate = await (await response(server, '/api/slate')).json();
+  assert.equal(slate.games.length, cases.length);
+  for (const [index, [date, time, utc]] of cases.entries()) {
+    assert.equal(slate.games[index].status, 'ready');
+    assert.deepEqual(slate.games[index].kickoff, { date, time, utc });
+  }
 });
 
 test('projects only validated lineup fields and never exposes captures, provider URLs or error internals', async (t) => {

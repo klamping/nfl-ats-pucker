@@ -3,13 +3,14 @@ const http = require('node:http');
 const path = require('node:path');
 const { compareHistorical } = require('./compare-historical');
 const { buildDashboardPayload, loadHistoricalMatchups } = require('./dashboard-server');
+const { nflverseKickoffToUtc } = require('./gather-pregame');
 
 function projectSlateGame(input, comparison) {
   const currentOdds = { provider: input.currentOdds.provider, consensusSpreadHome: input.currentOdds.consensusSpreadHome };
   if (input.currentOdds.provider === 'the-odds-api') currentOdds.contributingBooks = input.currentOdds.contributingBooks;
   const recommendedPick = comparison.confidence.coverSplit > 0 ? input.homeTeam : comparison.confidence.coverSplit < 0 ? input.awayTeam : null;
   return { status: 'ready', gameId: input.gameId, matchup: `${input.awayTeam} at ${input.homeTeam}`, recommendedPick,
-    kickoff: { date: input.kickoff.date, time: input.kickoff.time }, currentOdds,
+    kickoff: { date: input.kickoff.date, time: input.kickoff.time, utc: nflverseKickoffToUtc(input.kickoff) }, currentOdds,
     candidateCount: comparison.summary.candidateCount, coverSplit: comparison.confidence.coverSplit,
     coverSplitInterval: comparison.confidence.coverSplitInterval, decidedGameCount: comparison.confidence.decidedGameCount,
     weightedConfidence: comparison.confidence.weightedConfidence,

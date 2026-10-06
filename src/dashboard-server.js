@@ -219,7 +219,7 @@ function parseCli(argv) {
 
 async function runDashboardCli(argv = process.argv.slice(2), output = console, dependencies = {}) {
   const inputPath = parseCli(argv);
-  const server = await createDashboardServer({ ...dependencies, inputPath });
+  const server = await createDashboardServer({ port: 3000, ...dependencies, inputPath });
   output.log(`http://127.0.0.1:${server.address().port}/`);
   return server;
 }

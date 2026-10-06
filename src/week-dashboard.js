@@ -72,7 +72,7 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
     }
   }
   const createWeekDashboardServer = dependencies.createWeekDashboardServer || require('./week-dashboard-server').createWeekDashboardServer;
-  const server = await createWeekDashboardServer({ season, week, games, failures });
+  const server = await createWeekDashboardServer({ season, week, games, failures, port: dependencies.port ?? 3000 });
   output.log(`http://127.0.0.1:${server.address().port}/`);
   return server;
 }

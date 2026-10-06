@@ -56,6 +56,38 @@ test('renders compact successful and unavailable weekly rows', async () => {
   assert.equal(stored.get('nfl-ats-pucker:week-ranks:2026:3'), JSON.stringify(['2026_03_DAL_PHI', '2026_03_LA_DEN']));
 });
 
+test('formats kickoff weekdays and compact times in Chicago with minutes, daylight saving and date rollover', async () => {
+  const cases = [
+    ['2026-10-09T00:00:00.000Z', 'Thu 7pm'],
+    ['2026-12-18T01:00:00.000Z', 'Thu 7pm'],
+    ['2026-10-11T20:25:00.000Z', 'Sun 3:25pm'],
+    ['2026-10-11T04:30:00.000Z', 'Sat 11:30pm'],
+    ['2026-10-11T17:00:00.000Z', 'Sun 12pm'],
+    ['2026-10-11T05:00:00.000Z', 'Sun 12am'],
+    ['2026-03-08T07:30:00.000Z', 'Sun 1:30am'],
+    ['2026-03-08T08:30:00.000Z', 'Sun 3:30am'],
+    ['2026-11-01T06:30:00.000Z', 'Sun 1:30am'],
+    ['2026-11-01T07:30:00.000Z', 'Sun 1:30am'],
+    [null, '—'],
+    ['invalid', '—'],
+  ];
+  const elements = { status: new Element(), 'slate-body': new Element() };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/week-dashboard/app.js'), 'utf8'), {
+    document: { getElementById: id => elements[id], createElement: tag => new Element(tag) },
+    fetch: async () => ({ ok: true, json: async () => ({ season: 2026, week: 3, games: cases.map(([utc], index) => ({
+      status: 'ready', gameId: `time-${index}`, matchup: `Game ${String(index).padStart(2, '0')}`,
+      kickoff: { date: '2026-10-08', time: '20:00', utc }, currentOdds: { provider: 'nflverse', consensusSpreadHome: -3 },
+      candidateCount: 1, coverSplit: 0, decidedGameCount: 1, coverSplitInterval: null, weightedConfidence: 0, recommendedPick: null,
+    })) }) }),
+    localStorage: { getItem: () => null, setItem() {} },
+  });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(elements['slate-body'].children.length, cases.length * 2);
+  for (const [index, [, expected]] of cases.entries()) {
+    assert.equal(elements['slate-body'].children[index * 2].children[2].textContent, expected);
+  }
+});
+
 test('expands team context in a row beneath its game', async () => {
   const elements = { status: new Element(), 'slate-body': new Element() };
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/week-dashboard/app.js'), 'utf8'), {

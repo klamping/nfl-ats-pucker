@@ -19,6 +19,8 @@ Open the printed loopback URL. Upcoming games use current live odds. Completed g
 
 ### Recent player / lineup changes
 
+All dashboard commands (`dashboard`, `game:dashboard`, and `week:dashboard`) use `http://127.0.0.1:3000/`. If port 3000 is occupied, startup fails rather than choosing another port.
+
 Expand **View team context** in a game's **Lineup changes** column for both teams. The weekly build gathers this context once per participating team before starting the server or printing its URL; the browser only reads the local `/api/slate` endpoint.
 
 - **Official — NFL.com:** the latest injury-report rows available from NFL.com, labeled **Current status as of build**. These rows have no individual publication dates; their observation time is not a claimed injury date. When game status is blank, an explicitly labeled practice status is shown, or “Not reported”—never an inference that a player is healthy. Transactions include all six league categories for the current and preceding month, filtered to inclusive UTC calendar dates from build date minus 14 days through build date. Blank published transaction positions remain unknown.

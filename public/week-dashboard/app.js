@@ -7,6 +7,16 @@
   const source = (odds) => odds.provider === 'nflverse' ? 'closing line' : `${odds.contributingBooks} books`;
   const signed = (value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}`;
   const interval = (value) => value ? `${signed(value.lower)} to ${signed(value.upper)} pp` : '—';
+  const kickoffFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Chicago', weekday: 'short', hour: 'numeric', minute: '2-digit', hour12: true,
+  });
+  function kickoffLabel(kickoff) {
+    if (!kickoff?.utc || !Number.isFinite(Date.parse(kickoff.utc))) return '—';
+    const parts = Object.fromEntries(kickoffFormatter.formatToParts(new Date(kickoff.utc))
+      .filter(part => part.type !== 'literal').map(part => [part.type, part.value]));
+    const minutes = parts.minute === '00' ? '' : `:${parts.minute}`;
+    return `${parts.weekday} ${parts.hour}${minutes}${parts.dayPeriod.toLowerCase()}`;
+  }
   let orderedGames = [];
   let unavailableGames = [];
   let storageKey;
@@ -102,7 +112,7 @@
       const matchup = element('td'); const link = element('a', game.matchup);
       link.setAttribute('href', `/games/${encodeURIComponent(game.gameId)}/`); matchup.append(link);
       const contextRow = lineupContextRow(game);
-      row.append(pointsCell(game, index), matchup, element('td', `${game.kickoff.date} ${game.kickoff.time}`), element('td', line(game.currentOdds.consensusSpreadHome)),
+      row.append(pointsCell(game, index), matchup, element('td', kickoffLabel(game.kickoff)), element('td', line(game.currentOdds.consensusSpreadHome)),
         element('td', game.recommendedPick || '—'), element('td', game.candidateCount), element('td', game.coverSplit === null ? '—' : `${game.coverSplit > 0 ? '+' : ''}${Math.round(game.coverSplit)} pp`),
         element('td', interval(game.coverSplitInterval)), element('td', game.decidedGameCount),
         element('td', game.weightedConfidence === null ? '—' : `${game.weightedConfidence}/100`), lineupCell(game, contextRow));

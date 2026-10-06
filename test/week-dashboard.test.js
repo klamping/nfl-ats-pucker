@@ -65,7 +65,7 @@ test('orchestrates supported games with shared schedule and isolates failures', 
     home: { team: 'HME', official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } },
     away: { team: 'AWY', official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } },
   } }],
-    failures: [{ gameId: 'past', message: 'Unable to gather game' }] }]);
+    failures: [{ gameId: 'past', message: 'Unable to gather game' }], port: 3000 }]);
 });
 
 test('gathers once per unique supported slate team before game work and shares contexts without hiding games', async () => {
