@@ -21,17 +21,27 @@ const collect = (root, value = depth(), extra = {}) => gatherLineupContext({ tea
 
 test('establishes an initial baseline and persists immutable local raw and normalized captures', async (t) => {
   const root = await setup(t);
-  const result = await collect(root);
+  const result = await collect(root, depth([
+    slot('WR', 2, 'Reserve Receiver'), slot('QB', 3, 'Third Quarterback'),
+    slot('QB', 1, 'Starting Quarterback'),
+  ]));
   assert.equal(result.official.status, 'ready');
   assert.equal(result.depthChart.baseline, 'unavailable');
   assert.deepEqual(result.depthChart.changes, []);
+  assert.deepEqual(result.depthChart.slots, [
+    slot('QB', 1, 'Starting Quarterback'),
+    slot('WR', 2, 'Reserve Receiver'),
+  ]);
   const raws = await fs.readdir(path.join(root, 'data/raw/lineups/ARI'));
   assert.equal(raws.length, 2);
   assert.ok((await Promise.all(raws.map(file => fs.readFile(path.join(root, 'data/raw/lineups/ARI', file), 'utf8')))).includes('<html>depth</html>'));
   const snapshots = await fs.readdir(path.join(root, 'data/current/lineups/ARI'));
   assert.equal(snapshots.length, 2);
   const saved = await Promise.all(snapshots.map(async file => JSON.parse(await fs.readFile(path.join(root, 'data/current/lineups/ARI', file), 'utf8'))));
-  assert.deepEqual(saved.find(value => value.source === 'ourlads').slots, [slot('QB', 1, 'Old Starter')]);
+  assert.deepEqual(saved.find(value => value.source === 'ourlads').slots, [
+    slot('QB', 1, 'Starting Quarterback'),
+    slot('WR', 2, 'Reserve Receiver'),
+  ]);
   assert.equal(JSON.stringify(saved).includes('<html>'), false);
   await collect(root);
   assert.equal((await fs.readdir(path.join(root, 'data/current/lineups/ARI'))).length, 4, 'same-clock captures never overwrite');

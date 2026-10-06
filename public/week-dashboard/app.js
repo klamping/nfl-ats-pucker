@@ -43,11 +43,9 @@
   }
   function pointsCell(game, index) {
     const cell = element('td');
-    const input = element('input'); input.setAttribute('type', 'number'); input.setAttribute('min', '1'); input.setAttribute('max', orderedGames.length); input.value = String(orderedGames.length - index);
+    const input = element('input'); input.setAttribute('type', 'number'); input.setAttribute('class', 'points-value'); input.setAttribute('min', '1'); input.setAttribute('max', orderedGames.length); input.value = String(orderedGames.length - index);
     input.setAttribute('aria-label', `Points ${game.matchup}`); input.addEventListener('change', (event) => swapPoints(game.gameId, Number(event.target.value)));
-    const up = element('button', '↑'); up.type = 'button'; up.setAttribute('aria-label', `Move ${game.matchup} up`); up.addEventListener('click', () => { if (index) move(game.gameId, index - 1); });
-    const down = element('button', '↓'); down.type = 'button'; down.setAttribute('aria-label', `Move ${game.matchup} down`); down.addEventListener('click', () => { if (index < orderedGames.length - 1) move(game.gameId, index + 1); });
-    cell.append(input, up, down); return cell;
+    cell.append(input); return cell;
   }
   function lineupTeam(context) {
     const section = element('section'); section.setAttribute('class', 'lineup-team');

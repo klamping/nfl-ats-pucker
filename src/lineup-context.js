@@ -37,6 +37,7 @@ async function gatherLineupContext({ team, outputRoot = process.cwd(), fileSyste
       if (source === 'ourlads') {
         const previous = await findBaseline(fileSystem, snapshotDirectory, team, result.retrievedAt);
         projected = { source, retrievedAt: normalized.retrievedAt, sourceUpdatedAt: normalized.sourceUpdatedAt,
+          slots: normalized.slots,
           baseline: previous ? 'available' : 'unavailable', changes: previous ? diffSlots(previous.slots, normalized.slots) : [] };
       }
       await publishSnapshot(fileSystem, snapshotDirectory, stem, `${JSON.stringify({ team, ...normalized }, null, 2)}\n`);
@@ -58,7 +59,8 @@ async function gatherLineupContext({ team, outputRoot = process.cwd(), fileSyste
   const depthChart = await gatherSource('ourlads', () => depthChartClient.fetchDepthChart({ team }), (result) => {
     if (!validTime(result.sourceUpdatedAt) || !validSlots(result.slots)) throw new TypeError('Invalid depth chart contract');
     return { source: result.source, retrievedAt: result.retrievedAt, sourceUpdatedAt: result.sourceUpdatedAt,
-      slots: result.slots.filter(({ rank }) => rank <= 2).map(({ position, rank, player }) => ({ position, rank, player })) };
+      slots: result.slots.filter(({ rank }) => rank <= 2).map(({ position, rank, player }) => ({ position, rank, player }))
+        .sort((a, b) => a.position.localeCompare(b.position) || a.rank - b.rank) };
   });
   return { team, official, depthChart };
 }

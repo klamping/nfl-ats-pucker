@@ -75,6 +75,10 @@ tbody tr[data-selected="true"] { background: #e8f1ee; box-shadow: inset 3px 0 va
 .game-select { border: 0; background: none; color: var(--teal); font-weight: 750; padding: 4px; text-decoration: underline; text-underline-offset: 3px; }
 .tabular { font-variant-numeric: tabular-nums; }
 .lineup-cell { min-width: 160px; vertical-align: middle; }
+.points-value { width: 2.35ch; padding: 1px 0; border: 0; border-bottom: 1px solid transparent; background: transparent; color: var(--ink); font: inherit; font-size: 20px; font-weight: 750; font-variant-numeric: tabular-nums; text-align: center; appearance: textfield; }
+.points-value:hover { border-bottom-color: var(--line); }
+.points-value:focus { outline: 0; border-bottom-color: var(--teal); background: #eef5f2; }
+.points-value::-webkit-inner-spin-button, .points-value::-webkit-outer-spin-button { appearance: none; margin: 0; }
 .lineup-cell button { cursor: pointer; color: var(--teal); font-weight: 650; border: 0; background: none; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
 .lineup-context-cell { padding: 0; background: #f1f5f2; }
 .lineup-context { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 20px; }

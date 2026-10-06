@@ -47,10 +47,12 @@ test('renders compact successful and unavailable weekly rows', async () => {
   const link = elements['slate-body'].children[0].children[0].find?.(() => false);
   assert.equal(elements['slate-body'].children[0].children.some((cell) => cell.children.some((node) => node.tagName === 'a' && node.attributes.href === '/games/2026_03_LA_DEN/')), true);
   assert.equal(elements['slate-body'].textContent.includes('pick'), false);
-  const points = elements['slate-body'].find((node) => node.tagName === 'input' && node.attributes.type === 'number');
-  assert.ok(points);
-  assert.equal(points.value, '2');
-  assert.equal(points.attributes['aria-label'], 'Points LA at DEN');
+   const points = elements['slate-body'].find((node) => node.tagName === 'input' && node.attributes.type === 'number');
+   assert.ok(points);
+   assert.equal(points.value, '2');
+   assert.equal(points.attributes['aria-label'], 'Points LA at DEN');
+   assert.equal(rows[0].children[0].children.length, 1, 'points cell has no arrow controls');
+   assert.equal(points.attributes.class, 'points-value');
   points.value = '1';
   points.listeners.change({ target: points });
   assert.equal(stored.get('nfl-ats-pucker:week-ranks:2026:3'), JSON.stringify(['2026_03_DAL_PHI', '2026_03_LA_DEN']));
