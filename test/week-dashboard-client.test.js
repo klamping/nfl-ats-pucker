@@ -7,6 +7,7 @@ const vm = require('node:vm');
 class Element {
   constructor(tag = 'div') { this.tagName = tag; this.children = []; this.value = ''; this.attributes = {}; this.listeners = {}; }
   set textContent(value) { this.value = String(value); this.children = []; }
+  set innerHTML(value) { throw new Error('Dynamic markup must not use innerHTML'); }
   get textContent() { return this.value + this.children.map((child) => child.textContent).join(''); }
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.value = ''; this.children = children; }
@@ -40,7 +41,7 @@ test('renders compact successful and unavailable weekly rows', async () => {
   assert.equal(rows[0].children[8].textContent, '2');
   assert.equal(rows[1].children[7].textContent, '—');
   assert.equal(rows[1].children[8].textContent, '0');
-  assert.equal(rows[2].children[0].attributes.colspan, '10');
+  assert.equal(rows[2].children[0].attributes.colspan, '11');
   assert.match(elements['slate-body'].textContent, /Unable to gather game/);
   const link = elements['slate-body'].children[0].children[0].find?.(() => false);
   assert.equal(elements['slate-body'].children[0].children.some((cell) => cell.children.some((node) => node.tagName === 'a' && node.attributes.href === '/games/2026_03_LA_DEN/')), true);
@@ -52,4 +53,53 @@ test('renders compact successful and unavailable weekly rows', async () => {
   points.value = '1';
   points.listeners.change({ target: points });
   assert.equal(stored.get('nfl-ats-pucker:week-ranks:2026:3'), JSON.stringify(['2026_03_DAL_PHI', '2026_03_LA_DEN']));
+});
+
+test('renders labeled build-time sources, changes, initial baselines and unavailable states as text only', async () => {
+  const elements = { status: new Element(), 'slate-body': new Element() };
+  const requested = [];
+  const retrievedAt = '2026-10-04T12:00:00.000Z';
+  const ready = { status: 'ready', source: 'ourlads', retrievedAt, sourceUpdatedAt: '2026-10-04T11:00:00.000Z', baseline: 'available', changes: [
+    { position: 'QB', rank: 1, outgoingPlayer: 'Old Starter', incomingPlayer: 'New Starter' },
+    { position: 'WR', rank: 2, outgoingPlayer: null, incomingPlayer: 'New Reserve' },
+    { position: 'RB', rank: 2, outgoingPlayer: 'Old Reserve', incomingPlayer: null },
+  ] };
+  const lineup = {
+    home: { team: 'HME', official: { status: 'ready', source: 'nfl.com', retrievedAt,
+      injuries: [{ player: '<img src=x onerror=alert(1)>', position: 'QB', status: 'Questionable', observedAt: retrievedAt }],
+      transactions: [{ date: '2026-10-03', player: 'New Reserve', position: null, detail: 'Signed' }] }, depthChart: ready },
+    away: { team: 'AWY', official: { status: 'unavailable', source: 'nfl.com' },
+      depthChart: { ...ready, baseline: 'unavailable', changes: [] } },
+  };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/week-dashboard/app.js'), 'utf8'), {
+    document: { getElementById: id => elements[id], createElement: tag => new Element(tag) },
+    fetch: async url => { requested.push(url); return { ok: true, json: async () => ({ season: 2026, week: 3, games: [
+      { status: 'ready', gameId: 'game', matchup: 'AWY at HME', kickoff: { date: '2026-10-04', time: '17:00' },
+        currentOdds: { provider: 'nflverse', consensusSpreadHome: -3 }, candidateCount: 1, coverSplit: 0, decidedGameCount: 1,
+        coverSplitInterval: null, weightedConfidence: 5, recommendedPick: null, lineup },
+      { status: 'ready', gameId: 'unchanged', matchup: 'Same at Same', kickoff: { date: '2026-10-04', time: '17:00' },
+        currentOdds: { provider: 'nflverse', consensusSpreadHome: -3 }, candidateCount: 1, coverSplit: 0, decidedGameCount: 1,
+        coverSplitInterval: null, weightedConfidence: 0, recommendedPick: null,
+        lineup: { home: { team: 'SAME', official: { status: 'unavailable' }, depthChart: { ...ready, changes: [] } },
+          away: { team: 'NONE', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' } } } },
+    ] }) }; },
+    localStorage: { getItem: () => null, setItem() {} },
+  });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(requested, ['/api/slate']);
+  const cells = elements['slate-body'].children.map(row => row.children[10]);
+  assert.match(cells[0].textContent, /Official — NFL\.com.*Current status as of build.*Questionable.*Transactions \(14 days\).*Projected depth chart — Ourlads.*QB starter: Old Starter → New Starter/);
+  assert.match(cells[0].textContent, /WR second string: — → New Reserve/);
+  assert.match(cells[0].textContent, /RB second string: Old Reserve → —/);
+  assert.match(cells[0].textContent, /No prior depth chart baseline/);
+  assert.match(cells[0].textContent, /Official source unavailable/);
+  assert.match(cells[0].textContent, /2026-10-04T12:00:00.000Z/);
+  assert.match(cells[0].textContent, /2026-10-04T11:00:00.000Z/);
+  assert.match(cells[0].textContent, /<img src=x onerror=alert\(1\)>/);
+  assert.equal(cells[0].find(node => node.tagName === 'img'), null);
+  assert.match(cells[1].textContent, /No first- or second-string changes/);
+  assert.match(cells[1].textContent, /Projected depth chart unavailable/);
+  assert.ok(cells[0].find(node => node.tagName === 'details'));
+  assert.equal(cells[0].find(node => node.tagName === 'summary').attributes['aria-label'], 'Lineup changes for AWY at HME');
+  for (const cell of cells) assert.doesNotMatch(cell.textContent, /pick|confidence|recommend/i);
 });
