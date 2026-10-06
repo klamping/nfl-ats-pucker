@@ -146,6 +146,20 @@ test('shows no PP interval for a game with only pushes', async () => {
   assert.doesNotMatch(elements.summary.textContent, /NaN|undefined/);
 });
 
+test('renders every summary metric as a labeled card without embedding a minimum-width table', async () => {
+  const { elements, settled } = runClient({ ok: true, json: async () => sample });
+  await settled;
+  assert.equal(elements.summary.find(node => node.tagName === 'table'), null);
+  for (const title of ['Games', 'Pushes', 'Cover split', 'Cover split 95% CI', 'Decided games',
+    'Weighted confidence', 'Home cover margin', 'Away cover margin', 'Median margin gap']) {
+    const card = elements.summary.children.find(node => node.children.some(child => child.tagName === 'h3' && child.textContent === title));
+    assert.ok(card, `${title} has a labeled summary card`);
+    assert.ok(card.children.some(node => node.tagName === 'p'), `${title} retains its value`);
+  }
+  assert.match(elements.summary.textContent, /Home cover margin1 · median 3 · middle 50% 3–3/);
+  assert.match(elements.summary.textContent, /Away cover margin1 · median 1 · middle 50% 1–1/);
+});
+
 test('renders target, summary, ATS text, details and keyboard-usable sort and selection', async () => {
   const { elements, requested, settled } = runClient(Promise.resolve({ ok: true, json: async () => sample }));
   await settled;

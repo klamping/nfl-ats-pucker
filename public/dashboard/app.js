@@ -87,18 +87,12 @@
       card.append(element('h3', `≤ ${group.maximumDistance.toFixed(3)}`, 'overline'), list);
       return card;
     });
-    const marginCards = cards.filter(([title]) => /Cover split|Weighted confidence|cover margin|Median margin gap/.test(title));
-    const standardCards = cards.filter(([title]) => !/Cover split|Weighted confidence|cover margin|Median margin gap/.test(title));
-    const table = element('table');
-    table.append(element('caption', 'Cover split and margin profile'));
-    const body = element('tbody');
-    body.replaceChildren(...marginCards.map(([title, value]) => { const row = element('tr'); row.append(element('th', title), element('td', value)); return row; }));
-    table.append(body);
-    byId('summary').replaceChildren(...standardCards.map(([title, value]) => {
+    byId('summary').replaceChildren(...cards.map(([title, value]) => {
       const card = element('div', undefined, 'summary-card');
-      card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));
+      const valueClass = /95% CI|Weighted confidence|cover margin/.test(title) ? 'summary-detail-value' : 'card-value';
+      card.append(element('h3', title, 'overline'), element('p', value, valueClass));
       return card;
-    }), ...distanceCards, table);
+    }), ...distanceCards);
     byId('count-label').textContent = `${summary.candidateCount} qualifying game${summary.candidateCount === 1 ? '' : 's'}`;
     renderProfile(target);
   }
