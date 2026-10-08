@@ -18,3 +18,15 @@ test('interprets lower-is-better defensive proxy deltas as a downgrade when the 
     summarize: () => ({ evidenceType: 'unit-proxy', confidence: 'medium', metrics: [{ delta: -0.12, direction: 'lower' }], teamContext: null, sample: {} }) });
   assert.equal(result.playerImpacts[0].verdict, 'material downgrade');
 });
+
+test('deduplicates weekly observations by player ID and abstains for ambiguous identities', async () => {
+  const repeated = [{ season: 2026, playerStats: [
+    { player_id: 'out', player_display_name: 'Starter QB', recent_team: 'ARI', position: 'QB', week: '1' }, { player_id: 'out', player_display_name: 'Starter QB', recent_team: 'ARI', position: 'QB', week: '2' },
+    { player_id: 'in', player_display_name: 'Backup QB', recent_team: 'ARI', position: 'QB', week: '1' }, { player_id: 'in', player_display_name: 'Backup QB', recent_team: 'ARI', position: 'QB', week: '2' },
+  ] }];
+  const ready = await gatherRosterImpacts({ team: 'ARI', kickoff: '2026-09-10T00:00:00Z', targetSeason: 2026, lineup, rosterData: repeated, summarize: () => ({ evidenceType: 'direct', confidence: 'low', metrics: [{ delta: 0.04, direction: 'higher' }], sample: {} }) });
+  assert.equal(ready.playerImpacts[0].verdict, 'possible downgrade');
+  const ambiguous = structuredClone(repeated); ambiguous[0].playerStats.push({ player_id: 'different', player_display_name: 'Starter QB', recent_team: 'ARI', position: 'QB', week: '1' });
+  const result = await gatherRosterImpacts({ team: 'ARI', kickoff: '2026-09-10T00:00:00Z', targetSeason: 2026, lineup, rosterData: ambiguous });
+  assert.equal(result.playerImpacts[0].verdict, 'insufficient evidence');
+});
