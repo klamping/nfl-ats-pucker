@@ -95,6 +95,10 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
   const homeCovers = candidates.filter((candidate) => candidate.outcome === 'home_cover').length;
   const awayCovers = candidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const pushes = candidates.filter((candidate) => candidate.outcome === 'push').length;
+  const outsideHomeCovers = outsideSpreadCandidates.filter((candidate) => candidate.outcome === 'home_cover').length;
+  const outsideAwayCovers = outsideSpreadCandidates.filter((candidate) => candidate.outcome === 'away_cover').length;
+  const outsidePushes = outsideSpreadCandidates.filter((candidate) => candidate.outcome === 'push').length;
+  const outsideDecisions = outsideHomeCovers + outsideAwayCovers;
   const decisions = homeCovers + awayCovers;
   const coverMargin = (outcome) => candidates.filter((candidate) => candidate.outcome === outcome)
     .map((candidate) => Math.abs(candidate.homeAtsMargin)).sort((a, b) => a - b);
@@ -132,6 +136,13 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     },
     candidates,
     outsideSpreadCandidates,
+    outsideSpreadSummary: {
+      candidateCount: outsideSpreadCandidates.length,
+      homeCovers: outsideHomeCovers,
+      awayCovers: outsideAwayCovers,
+      pushes: outsidePushes,
+      homeCoverRate: outsideDecisions ? outsideHomeCovers / outsideDecisions : null,
+    },
     distanceGroups, coverMargins: { home: homeMargin, away: awayMargin,
       medianGap: homeMargin.median === null || awayMargin.median === null ? null : homeMargin.median - awayMargin.median },
     confidence: { coverSplit: decisions ? ((homeCovers / decisions) - 0.5) * 100 : null,

@@ -66,7 +66,7 @@ class Element {
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label', 'trend-chart', 'outside-spread-count', 'outside-spread-body',
-  'outside-spread-detail', 'margin-distribution', 'previous-games'];
+  'outside-spread-detail', 'outside-spread-summary', 'outside-spread-trend', 'margin-distribution', 'previous-games'];
 
 function runClient(reply, pathname = '/', previousReply = { ok: true, json: async () => ({
   home: { team: 'PHI', status: 'empty' }, away: { team: 'CHI', status: 'empty' },
@@ -151,6 +151,7 @@ const sample = {
     featureWeights: { 'home.restDays': 0.05, closingSpreadHome: 0.05 },
     minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
+  outsideSpreadSummary: { candidateCount: 1, homeCovers: 0, awayCovers: 1, pushes: 0, homeCoverRate: 0 },
   coverMargins: { home: { count: 1, median: 3, lowerQuartile: 3, upperQuartile: 3 }, away: { count: 1, median: 1, lowerQuartile: 1, upperQuartile: 1 }, medianGap: 2 },
   confidence: { coverSplit: 0, weightedConfidence: 0, weightedSplit: 0,
     decidedGameCount: 2, coverSplitInterval: { lower: -40.5469, upper: 40.5469 } },
@@ -175,6 +176,22 @@ const sample = {
       spreadBandExcess: 7 },
   ],
 };
+
+test('renders a separate outside-spread outcome summary and distance trend', async () => {
+  const client = runClient({ ok: true, json: async () => sample });
+  await client.settled;
+
+  assert.match(client.elements['outside-spread-summary'].textContent, /Games1.*Home covers0.*Away covers1.*Pushes0.*Home cover split-50 pp/);
+  const coverChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'Outside-spread running cover split');
+  const marginChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'Outside-spread final point difference');
+  assert.deepEqual(Array.from(coverChart.config.data.labels), ['0.100']);
+  assert.deepEqual(Array.from(coverChart.config.data.datasets[0].data), [-100]);
+  assert.deepEqual(Array.from(marginChart.config.data.datasets[0].data), [6]);
+  assert.equal(coverChart.canvas.attributes.role, 'img');
+  assert.match(coverChart.canvas.attributes['aria-label'], /outside-spread running cover split/i);
+  assert.equal(marginChart.canvas.attributes.role, 'img');
+  assert.match(marginChart.canvas.attributes['aria-label'], /outside-spread final point difference/i);
+});
 
 test('shows no PP interval for a game with only pushes', async () => {
   const reply = { ...sample,
@@ -293,13 +310,15 @@ test('renders distance-ordered running cover-split and final-margin charts with 
   const { settled } = client;
   await settled;
   const charts = client.charts.filter(({ config }) => config.type !== 'pie');
+  const primaryCover = charts.find(({ config }) => config.data.datasets[0]?.label === 'Running cover split');
+  const primaryMargin = charts.find(({ config }) => config.data.datasets[0]?.label === 'Final point difference');
 
-  assert.equal(charts.length, 2);
-  assert.deepEqual(Array.from(charts[0].config.data.labels), ['0.100', '0.300']);
-  assert.deepEqual(Array.from(charts[0].config.data.datasets[0].data), [100, 0]);
-  assert.equal(charts[0].config.data.datasets[0].borderColor, '#c83f49');
-  assert.equal(charts[1].config.data.datasets[0].backgroundColor, '#9acb78');
-  assert.equal(charts[0].config.options.plugins.tooltip.enabled, true);
+  assert.equal(charts.length, 4);
+  assert.deepEqual(Array.from(primaryCover.config.data.labels), ['0.100', '0.300']);
+  assert.deepEqual(Array.from(primaryCover.config.data.datasets[0].data), [100, 0]);
+  assert.equal(primaryCover.config.data.datasets[0].borderColor, '#c83f49');
+  assert.equal(primaryMargin.config.data.datasets[0].backgroundColor, '#9acb78');
+  assert.equal(primaryCover.config.options.plugins.tooltip.enabled, true);
 });
 
 test('groups raw home final margins into disjoint pies at exact distance and margin boundaries', async () => {
