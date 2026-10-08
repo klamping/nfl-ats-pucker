@@ -24,6 +24,22 @@ test('parses exactly one valid season and positive week', () => {
   }
 });
 
+test('forwards injected dashboard storage dependencies to the weekly server', async () => {
+  const fileSystem = {};
+  let received;
+  await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log() {} }, {
+    outputRoot: '/repo', fileSystem,
+    nflverseClient: { downloadNflverseGames: async () => scheduleDownload([]) },
+    createWeekDashboardServer: async (options) => {
+      received = options;
+      return { address: () => ({ port: 41234 }) };
+    },
+  });
+
+  assert.equal(received.outputRoot, '/repo');
+  assert.equal(received.fileSystem, fileSystem);
+});
+
 test('orchestrates supported games with shared schedule and isolates failures', async () => {
   const rows = [
     game('past', 'REG', '2026-09-27', '13:00'),

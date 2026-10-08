@@ -136,7 +136,11 @@
   }
 
   function renderTrend() {
-    const games = [...data.candidates].sort((left, right) => left.similarityScore - right.similarityScore ||
+    renderTrendCharts(data.candidates, byId('trend-chart'), 'Running cover split', 'Final point difference');
+  }
+
+  function renderTrendCharts(sourceGames, container, coverLabel, marginLabel) {
+    const games = [...sourceGames].sort((left, right) => left.similarityScore - right.similarityScore ||
       left.gameId.localeCompare(right.gameId));
     const points = [];
     let homeCovers = 0;
@@ -162,17 +166,21 @@
     const marginBound = Math.max(1, ...points.map(({ finalMargin }) => Math.abs(finalMargin)));
     const coverCanvas = element('canvas');
     const marginCanvas = element('canvas');
+    coverCanvas.setAttribute('role', 'img');
+    coverCanvas.setAttribute('aria-label', `${coverLabel} by similarity distance`);
+    marginCanvas.setAttribute('role', 'img');
+    marginCanvas.setAttribute('aria-label', `${marginLabel} by similarity distance`);
     const coverPanel = element('div', undefined, 'trend-chart-panel');
     const marginPanel = element('div', undefined, 'trend-chart-panel');
     coverPanel.append(coverCanvas);
     marginPanel.append(marginCanvas);
-    byId('trend-chart').replaceChildren(coverPanel, marginPanel);
-    comparisonCharts.push(new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: 'Running cover split',
+    container.replaceChildren(coverPanel, marginPanel);
+    comparisonCharts.push(new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: coverLabel,
       data: points.map(({ coverSplit }) => Math.round(coverSplit)), borderColor: '#c83f49', tension: 0.2 }] },
-    options: chartOptions(coverBound, 'Running cover split', 'pp') }));
-    comparisonCharts.push(new Chart(marginCanvas, { type: 'bar', data: { labels, datasets: [{ label: 'Final point difference',
+    options: chartOptions(coverBound, coverLabel, 'pp') }));
+    comparisonCharts.push(new Chart(marginCanvas, { type: 'bar', data: { labels, datasets: [{ label: marginLabel,
       data: points.map(({ finalMargin }) => finalMargin), backgroundColor: '#9acb78' }] },
-    options: chartOptions(marginBound, 'Final point difference', 'points') }));
+    options: chartOptions(marginBound, marginLabel, 'points') }));
   }
 
   function renderMarginDistribution() {
@@ -311,6 +319,8 @@
   function renderOutsideSpread() {
     const games = data.outsideSpreadCandidates || [];
     byId('outside-spread-count').textContent = `${games.length} game${games.length === 1 ? '' : 's'}`;
+    renderOutsideSpreadSummary();
+    renderOutsideSpreadTrend(games);
     if (!games.length) {
       byId('outside-spread-body').replaceChildren();
       renderDetail(null, byId('outside-spread-detail'));
@@ -355,6 +365,31 @@
     };
     renderRows();
     renderDetail(sorted[0], byId('outside-spread-detail'), [['Outside band by', signed(sorted[0].spreadBandExcess)]]);
+  }
+
+  function renderOutsideSpreadSummary() {
+    const summary = data.outsideSpreadSummary || { candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0, homeCoverRate: null };
+    const coverSplit = summary.homeCoverRate === null ? '—' : `${signed(Math.round((summary.homeCoverRate - 0.5) * 100))} pp`;
+    byId('outside-spread-summary').replaceChildren(...[
+      ['Games', summary.candidateCount],
+      ['Home covers', summary.homeCovers],
+      ['Away covers', summary.awayCovers],
+      ['Pushes', summary.pushes],
+      ['Home cover split', coverSplit],
+    ].map(([title, value]) => {
+      const card = element('div', undefined, 'summary-card');
+      card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));
+      return card;
+    }));
+  }
+
+  function renderOutsideSpreadTrend(games) {
+    const container = byId('outside-spread-trend');
+    if (!games.length) {
+      container.replaceChildren(element('p', 'No games.'));
+      return;
+    }
+    renderTrendCharts(games, container, 'Outside-spread running cover split', 'Outside-spread final point difference');
   }
 
   for (const [key, { id, direction }] of Object.entries(sorts)) {

@@ -113,7 +113,7 @@ test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral
     single: (output, options = {}) => runDashboardCli(['--input', INPUT], output,
       { fileSystem: fixture().fileSystem, outputRoot: ROOT, ...options }),
     weekly: (output, options = {}) => runWeekDashboardCli(['--season', '2026', '--week', '3'], output,
-      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, ...options }),
+      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, fileSystem: fixture().fileSystem, outputRoot: ROOT, ...options }),
   };
   for (const [name, launch] of Object.entries(launches)) {
     await t.test(name, async (t) => {
@@ -135,7 +135,7 @@ test('dashboard CLIs accept explicit and ephemeral ports and print the actual UR
     (port, output) => runDashboardCli(['--port', String(port), '--input', INPUT], output,
       { fileSystem: fixture().fileSystem, outputRoot: ROOT, port: 3000 }),
     (port, output) => runWeekDashboardCli(['--season', '2026', '--port', String(port), '--week', '3'], output,
-      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, port: 3000 }),
+      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, fileSystem: fixture().fileSystem, outputRoot: ROOT, port: 3000 }),
   ];
   for (const launch of launches) {
     const lines = [];
@@ -185,7 +185,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.equal(first.status, 200);
   assert.match(first.headers.get('content-type'), /^application\/json\b/);
   const payload = await first.json();
-  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'outsideSpreadCandidates', 'summary', 'target']);
+  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'outsideSpreadCandidates', 'outsideSpreadSummary', 'summary', 'target']);
   assert.deepEqual(payload.target, {
     gameId: 'target-1', season: 2026, week: 3, gameType: 'REG',
     homeTeam: 'HME', awayTeam: 'AWY', kickoff: { date: '2026-09-20', time: '13:00' },
@@ -204,6 +204,7 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.deepEqual(payload.distanceGroups, expected.distanceGroups);
   assert.deepEqual(payload.candidates, expected.candidates);
   assert.deepEqual(payload.outsideSpreadCandidates, expected.outsideSpreadCandidates);
+  assert.deepEqual(payload.outsideSpreadSummary, expected.outsideSpreadSummary);
   assert.deepEqual(Object.keys(payload.candidates[0]).sort(), [
     'gameId', 'season', 'week', 'gameType', 'homeTeam', 'awayTeam', 'homeScore', 'awayScore',
     'closingSpreadHome', 'similarityScore', 'distanceContributions', 'featureCoverage',

@@ -195,6 +195,18 @@ test('scores outside-spread games against the complete comparable population', (
   assert.equal(result.outsideSpreadCandidates[0].similarityScore, 1 / 9 / 34);
 });
 
+test('summarizes similar games outside the spread band separately', () => {
+  const result = compareHistorical({ input: snapshot(), historicalMatchups: [
+    historical({ gameId: 'home-cover', week: 2, homeScore: 24, awayScore: 20, closingSpreadHome: 1 }),
+    historical({ gameId: 'away-cover', week: 3, homeScore: 24, awayScore: 20, closingSpreadHome: -7 }),
+    historical({ gameId: 'push', week: 4, homeScore: 20, awayScore: 21, closingSpreadHome: 1 }),
+  ] });
+
+  assert.deepEqual(result.outsideSpreadSummary, {
+    candidateCount: 3, homeCovers: 1, awayCovers: 1, pushes: 1, homeCoverRate: 0.5,
+  });
+});
+
 test('uses a ±3.5 spread eligibility band without scoring eligible line differences', () => {
   const eligible = historical({ week: 2, closingSpreadHome: 0.5 });
   const outside = historical({ week: 3, closingSpreadHome: 0.6 });
