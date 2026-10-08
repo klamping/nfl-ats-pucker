@@ -45,7 +45,9 @@ function projectLineupContext(context, team) {
       changes: depth.changes.map(({ position, rank, outgoingPlayer, incomingPlayer }) => ({ position, rank, outgoingPlayer, incomingPlayer })) };
   }
   const impacts = context.impacts;
-  if (impacts?.status === 'ready' && Array.isArray(impacts.playerImpacts)) result.playerImpacts = impacts.playerImpacts.map((impact) => ({ ...impact }));
+  if (impacts?.status === 'ready' && Array.isArray(impacts.playerImpacts)) result.playerImpacts = impacts.playerImpacts
+    .filter((impact) => impact && text(impact.player) && text(impact.position) && ['material downgrade', 'possible downgrade', 'roughly neutral', 'possible upgrade', 'insufficient evidence'].includes(impact.verdict))
+    .map(({ player, position, status, observedAt, depthRole, replacement, verdict, confidence, evidenceType, metrics, teamContext, sample, caveats, reason }) => ({ player, position, status, observedAt, depthRole, replacement, verdict, confidence, evidenceType, metrics, teamContext, sample, caveats, reason }));
   return result;
 }
 

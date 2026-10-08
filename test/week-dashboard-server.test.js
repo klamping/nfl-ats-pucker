@@ -108,6 +108,16 @@ test('projects only validated lineup fields and never exposes captures, provider
   for (const forbidden of ['<html>', 'ourlads.com/', 'nfl.com/', '/data/raw', 'caught-error-secret', 'capturePath', 'rawCapture']) assert.equal(body.includes(forbidden), false);
 });
 
+test('projects only allow-listed roster-impact fields', async (t) => {
+  const input = snapshot({ lineup: { home: { team: 'HME', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' }, impacts: { status: 'ready', playerImpacts: [{ player: 'Starter', position: 'QB', status: 'Out', observedAt: '2026-10-04T12:00:00Z', replacement: 'Backup', verdict: 'material downgrade', confidence: 'medium', evidenceType: 'direct', metrics: [], privateError: 'secret-impact-error', sourceUrl: 'https://secret.test' }] } } } });
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [input], outputRoot: ROOT, fileSystem: fileSystem() });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const body = await (await response(server, '/api/slate')).text();
+  assert.match(body, /material downgrade/);
+  assert.equal(body.includes('secret-impact-error'), false);
+  assert.equal(body.includes('sourceUrl'), false);
+});
+
 test('malformed source fields fail closed without changing a ready game status', async (t) => {
   const context = { team: 'HME', official: { status: 'ready', source: 'nfl.com', retrievedAt: 'invalid', injuries: [], transactions: [] },
     depthChart: { status: 'ready', source: 'ourlads', retrievedAt: '2026-10-04T12:00:00Z', sourceUpdatedAt: '2026-10-04T11:00:00Z',
