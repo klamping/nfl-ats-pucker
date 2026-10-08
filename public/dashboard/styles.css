@@ -114,6 +114,10 @@ tbody tr[data-selected="true"] { background: #e8f1ee; box-shadow: inset 3px 0 va
 .lineup-team p { margin: 5px 0; color: var(--muted); font-size: 12px; }
 .lineup-team ul { margin: 6px 0; padding-left: 18px; }
 .lineup-team li { margin: 5px 0; }
+.impact-list { display: grid; gap: 8px; margin-top: 8px; }
+.impact-card { min-width: 0; padding: 10px; border: 1px solid var(--line); background: white; }
+.impact-card strong { font-size: 12px; }
+.impact-card p { overflow-wrap: anywhere; }
 .lineup-note { color: var(--muted); font-size: 13px; line-height: 1.5; }
 .outcome-home_cover { color: #006b59; font-weight: 700; }
 .outcome-away_cover { color: #935026; font-weight: 700; }

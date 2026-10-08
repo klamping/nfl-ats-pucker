@@ -120,6 +120,31 @@
         section.append(changes);
       }
     } else section.append(element('p', 'Projected depth chart unavailable'));
+    section.append(element('h4', 'Missing-player impact'));
+    section.append(element('p', 'Informational only; not a prediction or betting adjustment'));
+    section.append(element('p', 'Evidence uses current and prior-season games strictly before kickoff; unit proxies describe team associations, not individual causation'));
+    if (!Object.hasOwn(context || {}, 'playerImpacts')) section.append(element('p', 'Impact evidence unavailable'));
+    else if (!context.playerImpacts.length) section.append(element('p', 'No evaluated missing-player impact'));
+    else {
+      const list = element('div'); list.setAttribute('class', 'impact-list');
+      for (const impact of context.playerImpacts) {
+        const replacement = impact.replacement ? ` → ${impact.replacement}` : '';
+        const card = element('article'); card.setAttribute('class', 'impact-card');
+        const evidence = impact.evidenceType === 'direct' ? 'Direct EPA evidence' : impact.evidenceType === 'unit-proxy' ? 'Unit proxy' : null;
+        card.append(element('strong', `${impact.player} (${impact.position})${replacement}: ${impact.verdict}`));
+        if (impact.verdict === 'insufficient evidence') card.append(element('p', impact.reason || 'Insufficient evidence'));
+        else {
+          card.append(element('p', evidence || 'Evidence unavailable'));
+          if (impact.confidence) card.append(element('p', `Confidence: ${impact.confidence}`));
+          for (const metric of impact.metrics || []) {
+            if (typeof metric.delta === 'number') card.append(element('p', `${metric.label}: ${metric.delta >= 0 ? '+' : ''}${metric.delta.toFixed(2)} · samples ${metric.unavailableSample} vs ${metric.replacementSample}`));
+          }
+          for (const caveat of impact.caveats || []) card.append(element('p', caveat));
+        }
+        list.append(card);
+      }
+      section.append(list);
+    }
     return section;
   }
   function lineupControl(game) {

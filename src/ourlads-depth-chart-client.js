@@ -37,7 +37,8 @@ function createOurladsDepthChartClient({ fetchImpl = fetch, now = () => new Date
           const cells = $(row).children('td');
           const position = text(cells.eq(0));
           if (!/^[A-Z][A-Z0-9]*$/.test(position) || cells.length < 5) throw sourceError('Cannot parse Ourlads position markup');
-          for (const rank of [1, 2]) {
+          for (const rank of [1, 2, 3]) {
+            if (rank * 2 >= cells.length) continue;
             const playerCell = cells.eq(rank * 2);
             const link = playerCell.children('a');
             if (link.length !== 1) throw sourceError('Cannot parse Ourlads player markup');

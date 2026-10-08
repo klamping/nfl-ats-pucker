@@ -6,8 +6,7 @@ const { nflverseKickoffToUtc } = require('./gather-pregame');
 
 const ROOT = 'https://github.com/nflverse/nflverse-data/releases/download';
 const DATASETS = [
-  ['playerStats', 'player_stats/player_stats_{season}.csv', ['player_id', 'player_display_name', 'position', 'recent_team', 'season', 'week', 'season_type', 'attempts', 'sacks', 'passing_epa', 'carries', 'rushing_epa', 'targets', 'receiving_epa']],
-  ['defensivePlayerStats', 'player_stats/player_stats_def_{season}.csv', ['season', 'week', 'season_type', 'player_id', 'player_display_name', 'position', 'team', 'def_sacks', 'def_interceptions']],
+  ['playerStats', 'stats_player/stats_player_week_{season}.csv', ['player_id', 'player_display_name', 'position', 'team', 'season', 'week', 'season_type', 'attempts', 'sacks_suffered', 'passing_epa', 'carries', 'rushing_epa', 'targets', 'receiving_epa']],
   ['snapCounts', 'snap_counts/snap_counts_{season}.csv', ['game_id', 'season', 'game_type', 'week', 'player', 'position', 'team', 'opponent', 'offense_snaps', 'defense_snaps']],
   ['teamStats', 'stats_team/stats_team_week_{season}.csv', ['season', 'week', 'team', 'season_type', 'game_id', 'opponent_team', 'attempts', 'carries', 'passing_epa', 'rushing_epa', 'sacks_suffered']],
 ];
@@ -26,7 +25,7 @@ function createNflverseRosterDataClient({ fetchImpl = fetch, now = () => new Dat
         const response = await fetchImpl(sourceUrl, { headers: { Accept: 'text/csv' }, signal: AbortSignal.timeout(30000) });
         if (!response.ok) throw new Error(`nflverse roster ${key} download failed with status ${response.status}`);
         const csv = await response.text();
-        const rows = parseCsv(csv, key, required, season);
+        const rows = normalizeRows(parseCsv(csv, key, required, season), key);
         dataset[key] = rows;
         downloaded.push({ season, key, sourceUrl, csv });
       }
@@ -45,6 +44,10 @@ function parseCsv(csv, name, required, season) {
   if (!rows.length || required.some((column) => !Object.hasOwn(rows[0], column))) throw new Error(`nflverse roster ${name} CSV missing required columns`);
   if (rows.some((row) => String(row.season) !== String(season) || !row.week || !(row.season_type || row.game_type))) throw new Error(`nflverse roster ${name} CSV has invalid rows`);
   return rows;
+}
+function normalizeRows(rows, key) {
+  if (key !== 'playerStats') return rows;
+  return rows.map((row) => ({ ...row, recent_team: row.team, sacks: row.sacks_suffered, player: row.player_display_name }));
 }
 function buildKickoffs(rows, seasons) {
   if (!Array.isArray(rows)) throw new Error('Roster data schedule rows are required');
@@ -67,7 +70,7 @@ async function publish({ fileSystem, outputRoot, seasons, retrievedAt, downloade
   await fileSystem.mkdir(rawDirectory, { recursive: true }); await fileSystem.mkdir(currentDirectory, { recursive: true });
   const stem = `${retrievedAt.replace(/[:.]/g, '-')}-${seasons.join('-')}`;
   for (const entry of downloaded) await uniqueWrite(fileSystem, rawDirectory, `${stem}-${entry.season}-${entry.key}.csv`, entry.csv);
-  const dataName = `nflverse-roster-data-${seasons[0]}-${seasons.at(-1)}-${stem}.json`;
+  const dataName = `nflverse-roster-data-${seasons[0]}-${seasons.at(-1)}-${stem}-${randomUUID()}.json`;
   await atomicWrite(fileSystem, currentDirectory, dataName, JSON.stringify({ seasons: seasonData }));
   await atomicWrite(fileSystem, currentDirectory, `nflverse-roster-data-${seasons[0]}-${seasons.at(-1)}.current.json`, JSON.stringify({ retrievedAt, data: dataName, seasons: seasonData.map(({ season }) => ({ season })) }));
 }

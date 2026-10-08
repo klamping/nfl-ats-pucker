@@ -177,3 +177,32 @@ test('reports every unavailable lineup source and every failed game individually
   }
   assert.ok(!lines.some(line => /private provider/.test(line)));
 });
+
+test('loads roster data once and attaches isolated player impacts to each team', async () => {
+  let loads = 0; const impacts = []; let launched;
+  await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log() {} }, {
+    now: () => new Date('2026-09-20T12:00:00Z'), oddsClient: {},
+    nflverseClient: { downloadNflverseGames: async () => scheduleDownload([game('impact', 'REG', '2026-09-27', '17:00')]) },
+    gatherLineupContext: async ({ team }) => ({ team, official: { status: 'ready', source: 'nfl.com', injuries: [] }, depthChart: { status: 'ready', source: 'ourlads', slots: [] } }),
+    rosterDataClient: { loadSeasons: async ({ seasons }) => { loads++; assert.deepEqual(seasons, [2025, 2026]); return { seasons: [{ season: 2026 }] }; } },
+    gatherRosterImpacts: async ({ team, targetSeason, rosterData }) => { impacts.push({ team, targetSeason, rosterData }); return { status: 'ready', playerImpacts: [] }; },
+    gatherPregame: async () => ({ snapshot: { gameId: 'impact' } }), createWeekDashboardServer: async options => { launched = options; return { address: () => ({ port: 1 }) }; },
+  });
+  assert.equal(loads, 1); assert.deepEqual(impacts.map(({ team, targetSeason }) => ({ team, targetSeason })), [{ team: 'AWY', targetSeason: 2026 }, { team: 'HME', targetSeason: 2026 }]);
+  assert.equal(launched.games[0].lineup.home.impacts.status, 'ready');
+});
+
+test('keeps a ready game when one team impact gather fails', async () => {
+  let launched;
+  await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log() {} }, {
+    now: () => new Date('2026-09-20T12:00:00Z'), oddsClient: {},
+    nflverseClient: { downloadNflverseGames: async () => scheduleDownload([game('impact-failure', 'REG', '2026-09-27', '17:00')]) },
+    gatherLineupContext: async ({ team }) => ({ team, official: { status: 'unavailable', source: 'nfl.com' }, depthChart: { status: 'unavailable', source: 'ourlads' } }),
+    rosterDataClient: { loadSeasons: async () => ({ seasons: [{ season: 2026 }] }) },
+    gatherRosterImpacts: async ({ team }) => { if (team === 'HME') throw new Error('private roster failure'); return { status: 'ready', playerImpacts: [] }; },
+    gatherPregame: async () => ({ snapshot: { gameId: 'impact-failure' } }), createWeekDashboardServer: async options => { launched = options; return { address: () => ({ port: 1 }) }; },
+  });
+  assert.equal(launched.games.length, 1);
+  assert.deepEqual(launched.games[0].lineup.home.impacts, { status: 'unavailable' });
+  assert.deepEqual(launched.games[0].lineup.away.impacts, { status: 'ready', playerImpacts: [] });
+});

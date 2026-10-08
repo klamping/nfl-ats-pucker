@@ -45,7 +45,36 @@ function projectLineupContext(context, team) {
       sourceUpdatedAt: depth.sourceUpdatedAt, baseline: depth.baseline,
       changes: depth.changes.map(({ position, rank, outgoingPlayer, incomingPlayer }) => ({ position, rank, outgoingPlayer, incomingPlayer })) };
   }
+  const impacts = context.impacts;
+  if (impacts?.status === 'ready' && Array.isArray(impacts.playerImpacts) && impacts.playerImpacts.every(validImpact)) {
+    result.playerImpacts = impacts.playerImpacts.map(projectImpact);
+  }
   return result;
+}
+
+function validImpact(impact) {
+  const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 200 && !/[<>]|https?:|file:|[\\/]/i.test(value);
+  const metricText = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 200 && !/[<>]|https?:|file:|[\\]/i.test(value);
+  const finite = (value) => Number.isFinite(value);
+  const timestamp = (value) => text(value) && Number.isFinite(Date.parse(value));
+  const verdicts = ['material downgrade', 'possible downgrade', 'roughly neutral', 'possible upgrade'];
+  if (!impact || !text(impact.player) || !text(impact.position) || impact.status !== 'Out' || !timestamp(impact.observedAt)) return false;
+  if (impact.verdict === 'insufficient evidence') return text(impact.reason);
+  return verdicts.includes(impact.verdict) && Number.isInteger(impact.depthRole) && impact.depthRole > 0 && text(impact.replacement) &&
+    ['low', 'medium', 'high'].includes(impact.confidence) && ['direct', 'unit-proxy'].includes(impact.evidenceType) &&
+    Array.isArray(impact.metrics) && impact.metrics.every((metric) => metric && text(metric.key) && metricText(metric.label) && text(metric.direction) &&
+      ['higher', 'lower'].includes(metric.direction) && finite(metric.unavailableValue) && finite(metric.replacementValue) && finite(metric.delta) &&
+      finite(metric.unavailableSample) && metric.unavailableSample >= 0 && finite(metric.replacementSample) && metric.replacementSample >= 0) &&
+    (impact.teamContext === null || text(impact.teamContext)) && impact.sample && finite(impact.sample.unavailable?.value) &&
+    finite(impact.sample.unavailable?.sample) && impact.sample.unavailable.sample >= 0 && finite(impact.sample.unavailable?.games) && impact.sample.unavailable.games >= 0 && finite(impact.sample.replacement?.value) &&
+    finite(impact.sample.replacement?.sample) && impact.sample.replacement.sample >= 0 && finite(impact.sample.replacement?.games) && impact.sample.replacement.games >= 0 && Array.isArray(impact.caveats) && impact.caveats.every(text);
+}
+
+function projectImpact({ player, position, status, observedAt, depthRole, replacement, verdict, confidence, evidenceType, metrics, teamContext, sample, caveats, reason }) {
+  if (verdict === 'insufficient evidence') return { player, position, status, observedAt, verdict, reason };
+  return { player, position, status, observedAt, depthRole, replacement, verdict, confidence, evidenceType,
+    metrics: metrics.map(({ key, label, unavailableValue, replacementValue, delta, direction, unavailableSample, replacementSample }) => ({ key, label, unavailableValue, replacementValue, delta, direction, unavailableSample, replacementSample })),
+    teamContext, sample: { unavailable: { value: sample.unavailable.value, sample: sample.unavailable.sample, games: sample.unavailable.games }, replacement: { value: sample.replacement.value, sample: sample.replacement.sample, games: sample.replacement.games } }, caveats };
 }
 
 async function createWeekDashboardServer({ season, week, games = [], failures = [], outputRoot = process.cwd(),

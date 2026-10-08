@@ -5,6 +5,8 @@ const { normalizeNflverseGame } = require('./normalize-nflverse-game');
 const { gatherLineupContext } = require('./lineup-context');
 const { createNflLineupClient } = require('./nfl-lineup-client');
 const { createOurladsDepthChartClient } = require('./ourlads-depth-chart-client');
+const { createNflverseRosterDataClient } = require('./nflverse-roster-data-client');
+const { gatherRosterImpacts } = require('./roster-impact-service');
 
 function parseCli(argv) {
   const options = {};
@@ -64,6 +66,22 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
       return [team, { team, official: { status: 'unavailable', source: 'nfl.com' },
         depthChart: { status: 'unavailable', source: 'ourlads' } }];
     }
+  }))); 
+  let rosterData = null;
+  try {
+    const client = dependencies.rosterDataClient || createNflverseRosterDataClient({ fetchImpl: dependencies.fetchImpl });
+    rosterData = (await client.loadSeasons({ seasons: [season - 1, season], scheduleRows: scheduleDownload.rows, outputRoot: dependencies.outputRoot })).seasons;
+  } catch {}
+  const enrichedLineups = new Map(await Promise.all(teams.map(async (team) => {
+    const context = lineups.get(team);
+    if (!rosterData) return [team, context];
+    const target = targets.find((game) => game.awayTeam === team || game.homeTeam === team);
+    try {
+      return [team, { ...context, impacts: await (dependencies.gatherRosterImpacts || gatherRosterImpacts)({ team,
+        kickoff: nflverseKickoffToUtc(target.kickoff), targetSeason: season, lineup: context, rosterData }) }];
+    } catch {
+      return [team, { ...context, impacts: { status: 'unavailable' } }];
+    }
   })));
   let oddsClient = dependencies.oddsClient;
   const games = [];
@@ -78,7 +96,7 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
       });
       const result = await gather({ season, gameId: target.gameId, retrospective, oddsClient: retrospective ? undefined : oddsClient,
         scheduleDownload, outputRoot: dependencies.outputRoot });
-      games.push({ ...result.snapshot, lineup: { home: lineups.get(target.homeTeam), away: lineups.get(target.awayTeam) } });
+       games.push({ ...result.snapshot, lineup: { home: enrichedLineups.get(target.homeTeam), away: enrichedLineups.get(target.awayTeam) } });
     } catch {
       failures.push({ gameId: target.gameId, message: 'Unable to gather game' });
       output.log(`Game ${progress} failed; continuing.`);
