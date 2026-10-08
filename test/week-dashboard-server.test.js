@@ -109,13 +109,23 @@ test('projects only validated lineup fields and never exposes captures, provider
 });
 
 test('projects only allow-listed roster-impact fields', async (t) => {
-  const input = snapshot({ lineup: { home: { team: 'HME', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' }, impacts: { status: 'ready', playerImpacts: [{ player: 'Starter', position: 'QB', status: 'Out', observedAt: '2026-10-04T12:00:00Z', replacement: 'Backup', verdict: 'material downgrade', confidence: 'medium', evidenceType: 'direct', metrics: [], privateError: 'secret-impact-error', sourceUrl: 'https://secret.test' }] } } } });
+  const evidence = { player: 'Starter', position: 'QB', status: 'Out', observedAt: '2026-10-04T12:00:00Z', depthRole: 1, replacement: 'Backup', verdict: 'material downgrade', confidence: 'medium', evidenceType: 'direct', metrics: [{ key: 'passingEpaPerDropback', label: 'Passing EPA / dropback', unavailableValue: 0.2, replacementValue: 0.1, delta: 0.1, direction: 'higher', unavailableSample: 20, replacementSample: 20 }], teamContext: null, sample: { unavailable: { value: 0.2, sample: 20, games: 2 }, replacement: { value: 0.1, sample: 20, games: 2 } }, caveats: ['Direct EPA evidence'], privateError: 'secret-impact-error', sourceUrl: 'https://secret.test' };
+  const input = snapshot({ lineup: { home: { team: 'HME', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' }, impacts: { status: 'ready', playerImpacts: [evidence] } } } });
   const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [input], outputRoot: ROOT, fileSystem: fileSystem() });
   t.after(() => new Promise(resolve => server.close(resolve)));
   const body = await (await response(server, '/api/slate')).text();
   assert.match(body, /material downgrade/);
   assert.equal(body.includes('secret-impact-error'), false);
   assert.equal(body.includes('sourceUrl'), false);
+});
+
+test('fails closed for malformed roster-impact evidence without hiding a ready game', async (t) => {
+  const input = snapshot({ lineup: { home: { team: 'HME', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' }, impacts: { status: 'ready', playerImpacts: [{ player: 'Starter', position: 'QB', status: 'Out', observedAt: '2026-10-04T12:00:00Z', replacement: 'Backup', verdict: 'material downgrade', confidence: 'medium', evidenceType: 'direct', metrics: [{ delta: 'not-a-number' }], sample: { games: Infinity }, caveats: ['safe', { private: 'secret' }] }] } } } });
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [input], outputRoot: ROOT, fileSystem: fileSystem() });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const slate = await (await response(server, '/api/slate')).json();
+  assert.equal(slate.games[0].status, 'ready');
+  assert.equal(Object.hasOwn(slate.games[0].lineup.home, 'playerImpacts'), false);
 });
 
 test('malformed source fields fail closed without changing a ready game status', async (t) => {

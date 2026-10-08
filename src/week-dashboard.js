@@ -62,6 +62,17 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
     const client = dependencies.rosterDataClient || createNflverseRosterDataClient({ fetchImpl: dependencies.fetchImpl });
     rosterData = (await client.loadSeasons({ seasons: [season - 1, season], scheduleRows: scheduleDownload.rows, outputRoot: dependencies.outputRoot })).seasons;
   } catch {}
+  const enrichedLineups = new Map(await Promise.all(teams.map(async (team) => {
+    const context = lineups.get(team);
+    if (!rosterData) return [team, context];
+    const target = targets.find((game) => game.awayTeam === team || game.homeTeam === team);
+    try {
+      return [team, { ...context, impacts: await (dependencies.gatherRosterImpacts || gatherRosterImpacts)({ team,
+        kickoff: nflverseKickoffToUtc(target.kickoff), targetSeason: season, lineup: context, rosterData }) }];
+    } catch {
+      return [team, { ...context, impacts: { status: 'unavailable' } }];
+    }
+  })));
   let oddsClient = dependencies.oddsClient;
   const games = [];
   const failures = [];
@@ -73,13 +84,7 @@ async function runWeekDashboardCli(argv = process.argv.slice(2), output = consol
       });
       const result = await gather({ season, gameId: target.gameId, retrospective, oddsClient: retrospective ? undefined : oddsClient,
         scheduleDownload, outputRoot: dependencies.outputRoot });
-       const enrich = async (team) => {
-         const context = lineups.get(team);
-         if (!rosterData) return context;
-         try { return { ...context, impacts: await (dependencies.gatherRosterImpacts || gatherRosterImpacts)({ team,
-           kickoff: nflverseKickoffToUtc(target.kickoff), targetSeason: season, lineup: context, rosterData }) }; } catch { return context; }
-       };
-       games.push({ ...result.snapshot, lineup: { home: await enrich(target.homeTeam), away: await enrich(target.awayTeam) } });
+       games.push({ ...result.snapshot, lineup: { home: enrichedLineups.get(target.homeTeam), away: enrichedLineups.get(target.awayTeam) } });
     } catch {
       failures.push({ gameId: target.gameId, message: 'Unable to gather game' });
     }
