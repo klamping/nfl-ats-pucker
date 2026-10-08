@@ -11,3 +11,10 @@ test('compares an official Out starter with the next projected depth player', as
   assert.equal(result.playerImpacts[0].verdict, 'material downgrade');
   assert.equal(result.playerImpacts.length, 1);
 });
+
+test('interprets lower-is-better defensive proxy deltas as a downgrade when the replacement is worse', async () => {
+  const result = await gatherRosterImpacts({ team: 'ARI', kickoff: '2026-09-10T00:00:00Z', targetSeason: 2026,
+    lineup: { official: { injuries: [{ player: 'Starter QB', position: 'QB', status: 'Out', observedAt: '2026-09-01T00:00:00Z' }] }, depthChart: { slots: [{ player: 'Starter QB', position: 'QB', rank: 1 }, { player: 'Backup QB', position: 'QB', rank: 2 }] } }, rosterData,
+    summarize: () => ({ evidenceType: 'unit-proxy', confidence: 'medium', metrics: [{ delta: -0.12, direction: 'lower' }], teamContext: null, sample: {} }) });
+  assert.equal(result.playerImpacts[0].verdict, 'material downgrade');
+});

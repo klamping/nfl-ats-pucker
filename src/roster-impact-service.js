@@ -15,7 +15,8 @@ async function gatherRosterImpacts({ team, kickoff, targetSeason, lineup, roster
     if (!out || replacements.length !== 1) return insufficient(injury, 'Insufficient unambiguous player data');
     const evidence = summarize({ unavailablePlayer: out, replacementPlayer: replacements[0], position: injury.position, team, kickoff, targetSeason, seasons: rosterData });
     if (!evidence) return insufficient(injury, 'Insufficient performance evidence');
-    const delta = evidence.metrics[0]?.delta;
+    const metric = evidence.metrics[0] || {};
+    const delta = metric.direction === 'lower' ? -metric.delta : metric.delta;
     const verdict = delta >= .1 ? 'material downgrade' : delta >= .03 ? 'possible downgrade' : delta <= -.03 ? 'possible upgrade' : 'roughly neutral';
     return { player: injury.player, position: injury.position, status: 'Out', observedAt: injury.observedAt, depthRole: slot.rank, replacement: replacementSlot.player, verdict, confidence: evidence.confidence, evidenceType: evidence.evidenceType, metrics: evidence.metrics, teamContext: evidence.teamContext, sample: evidence.sample, caveats: evidence.evidenceType === 'direct' ? ['Direct EPA evidence'] : ['Unit-proxy evidence'] };
   });
