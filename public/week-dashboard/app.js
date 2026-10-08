@@ -76,14 +76,26 @@
       }
     } else section.append(element('p', 'Projected depth chart unavailable'));
     section.append(element('h4', 'Missing-player impact'));
-    const impacts = context?.playerImpacts || [];
-    if (!impacts.length) section.append(element('p', 'No evaluated missing-player impact'));
+    section.append(element('p', 'Informational only; not a prediction or betting adjustment'));
+    if (!Object.hasOwn(context || {}, 'playerImpacts')) section.append(element('p', 'Impact evidence unavailable'));
+    else if (!context.playerImpacts.length) section.append(element('p', 'No evaluated missing-player impact'));
     else {
-      const list = element('ul');
-      for (const impact of impacts) {
+      const list = element('div'); list.setAttribute('class', 'impact-list');
+      for (const impact of context.playerImpacts) {
         const replacement = impact.replacement ? ` → ${impact.replacement}` : '';
-        const evidence = impact.evidenceType === 'direct' ? 'Direct EPA evidence' : impact.evidenceType === 'unit-proxy' ? 'Unit-proxy evidence' : impact.reason || 'Insufficient evidence';
-        list.append(element('li', `${impact.player} (${impact.position})${replacement}: ${impact.verdict} · ${evidence}`));
+        const card = element('article'); card.setAttribute('class', 'impact-card');
+        const evidence = impact.evidenceType === 'direct' ? 'Direct EPA evidence' : impact.evidenceType === 'unit-proxy' ? 'Unit proxy' : null;
+        card.append(element('strong', `${impact.player} (${impact.position})${replacement}: ${impact.verdict}`));
+        if (impact.verdict === 'insufficient evidence') card.append(element('p', impact.reason || 'Insufficient evidence'));
+        else {
+          card.append(element('p', evidence || 'Evidence unavailable'));
+          if (impact.confidence) card.append(element('p', `Confidence: ${impact.confidence}`));
+          for (const metric of impact.metrics || []) {
+            if (typeof metric.delta === 'number') card.append(element('p', `${metric.label}: ${metric.delta >= 0 ? '+' : ''}${metric.delta.toFixed(2)} · samples ${metric.unavailableSample} vs ${metric.replacementSample}`));
+          }
+          for (const caveat of impact.caveats || []) card.append(element('p', caveat));
+        }
+        list.append(card);
       }
       section.append(list);
     }
