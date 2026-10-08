@@ -30,6 +30,7 @@ test('establishes an initial baseline and persists immutable local raw and norma
   assert.deepEqual(result.depthChart.changes, []);
   assert.deepEqual(result.depthChart.slots, [
     slot('QB', 1, 'Starting Quarterback'),
+    slot('QB', 3, 'Third Quarterback'),
     slot('WR', 2, 'Reserve Receiver'),
   ]);
   const raws = await fs.readdir(path.join(root, 'data/raw/lineups/ARI'));
@@ -40,6 +41,7 @@ test('establishes an initial baseline and persists immutable local raw and norma
   const saved = await Promise.all(snapshots.map(async file => JSON.parse(await fs.readFile(path.join(root, 'data/current/lineups/ARI', file), 'utf8'))));
   assert.deepEqual(saved.find(value => value.source === 'ourlads').slots, [
     slot('QB', 1, 'Starting Quarterback'),
+    slot('QB', 3, 'Third Quarterback'),
     slot('WR', 2, 'Reserve Receiver'),
   ]);
   assert.equal(JSON.stringify(saved).includes('<html>'), false);

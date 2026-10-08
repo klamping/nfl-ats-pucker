@@ -5,7 +5,7 @@ const { createOurladsDepthChartClient } = require('../src/ourlads-depth-chart-cl
 const html = fs.readFileSync(`${__dirname}/fixtures/ourlads-depth-chart-ARI.html`, 'utf8');
 const now = () => new Date('2026-10-06T12:00:00Z');
 
-test('maps team aliases, normalizes names, and retains only first and second string across all three units', async () => {
+test('maps team aliases, normalizes names, and retains projected depth slots across all three units', async () => {
   for (const [team, code] of [['ARI', 'ARZ'], ['GB', 'GB'], ['NE', 'NE']]) {
     const result = await createOurladsDepthChartClient({ now, fetchImpl: async (url, options) => {
       assert.equal(url, `https://www.ourlads.com/nfldepthcharts/depthchart/${code}`);
@@ -13,7 +13,7 @@ test('maps team aliases, normalizes names, and retains only first and second str
       return { ok: true, text: async () => html.replace('value="ARZ"', `value="${code}"`) };
     } }).fetchDepthChart({ team });
     assert.deepEqual(result.slots, [
-      { position: 'QB', rank: 1, player: 'New Starter' }, { position: 'QB', rank: 2, player: 'Second Backup' },
+      { position: 'QB', rank: 1, player: 'New Starter' }, { position: 'QB', rank: 2, player: 'Second Backup' }, { position: 'QB', rank: 3, player: 'Hidden Third' },
       { position: 'CB', rank: 1, player: 'One Defender' }, { position: 'PK', rank: 1, player: 'One Kicker' },
     ]);
     assert.equal(result.sourceUpdatedAt, '2026-10-05T17:52:00.000Z');
