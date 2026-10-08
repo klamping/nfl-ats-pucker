@@ -185,6 +185,7 @@ test('renders direct, proxy, insufficient, and unavailable player-impact states'
   await new Promise(resolve => setImmediate(resolve));
   const text = elements['slate-body'].textContent;
   assert.match(text, /Informational only; not a prediction or betting adjustment/);
+  assert.match(text, /Evidence uses current and prior-season games strictly before kickoff; unit proxies describe team associations, not individual causation/);
   assert.match(text, /Starter QB \(QB\) → Backup QB: material downgrade.*Direct EPA evidence.*Confidence: medium.*Passing EPA \/ dropback: \+0\.12.*samples 20 vs 16.*Direct EPA evidence/);
   assert.match(text, /Reserve RB \(RB\): insufficient evidence.*No available projected replacement/);
   assert.match(text, /Starting T \(T\) → Backup T: possible downgrade.*Unit proxy.*Confidence: medium.*Team offensive EPA \/ play: \+0\.04/);

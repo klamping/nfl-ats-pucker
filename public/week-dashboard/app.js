@@ -77,6 +77,7 @@
     } else section.append(element('p', 'Projected depth chart unavailable'));
     section.append(element('h4', 'Missing-player impact'));
     section.append(element('p', 'Informational only; not a prediction or betting adjustment'));
+    section.append(element('p', 'Evidence uses current and prior-season games strictly before kickoff; unit proxies describe team associations, not individual causation'));
     if (!Object.hasOwn(context || {}, 'playerImpacts')) section.append(element('p', 'Impact evidence unavailable'));
     else if (!context.playerImpacts.length) section.append(element('p', 'No evaluated missing-player impact'));
     else {
