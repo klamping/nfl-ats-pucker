@@ -66,6 +66,23 @@ test('serves safe slate rows and successful detail comparisons', async (t) => {
   assert.equal(await statusWithHost(server, 'attacker.example'), 403);
 });
 
+test('serves the weekly card stylesheet without changing game-detail assets', async (t) => {
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [snapshot()], outputRoot: ROOT, fileSystem: fileSystem(), port: 0 });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const page = await (await response(server, '/')).text();
+  assert.match(page, /href="\/week-styles\.css"/);
+  assert.match(page, /id="slate-body"[^>]*role="list"/);
+  assert.doesNotMatch(page, /<table/);
+  const styles = await response(server, '/week-styles.css');
+  assert.equal(styles.status, 200);
+  assert.match(styles.headers.get('content-type'), /^text\/css\b/);
+  assert.match(await styles.text(), /\.ranked-board/);
+  const detail = await (await response(server, '/games/game-1/')).text();
+  assert.match(detail, /href="\/styles\.css"/);
+  assert.doesNotMatch(detail, /week-styles\.css/);
+  assert.equal((await response(server, '/week-styles.css', { method: 'POST' })).status, 405);
+});
+
 test('projects an unambiguous UTC kickoff from Eastern schedule values in summer, winter and across date changes', async (t) => {
   const cases = [
     ['2026-10-08', '20:00', '2026-10-09T00:00:00.000Z'],

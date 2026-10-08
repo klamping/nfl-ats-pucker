@@ -17,11 +17,15 @@ npm run week:dashboard -- --season 2026 --week 3
 
 Open the printed loopback URL. Upcoming games use current live odds. Completed games in the current NFL season use nflverse closing lines and strictly pre-kickoff features. If one game cannot be gathered, it remains visible as unavailable while the rest of the weekly slate continues.
 
+The weekly view is a ranked card board. Drag a card's grip (mouse or touch), edit its points, or use Up/Down while the grip is focused. Moving a card shifts the intervening cards rather than swapping them. Click a team abbreviation to set **My Pick**; the pick displays the team's name. Ordering and personal picks are saved in browser local storage separately for each season/week and origin (host/port). **Reset order** restores the historical ordering without clearing your picks. Existing saved weekly rankings are retained.
+
+**Leans** and **Deviation** show the existing historical recommendation and weighted 0–100 score, separate from your personal pick. Deviation is a display label, not a new standard-deviation calculation. The magnifying-glass control below points opens the existing game page; displaying matchup details/history in a large modal is deferred.
+
 ### Recent player / lineup changes
 
 All dashboard commands (`dashboard`, `game:dashboard`, and `week:dashboard`) use `http://127.0.0.1:3000/`. If port 3000 is occupied, startup fails rather than choosing another port.
 
-Expand **View team context** in a game's **Lineup changes** column for both teams. The weekly build gathers this context once per participating team before starting the server or printing its URL; the browser only reads the local `/api/slate` endpoint.
+Expand **View team context** at the bottom of a game card for both teams. The weekly build gathers this context once per participating team before starting the server or printing its URL; the browser only reads the local `/api/slate` endpoint.
 
 - **Official — NFL.com:** the latest injury-report rows available from NFL.com, labeled **Current status as of build**. These rows have no individual publication dates; their observation time is not a claimed injury date. When game status is blank, an explicitly labeled practice status is shown, or “Not reported”—never an inference that a player is healthy. Transactions include all six league categories for the current and preceding month, filtered to inclusive UTC calendar dates from build date minus 14 days through build date. Blank published transaction positions remain unknown.
 - **Projected depth chart — Ourlads:** changes in the player at each position's first- and second-string slots, compared with that team's latest valid local capture strictly earlier than this build. Entrants and removals are included; third-string changes are excluded. The source's Eastern update timestamp is displayed in UTC, separately from retrieval time. The first successful capture establishes a baseline and shows **No prior depth chart baseline**; later unchanged captures show **No first- or second-string changes**.
@@ -32,7 +36,7 @@ Public source pages are fetched with a 15-second timeout per request. League doc
 
 Raw HTML is retained locally under `data/raw/lineups/<team>/`; immutable normalized source snapshots are under `data/current/lineups/<team>/`. The baseline is local to the output directory, so separate checkouts/worktrees have separate histories. `/api/slate` exposes only validated source labels, timestamps, official entries, baseline status, and depth-slot changes—not raw HTML, source URLs, capture paths, or private error details.
 
-Both dashboards show the unweighted historical home-cover split in percentage points (PP), its 95% Wilson confidence interval, and the decided-game count (home covers + away covers; pushes excluded). The interval is expressed relative to 50%: an interval containing 0 pp is compatible with a 50/50 split. Empty or push-only samples have no interval. These are descriptive intervals, not predictions or significance badges; they assume independent observations, and shared teams/seasons and analogue selection can overstate precision. Picks, rankings, and the separate weighted-confidence score are unchanged. Comparison JSON exposes `confidence.coverSplitInterval` (`lower`/`upper` in PP, or `null`) and `confidence.decidedGameCount`.
+Both dashboards show the unweighted historical home-cover split in percentage points (PP) and its 95% Wilson confidence interval. The game-detail dashboard also shows the decided-game count (home covers + away covers; pushes excluded); weekly cards omit this count. The interval is expressed relative to 50%: an interval containing 0 pp is compatible with a 50/50 split. Empty or push-only samples have no interval. These are descriptive intervals, not predictions or significance badges; they assume independent observations, and shared teams/seasons and analogue selection can overstate precision. The historical pick and weighted-score calculations are unchanged. Comparison JSON exposes `confidence.coverSplitInterval` (`lower`/`upper` in PP, or `null`) and `confidence.decidedGameCount`.
 
 ## Validate samples before bulk ingestion
 
