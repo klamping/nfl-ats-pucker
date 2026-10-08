@@ -23,7 +23,13 @@ The weekly view is a ranked card board. Drag a card's grip (mouse or touch), edi
 
 ### Recent player / lineup changes
 
-All dashboard commands (`dashboard`, `game:dashboard`, and `week:dashboard`) use `http://127.0.0.1:3000/`. If port 3000 is occupied, startup fails rather than choosing another port.
+All dashboard commands (`dashboard`, `game:dashboard`, and `week:dashboard`) default to `http://127.0.0.1:3000/`. Add `--port 3001` to choose another port without interfering with an existing server, or `--port 0` to let the OS assign a free port. The actual URL is printed on startup. Ports must be integers from 0 to 65535; if a requested port is occupied, startup fails rather than choosing another port.
+
+```sh
+npm run week:dashboard -- --season 2026 --week 3 --port 3001
+npm run game:dashboard -- --season 2026 --game-id 2026_03_PHI_CHI --port 0
+npm run dashboard -- --input data/current/<game-id>-<timestamp>.json --port 0
+```
 
 Expand **View team context** at the bottom of a game card for both teams. The weekly build gathers this context once per participating team before starting the server or printing its URL; the browser only reads the local `/api/slate` endpoint.
 
@@ -112,6 +118,10 @@ The read-only command loads `data/normalized/nfl/nflverse-team-matchups-2005-202
 Candidates are ranked by a normalized distance: for each selected home/away team feature, the absolute delta is divided by that feature's largest delta among eligible candidates, then multiplied by an equal weight (1/34 per each of 34 comparisons). The closing home spread is an eligibility filter only, not a distance contribution. The reported score is the sum of team-feature contributions; lower scores are closer. Only candidates at or below the fixed 0.200 distance threshold (at least 80% similarity) are returned by default; library callers may provide a non-negative integer `limit` to cap that qualifying list further. ATS margin is exactly `homeScore - awayScore + closingSpreadHome`: positive is a home cover, negative an away cover, and zero a push. The JSON result reports per-game contributions and counts plus home cover rate among decided games (pushes excluded). This is descriptive research output only; it does not produce picks or confidence recommendations, and comparison never writes or changes datasets.
 
 ### Open the local analysis board
+
+The matchup dashboard shows a **Previous game · point difference** chart for each team, including weekly game-detail pages. Each chart uses that team's most recent completed regular-season or postseason game in the selected season strictly before the matchup's kickoff. One step line shows **team score minus opponent score** at recorded ESPN play-by-play scoring times. Zero is centered vertically; positive means leading, negative means trailing. Vertical lines mark quarters and overtime; sudden-death overtime ends at the last recorded play. ESPN sometimes groups a touchdown and its conversion at the same game-clock time.
+
+Schedule and play-by-play data are fetched server-side on demand with a 15-second timeout per request and cached for the server's lifetime. The browser reads only local `/api/previous-games` (single game) or `/api/previous-games/<game-id>` (weekly detail) endpoints. A team with no previous game shows an empty state; missing, failed, or inconsistent play-by-play shows unavailable rather than inferred scoring times. These charts do not change historical comparisons or picks.
 
 The game dashboard includes three final-margin distribution pies for non-overlapping distance bands: `<0.150`, `0.150–<0.175`, and `0.175–0.200` (inclusive at 0.200). Each uses in-range historical games only and raw home score minus away score, not ATS margin. The buckets are `≤−7`, `>−7 to ≤−3`, `>−3 to <0`, `0 to <+3`, `+3 to <+7`, and `≥+7`; percentages and counts are shown per band, with “No games” for empty bands. Charts sit side-by-side on wide screens and stack on narrow screens.
 

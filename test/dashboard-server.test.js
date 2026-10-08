@@ -76,6 +76,26 @@ async function rawStatus(server, route) {
   });
 }
 
+test('previous-game endpoint loads independently, caches its fetches, and preserves comparisons on source failure', async (t) => {
+  let calls = 0;
+  const input = snapshot({ homeTeam: 'PHI', awayTeam: 'DAL' });
+  const server = await createDashboardServer({ inputPath: INPUT, outputRoot: ROOT,
+    fileSystem: fixture({ input }).fileSystem, fetchImpl: async () => {
+      calls++;
+      throw new Error('private source failure');
+    } });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  assert.equal(calls, 0);
+  const result = await response(server, '/api/previous-games');
+  assert.equal(result.status, 200);
+  assert.deepEqual(await result.json(), { home: { team: 'PHI', status: 'unavailable' }, away: { team: 'DAL', status: 'unavailable' } });
+  const count = calls;
+  await response(server, '/api/previous-games');
+  assert.equal(calls, count);
+  assert.equal((await response(server)).status, 200);
+  assert.equal((await response(server, '/api/previous-games?team=SEA')).status, 404);
+});
+
 test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral test ports', async (t) => {
   const launches = {
     single: (output, options = {}) => runDashboardCli(['--input', INPUT], output,
@@ -89,8 +109,8 @@ test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral
       const server = await launch({ log: line => lines.push(line) });
       t.after(() => new Promise(resolve => server.close(resolve)));
       assert.equal(server.address().port, 3000);
-      assert.deepEqual(lines, ['http://127.0.0.1:3000/']);
-      await assert.rejects(launch({ log: () => assert.fail('must not print a URL on failure') }));
+      assert.deepEqual(lines.filter(line => line.startsWith('http://')), ['http://127.0.0.1:3000/']);
+      await assert.rejects(launch({ log: line => assert.ok(!line.startsWith('http://'), 'must not print a URL on failure') }));
       const ephemeral = await launch({ log() {} }, { port: 0 });
       t.after(() => new Promise(resolve => ephemeral.close(resolve)));
       assert.notEqual(ephemeral.address().port, 3000);
@@ -98,7 +118,41 @@ test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral
   }
 });
 
-test('CLI requires exactly one --input and rejects all other arguments', async () => {
+test('dashboard CLIs accept explicit and ephemeral ports and print the actual URL', async (t) => {
+  const launches = [
+    (port, output) => runDashboardCli(['--port', String(port), '--input', INPUT], output,
+      { fileSystem: fixture().fileSystem, outputRoot: ROOT, port: 3000 }),
+    (port, output) => runWeekDashboardCli(['--season', '2026', '--port', String(port), '--week', '3'], output,
+      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, port: 3000 }),
+  ];
+  for (const launch of launches) {
+    const lines = [];
+    const server = await launch(0, { log: line => lines.push(line) });
+    t.after(() => new Promise(resolve => server.close(resolve)));
+    const port = server.address().port;
+    assert.ok(port > 0);
+    assert.equal(lines.at(-1), `http://127.0.0.1:${port}/`);
+    assert.equal((await response(server, '/')).status, 200);
+    await assert.rejects(launch(port, { log() {} }));
+    await new Promise(resolve => server.close(resolve));
+    const explicit = await launch(port, { log() {} });
+    t.after(() => new Promise(resolve => explicit.close(resolve)));
+    assert.equal(explicit.address().port, port);
+  }
+});
+
+test('dashboard CLIs reject invalid ports before reading or gathering data', async () => {
+  for (const extra of [['--port'], ['--port', ''], ['--port', '-1'], ['--port', '65536'],
+    ['--port', '1.5'], ['--port', 'abc'], ['--port', '1e3'], ['--port', '0', '--port', '1']]) {
+    const fail = () => assert.fail('must validate before reading or gathering');
+    await assert.rejects(runDashboardCli(['--input', INPUT, ...extra], { log: fail },
+      { fileSystem: { readFile: fail } }), /port/i);
+    await assert.rejects(runWeekDashboardCli(['--season', '2026', '--week', '3', ...extra], { log: fail },
+      { nflverseClient: { downloadNflverseGames: fail } }), /port/i);
+  }
+});
+
+test('CLI requires exactly one --input and rejects unknown arguments', async () => {
   const output = { log: () => assert.fail('must not log on invalid arguments') };
   for (const args of [[], ['--input'], ['--input', '--input'], ['--input', INPUT, '--input', INPUT],
     ['--output-root', ROOT, '--input', INPUT], ['--input', INPUT, 'extra']]) {

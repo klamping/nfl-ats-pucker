@@ -66,9 +66,11 @@ class Element {
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label', 'trend-chart', 'outside-spread-count', 'outside-spread-body',
-  'outside-spread-detail', 'margin-distribution'];
+  'outside-spread-detail', 'margin-distribution', 'previous-games'];
 
-function runClient(reply, pathname = '/') {
+function runClient(reply, pathname = '/', previousReply = { ok: true, json: async () => ({
+  home: { team: 'PHI', status: 'empty' }, away: { team: 'CHI', status: 'empty' },
+}) }) {
   const elements = Object.fromEntries(IDS.map((id) => [id, new Element()]));
   for (const id of IDS.filter((name) => name.startsWith('sort-'))) {
     elements[id].parentElement = new Element('th');
@@ -79,14 +81,55 @@ function runClient(reply, pathname = '/') {
     createElementNS: (_namespace, tag) => new Element(tag),
   };
   let requested;
+  let requestedPrevious;
   const charts = [];
   class Chart {
     constructor(canvas, config) { charts.push({ canvas, config }); }
   }
-  const fetch = async (url) => { requested = url; return reply; };
+  const fetch = async (url) => {
+    if (url.startsWith('/api/previous-games')) { requestedPrevious = url; return previousReply; }
+    requested = url; return reply;
+  };
   vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), { Chart, document, fetch, location: { pathname } });
-  return { elements, requested, charts, settled: new Promise((resolve) => setImmediate(resolve)) };
+  return { elements, requested, get requestedPrevious() { return requestedPrevious; }, charts, settled: new Promise((resolve) => setImmediate(resolve)) };
 }
+
+test('charts previous-game play-by-play as one team-relative step line with centered zero and quarter dividers', async () => {
+  const previous = { status: 'ready', source: 'ESPN', team: 'PHI', opponent: 'DAL', date: '2026-09-13T17:00Z',
+    teamScore: 10, opponentScore: 7, duration: 3600, boundaries: [0, 900, 1800, 2700, 3600],
+    points: [{ seconds: 0, margin: 0, period: 1, clock: '15:00', teamScore: 0, opponentScore: 0 },
+      { seconds: 300, margin: -7, period: 1, clock: '10:00', teamScore: 0, opponentScore: 7 },
+      { seconds: 3600, margin: 3, period: 4, clock: '0:00', teamScore: 10, opponentScore: 7 }] };
+  const client = runClient({ ok: true, json: async () => sample }, '/', {
+    ok: true, json: async () => ({ home: previous, away: { team: 'CHI', status: 'empty' } }),
+  });
+  await client.settled;
+  assert.equal(client.requestedPrevious, '/api/previous-games');
+  const chart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI point difference');
+  assert.ok(chart);
+  const { config } = chart;
+  assert.equal(config.data.datasets.length, 1);
+  assert.equal(config.data.datasets[0].stepped, 'before');
+  assert.deepEqual(Array.from(config.data.datasets[0].data, point => [point.x, point.y]), [[0, 0], [300, -7], [3600, 3]]);
+  assert.equal(config.options.scales.y.min, -config.options.scales.y.max);
+  assert.ok(config.options.scales.y.max >= 7);
+  const axis = {};
+  config.options.scales.x.afterBuildTicks(axis);
+  assert.deepEqual(Array.from(axis.ticks, tick => tick.value), [0, 900, 1800, 2700, 3600]);
+  assert.equal(config.options.scales.x.grid.display, true);
+  assert.match(client.elements['previous-games'].textContent, /PHI 10.*DAL 7/);
+  assert.match(client.elements['previous-games'].textContent, /No previous completed game/);
+  assert.match(config.options.plugins.tooltip.callbacks.label({ raw: config.data.datasets[0].data[1] }), /PHI 0.*DAL 7.*-7/);
+});
+
+test('previous-game fetch failure leaves the comparison usable and is shown separately', async () => {
+  const client = runClient({ ok: true, json: async () => sample }, '/games/2026_03_PHI_CHI/', { ok: false });
+  await client.settled;
+  assert.equal(client.requestedPrevious, '/api/previous-games/2026_03_PHI_CHI');
+  assert.match(client.elements['previous-games'].textContent, /Play-by-play unavailable/);
+  assert.match(client.elements['target-title'].textContent, /CHI at PHI/);
+  assert.equal(client.elements.status.textContent, '2 games');
+});
 
 test('loads a weekly detail page from its game-specific comparison endpoint', async () => {
   const client = runClient({ ok: true, json: async () => sample }, '/games/2026_03_LA_DEN/');

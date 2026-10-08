@@ -14,6 +14,12 @@ function parseCli(argv) {
       continue;
     }
     const value = argv[index + 1];
+    if (option === '--port') {
+      if (options[option] !== undefined) throw new Error('Only one --port is allowed');
+      options[option] = require('./dashboard-port').parseDashboardPort(value);
+      index += 2;
+      continue;
+    }
     if (!['--season', '--game-id'].includes(option) || !value || value.startsWith('--') || options[option] !== undefined) {
       throw new Error('A valid season and game ID are required');
     }
@@ -26,11 +32,12 @@ function parseCli(argv) {
       !/^[A-Za-z0-9_-]+$/.test(options['--game-id'])) {
     throw new Error('A valid season and game ID are required');
   }
-  return { season: options['--season'], gameId: options['--game-id'], retrospective: options['--retrospective'] === true };
+  return { season: options['--season'], gameId: options['--game-id'], retrospective: options['--retrospective'] === true,
+    port: options['--port'] };
 }
 
 async function runGameDashboardCli(argv = process.argv.slice(2), output = console, dependencies = {}) {
-  const { season, gameId, retrospective } = parseCli(argv);
+  const { season, gameId, retrospective, port } = parseCli(argv);
   const gather = dependencies.runGatherCli || runGatherCli;
   const launch = dependencies.runDashboardCli || runDashboardCli;
   const gatherArgv = ['--season', season, '--game-id', gameId];
@@ -39,7 +46,9 @@ async function runGameDashboardCli(argv = process.argv.slice(2), output = consol
   if (typeof result?.snapshotPath !== 'string' || !result.snapshotPath) {
     throw new Error('Gathering did not return a snapshot path');
   }
-  return launch(['--input', result.snapshotPath], output);
+  const dashboardArgv = ['--input', result.snapshotPath];
+  if (port !== undefined) dashboardArgv.push('--port', String(port));
+  return launch(dashboardArgv, output);
 }
 
 if (require.main === module) {

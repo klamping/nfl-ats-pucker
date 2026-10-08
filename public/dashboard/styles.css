@@ -54,6 +54,12 @@ h2 { margin: 0; font-size: 24px; letter-spacing: -.035em; }
 .card-value { margin: 0 0 8px; font-size: 42px; line-height: 1; font-weight: 750; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
 .trend-chart { display: grid; gap: 24px; width: 100%; background: white; border: 1px solid var(--line); padding: clamp(12px, 2vw, 28px); }
 .trend-chart-panel { height: 300px; }
+.previous-games-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.previous-game-panel { min-width: 0; padding: 20px; background: white; border: 1px solid var(--line); }
+.previous-game-panel h3 { margin: 0 0 8px; font-size: 18px; }
+.previous-game-panel p { color: var(--muted); font-size: 13px; }
+.previous-game-chart { position: relative; height: 300px; }
+@media (max-width: 800px) { .previous-games-grid { grid-template-columns: 1fr; } }
 .trend-chart canvas { display: block; width: 100%; }
 .margin-distribution-section { container-type: inline-size; }
 .margin-distribution-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }

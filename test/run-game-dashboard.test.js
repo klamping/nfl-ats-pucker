@@ -57,3 +57,26 @@ test('does not launch the dashboard when gathering fails', async () => {
   }), /retrospective gathering failed/);
   assert.equal(launched, false);
 });
+
+test('forwards a custom port only to the dashboard, including ephemeral port zero', async () => {
+  for (const port of ['3001', '0', '65535']) {
+    await runGameDashboardCli(['--port', port, '--season', '2026', '--game-id', 'game', '--retrospective'], { log() {} }, {
+      runGatherCli: async (argv) => {
+        assert.deepEqual(argv, ['--season', '2026', '--game-id', 'game', '--retrospective']);
+        return { snapshotPath: '/tmp/current.json' };
+      },
+      runDashboardCli: async (argv) => {
+        assert.deepEqual(argv, ['--input', '/tmp/current.json', '--port', port]);
+      },
+    });
+  }
+});
+
+test('rejects invalid game dashboard ports before gathering', async () => {
+  for (const extra of [['--port'], ['--port', ''], ['--port', '-1'], ['--port', '65536'],
+    ['--port', '1.5'], ['--port', 'abc'], ['--port', '1e3'], ['--port', '0', '--port', '1']]) {
+    await assert.rejects(runGameDashboardCli(['--season', '2026', '--game-id', 'game', ...extra], console, {
+      runGatherCli: async () => assert.fail('must validate before gathering'),
+    }), /port/i);
+  }
+});

@@ -44,6 +44,7 @@ test('orchestrates supported games with shared schedule and isolates failures', 
   const result = await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log: (line) => lines.push(line) }, {
     now: () => new Date('2026-09-27T18:00:00.000Z'),
     nflverseClient: { async downloadNflverseGames() { downloads++; return download; } },
+    gatherLineupContext: async () => { throw new Error('lineup unavailable'); },
     oddsClient,
     gatherPregame: async (options) => {
       gathers.push(options);
@@ -54,7 +55,11 @@ test('orchestrates supported games with shared schedule and isolates failures', 
   });
 
   assert.equal(result, server);
-  assert.deepEqual(lines, ['http://127.0.0.1:41234/']);
+  assert.equal(lines.at(-1), 'http://127.0.0.1:41234/');
+  assert.ok(lines.some(line => /1\/2.*past.*failed/i.test(line)));
+  assert.ok(!lines.some(line => /future/.test(line)));
+  assert.ok(lines.some(line => /AWY.*unavailable/i.test(line)));
+  assert.ok(lines.some(line => /HME.*unavailable/i.test(line)));
   assert.equal(downloads, 1);
   assert.deepEqual(gathers.map(({ gameId, retrospective, scheduleDownload: shared, oddsClient: odds }) =>
     ({ gameId, retrospective, shared: shared === download, odds: odds === oddsClient })), [
@@ -113,8 +118,62 @@ test('waits for lineup completion before gathering games, creating the server or
   });
   await started;
   await new Promise(resolve => setImmediate(resolve));
-  assert.deepEqual(events, []);
+  assert.equal(events.filter(line => /Fetching lineups.*NFL\.com.*Ourlads/i.test(line)).length, 1);
+  assert.ok(!events.includes('game'));
+  assert.ok(!events.includes('server'));
+  assert.ok(!events.some(line => line.startsWith('http://')));
   release();
   await pending;
-  assert.deepEqual(events, ['game', 'server', 'http://127.0.0.1:41234/']);
+  assert.ok(events.indexOf('game') < events.indexOf('server'));
+  assert.equal(events.at(-1), 'http://127.0.0.1:41234/');
+});
+
+test('groups successful progress by stage before waiting on work', async () => {
+  const lines = [];
+  await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log: line => lines.push(line) }, {
+    now: () => new Date('2026-09-27T18:00:00Z'), oddsClient: {},
+    nflverseClient: { downloadNflverseGames: async () => {
+      assert.match(lines.at(-1), /Downloading.*nflverse.*2026.*3/i);
+      return scheduleDownload([game('first', 'REG', '2026-09-27', '17:00'), game('second', 'REG', '2026-09-27', '20:00')]);
+    } },
+    gatherLineupContext: async ({ team }) => {
+      assert.match(lines.at(-1), /Fetching lineups.*NFL\.com.*Ourlads/i);
+      return { team, official: { status: 'ready', source: 'nfl.com' }, depthChart: { status: 'ready', source: 'ourlads' } };
+    },
+    gatherPregame: async () => {
+      assert.match(lines.at(-1), /Gathering.*2 games/i);
+      return { snapshot: { gameId: 'first' } };
+    },
+    createWeekDashboardServer: async () => {
+      assert.match(lines.at(-1), /Starting.*2 games.*0 failed/i);
+      return { address: () => ({ port: 41234 }) };
+    },
+  });
+  assert.equal(lines.filter(line => /Fetching/i.test(line)).length, 1);
+  assert.equal(lines.filter(line => /Gathering/i.test(line)).length, 1);
+  assert.ok(!lines.some(line => /AWY|HME|first|second/.test(line)));
+  assert.equal(lines.at(-1), 'http://127.0.0.1:41234/');
+});
+
+test('reports every unavailable lineup source and every failed game individually', async () => {
+  const lines = [];
+  await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log: line => lines.push(line) }, {
+    now: () => new Date('2026-09-27T18:00:00Z'), oddsClient: {},
+    nflverseClient: { downloadNflverseGames: async () => scheduleDownload([
+      game('first', 'REG', '2026-09-27', '17:00'), game('second', 'REG', '2026-09-27', '20:00'),
+    ]) },
+    gatherLineupContext: async ({ team }) => ({ team,
+      official: { status: 'unavailable', source: 'nfl.com' },
+      depthChart: { status: team === 'AWY' ? 'unavailable' : 'ready', source: 'ourlads' } }),
+    gatherPregame: async () => { throw new Error('private provider details'); },
+    createWeekDashboardServer: async () => ({ address: () => ({ port: 41234 }) }),
+  });
+  for (const [team, source] of [['AWY', 'NFL.com'], ['AWY', 'Ourlads'], ['HME', 'NFL.com']]) {
+    assert.equal(lines.filter(line => line.includes(team) && line.includes(source) && /unavailable/i.test(line)).length, 1);
+  }
+  assert.ok(!lines.some(line => /HME.*Ourlads/.test(line)));
+  for (const gameId of ['first', 'second']) {
+    assert.equal(lines.filter(line => line.includes(gameId) && /failed/i.test(line)).length, 1);
+  }
+  assert.ok(!lines.some(line => /private provider/.test(line)));
 });

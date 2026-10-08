@@ -3,6 +3,7 @@ const http = require('node:http');
 const path = require('node:path');
 
 const { compareHistorical } = require('./compare-historical');
+const { createPreviousGameLoader } = require('./previous-game');
 
 const STATIC_ASSETS = {
   '/': ['index.html', 'text/html; charset=utf-8'],
@@ -168,9 +169,11 @@ async function loadHistoricalMatchups({ outputRoot, fileSystem }) {
 }
 
 async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
-  fileSystem = defaultFileSystem, port = 0 } = {}) {
+  fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch } = {}) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid dashboard port');
-  const payload = JSON.stringify(await loadPayload({ inputPath, outputRoot, fileSystem }));
+  const comparison = await loadPayload({ inputPath, outputRoot, fileSystem });
+  const payload = JSON.stringify(comparison);
+  const loadPreviousGames = createPreviousGameLoader({ fetchImpl });
   const assets = {};
   try {
     for (const [route, [name, contentType]] of Object.entries(STATIC_ASSETS)) {
@@ -179,7 +182,7 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
   } catch {
     throw new Error('Unable to load dashboard assets');
   }
-  const server = http.createServer((request, response) => {
+  const server = http.createServer(async (request, response) => {
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer');
@@ -187,6 +190,10 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
     if (request.method !== 'GET') {
       response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET' });
       response.end('Method not allowed');
+    } else if (request.url === '/api/previous-games') {
+      const previous = await loadPreviousGames(comparison.target);
+      response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      response.end(JSON.stringify(previous));
     } else if (request.url === '/api/comparison') {
       response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       response.end(payload);
@@ -213,15 +220,28 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
 }
 
 function parseCli(argv) {
-  if (argv.length !== 2 || argv[0] !== '--input' || !argv[1] || argv[1].startsWith('--')) {
+  const options = {};
+  for (let index = 0; index < argv.length; index += 2) {
+    const option = argv[index];
+    const value = argv[index + 1];
+    if (option === '--port') {
+      if (options.port !== undefined) throw new Error('Only one --port is allowed');
+      options.port = require('./dashboard-port').parseDashboardPort(value);
+    } else if (option === '--input' && value && !value.startsWith('--') && options.inputPath === undefined) {
+      options.inputPath = value;
+    } else {
+      throw new Error('A single --input path and optional --port are required');
+    }
+  }
+  if (!options.inputPath) {
     throw new Error('A single --input path is required');
   }
-  return argv[1];
+  return options;
 }
 
 async function runDashboardCli(argv = process.argv.slice(2), output = console, dependencies = {}) {
-  const inputPath = parseCli(argv);
-  const server = await createDashboardServer({ port: 3000, ...dependencies, inputPath });
+  const { inputPath, port } = parseCli(argv);
+  const server = await createDashboardServer({ ...dependencies, inputPath, port: port ?? dependencies.port ?? 3000 });
   output.log(`http://127.0.0.1:${server.address().port}/`);
   return server;
 }

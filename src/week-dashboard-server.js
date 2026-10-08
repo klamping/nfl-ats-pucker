@@ -4,6 +4,7 @@ const path = require('node:path');
 const { compareHistorical } = require('./compare-historical');
 const { buildDashboardPayload, loadHistoricalMatchups } = require('./dashboard-server');
 const { nflverseKickoffToUtc } = require('./gather-pregame');
+const { createPreviousGameLoader } = require('./previous-game');
 
 function projectSlateGame(input, comparison) {
   const currentOdds = { provider: input.currentOdds.provider, consensusSpreadHome: input.currentOdds.consensusSpreadHome };
@@ -48,10 +49,11 @@ function projectLineupContext(context, team) {
 }
 
 async function createWeekDashboardServer({ season, week, games = [], failures = [], outputRoot = process.cwd(),
-  fileSystem = defaultFileSystem, port = 0 } = {}) {
+  fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch } = {}) {
   if (!Number.isInteger(season) || !Number.isInteger(week) || !Array.isArray(games) || !Array.isArray(failures) || !Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid weekly dashboard options');
   const historicalMatchups = await loadHistoricalMatchups({ outputRoot, fileSystem });
   const comparisons = new Map();
+  const loadPreviousGames = createPreviousGameLoader({ fetchImpl });
   const readyGames = [];
   const unavailable = [...failures];
   for (const input of games) {
@@ -74,7 +76,7 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
   assets['/week-styles.css'] = { body: await defaultFileSystem.readFile(path.join(__dirname, '../public/week-dashboard/styles.css')), type: 'text/css; charset=utf-8' };
   const slateHtml = await defaultFileSystem.readFile(path.join(__dirname, '../public/week-dashboard/index.html'));
   const detailHtml = await defaultFileSystem.readFile(path.join(__dirname, '../public/dashboard/index.html'));
-  const server = http.createServer((request, response) => {
+  const server = http.createServer(async (request, response) => {
     response.setHeader('Cache-Control', 'no-store'); response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer'); response.setHeader('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'");
     if (!/^((127\.0\.0\.1|localhost)(:\d+)?|\[::1\](?::\d+)?)$/i.test(request.headers.host || '')) { response.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); response.end('Forbidden'); return; }
@@ -82,7 +84,13 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
     if (request.url === '/') { response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); response.end(slateHtml); return; }
     if (request.url === '/api/slate') { response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(slate); return; }
     const detail = request.url && request.url.match(/^\/api\/comparison\/([A-Za-z0-9_-]+)$/);
+    const previous = request.url && request.url.match(/^\/api\/previous-games\/([A-Za-z0-9_-]+)$/);
     const page = request.url && request.url.match(/^\/games\/([A-Za-z0-9_-]+)\/$/);
+    if (previous && comparisons.has(previous[1])) {
+      const result = await loadPreviousGames(comparisons.get(previous[1]).target);
+      response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      response.end(JSON.stringify(result)); return;
+    }
     if (detail && comparisons.has(detail[1])) { response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(JSON.stringify(comparisons.get(detail[1]))); return; }
     if (page && comparisons.has(page[1])) { response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); response.end(detailHtml); return; }
     if (Object.hasOwn(assets, request.url)) { response.writeHead(200, { 'Content-Type': assets[request.url].type }); response.end(assets[request.url].body); return; }

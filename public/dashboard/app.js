@@ -359,6 +359,74 @@
     });
   }
 
+  function renderPreviousGames(previous) {
+    const container = byId('previous-games');
+    container.replaceChildren();
+    for (const side of ['away', 'home']) {
+      const game = previous[side];
+      const panel = element('div', undefined, 'previous-game-panel');
+      panel.append(element('h3', game.team));
+      container.append(panel);
+      if (game.status !== 'ready') {
+        panel.append(element('p', game.status === 'empty' ? 'No previous completed game this season.' : 'Play-by-play unavailable.'));
+        continue;
+      }
+      const title = `${game.team} ${game.teamScore} – ${game.opponent} ${game.opponentScore}`;
+      panel.append(element('p', `${game.date.slice(0, 10)} · ${title} · ${game.source}`));
+      const chartPanel = element('div', undefined, 'previous-game-chart');
+      const canvas = element('canvas', `${title}. Point difference over game time.`);
+      canvas.setAttribute('role', 'img');
+      canvas.setAttribute('aria-label', `${title}. ${game.team} point difference: positive means leading, negative means trailing.`);
+      chartPanel.append(canvas);
+      panel.append(chartPanel);
+      const range = Math.max(7, ...game.points.map(point => Math.abs(point.margin)));
+      const ticks = [...game.boundaries];
+      if (ticks.at(-1) !== game.duration) ticks.push(game.duration);
+      const quarterLabel = (value) => {
+        if (value === game.duration) return 'Final';
+        const index = game.boundaries.indexOf(value);
+        return index < 4 ? `Q${index + 1}` : `OT${index - 3}`;
+      };
+      new Chart(canvas, {
+        type: 'line',
+        data: { datasets: [{ label: `${game.team} point difference`,
+          data: game.points.map(point => ({ ...point, x: point.seconds, y: point.margin })),
+          stepped: 'before', borderColor: '#006b68', borderWidth: 2, pointRadius: 0, pointHitRadius: 8, fill: false }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false,
+          scales: {
+            x: { type: 'linear', min: 0, max: game.duration,
+              afterBuildTicks: axis => { axis.ticks = ticks.map(value => ({ value })); },
+              ticks: { autoSkip: false, maxRotation: 0, callback: quarterLabel },
+              grid: { display: true, color: '#c0ccc7', lineWidth: 1 },
+              title: { display: true, text: 'Game time · quarter boundaries' } },
+            y: { min: -range, max: range,
+              ticks: { precision: 0 },
+              grid: { color: context => context.tick.value === 0 ? '#1b2b35' : '#e5eeeb',
+                lineWidth: context => context.tick.value === 0 ? 2 : 1 },
+              title: { display: true, text: `${game.team} − ${game.opponent} (points)` } },
+          },
+          plugins: { legend: { display: false }, tooltip: { callbacks: {
+            title: items => { const point = items[0].raw; return `${point.period <= 4 ? `Q${point.period}` : `OT${point.period - 4}`} · ${point.clock}`; },
+            label: ({ raw }) => `${game.team} ${raw.teamScore} – ${game.opponent} ${raw.opponentScore} · Difference ${signed(raw.margin)}`,
+          } } },
+        },
+      });
+    }
+  }
+
+  async function loadPreviousGames(game) {
+    if (!byId('previous-games')) return;
+    try {
+      const response = await fetch(game ? `/api/previous-games/${game[1]}` : '/api/previous-games', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Previous games unavailable');
+      renderPreviousGames(await response.json());
+    } catch {
+      renderPreviousGames({ home: { team: data.target.homeTeam, status: 'unavailable' },
+        away: { team: data.target.awayTeam, status: 'unavailable' } });
+    }
+  }
+
   async function load() {
     try {
       const game = typeof location !== 'undefined' && location.pathname.match(/^\/games\/([A-Za-z0-9_-]+)\/$/);
@@ -368,6 +436,7 @@
       renderHeader();
       renderTrend();
       renderMarginDistribution();
+      loadPreviousGames(game);
       if (!data.candidates.length) {
         byId('status').textContent = 'No in-range games.';
         byId('candidate-body').replaceChildren();

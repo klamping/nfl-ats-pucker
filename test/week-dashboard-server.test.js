@@ -30,6 +30,20 @@ async function statusWithHost(server, host) {
   return new Promise((resolve, reject) => http.get({ hostname: '127.0.0.1', port: server.address().port, path: '/api/slate', headers: { Host: host } }, (result) => { result.resume(); result.on('end', () => resolve(result.statusCode)); }).on('error', reject));
 }
 
+test('weekly details expose previous games only for known matchups without delaying startup', async (t) => {
+  let calls = 0;
+  const server = await createWeekDashboardServer({ season: 2026, week: 3,
+    games: [snapshot({ homeTeam: 'PHI', awayTeam: 'DAL' })], outputRoot: ROOT, fileSystem: fileSystem(),
+    fetchImpl: async () => { calls++; return { ok: true, json: async () => ({ events: [] }) }; } });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  assert.equal(calls, 0);
+  const reply = await response(server, '/api/previous-games/game-1');
+  assert.equal(reply.status, 200);
+  assert.deepEqual(await reply.json(), { home: { team: 'PHI', status: 'empty' }, away: { team: 'DAL', status: 'empty' } });
+  assert.equal((await response(server, '/api/previous-games/unknown')).status, 404);
+  assert.equal((await response(server, '/api/previous-games/game-1', { method: 'POST' })).status, 405);
+});
+
 test('serves safe slate rows and successful detail comparisons', async (t) => {
   const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [snapshot()],
     failures: [{ gameId: 'broken', message: 'private failure detail' }], outputRoot: ROOT, fileSystem: fileSystem(), port: 0 });
