@@ -118,3 +118,17 @@ test('waits for lineup completion before gathering games, creating the server or
   await pending;
   assert.deepEqual(events, ['game', 'server', 'http://127.0.0.1:41234/']);
 });
+
+test('loads roster data once and attaches isolated player impacts to each team', async () => {
+  let loads = 0; const impacts = []; let launched;
+  await runWeekDashboardCli(['--season', '2026', '--week', '3'], { log() {} }, {
+    now: () => new Date('2026-09-20T12:00:00Z'), oddsClient: {},
+    nflverseClient: { downloadNflverseGames: async () => scheduleDownload([game('impact', 'REG', '2026-09-27', '17:00')]) },
+    gatherLineupContext: async ({ team }) => ({ team, official: { status: 'ready', source: 'nfl.com', injuries: [] }, depthChart: { status: 'ready', source: 'ourlads', slots: [] } }),
+    rosterDataClient: { loadSeasons: async ({ seasons }) => { loads++; assert.deepEqual(seasons, [2025, 2026]); return { seasons: [{ season: 2026 }] }; } },
+    gatherRosterImpacts: async ({ team, targetSeason, rosterData }) => { impacts.push({ team, targetSeason, rosterData }); return { status: 'ready', playerImpacts: [] }; },
+    gatherPregame: async () => ({ snapshot: { gameId: 'impact' } }), createWeekDashboardServer: async options => { launched = options; return { address: () => ({ port: 1 }) }; },
+  });
+  assert.equal(loads, 1); assert.deepEqual(impacts.map(({ team, targetSeason }) => ({ team, targetSeason })), [{ team: 'HME', targetSeason: 2026 }, { team: 'AWY', targetSeason: 2026 }]);
+  assert.equal(launched.games[0].lineup.home.impacts.status, 'ready');
+});
