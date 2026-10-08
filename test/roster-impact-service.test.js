@@ -30,3 +30,13 @@ test('deduplicates weekly observations by player ID and abstains for ambiguous i
   const result = await gatherRosterImpacts({ team: 'ARI', kickoff: '2026-09-10T00:00:00Z', targetSeason: 2026, lineup, rosterData: ambiguous });
   assert.equal(result.playerImpacts[0].verdict, 'insufficient evidence');
 });
+
+test('returns an abstention for one failed player comparison without hiding another', async () => {
+  const twoOutLineup = { official: { injuries: [
+    { player: 'Starter QB', position: 'QB', status: 'Out', observedAt: '2026-09-01T00:00:00Z' }, { player: 'Backup QB', position: 'QB', status: 'Out', observedAt: '2026-09-01T00:00:00Z' },
+  ] }, depthChart: { slots: [{ player: 'Starter QB', position: 'QB', rank: 1 }, { player: 'Backup QB', position: 'QB', rank: 2 }, { player: 'Third QB', position: 'QB', rank: 3 }] } };
+  const data = [{ season: 2026, playerStats: [...rosterData[0].playerStats, { player_id: 'third', player_display_name: 'Third QB', recent_team: 'ARI', position: 'QB' }] }];
+  const result = await gatherRosterImpacts({ team: 'ARI', kickoff: '2026-09-10T00:00:00Z', targetSeason: 2026, lineup: twoOutLineup, rosterData: data,
+    summarize: ({ unavailablePlayer }) => { if (unavailablePlayer.player_id === 'out') throw new Error('source'); return { evidenceType: 'direct', confidence: 'low', metrics: [{ delta: 0.04, direction: 'higher' }], sample: {} }; } });
+  assert.deepEqual(result.playerImpacts.map(({ verdict }) => verdict), ['insufficient evidence', 'possible downgrade']);
+});
