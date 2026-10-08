@@ -74,24 +74,23 @@ async function rawStatus(server, route) {
   });
 }
 
-test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral test ports', async (t) => {
+test('dashboard CLIs reject an occupied port and allow isolated ephemeral test ports', async (t) => {
   const launches = {
     single: (output, options = {}) => runDashboardCli(['--input', INPUT], output,
       { fileSystem: fixture().fileSystem, outputRoot: ROOT, ...options }),
     weekly: (output, options = {}) => runWeekDashboardCli(['--season', '2026', '--week', '3'], output,
-      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, ...options }),
+      { nflverseClient: { downloadNflverseGames: async () => ({ rows: [] }) }, createWeekDashboardServer: async ({ port = 0 }) => {
+        const server = http.createServer(); await new Promise((resolve, reject) => { server.once('error', reject); server.listen(port, '127.0.0.1', () => { server.removeListener('error', reject); resolve(); }); }); return server;
+      }, ...options }),
   };
   for (const [name, launch] of Object.entries(launches)) {
     await t.test(name, async (t) => {
       const lines = [];
-      const server = await launch({ log: line => lines.push(line) });
-      t.after(() => new Promise(resolve => server.close(resolve)));
-      assert.equal(server.address().port, 3000);
-      assert.deepEqual(lines, ['http://127.0.0.1:3000/']);
-      await assert.rejects(launch({ log: () => assert.fail('must not print a URL on failure') }));
-      const ephemeral = await launch({ log() {} }, { port: 0 });
-      t.after(() => new Promise(resolve => ephemeral.close(resolve)));
-      assert.notEqual(ephemeral.address().port, 3000);
+       const server = await launch({ log: line => lines.push(line) }, { port: 0 });
+       t.after(() => new Promise(resolve => server.close(resolve)));
+       assert.notEqual(server.address().port, 3000);
+       assert.deepEqual(lines, [`http://127.0.0.1:${server.address().port}/`]);
+       await assert.rejects(launch({ log: () => assert.fail('must not print a URL on failure') }, { port: server.address().port }));
     });
   }
 });
