@@ -215,8 +215,8 @@
     move(pending.gameId, pending.targetIndex, null);
     if (cardId && selector) cardNodes.get(cardId)?.querySelector(selector)?.focus();
   }
-  document.addEventListener('pointerdown', () => { pointerInteraction = true; }, true);
-  document.addEventListener('click', (event) => commitPendingPoints(event.target));
+  document.addEventListener?.('pointerdown', () => { pointerInteraction = true; }, true);
+  document.addEventListener?.('click', (event) => commitPendingPoints(event.target));
   function dragHandle(game, index) {
     const handle = namedElement('button', 'drag-handle', '⠿'); handle.type = 'button';
     handle.setAttribute('aria-label', `Reorder ${game.matchup}. Drag or use Up and Down arrow keys.`);
@@ -233,23 +233,23 @@
     handle.addEventListener('lostpointercapture', () => finishDrag(true));
     return handle;
   }
-  document.addEventListener('pointermove', (event) => {
+  document.addEventListener?.('pointermove', (event) => {
     if (!drag || drag.pointerId !== event.pointerId) return;
     drag.x = event.clientX; drag.y = event.clientY;
     if (!drag.active && Math.abs(drag.y - drag.startY) < 5) return;
     if (!drag.active) { drag.active = true; cardNodes.get(drag.gameId).classList.add('is-dragging'); scrollFrame = requestAnimationFrame(scrollWhileDragging); }
     updateDropPosition();
   });
-  document.addEventListener('pointerup', (event) => {
+  document.addEventListener?.('pointerup', (event) => {
     if (drag?.pointerId === event.pointerId) finishDrag();
     // A release outside the original target may produce no click.
     pointsCommitTimer = setTimeout(() => commitPendingPoints(), 0);
   });
-  document.addEventListener('pointercancel', (event) => {
+  document.addEventListener?.('pointercancel', (event) => {
     if (drag?.pointerId === event.pointerId) finishDrag(true);
     commitPendingPoints();
   });
-  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') finishDrag(true); });
+  document.addEventListener?.('keydown', (event) => { if (event.key === 'Escape') finishDrag(true); });
 
   function teamButton(game, team, pickValue, buttons) {
     const button = namedElement('button', 'team-button', team); button.type = 'button';

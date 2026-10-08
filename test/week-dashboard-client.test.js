@@ -313,14 +313,14 @@ test('renders labeled build-time sources, changes, initial baselines and unavail
 });
 
 test('renders missing-player impact evidence in team context', async () => {
-  const elements = { status: new Element(), 'slate-body': new Element() };
+  const elements = { status: new Element(), 'slate-body': new Element(), 'slate-heading': new Element(), 'reset-order': new Element(), 'drag-preview': new Element() };
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/week-dashboard/app.js'), 'utf8'), { document: { getElementById: id => elements[id], createElement: tag => new Element(tag) }, fetch: async () => ({ ok: true, json: async () => ({ season: 2026, week: 3, games: [{ status: 'ready', gameId: 'g', matchup: 'A at H', kickoff: { date: '2026-09-01', time: '13:00' }, currentOdds: { consensusSpreadHome: 0 }, candidateCount: 0, coverSplit: null, coverSplitInterval: null, decidedGameCount: 0, weightedConfidence: null, lineup: { home: { team: 'H', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' }, playerImpacts: [{ player: 'Starter', position: 'QB', replacement: 'Backup', verdict: 'material downgrade', evidenceType: 'direct' }] }, away: { team: 'A', official: { status: 'unavailable' }, depthChart: { status: 'unavailable' } } } }] }) }), localStorage: { getItem: () => null, setItem() {} } });
   await new Promise(resolve => setImmediate(resolve));
   assert.match(elements['slate-body'].textContent, /Missing-player impact.*Starter \(QB\) → Backup: material downgrade.*Direct EPA evidence/);
 });
 
 test('renders direct, proxy, insufficient, and unavailable player-impact states', async () => {
-  const elements = { status: new Element(), 'slate-body': new Element() };
+  const elements = { status: new Element(), 'slate-body': new Element(), 'slate-heading': new Element(), 'reset-order': new Element(), 'drag-preview': new Element() };
   const direct = { player: 'Starter QB', position: 'QB', status: 'Out', replacement: 'Backup QB', verdict: 'material downgrade', confidence: 'medium', evidenceType: 'direct', metrics: [{ label: 'Passing EPA / dropback', delta: 0.12, unavailableSample: 20, replacementSample: 16 }], sample: { unavailable: { games: 3 }, replacement: { games: 2 } }, caveats: ['Direct EPA evidence'] };
   const insufficient = { player: 'Reserve RB', position: 'RB', status: 'Out', verdict: 'insufficient evidence', reason: 'No available projected replacement' };
   const proxy = { player: 'Starting T', position: 'T', status: 'Out', replacement: 'Backup T', verdict: 'possible downgrade', confidence: 'medium', evidenceType: 'unit-proxy', metrics: [{ label: 'Team offensive EPA / play', delta: 0.04, unavailableSample: 3, replacementSample: 3 }], sample: { unavailable: { games: 3 }, replacement: { games: 3 } }, caveats: ['Unit-proxy evidence'] };
