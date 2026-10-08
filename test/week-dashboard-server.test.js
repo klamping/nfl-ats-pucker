@@ -30,6 +30,17 @@ async function statusWithHost(server, host) {
   return new Promise((resolve, reject) => http.get({ hostname: '127.0.0.1', port: server.address().port, path: '/api/slate', headers: { Host: host } }, (result) => { result.resume(); result.on('end', () => resolve(result.statusCode)); }).on('error', reject));
 }
 
+test('weekly detail distance changes do not change slate defaults', async (t) => {
+  const server = await createWeekDashboardServer({ season: 2026, week: 3, games: [snapshot()], outputRoot: ROOT, fileSystem: fileSystem() });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const reply = await response(server, '/api/comparison/game-1?maximumSimilarityDistance=0.15');
+  assert.equal(reply.status, 200);
+  assert.equal((await reply.json()).filters.maximumSimilarityDistance, 0.15);
+  assert.equal((await (await response(server, '/api/comparison/game-1')).json()).filters.maximumSimilarityDistance, 0.2);
+  assert.equal((await response(server, '/api/comparison/game-1?maximumSimilarityDistance=0.3')).status, 400);
+  assert.equal((await response(server, '/api/comparison/game-1?foo=bar')).status, 404);
+});
+
 test('weekly details expose previous games only for known matchups without delaying startup', async (t) => {
   let calls = 0;
   const server = await createWeekDashboardServer({ season: 2026, week: 3,

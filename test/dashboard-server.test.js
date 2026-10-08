@@ -76,6 +76,18 @@ async function rawStatus(server, route) {
   });
 }
 
+test('comparison distance queries validate range and leave the default unchanged', async (t) => {
+  const server = await createDashboardServer({ inputPath: INPUT, outputRoot: ROOT, fileSystem: fixture().fileSystem });
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const reply = await response(server, '/api/comparison?maximumSimilarityDistance=0.25');
+  assert.equal(reply.status, 200);
+  assert.equal((await reply.json()).filters.maximumSimilarityDistance, 0.25);
+  assert.equal((await (await response(server)).json()).filters.maximumSimilarityDistance, 0.2);
+  for (const value of ['0.14', '0.26', 'NaN', '']) {
+    assert.equal((await response(server, `/api/comparison?maximumSimilarityDistance=${value}`)).status, 400);
+  }
+});
+
 test('previous-game endpoint loads independently, caches its fetches, and preserves comparisons on source failure', async (t) => {
   let calls = 0;
   const input = snapshot({ homeTeam: 'PHI', awayTeam: 'DAL' });

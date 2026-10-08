@@ -36,6 +36,32 @@ function historical(overrides = {}) {
   return matchup({ season: 2020, gameType: 'REG', ...overrides });
 }
 
+test('adjustable distance filters candidates and recalculates summaries without changing scores', () => {
+  const input = snapshot();
+  const records = [0, 0.15, 0.2, 0.25, 1].map((delta, index) => historical({
+    gameId: `distance-${index}`, homeScore: index === 0 ? 4 : 2,
+    homePregame: Object.fromEntries(FEATURES.map(key => [key, 1 + delta])),
+    awayPregame: Object.fromEntries(FEATURES.map(key => [key, 1 + delta])),
+  }));
+  const outside = records.map(record => ({ ...record, gameId: `outside-${record.gameId}`, closingSpreadHome: -7 }));
+  for (const [maximumSimilarityDistance, count] of [[0.15, 2], [0.2, 3], [0.25, 4]]) {
+    const result = compareHistorical({ input, historicalMatchups: [...records, ...outside], maximumSimilarityDistance });
+    assert.equal(result.summary.candidateCount, count);
+    assert.equal(result.confidence.decidedGameCount, count);
+    assert.equal(result.summary.homeCovers, 1);
+    assert.equal(result.summary.awayCovers, count - 1);
+    assert.equal(result.outsideSpreadCandidates.length, count);
+    result.candidates.forEach((candidate, index) => {
+      assert.ok(Math.abs(candidate.similarityScore - [0, 0.15, 0.2, 0.25][index]) < 1e-12);
+    });
+    assert.equal(result.distanceGroups.at(-1).maximumDistance, maximumSimilarityDistance);
+    assert.equal(result.distanceGroups.at(-1).candidateCount, count);
+  }
+  for (const maximumSimilarityDistance of [0.14, 0.26, NaN, '0.2']) {
+    assert.throws(() => compareHistorical({ input, historicalMatchups: records, maximumSimilarityDistance }), /distance/i);
+  }
+});
+
 test('reports Wilson 95% PP intervals using decided games only', () => {
   for (const [covers, losses, pushes, lower, upper] of [
     [12, 8, 3, -11.34, 28.12],

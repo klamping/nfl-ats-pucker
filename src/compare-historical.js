@@ -31,10 +31,13 @@ function coverSplitInterval(homeCovers, decisions) {
 }
 
 function compareHistorical({ input, historicalMatchups, weekWindow,
-  limit } = {}) {
+  limit, maximumSimilarityDistance = MAXIMUM_SIMILARITY_DISTANCE } = {}) {
   validateInput(input);
   if (!Array.isArray(historicalMatchups)) throw new Error('historicalMatchups must be an array');
   const spreadBand = DEFAULT_SPREAD_BAND;
+  if (!Number.isFinite(maximumSimilarityDistance) || maximumSimilarityDistance < 0.15 || maximumSimilarityDistance > 0.25) {
+    throw new Error('Similarity distance must be between 0.15 and 0.25');
+  }
   if (limit !== undefined && (!Number.isInteger(limit) || limit < 0)) {
     throw new Error('limit must be a non-negative integer');
   }
@@ -84,10 +87,10 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
   const ranked = rank(eligible);
   const rankedOutsideSpread = rank(outsideSpread, comparable);
   const similarityEligible = ranked.filter((candidate) =>
-    candidate.similarityScore <= MAXIMUM_SIMILARITY_DISTANCE + Number.EPSILON);
+    candidate.similarityScore <= maximumSimilarityDistance + Number.EPSILON);
   const candidates = limit === undefined ? similarityEligible : similarityEligible.slice(0, limit);
   const outsideSpreadCandidates = rankedOutsideSpread.filter((candidate) =>
-    candidate.similarityScore <= MAXIMUM_SIMILARITY_DISTANCE + Number.EPSILON).map((candidate) => ({
+    candidate.similarityScore <= maximumSimilarityDistance + Number.EPSILON).map((candidate) => ({
     ...candidate,
     spreadDifference: Math.abs(candidate.closingSpreadHome - input.closingSpreadHome),
     spreadBandExcess: Math.abs(candidate.closingSpreadHome - input.closingSpreadHome) - spreadBand,
@@ -104,7 +107,9 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
     lowerQuartile: percentile(values, 0.25), upperQuartile: percentile(values, 0.75) });
   const homeMargin = profile(coverMargin('home_cover'));
   const awayMargin = profile(coverMargin('away_cover'));
-  const distanceGroups = DISTANCE_GROUP_MAXIMA.map((maximumDistance) => {
+  const groupMaxima = [...DISTANCE_GROUP_MAXIMA, 0.225, 0.25].filter(value => value < maximumSimilarityDistance);
+  groupMaxima.push(maximumSimilarityDistance);
+  const distanceGroups = groupMaxima.map((maximumDistance) => {
     const group = candidates.filter((candidate) => candidate.similarityScore <= maximumDistance + Number.EPSILON);
     const groupHomeCovers = group.filter((candidate) => candidate.outcome === 'home_cover').length;
     const groupAwayCovers = group.filter((candidate) => candidate.outcome === 'away_cover').length;
@@ -127,7 +132,7 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
       spreadBand,
     featureWeights: FEATURE_WEIGHTS,
     minimumFeatureCoverage: MINIMUM_FEATURE_COVERAGE,
-      maximumSimilarityDistance: MAXIMUM_SIMILARITY_DISTANCE,
+      maximumSimilarityDistance,
        limit: limit ?? null,
     },
     candidates,

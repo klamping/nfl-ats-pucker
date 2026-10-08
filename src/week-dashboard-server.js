@@ -2,7 +2,7 @@ const defaultFileSystem = require('node:fs/promises');
 const http = require('node:http');
 const path = require('node:path');
 const { compareHistorical } = require('./compare-historical');
-const { buildDashboardPayload, loadHistoricalMatchups } = require('./dashboard-server');
+const { buildDashboardPayload, loadHistoricalMatchups, parseDistanceQuery } = require('./dashboard-server');
 const { nflverseKickoffToUtc } = require('./gather-pregame');
 const { createPreviousGameLoader } = require('./previous-game');
 
@@ -112,7 +112,7 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
     if (request.method !== 'GET') { response.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET' }); response.end('Method not allowed'); return; }
     if (request.url === '/') { response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); response.end(slateHtml); return; }
     if (request.url === '/api/slate') { response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(slate); return; }
-    const detail = request.url && request.url.match(/^\/api\/comparison\/([A-Za-z0-9_-]+)$/);
+    const detail = request.url && request.url.match(/^\/api\/comparison\/([A-Za-z0-9_-]+)(\?maximumSimilarityDistance=.*)?$/);
     const previous = request.url && request.url.match(/^\/api\/previous-games\/([A-Za-z0-9_-]+)$/);
     const page = request.url && request.url.match(/^\/games\/([A-Za-z0-9_-]+)\/$/);
     if (previous && comparisons.has(previous[1])) {
@@ -120,7 +120,19 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
       response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       response.end(JSON.stringify(result)); return;
     }
-    if (detail && comparisons.has(detail[1])) { response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(JSON.stringify(comparisons.get(detail[1]))); return; }
+    if (detail && comparisons.has(detail[1])) {
+      let comparison = comparisons.get(detail[1]);
+      if (detail[2]) {
+        try {
+          const maximumSimilarityDistance = parseDistanceQuery(request.url);
+          const input = readyGames.find(game => game.gameId === detail[1]);
+          comparison = buildDashboardPayload(input, compareHistorical({ input, historicalMatchups, maximumSimilarityDistance }));
+        } catch {
+          response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' }); response.end('Invalid similarity distance'); return;
+        }
+      }
+      response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' }); response.end(JSON.stringify(comparison)); return;
+    }
     if (page && comparisons.has(page[1])) { response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); response.end(detailHtml); return; }
     if (Object.hasOwn(assets, request.url)) { response.writeHead(200, { 'Content-Type': assets[request.url].type }); response.end(assets[request.url].body); return; }
     response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); response.end('Not found');

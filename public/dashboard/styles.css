@@ -154,3 +154,12 @@ footer { border-top: 1px solid var(--line); color: var(--muted); padding: 27px 0
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+.distance-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.distance-controls output { font-variant-numeric: tabular-nums; }
+.distance-controls input { max-width: 100%; }

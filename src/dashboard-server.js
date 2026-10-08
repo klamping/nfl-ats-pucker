@@ -122,7 +122,8 @@ async function loadPayload({ inputPath, fileSystem, outputRoot }) {
 
   const historicalMatchups = await loadHistoricalMatchups({ outputRoot, fileSystem });
   try {
-    return buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }));
+    const comparison = buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }));
+    return { input, historicalMatchups, comparison };
   } catch {
     throw new Error('Invalid comparison input');
   }
@@ -171,7 +172,7 @@ async function loadHistoricalMatchups({ outputRoot, fileSystem }) {
 async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
   fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch } = {}) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid dashboard port');
-  const comparison = await loadPayload({ inputPath, outputRoot, fileSystem });
+  const { input, historicalMatchups, comparison } = await loadPayload({ inputPath, outputRoot, fileSystem });
   const payload = JSON.stringify(comparison);
   const loadPreviousGames = createPreviousGameLoader({ fetchImpl });
   const assets = {};
@@ -194,9 +195,20 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
       const previous = await loadPreviousGames(comparison.target);
       response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       response.end(JSON.stringify(previous));
-    } else if (request.url === '/api/comparison') {
+    } else if (request.url === '/api/comparison' || request.url.startsWith('/api/comparison?maximumSimilarityDistance=')) {
+      let body = payload;
+      if (request.url !== '/api/comparison') {
+        try {
+          const maximumSimilarityDistance = parseDistanceQuery(request.url);
+          body = JSON.stringify(buildDashboardPayload(input, compareHistorical({ input, historicalMatchups, maximumSimilarityDistance })));
+        } catch {
+          response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+          response.end('Invalid similarity distance');
+          return;
+        }
+      }
       response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      response.end(payload);
+      response.end(body);
     } else if (Object.hasOwn(assets, request.url)) {
       response.writeHead(200, { 'Content-Type': assets[request.url].contentType });
       response.end(assets[request.url].body);
@@ -217,6 +229,15 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
     throw new Error('Unable to start local dashboard server');
   }
   return server;
+}
+
+function parseDistanceQuery(url) {
+  const params = new URL(url, 'http://localhost').searchParams;
+  const values = params.getAll('maximumSimilarityDistance');
+  const value = Number(values[0]);
+  if (values.length !== 1 || [...params.keys()].length !== 1 || !values[0].trim() ||
+      !Number.isFinite(value) || value < 0.15 || value > 0.25) throw new Error('Invalid similarity distance');
+  return value;
 }
 
 function parseCli(argv) {
@@ -253,4 +274,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildDashboardPayload, createDashboardServer, loadHistoricalMatchups, runDashboardCli };
+module.exports = { buildDashboardPayload, createDashboardServer, loadHistoricalMatchups, parseDistanceQuery, runDashboardCli };

@@ -44,6 +44,7 @@
   let selectedId;
   let sortKey = 'score';
   let sortDirection = 1;
+  let comparisonCharts = [];
 
   function element(tag, text, className) {
     const node = document.createElement(tag);
@@ -166,12 +167,12 @@
     coverPanel.append(coverCanvas);
     marginPanel.append(marginCanvas);
     byId('trend-chart').replaceChildren(coverPanel, marginPanel);
-    new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: 'Running cover split',
+    comparisonCharts.push(new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: 'Running cover split',
       data: points.map(({ coverSplit }) => Math.round(coverSplit)), borderColor: '#c83f49', tension: 0.2 }] },
-    options: chartOptions(coverBound, 'Running cover split', 'pp') });
-    new Chart(marginCanvas, { type: 'bar', data: { labels, datasets: [{ label: 'Final point difference',
+    options: chartOptions(coverBound, 'Running cover split', 'pp') }));
+    comparisonCharts.push(new Chart(marginCanvas, { type: 'bar', data: { labels, datasets: [{ label: 'Final point difference',
       data: points.map(({ finalMargin }) => finalMargin), backgroundColor: '#9acb78' }] },
-    options: chartOptions(marginBound, 'Final point difference', 'points') });
+    options: chartOptions(marginBound, 'Final point difference', 'points') }));
   }
 
   function renderMarginDistribution() {
@@ -182,11 +183,16 @@
       { title: '0.150 ≤ distance <0.175', minimum: 0.150, maximum: 0.175 },
       { title: '0.175 ≤ distance ≤0.200', minimum: 0.175, maximum: 0.200 },
     ];
+    if (data.filters.maximumSimilarityDistance > 0.2) {
+      bands[2].title = '0.175 ≤ distance <0.200';
+      bands.push({ title: '0.200 ≤ distance <0.225', minimum: 0.200, maximum: 0.225 },
+        { title: '0.225 ≤ distance ≤0.250', minimum: 0.225, maximum: 0.250 });
+    }
     const container = byId('margin-distribution');
     container.replaceChildren();
     bands.forEach((band, index) => {
       const games = data.candidates.filter(game => game.similarityScore >= band.minimum &&
-        (index === 2 ? game.similarityScore <= band.maximum : game.similarityScore < band.maximum));
+        (index === bands.length - 1 ? game.similarityScore <= band.maximum + Number.EPSILON : game.similarityScore < band.maximum));
       const panel = element('div', undefined, 'margin-distribution-panel');
       panel.append(element('h3', band.title));
       container.append(panel);
@@ -219,10 +225,10 @@
         key.append(row);
       });
       panel.append(chartPanel, key);
-      new Chart(canvas, { type: 'pie', data: { labels, datasets: [{ data: counts, backgroundColor: colors }] },
+      comparisonCharts.push(new Chart(canvas, { type: 'pie', data: { labels, datasets: [{ data: counts, backgroundColor: colors }] },
         options: { responsive: true, maintainAspectRatio: false,
           plugins: { legend: { display: false }, tooltip: { enabled: true,
-            callbacks: { label: context => describe(context.dataIndex) } } } } });
+            callbacks: { label: context => describe(context.dataIndex) } } } } }));
     });
   }
 
@@ -427,16 +433,30 @@
     }
   }
 
-  async function load() {
+  byId('allowed-distance').addEventListener('input', () => {
+    byId('distance-value').textContent = Number(byId('allowed-distance').value).toFixed(3);
+  });
+  byId('update-distance').addEventListener('click', () => load(Number(byId('allowed-distance').value)));
+
+  async function load(maximumSimilarityDistance) {
+    byId('update-distance').disabled = true;
+    byId('allowed-distance').disabled = true;
     try {
       const game = typeof location !== 'undefined' && location.pathname.match(/^\/games\/([A-Za-z0-9_-]+)\/$/);
-      const response = await fetch(game ? `/api/comparison/${game[1]}` : '/api/comparison', { cache: 'no-store' });
+      const endpoint = game ? `/api/comparison/${game[1]}` : '/api/comparison';
+      const query = maximumSimilarityDistance === undefined ? '' : `?maximumSimilarityDistance=${maximumSimilarityDistance}`;
+      if (data) byId('status').textContent = 'Updating…';
+      const response = await fetch(`${endpoint}${query}`, { cache: 'no-store' });
       if (!response.ok) throw new Error('Comparison unavailable');
       data = await response.json();
+      byId('allowed-distance').value = String(data.filters.maximumSimilarityDistance);
+      byId('distance-value').textContent = data.filters.maximumSimilarityDistance.toFixed(3);
+      comparisonCharts.forEach(chart => chart.destroy());
+      comparisonCharts = [];
       renderHeader();
       renderTrend();
       renderMarginDistribution();
-      loadPreviousGames(game);
+      if (maximumSimilarityDistance === undefined) loadPreviousGames(game);
       if (!data.candidates.length) {
         byId('status').textContent = 'No in-range games.';
         byId('candidate-body').replaceChildren();
@@ -450,9 +470,14 @@
       renderOutsideSpread();
       byId('status').textContent = `${data.summary.candidateCount} games`;
     } catch {
-      byId('status').textContent = 'Unable to load.';
-      byId('candidate-body').replaceChildren();
-      renderDetail(null);
+      byId('status').textContent = data ? 'Unable to update. Showing previous results.' : 'Unable to load.';
+      if (!data) {
+        byId('candidate-body').replaceChildren();
+        renderDetail(null);
+      }
+    } finally {
+      byId('update-distance').disabled = !data;
+      byId('allowed-distance').disabled = !data;
     }
   }
 

@@ -66,7 +66,7 @@ class Element {
 const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 'summary',
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label', 'trend-chart', 'outside-spread-count', 'outside-spread-body',
-  'outside-spread-detail', 'margin-distribution', 'previous-games'];
+  'outside-spread-detail', 'margin-distribution', 'previous-games', 'allowed-distance', 'distance-value', 'update-distance'];
 
 function runClient(reply, pathname = '/', previousReply = { ok: true, json: async () => ({
   home: { team: 'PHI', status: 'empty' }, away: { team: 'CHI', status: 'empty' },
@@ -84,15 +84,59 @@ function runClient(reply, pathname = '/', previousReply = { ok: true, json: asyn
   let requestedPrevious;
   const charts = [];
   class Chart {
-    constructor(canvas, config) { charts.push({ canvas, config }); }
+    constructor(canvas, config) { this.record = { canvas, config }; charts.push(this.record); }
+    destroy() { this.record.destroyed = true; }
   }
   const fetch = async (url) => {
     if (url.startsWith('/api/previous-games')) { requestedPrevious = url; return previousReply; }
-    requested = url; return reply;
+    requested = url; return typeof reply === 'function' ? reply(url) : reply;
   };
   vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), { Chart, document, fetch, location: { pathname } });
-  return { elements, requested, get requestedPrevious() { return requestedPrevious; }, charts, settled: new Promise((resolve) => setImmediate(resolve)) };
+  return { elements, get requested() { return requested; }, get requestedPrevious() { return requestedPrevious; }, charts, settled: new Promise((resolve) => setImmediate(resolve)) };
 }
+
+test('distance dragging previews only; Update refreshes games, summary and charts', async () => {
+  for (const pathname of ['/', '/games/target/']) {
+    const updated = { ...sample, filters: { ...sample.filters, maximumSimilarityDistance: 0.25 },
+      candidates: [{ ...sample.candidates[0], similarityScore: 0.25 }], outsideSpreadCandidates: [],
+      summary: { ...sample.summary, candidateCount: 1 },
+      confidence: { ...sample.confidence, coverSplit: 50, decidedGameCount: 1 },
+      coverMargins: { ...sample.coverMargins, home: { count: 1, median: 8, lowerQuartile: 8, upperQuartile: 8 } } };
+    const client = runClient(url => ({ ok: true, json: async () => url.includes('?') ? updated : sample }), pathname);
+    await client.settled;
+    const initialUrl = client.requested;
+    const oldCharts = [...client.charts];
+    client.elements['allowed-distance'].value = '0.25';
+    client.elements['allowed-distance'].listeners.input();
+    assert.equal(client.requested, initialUrl);
+    assert.equal(client.elements.status.textContent, '2 games');
+    assert.equal(client.elements['distance-value'].textContent, '0.250');
+    client.elements['update-distance'].click();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(client.requested, `${initialUrl}?maximumSimilarityDistance=0.25`);
+    assert.equal(client.elements.status.textContent, '1 games');
+    assert.equal(client.elements['candidate-body'].children.length, 1);
+    assert.match(client.elements.summary.textContent, /Cover split\+50 pp/);
+    assert.match(client.elements.summary.textContent, /Home cover margin1 · median 8/);
+    assert.match(client.elements['outside-spread-count'].textContent, /0/);
+    assert.ok(oldCharts.every(chart => chart.destroyed));
+    assert.ok(client.charts.slice(oldCharts.length).some(chart => chart.config.data.labels.includes('0.250')));
+    assert.match(client.elements['margin-distribution'].textContent, /0.250.*1 game/s);
+  }
+});
+
+test('failed distance updates keep prior results and allow retry', async () => {
+  const client = runClient(url => url.includes('?') ? { ok: false } : { ok: true, json: async () => sample });
+  await client.settled;
+  const initialCharts = [...client.charts];
+  client.elements['allowed-distance'].value = '0.25';
+  client.elements['update-distance'].click();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(client.elements.status.textContent, /Unable to update.*previous results/);
+  assert.equal(client.elements['candidate-body'].children.length, 2);
+  assert.ok(initialCharts.every(chart => !chart.destroyed));
+  assert.equal(client.elements['update-distance'].disabled, false);
+});
 
 test('charts previous-game play-by-play as one team-relative step line with centered zero and quarter dividers', async () => {
   const previous = { status: 'ready', source: 'ESPN', team: 'PHI', opponent: 'DAL', date: '2026-09-13T17:00Z',
