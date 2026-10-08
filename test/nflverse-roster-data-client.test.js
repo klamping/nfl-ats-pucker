@@ -39,3 +39,13 @@ test('rejects malformed data before writing raw captures or a manifest', async (
   await assert.rejects(client.loadSeasons({ seasons: [2026], scheduleRows: rows, outputRoot }), /missing required/i);
   await assert.rejects(fs.access(path.join(outputRoot, 'data/current/roster-impact/nflverse-roster-data-2026-2026.current.json')));
 });
+
+test('does not overwrite a published normalized dataset when builds share a clock', async (t) => {
+  const outputRoot = await root(t); const base = 'https://github.com/nflverse/nflverse-data/releases/download';
+  const sources = { [`${base}/stats_player/stats_player_week_2026.csv`]: playerStats, [`${base}/snap_counts/snap_counts_2026.csv`]: snapCounts, [`${base}/stats_team/stats_team_week_2026.csv`]: teamStats };
+  const client = createNflverseRosterDataClient({ fetchImpl: fetchFor(sources), now: () => new Date('2026-09-12T12:00:00Z') });
+  await client.loadSeasons({ seasons: [2026], scheduleRows: rows, outputRoot });
+  await client.loadSeasons({ seasons: [2026], scheduleRows: rows, outputRoot });
+  const directory = path.join(outputRoot, 'data/current/roster-impact');
+  assert.equal((await fs.readdir(directory)).filter(name => name.endsWith('.json') && !name.endsWith('.current.json')).length, 2);
+});

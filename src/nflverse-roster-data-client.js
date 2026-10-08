@@ -70,7 +70,7 @@ async function publish({ fileSystem, outputRoot, seasons, retrievedAt, downloade
   await fileSystem.mkdir(rawDirectory, { recursive: true }); await fileSystem.mkdir(currentDirectory, { recursive: true });
   const stem = `${retrievedAt.replace(/[:.]/g, '-')}-${seasons.join('-')}`;
   for (const entry of downloaded) await uniqueWrite(fileSystem, rawDirectory, `${stem}-${entry.season}-${entry.key}.csv`, entry.csv);
-  const dataName = `nflverse-roster-data-${seasons[0]}-${seasons.at(-1)}-${stem}.json`;
+  const dataName = `nflverse-roster-data-${seasons[0]}-${seasons.at(-1)}-${stem}-${randomUUID()}.json`;
   await atomicWrite(fileSystem, currentDirectory, dataName, JSON.stringify({ seasons: seasonData }));
   await atomicWrite(fileSystem, currentDirectory, `nflverse-roster-data-${seasons[0]}-${seasons.at(-1)}.current.json`, JSON.stringify({ retrievedAt, data: dataName, seasons: seasonData.map(({ season }) => ({ season })) }));
 }
