@@ -136,10 +136,13 @@
   }
 
   function renderTrend() {
-    renderTrendCharts(data.candidates, byId('trend-chart'), 'Running cover split', 'Final point difference');
+    renderTrendCharts(data.candidates, byId('trend-chart'), data.target);
   }
 
-  function renderTrendCharts(sourceGames, container, coverLabel, marginLabel) {
+  function renderTrendCharts(sourceGames, container, target) {
+    const coverLabel = `${target.homeTeam} cover advantage`;
+    const marginLabel = `${target.homeTeam} minus ${target.awayTeam} final margin`;
+    const direction = `Above zero favors ${target.homeTeam} (home). Below zero favors ${target.awayTeam} (away).`;
     const games = [...sourceGames].sort((left, right) => left.similarityScore - right.similarityScore ||
       left.gameId.localeCompare(right.gameId));
     const points = [];
@@ -159,7 +162,8 @@
     const labels = points.map(({ game }) => game.similarityScore.toFixed(3));
     const chartOptions = (bound, label, suffix) => ({ responsive: true, maintainAspectRatio: false,
       plugins: { tooltip: { enabled: true, callbacks: { label: (context) => `${label}: ${signed(context.raw)} ${suffix}` } } },
-      scales: { y: { min: -bound, max: bound, title: { display: true, text: label } },
+      scales: { y: { min: -bound, max: bound, title: { display: true, text: suffix ? `${label} (${suffix})` : label },
+        grid: { color: (context) => context.tick.value === 0 ? '#1b2b35' : '#d7ddd9' } },
         x: { title: { display: true, text: 'Distance' } } },
     });
     const coverBound = Math.max(100, ...points.map(({ coverSplit }) => Math.abs(coverSplit)));
@@ -167,14 +171,15 @@
     const coverCanvas = element('canvas');
     const marginCanvas = element('canvas');
     coverCanvas.setAttribute('role', 'img');
-    coverCanvas.setAttribute('aria-label', `${coverLabel} by similarity distance`);
+    coverCanvas.setAttribute('aria-label', `${coverLabel} by similarity distance. ${direction}`);
     marginCanvas.setAttribute('role', 'img');
-    marginCanvas.setAttribute('aria-label', `${marginLabel} by similarity distance`);
+    marginCanvas.setAttribute('aria-label', `${marginLabel} by similarity distance. ${direction}`);
     const coverPanel = element('div', undefined, 'trend-chart-panel');
     const marginPanel = element('div', undefined, 'trend-chart-panel');
+    const directionKey = element('p', direction, 'trend-direction-key');
     coverPanel.append(coverCanvas);
     marginPanel.append(marginCanvas);
-    container.replaceChildren(coverPanel, marginPanel);
+    container.replaceChildren(directionKey, coverPanel, marginPanel);
     comparisonCharts.push(new Chart(coverCanvas, { type: 'line', data: { labels, datasets: [{ label: coverLabel,
       data: points.map(({ coverSplit }) => Math.round(coverSplit)), borderColor: '#c83f49', tension: 0.2 }] },
     options: chartOptions(coverBound, coverLabel, 'pp') }));
@@ -400,7 +405,7 @@
       container.replaceChildren(element('p', 'No games.'));
       return;
     }
-    renderTrendCharts(games, container, 'Outside-spread running cover split', 'Outside-spread final point difference');
+    renderTrendCharts(games, container, data.target);
   }
 
   for (const [key, { id, direction }] of Object.entries(sorts)) {

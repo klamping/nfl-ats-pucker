@@ -230,15 +230,34 @@ test('renders a separate outside-spread outcome summary and distance trend', asy
   assert.match(client.elements['outside-spread-summary'].textContent, /Games1.*Home covers0.*Away covers1.*Pushes0.*Home cover split-50 pp/);
   assert.match(client.elements['outside-spread-summary'].textContent,
     /Historical line leanHigher home line \(home less favored\).*Mean home line difference\+2.8 points.*Median home line difference\+3 points.*Higher than target home line3.*Lower than target home line1/);
-  const coverChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'Outside-spread running cover split');
-  const marginChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'Outside-spread final point difference');
+  const coverChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI cover advantage' && config.data.labels.length === 1);
+  const marginChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI minus CHI final margin' && config.data.labels.length === 1);
   assert.deepEqual(Array.from(coverChart.config.data.labels), ['0.100']);
   assert.deepEqual(Array.from(coverChart.config.data.datasets[0].data), [-100]);
   assert.deepEqual(Array.from(marginChart.config.data.datasets[0].data), [6]);
   assert.equal(coverChart.canvas.attributes.role, 'img');
-  assert.match(coverChart.canvas.attributes['aria-label'], /outside-spread running cover split/i);
+  assert.match(coverChart.canvas.attributes['aria-label'], /PHI cover advantage/i);
   assert.equal(marginChart.canvas.attributes.role, 'img');
-  assert.match(marginChart.canvas.attributes['aria-label'], /outside-spread final point difference/i);
+  assert.match(marginChart.canvas.attributes['aria-label'], /PHI minus CHI final margin/i);
+});
+
+test('maps historical trend directions to the target home and away teams', async () => {
+  const client = runClient({ ok: true, json: async () => sample });
+  await client.settled;
+
+  for (const container of [client.elements['trend-chart'], client.elements['outside-spread-trend']]) {
+    assert.match(container.textContent, /Above zero favors PHI \(home\).*Below zero favors CHI \(away\)/);
+  }
+
+  const coverChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI cover advantage');
+  const marginChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI minus CHI final margin');
+  assert.equal(coverChart.config.options.scales.y.title.text, 'PHI cover advantage (pp)');
+  assert.equal(marginChart.config.options.scales.y.title.text, 'PHI minus CHI final margin (points)');
+  assert.equal(coverChart.config.options.scales.y.grid.color({ tick: { value: 0 } }), '#1b2b35');
+  assert.equal(marginChart.config.options.scales.y.grid.color({ tick: { value: 0 } }), '#1b2b35');
+  assert.match(coverChart.canvas.attributes['aria-label'], /above zero favors PHI.*below zero favors CHI/i);
+  assert.match(marginChart.canvas.attributes['aria-label'], /above zero favors PHI.*below zero favors CHI/i);
+  assert.match(coverChart.config.options.plugins.tooltip.callbacks.label({ raw: 100 }), /PHI cover advantage: \+100 pp/);
 });
 
 test('renders a legacy outside-spread summary without line-lean fields', async () => {
@@ -370,8 +389,8 @@ test('renders distance-ordered running cover-split and final-margin charts with 
   const { settled } = client;
   await settled;
   const charts = client.charts.filter(({ config }) => config.type !== 'pie');
-  const primaryCover = charts.find(({ config }) => config.data.datasets[0]?.label === 'Running cover split');
-  const primaryMargin = charts.find(({ config }) => config.data.datasets[0]?.label === 'Final point difference');
+  const primaryCover = charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI cover advantage');
+  const primaryMargin = charts.find(({ config }) => config.data.datasets[0]?.label === 'PHI minus CHI final margin');
 
   assert.equal(charts.length, 4);
   assert.deepEqual(Array.from(primaryCover.config.data.labels), ['0.100', '0.300']);
