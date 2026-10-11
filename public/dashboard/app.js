@@ -368,14 +368,25 @@
   }
 
   function renderOutsideSpreadSummary() {
-    const summary = data.outsideSpreadSummary || { candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0, homeCoverRate: null };
+    const summary = { candidateCount: 0, homeCovers: 0, awayCovers: 0, pushes: 0,
+      homeCoverRate: null, aboveCurrentLine: 0, belowCurrentLine: 0, meanLineDifference: null,
+      medianLineDifference: null, ...(data.outsideSpreadSummary || {}) };
     const coverSplit = summary.homeCoverRate === null ? '—' : `${signed(Math.round((summary.homeCoverRate - 0.5) * 100))} pp`;
+    const lineLean = summary.meanLineDifference === null ? '—' : summary.meanLineDifference > 0 ?
+      'Higher home line (home less favored)' : summary.meanLineDifference < 0 ?
+        'Lower home line (home more favored)' : 'Even home line';
+    const lineDifference = (value) => value === null ? '—' : signed(Number(value.toFixed(1)));
     byId('outside-spread-summary').replaceChildren(...[
       ['Games', summary.candidateCount],
       ['Home covers', summary.homeCovers],
       ['Away covers', summary.awayCovers],
       ['Pushes', summary.pushes],
       ['Home cover split', coverSplit],
+      ['Historical line lean', lineLean],
+      ['Mean home line difference', `${lineDifference(summary.meanLineDifference)}${summary.meanLineDifference === null ? '' : ' points'}`],
+      ['Median home line difference', `${lineDifference(summary.medianLineDifference)}${summary.medianLineDifference === null ? '' : ' points'}`],
+      ['Higher than target home line', summary.aboveCurrentLine],
+      ['Lower than target home line', summary.belowCurrentLine],
     ].map(([title, value]) => {
       const card = element('div', undefined, 'summary-card');
       card.append(element('h3', title, 'overline'), element('p', value, 'card-value'));

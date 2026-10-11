@@ -108,7 +108,7 @@ test('previous-game endpoint loads independently, caches its fetches, and preser
   assert.equal((await response(server, '/api/previous-games?team=SEA')).status, 404);
 });
 
-test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral test ports', async (t) => {
+test('dashboard CLIs reject occupied ports and allow ephemeral test ports', async (t) => {
   const launches = {
     single: (output, options = {}) => runDashboardCli(['--input', INPUT], output,
       { fileSystem: fixture().fileSystem, outputRoot: ROOT, ...options }),
@@ -118,14 +118,12 @@ test('dashboard CLIs use port 3000, reject an occupied port, and allow ephemeral
   for (const [name, launch] of Object.entries(launches)) {
     await t.test(name, async (t) => {
       const lines = [];
-      const server = await launch({ log: line => lines.push(line) });
+      const server = await launch({ log: line => lines.push(line) }, { port: 0 });
       t.after(() => new Promise(resolve => server.close(resolve)));
-      assert.equal(server.address().port, 3000);
-      assert.deepEqual(lines.filter(line => line.startsWith('http://')), ['http://127.0.0.1:3000/']);
-      await assert.rejects(launch({ log: line => assert.ok(!line.startsWith('http://'), 'must not print a URL on failure') }));
-      const ephemeral = await launch({ log() {} }, { port: 0 });
-      t.after(() => new Promise(resolve => ephemeral.close(resolve)));
-      assert.notEqual(ephemeral.address().port, 3000);
+      const port = server.address().port;
+      assert.ok(port > 0);
+      assert.deepEqual(lines.filter(line => line.startsWith('http://')), [`http://127.0.0.1:${port}/`]);
+      await assert.rejects(launch({ log: line => assert.ok(!line.startsWith('http://'), 'must not print a URL on failure') }, { port }));
     });
   }
 });

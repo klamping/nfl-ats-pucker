@@ -102,11 +102,20 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
   const outsideAwayCovers = outsideSpreadCandidates.filter((candidate) => candidate.outcome === 'away_cover').length;
   const outsidePushes = outsideSpreadCandidates.filter((candidate) => candidate.outcome === 'push').length;
   const outsideDecisions = outsideHomeCovers + outsideAwayCovers;
+  const outsideLineDifferences = outsideSpreadCandidates.map((candidate) =>
+    candidate.closingSpreadHome - input.closingSpreadHome);
+  const outsideAboveCurrentLine = outsideLineDifferences.filter((difference) => difference > 0).length;
+  const outsideBelowCurrentLine = outsideLineDifferences.filter((difference) => difference < 0).length;
   const decisions = homeCovers + awayCovers;
   const coverMargin = (outcome) => candidates.filter((candidate) => candidate.outcome === outcome)
     .map((candidate) => Math.abs(candidate.homeAtsMargin)).sort((a, b) => a - b);
   const percentile = (values, fraction) => values.length ? values[Math.round((values.length - 1) * fraction)] : null;
-  const median = (values) => !values.length ? null : values.length % 2 ? values[(values.length - 1) / 2] : (values[values.length / 2 - 1] + values[values.length / 2]) / 2;
+  const median = (values) => {
+    if (!values.length) return null;
+    const sorted = [...values].sort((left, right) => left - right);
+    return sorted.length % 2 ? sorted[(sorted.length - 1) / 2] :
+      (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2;
+  };
   const profile = (values) => ({ count: values.length, median: median(values),
     lowerQuartile: percentile(values, 0.25), upperQuartile: percentile(values, 0.75) });
   const homeMargin = profile(coverMargin('home_cover'));
@@ -147,6 +156,11 @@ function compareHistorical({ input, historicalMatchups, weekWindow,
       awayCovers: outsideAwayCovers,
       pushes: outsidePushes,
       homeCoverRate: outsideDecisions ? outsideHomeCovers / outsideDecisions : null,
+      aboveCurrentLine: outsideAboveCurrentLine,
+      belowCurrentLine: outsideBelowCurrentLine,
+      meanLineDifference: outsideLineDifferences.length ?
+        outsideLineDifferences.reduce((sum, difference) => sum + difference, 0) / outsideLineDifferences.length : null,
+      medianLineDifference: median(outsideLineDifferences),
     },
     distanceGroups, coverMargins: { home: homeMargin, away: awayMargin,
       medianGap: homeMargin.median === null || awayMargin.median === null ? null : homeMargin.median - awayMargin.median },

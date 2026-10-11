@@ -196,7 +196,8 @@ const sample = {
     featureWeights: { 'home.restDays': 0.05, closingSpreadHome: 0.05 },
     minimumFeatureCoverage: 0.7, maximumSimilarityDistance: 0.15, limit: null },
   summary: { candidateCount: 2, homeCovers: 1, awayCovers: 1, pushes: 0, homeCoverRate: 0.5 },
-  outsideSpreadSummary: { candidateCount: 1, homeCovers: 0, awayCovers: 1, pushes: 0, homeCoverRate: 0 },
+  outsideSpreadSummary: { candidateCount: 1, homeCovers: 0, awayCovers: 1, pushes: 0, homeCoverRate: 0,
+    aboveCurrentLine: 3, belowCurrentLine: 1, meanLineDifference: 2.75, medianLineDifference: 3 },
   coverMargins: { home: { count: 1, median: 3, lowerQuartile: 3, upperQuartile: 3 }, away: { count: 1, median: 1, lowerQuartile: 1, upperQuartile: 1 }, medianGap: 2 },
   confidence: { coverSplit: 0, weightedConfidence: 0, weightedSplit: 0,
     decidedGameCount: 2, coverSplitInterval: { lower: -40.5469, upper: 40.5469 } },
@@ -227,6 +228,8 @@ test('renders a separate outside-spread outcome summary and distance trend', asy
   await client.settled;
 
   assert.match(client.elements['outside-spread-summary'].textContent, /Games1.*Home covers0.*Away covers1.*Pushes0.*Home cover split-50 pp/);
+  assert.match(client.elements['outside-spread-summary'].textContent,
+    /Historical line leanHigher home line \(home less favored\).*Mean home line difference\+2.8 points.*Median home line difference\+3 points.*Higher than target home line3.*Lower than target home line1/);
   const coverChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'Outside-spread running cover split');
   const marginChart = client.charts.find(({ config }) => config.data.datasets[0]?.label === 'Outside-spread final point difference');
   assert.deepEqual(Array.from(coverChart.config.data.labels), ['0.100']);
@@ -236,6 +239,18 @@ test('renders a separate outside-spread outcome summary and distance trend', asy
   assert.match(coverChart.canvas.attributes['aria-label'], /outside-spread running cover split/i);
   assert.equal(marginChart.canvas.attributes.role, 'img');
   assert.match(marginChart.canvas.attributes['aria-label'], /outside-spread final point difference/i);
+});
+
+test('renders a legacy outside-spread summary without line-lean fields', async () => {
+  const legacy = { ...sample, outsideSpreadSummary: {
+    candidateCount: 1, homeCovers: 0, awayCovers: 1, pushes: 0, homeCoverRate: 0,
+  } };
+  const client = runClient({ ok: true, json: async () => legacy });
+  await client.settled;
+
+  assert.notEqual(client.elements.status.textContent, 'Unable to load.');
+  assert.match(client.elements['outside-spread-summary'].textContent,
+    /Historical line lean—.*Mean home line difference—.*Median home line difference—/);
 });
 
 test('shows no PP interval for a game with only pushes', async () => {

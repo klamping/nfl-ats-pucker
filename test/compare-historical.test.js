@@ -195,7 +195,7 @@ test('scores outside-spread games against the complete comparable population', (
   assert.equal(result.outsideSpreadCandidates[0].similarityScore, 1 / 9 / 34);
 });
 
-test('summarizes similar games outside the spread band separately', () => {
+test('summarizes whether outside-spread games lean above or below the current home line', () => {
   const result = compareHistorical({ input: snapshot(), historicalMatchups: [
     historical({ gameId: 'home-cover', week: 2, homeScore: 24, awayScore: 20, closingSpreadHome: 1 }),
     historical({ gameId: 'away-cover', week: 3, homeScore: 24, awayScore: 20, closingSpreadHome: -7 }),
@@ -204,6 +204,7 @@ test('summarizes similar games outside the spread band separately', () => {
 
   assert.deepEqual(result.outsideSpreadSummary, {
     candidateCount: 3, homeCovers: 1, awayCovers: 1, pushes: 1, homeCoverRate: 0.5,
+    aboveCurrentLine: 2, belowCurrentLine: 1, meanLineDifference: 4 / 3, medianLineDifference: 4,
   });
 });
 
