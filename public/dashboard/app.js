@@ -104,6 +104,32 @@
     renderProfile(target);
   }
 
+  function renderNfelo() {
+    const container = byId('nfelo-context');
+    const model = data.nfelo;
+    if (model?.status !== 'ready') {
+      container.replaceChildren(element('p', 'NFLelo model context unavailable for this matchup.', 'lineup-note'));
+      return;
+    }
+    const projection = model.projection;
+    const table = element('table');
+    const head = element('thead'); const row = element('tr');
+    row.append(element('th', 'Metric'), element('th', model.teams.away.team), element('th', model.teams.home.team)); head.append(row);
+    const body = element('tbody');
+    for (const [label, away, home] of [
+      ['Projected spread', spread(projection.awaySpread), spread(projection.homeSpread)],
+      ['Win probability', percent(1 - projection.homeWinProbability), percent(projection.homeWinProbability)],
+      ['Cover probability', percent(projection.awayCoverProbability), percent(projection.homeCoverProbability)],
+      ['NFLelo rating', model.teams.away.nfelo.toFixed(1), model.teams.home.nfelo.toFixed(1)],
+      ['Base rating', model.teams.away.base.toFixed(1), model.teams.home.base.toFixed(1)],
+      ['QB adjustment', signed(model.teams.away.qbAdjustment.toFixed(1)), signed(model.teams.home.qbAdjustment.toFixed(1))],
+      ['Points vs. average', signed(model.teams.away.pointsVsAverage.toFixed(1)), signed(model.teams.home.pointsVsAverage.toFixed(1))],
+    ]) { const item = element('tr'); item.append(element('th', label), element('td', away, 'tabular'), element('td', home, 'tabular')); body.append(item); }
+    table.append(head, body);
+    const wrapper = element('div', undefined, 'table-wrap'); wrapper.append(table);
+    container.replaceChildren(element('p', `Model vs. market home spread: ${signed(projection.marketDifference.toFixed(1))} points. NFLelo is third-party informational context, not a pick or ranking input. Retrieved ${new Date(model.retrievedAt).toLocaleString()}.`, 'lineup-note'), wrapper);
+  }
+
   function profileValue(value, format) {
     if (value === null || !Number.isFinite(value)) return '—';
     if (format === 'percent') return `${(value * 100).toFixed(1)}%`;
@@ -505,6 +531,7 @@
       comparisonCharts.forEach(chart => chart.destroy());
       comparisonCharts = [];
       renderHeader();
+      renderNfelo();
       renderTrend();
       renderMarginDistribution();
       if (maximumSimilarityDistance === undefined) loadPreviousGames(game);

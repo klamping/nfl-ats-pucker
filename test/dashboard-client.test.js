@@ -67,7 +67,7 @@ const IDS = ['status', 'target-title', 'target-meta', 'target-line', 'scope', 's
   'profile-body', 'candidate-body', 'detail', 'sort-score', 'sort-season', 'sort-outcome',
   'sort-coverage', 'count-label', 'trend-chart', 'outside-spread-count', 'outside-spread-body',
   'outside-spread-detail', 'outside-spread-summary', 'outside-spread-trend', 'margin-distribution', 'previous-games',
-  'allowed-distance', 'distance-value', 'update-distance'];
+   'allowed-distance', 'distance-value', 'update-distance', 'nfelo-context'];
 
 function runClient(reply, pathname = '/', previousReply = { ok: true, json: async () => ({
   home: { team: 'PHI', status: 'empty' }, away: { team: 'CHI', status: 'empty' },
