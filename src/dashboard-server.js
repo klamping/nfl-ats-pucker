@@ -4,6 +4,7 @@ const path = require('node:path');
 
 const { compareHistorical } = require('./compare-historical');
 const { createPreviousGameLoader } = require('./previous-game');
+const defaultNfeloClient = require('./nfelo-client');
 
 const STATIC_ASSETS = {
   '/': ['index.html', 'text/html; charset=utf-8'],
@@ -20,7 +21,7 @@ const PROFILE_FIELDS = [
   'offensiveSackRate', 'defensiveSackRate',
 ];
 
-function buildDashboardPayload(input, comparison) {
+function buildDashboardPayload(input, comparison, nfelo = { status: 'unavailable', reason: 'source_unavailable' }) {
   return {
     target: {
       gameId: input.gameId,
@@ -93,7 +94,20 @@ function buildDashboardPayload(input, comparison) {
       spreadDifference: candidate.spreadDifference,
       spreadBandExcess: candidate.spreadBandExcess,
     })),
+    nfelo: projectNfelo(nfelo),
   };
+}
+
+function projectNfelo(nfelo) {
+  if (nfelo?.status !== 'ready') return { status: 'unavailable', reason: ['source_unavailable', 'invalid_data', 'game_unavailable', 'team_unavailable'].includes(nfelo?.reason) ? nfelo.reason : 'source_unavailable' };
+  const number = (value) => Number.isFinite(value);
+  const team = (value) => value && typeof value.team === 'string' && ['nfelo', 'base', 'qbAdjustment', 'pointsVsAverage'].every(key => number(value[key]));
+  const projection = nfelo.projection;
+  if (typeof nfelo.retrievedAt !== 'string' || !Number.isFinite(Date.parse(nfelo.retrievedAt)) || !projection ||
+    !['homeSpread', 'awaySpread', 'homeWinProbability', 'homeCoverProbability', 'awayCoverProbability', 'marketDifference'].every(key => number(projection[key])) || !team(nfelo.teams?.home) || !team(nfelo.teams?.away)) return { status: 'unavailable', reason: 'invalid_data' };
+  return { status: 'ready', retrievedAt: nfelo.retrievedAt,
+    projection: Object.fromEntries(['homeSpread', 'awaySpread', 'homeWinProbability', 'homeCoverProbability', 'awayCoverProbability', 'marketDifference'].map(key => [key, projection[key]])),
+    teams: { home: Object.fromEntries(['team', 'nfelo', 'base', 'qbAdjustment', 'pointsVsAverage'].map(key => [key, nfelo.teams.home[key]])), away: Object.fromEntries(['team', 'nfelo', 'base', 'qbAdjustment', 'pointsVsAverage'].map(key => [key, nfelo.teams.away[key]])) } };
 }
 
 function projectCurrentOdds(currentOdds) {
@@ -171,10 +185,13 @@ async function loadHistoricalMatchups({ outputRoot, fileSystem }) {
 }
 
 async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
-  fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch } = {}) {
+  fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch, nfeloClient = defaultNfeloClient, now = () => new Date() } = {}) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid dashboard port');
   const { input, historicalMatchups, comparison } = await loadPayload({ inputPath, outputRoot, fileSystem });
-  const payload = JSON.stringify(comparison);
+  let nfeloData;
+  try { nfeloData = await nfeloClient.loadNfeloData({ fetchImpl, now }); } catch {}
+  const nfelo = (() => { try { return nfeloData ? nfeloClient.buildNfeloContext({ input, nfeloData }) : { status: 'unavailable', reason: 'source_unavailable' }; } catch { return { status: 'unavailable', reason: 'invalid_data' }; } })();
+  const payload = JSON.stringify(buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }), nfelo));
   const loadPreviousGames = createPreviousGameLoader({ fetchImpl });
   const assets = {};
   try {
@@ -201,7 +218,7 @@ async function createDashboardServer({ inputPath, outputRoot = process.cwd(),
       if (request.url !== '/api/comparison') {
         try {
           const maximumSimilarityDistance = parseDistanceQuery(request.url);
-          body = JSON.stringify(buildDashboardPayload(input, compareHistorical({ input, historicalMatchups, maximumSimilarityDistance })));
+          body = JSON.stringify(buildDashboardPayload(input, compareHistorical({ input, historicalMatchups, maximumSimilarityDistance }), nfelo));
         } catch {
           response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
           response.end('Invalid similarity distance');

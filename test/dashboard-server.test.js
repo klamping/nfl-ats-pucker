@@ -95,7 +95,7 @@ test('previous-game endpoint loads independently, caches its fetches, and preser
     fileSystem: fixture({ input }).fileSystem, fetchImpl: async () => {
       calls++;
       throw new Error('private source failure');
-    } });
+    }, nfeloClient: { loadNfeloData: async () => { throw new Error('private NFLelo failure'); }, buildNfeloContext() {} } });
   t.after(() => new Promise(resolve => server.close(resolve)));
   assert.equal(calls, 0);
   const result = await response(server, '/api/previous-games');
@@ -183,7 +183,8 @@ test('GET returns a strictly projected target and comparator result without rere
   assert.equal(first.status, 200);
   assert.match(first.headers.get('content-type'), /^application\/json\b/);
   const payload = await first.json();
-  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'outsideSpreadCandidates', 'outsideSpreadSummary', 'summary', 'target']);
+  assert.deepEqual(Object.keys(payload).sort(), ['candidates', 'confidence', 'coverMargins', 'distanceGroups', 'filters', 'nfelo', 'outsideSpreadCandidates', 'outsideSpreadSummary', 'summary', 'target']);
+  assert.deepEqual(payload.nfelo, { status: 'unavailable', reason: 'source_unavailable' });
   assert.deepEqual(payload.target, {
     gameId: 'target-1', season: 2026, week: 3, gameType: 'REG',
     homeTeam: 'HME', awayTeam: 'AWY', kickoff: { date: '2026-09-20', time: '13:00' },

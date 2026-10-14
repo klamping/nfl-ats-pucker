@@ -45,7 +45,8 @@ test('weekly details expose previous games only for known matchups without delay
   let calls = 0;
   const server = await createWeekDashboardServer({ season: 2026, week: 3,
     games: [snapshot({ homeTeam: 'PHI', awayTeam: 'DAL' })], outputRoot: ROOT, fileSystem: fileSystem(),
-    fetchImpl: async () => { calls++; return { ok: true, json: async () => ({ events: [] }) }; } });
+    fetchImpl: async () => { calls++; return { ok: true, json: async () => ({ events: [] }) }; },
+    nfeloClient: { loadNfeloData: async () => { throw new Error('private NFLelo failure'); }, buildNfeloContext() {} } });
   t.after(() => new Promise(resolve => server.close(resolve)));
   assert.equal(calls, 0);
   const reply = await response(server, '/api/previous-games/game-1');

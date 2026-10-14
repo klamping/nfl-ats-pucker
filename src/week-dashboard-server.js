@@ -5,6 +5,7 @@ const { compareHistorical } = require('./compare-historical');
 const { buildDashboardPayload, loadHistoricalMatchups, parseDistanceQuery } = require('./dashboard-server');
 const { nflverseKickoffToUtc } = require('./gather-pregame');
 const { createPreviousGameLoader } = require('./previous-game');
+const defaultNfeloClient = require('./nfelo-client');
 
 function projectSlateGame(input, comparison) {
   const currentOdds = { provider: input.currentOdds.provider, consensusSpreadHome: input.currentOdds.consensusSpreadHome };
@@ -78,16 +79,19 @@ function projectImpact({ player, position, status, observedAt, depthRole, replac
 }
 
 async function createWeekDashboardServer({ season, week, games = [], failures = [], outputRoot = process.cwd(),
-  fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch } = {}) {
+  fileSystem = defaultFileSystem, port = 0, fetchImpl = globalThis.fetch, nfeloClient = defaultNfeloClient, now = () => new Date() } = {}) {
   if (!Number.isInteger(season) || !Number.isInteger(week) || !Array.isArray(games) || !Array.isArray(failures) || !Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Invalid weekly dashboard options');
   const historicalMatchups = await loadHistoricalMatchups({ outputRoot, fileSystem });
   const comparisons = new Map();
+  let nfeloData;
+  try { nfeloData = await nfeloClient.loadNfeloData({ fetchImpl, now }); } catch {}
+  const nfeloFor = (input) => { try { return nfeloData ? nfeloClient.buildNfeloContext({ input, nfeloData }) : { status: 'unavailable', reason: 'source_unavailable' }; } catch { return { status: 'unavailable', reason: 'invalid_data' }; } };
   const loadPreviousGames = createPreviousGameLoader({ fetchImpl });
   const readyGames = [];
   const unavailable = [...failures];
   for (const input of games) {
     try {
-      comparisons.set(input.gameId, buildDashboardPayload(input, compareHistorical({ input, historicalMatchups })));
+      comparisons.set(input.gameId, buildDashboardPayload(input, compareHistorical({ input, historicalMatchups }), nfeloFor(input)));
       readyGames.push(input);
     } catch {
       unavailable.push({ gameId: input.gameId, message: 'Unable to gather game' });
@@ -126,7 +130,7 @@ async function createWeekDashboardServer({ season, week, games = [], failures = 
         try {
           const maximumSimilarityDistance = parseDistanceQuery(request.url);
           const input = readyGames.find(game => game.gameId === detail[1]);
-          comparison = buildDashboardPayload(input, compareHistorical({ input, historicalMatchups, maximumSimilarityDistance }));
+          comparison = buildDashboardPayload(input, compareHistorical({ input, historicalMatchups, maximumSimilarityDistance }), nfeloFor(input));
         } catch {
           response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' }); response.end('Invalid similarity distance'); return;
         }
